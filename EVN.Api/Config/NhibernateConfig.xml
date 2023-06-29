@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-configuration xmlns="urn:nhibernate-configuration-2.2">
+	<session-factory>
+		<property name="dialect">NHibernate.Dialect.Oracle10gDialect</property>
+		<property name="connection.driver_class">NHibernate.Driver.OracleManagedDataClientDriver</property>
+		<property name="show_sql">true</property>
+		<property name="adonet.batch_size">100</property>
+		<property name="connection.connection_string">
+			User Id=UNGDUNG_TRUNGAP;Password=xC5trtxp6V6mB3C5L8ru;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));
+		</property>
+		<mapping assembly="EVN.Core"/>
+	</session-factory>
+
+	<!--<session-factory>
+		<property name="connection.provider">NHibernate.Connection.DriverConnectionProvider, Nhibernate</property>
+		<property name="connection.driver_class">NHibernate.Driver.SqlClientDriver, Nhibernate</property>
+		<property name="connection.connection_string">
+			Data Source=172.16.10.22;initial catalog=EVNHANOI;User Id=qlvt; pwd=qlvt@123;
+		</property>
+		<property name="dialect">NHibernate.Dialect.MsSql2012Dialect, Nhibernate</property>
+		<property name="show_sql">true</property>
+		<property name="adonet.batch_size">100</property>
+		<mapping assembly="EVN.Core"/>
+	</session-factory>-->
+</hibernate-configuration>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.ThietBi, EVN.Core" table="HD_ThietBi">
+		<id name="ID" column="ID" type="Int32" unsaved-value="0">
+			<generator class="native">
+				<param name="sequence">HD_THIETBI_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="MaDViQLy" column="MaDViQLy" type="string" />
+		<property name="MaYeuCau" column="MaYeuCau" type="string" />
+		<property name="Ten" column="Ten" type="string" />
+		<property name="CongSuat" column="CongSuat" type="Decimal" />
+		<property name="SoLuong" column="SoLuong" type="Decimal" />
+		<property name="HeSoDongThoi" column="HeSoDongThoi" type="Decimal" />
+		<property name="SoGio" column="SoGio" type="Decimal" />
+		<property name="SoNgay" column="SoNgay" type="Decimal" />
+		<property name="TongCongSuat" column="TongCongSuat" type="Decimal" />
+		<property name="DienNangSD" column="DienNangSD" type="Decimal" />
+		<property name="MucDichSD" column="MucDichSD" type="string" />
+	</class>
+</hibernate-mapping>

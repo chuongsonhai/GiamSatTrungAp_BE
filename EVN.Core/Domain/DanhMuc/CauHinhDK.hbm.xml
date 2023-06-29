@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.CauHinhDK, EVN.Core" table="CauHinhDK" lazy="true" >
+		<id name="ID" column="ID" type="int">
+			<generator class="native">
+				<param name="sequence">CAUHINHDK_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="MA_LOAI_YCAU" column="MA_LOAI_YCAU" type="string" />
+		<property name="WORKFLOW_ID" column="WORKFLOW_ID" type="int" />
+
+		<property name="MA_CVIEC_TRUOC" column="MA_CVIEC_TRUOC" type="string" />
+		<property name="MA_CVIEC_TIEP" column="MA_CVIEC_TIEP" type="string" />		
+
+		<property name="NGAY_HLUC" column="NGAY_HLUC" type="DateTime" />
+		<property name="TRANG_THAI_TIEP" column="TRANG_THAI_TIEP" type="int" />
+		<property name="TCHAT_KPHUC" column="TCHAT_KPHUC" type="int" />
+		<property name="ORDERNUMBER" column="ORDERNUMBER" type="int" />
+		<property name="TTHAI_YCAU" column="TTHAI_YCAU" type="int" />
+		<property name="LOAI" column="LOAI" />
+		<property name="TRO_NGAI" column="TRO_NGAI" type="Boolean"/>
+	</class>
+</hibernate-mapping>
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+  <class name="EVN.Core.Domain.LoaiHopDong, EVN.Core" table="HD_LoaiHopDong" lazy="true" >
+    <id name="Code" column="Code"/>
+    <property name="Name" column="Name" type="string" />
+    <property name="ServiceType" column="ServiceType" type="string" />
+    <property name="ContractType" column="ContractType" type="string" />
+    <property name="XlstData" column="XlstData" type="StringClob" />
+    <property name="XmlData" column="XmlData" type="StringClob" />
+  </class>
+</hibernate-mapping>
+

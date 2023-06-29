@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.BienBanDN, EVN.Core" table="TTDN_BienBanDN" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">TTDN_BIENBANDN_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="SoCongVan" column="SoCongVan" type="string"/>
+		<property name="NgayCongVan" column="NgayCongVan" type="DateTime"/>
+
+		<property name="MaDViTNhan" column="MaDViTNhan" type="string"/>
+		<property name="MaDViQLy" column="MaDViQLy" type="string"/>
+		<property name="MaYeuCau" column="MaYeuCau" type="string"/>
+
+		<property name="MaDDoDDien" column="MaDDoDDien" type="string"/>
+		
+		<property name="MaLoaiYeuCau" column="MaLoaiYeuCau" type="string"/>
+
+		<property name="SoBienBanKS" column="SoBienBanKS" type="string"/>
+		<property name="NgayKhaoSat" column="NgayKhaoSat" type="DateTime"/>
+		
+		<property name="SoBienBan" column="SoBienBan" type="string"/>
+		<property name="NgayBienBan" column="NgayBienBan" type="DateTime"/>
+
+		<property name="EVNDonVi" column="EVNDonVi" type="string"/>
+		<property name="EVNDaiDien" column="EVNDaiDien" type="string"/>
+		<property name="EVNChucVu" column="EVNChucVu" type="string"/>
+		<property name="EVNDiaChi" column="EVNDiaChi" type="string"/>
+		<property name="EVNDienThoai" column="EVNDienThoai" type="string"/>
+		<property name="EVNFax" column="EVNFax" type="string"/>
+		<property name="EVNTaiKhoan" column="EVNTaiKhoan" type="string"/>
+		<property name="EVNMaSoThue" column="EVNMaSoThue" type="string"/>
+
+		<property name="MaKH" column="MaKH" type="string"/>
+		<property name="KHTen" column="KHTen" type="string"/>
+		<property name="KHDaiDien" column="KHDaiDien" type="string"/>
+		<property name="KHChucDanh" column="KHChucDanh" type="string"/>
+		<property name="KHDiaChi" column="KHDiaChi" type="string"/>
+		<property name="KHDienThoai" column="KHDienThoai" type="string"/>
+		<property name="KHTaiKhoan" column="KHTaiKhoan" type="string"/>
+		<property name="KHMaSoThue" column="KHMaSoThue" type="string"/>
+
+		<property name="TenCongTrinh" column="TenCongTrinh" type="string"/>
+		<property name="DiaDiemXayDung" column="DiaDiemXayDung" type="string"/>
+		<property name="NoiDung" column="NoiDung" type="string"/>
+		<property name="TaiLieuDinhKem" column="TaiLieuDinhKem" type="StringClob"/>
+		<property name="NgayDauNoi" column="NgayDauNoi" type="string"/>
+		<property name="NgayLap" column="NgayLap" type="DateTime"/>
+		<property name="NguoiLap" column="NguoiLap" type="string"/>
+		<property name="NgayDuyet" column="NgayDuyet" type="DateTime"/>
+		<property name="NguoiDuyet" column="NguoiDuyet" type="string"/>
+		<property name="NgayKy" column="NgayKy" type="DateTime"/>
+		<property name="NguoiKy" column="NguoiKy" type="string"/>
+		<property name="TrangThai" column="TrangThai" type="int"/>
+
+		<property name="ThoaThuanKhac" column="ThoaThuanKhac" type="StringClob"/>
+		<property name="HTDoDem" column="HTDoDem" type="StringClob"/>
+		<property name="RanhGioiDauTu" column="RanhGioiDauTu" type="StringClob"/>
+		<property name="YeuCauKyThuat" column="YeuCauKyThuat" type="StringClob"/>
+
+		<property name="Data" column="Data" type="string"/>
+		<property name="DocPath" column="DocPath" type="string"/>
+
+		<property name="MaCViec" column="MaCViec" type="string"/>
+
+		<property name="NgayThongTu" column="NgayThongTu" type="DateTime"/>
+		<property name="SoThongTu" column="SoThongTu" type="string"/>
+		<property name="TroNgai" column="TroNgai" type="string"/>
+		<property name="KHXacNhan" column="KHXacNhan" type="Boolean"/>		
+	</class>
+</hibernate-mapping>
+

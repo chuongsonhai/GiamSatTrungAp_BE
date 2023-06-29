@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.Template, EVN.Core" table="Template" lazy="true" >
+		<id name="Code" column="Code"/>
+		<property name="Name" column="Name" type="string" />
+		<property name="ChucVuKy" column="ChucVuKy" type="string" />
+		<property name="XmlData" column="XmlData" type="StringClob" />
+		<property name="XsltData" column="XsltData" type="StringClob" />
+		<property name="TrangThai" column="TrangThai" type="int" />
+	</class>
+</hibernate-mapping>

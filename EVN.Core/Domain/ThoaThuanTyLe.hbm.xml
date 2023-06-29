@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="EVN.Core.Domain.ThoaThuanTyLe, EVN.Core" table="HD_ThoaThuanTyLe">
+    <id name="ID" column="ID" type="Int32" unsaved-value="0">
+		<generator class="native">
+			<param name="sequence">HD_THOATHUANTYLE_ID_SEQ</param>
+		</generator>
+    </id>
+	  <property name="CongVanID">
+		  <column name="CongVanID" sql-type="int" not-null="false" />
+	  </property>
+	  <property name="MaYeuCau">
+		  <column name="MaYeuCau" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="NgayLap">
+		  <column name="NgayLap" sql-type="datetime" not-null="false" />
+	  </property>
+	  <property name="DiaDiem">
+		  <column name="DiaDiem" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="DiaChiGiaoDich">
+		  <column name="DiaChiGiaoDich" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="DonVi">
+		  <column name="DonVi" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="MaSoThue">
+		  <column name="MaSoThue" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="SoTaiKhoan">
+		  <column name="SoTaiKhoan" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="NganHang">
+		  <column name="NganHang" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="DienThoai">
+		  <column name="DienThoai" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="Fax">
+		  <column name="Fax" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="Email">
+		  <column name="Email" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="DienThoaiCSKH">
+		  <column name="DienThoaiCSKH" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="Website">
+		  <column name="Website" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="DaiDien">
+		  <column name="DaiDien" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="ChucVu">
+		  <column name="ChucVu" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="SoGiayTo">
+		  <column name="SoGiayTo" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="NgayCap">
+		  <column name="NgayCap" sql-type="datetime" not-null="false" />
+	  </property>
+	  <property name="NoiCap">
+		  <column name="NoiCap" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="VanBanUQ">
+		  <column name="VanBanUQ" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="NgayUQ">
+		  <column name="NgayUQ" sql-type="datetime" not-null="false" />
+	  </property>
+	  <property name="NguoiKyUQ">
+		  <column name="NguoiKyUQ" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="NgayKyUQ">
+		  <column name="NgayKyUQ" sql-type="datetime" not-null="false" />
+	  </property>
+	  <property name="ChucVuUQ">
+		  <column name="ChucVuUQ" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHTen">
+		  <column name="KHTen" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHMa">
+		  <column name="KHMa" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHDiaChiGiaoDich">
+		  <column name="KHDiaChiGiaoDich" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHDiaChiDungDien">
+		  <column name="KHDiaChiDungDien" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHDangKyKD">
+		  <column name="KHDangKyKD" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHNoiCapDangKyKD">
+		  <column name="KHNoiCapDangKyKD" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHNgayCaoDangKyKD">
+		  <column name="KHNgayCaoDangKyKD" sql-type="datetime" not-null="false" />
+	  </property>
+	  <property name="KHMaSoThue">
+		  <column name="KHMaSoThue" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHSoTK">
+		  <column name="KHSoTK" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHNganHang">
+		  <column name="KHNganHang" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHDienThoai">
+		  <column name="KHDienThoai" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHFax">
+		  <column name="KHFax" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHEmail">
+		  <column name="KHEmail" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHDaiDien">
+		  <column name="KHDaiDien" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHChucVu">
+		  <column name="KHChucVu" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHSoGiayTo">
+		  <column name="KHSoGiayTo" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHNgayCap">
+		  <column name="KHNgayCap" sql-type="datetime" not-null="false" />
+	  </property>
+	  <property name="KHNoiCap">
+		  <column name="KHNoiCap" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHVanBanUQ">
+		  <column name="KHVanBanUQ" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHNgayUQ">
+		  <column name="KHNgayUQ" sql-type="datetime" not-null="false" />
+	  </property>
+	  <property name="KHNguoiKyUQ">
+		  <column name="KHNguoiKyUQ" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="KHNgayKyUQ">
+		  <column name="KHNgayKyUQ" sql-type="datetime" not-null="false" />
+	  </property>
+	  <property name="UngDung">
+		  <column name="UngDung" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="Data">
+		  <column name="Data"  sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="MaDViQLy">
+		  <column name="MaDViQLy" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="TrangThai">
+		  <column name="TrangThai" sql-type="int" not-null="false" />
+	  </property>
+	  <bag name="MucDichThucTeSDD" table="HD_MucDichThucTeSDD" cascade="none" inverse="true" lazy="true">
+		  <key column="ThoaThuanID" />
+		  <one-to-many class="EVN.Core.Domain.MucDichThucTeSDD, EVN.Core" />
+	  </bag>
+	  <bag name="GiaDienTheoMucDich" table="HD_GiaDienTheoMucDich" cascade="none" inverse="true" lazy="true">
+		  <key column="ThoaThuanID" />
+		  <one-to-many class="EVN.Core.Domain.GiaDienTheoMucDich, EVN.Core" />
+	  </bag>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.KetQuaKT, EVN.Core" table="NT_KetQuaKT" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">NT_KETQUAKT_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="MA_DVIQLY" column="MA_DVIQLY" type="string"/>
+		<property name="MA_YCAU_KNAI" column="MA_YCAU_KNAI" type="string"/>
+		<property name="MA_DDO_DDIEN" column="MA_DDO_DDIEN" type="string"/>
+
+		<property name="NDUNG_XLY" column="NDUNG_XLY" type="string"/>
+		<property name="MA_TNGAI" column="MA_TNGAI" type="string"/>
+
+		<property name="MA_BPHAN_GIAO" column="MA_BPHAN_GIAO" type="string"/>
+		<property name="MA_NVIEN_GIAO" column="MA_NVIEN_GIAO" type="string"/>
+
+		<property name="MA_BPHAN_NHAN" column="MA_BPHAN_NHAN" type="string"/>
+		<property name="MA_NVIEN_NHAN" column="MA_NVIEN_NHAN" type="string"/>
+
+		<property name="NGAY_HEN" column="NGAY_HEN" type="DateTime"/>
+		<property name="NGAY_BDAU" column="NGAY_BDAU" type="DateTime"/>
+		<property name="NGAY_KTHUC" column="NGAY_KTHUC" type="DateTime"/>
+
+		<property name="MA_CVIEC_TRUOC" column="MA_CVIEC_TRUOC" type="string"/>
+		<property name="MA_CVIEC" column="MA_CVIEC" type="string"/>
+		<property name="MA_LOAI_YCAU" column="MA_LOAI_YCAU" type="string"/>
+		<property name="MA_CNANG" column="MA_CNANG" type="string"/>
+		<property name="NGUYEN_NHAN" column="NGUYEN_NHAN" type="string"/>
+
+		<property name="TRANG_THAI" column="TRANG_THAI" type="int"/>
+		<property name="THUAN_LOI" column="THUAN_LOI" type="Boolean"/>
+	</class>
+</hibernate-mapping>
+

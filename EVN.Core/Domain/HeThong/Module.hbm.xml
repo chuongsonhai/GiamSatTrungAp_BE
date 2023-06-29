@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping  xmlns="urn:nhibernate-mapping-2.2">
+  <class name="EVN.Core.Domain.Module, EVN.Core" dynamic-update="true" table="PermissionGroup" lazy="true">        
+    <id name="Code" column="Code" type="string" />
+    <property name="Name" column="Name" type="string" />
+    <property name="IsActive" column="IsActive" type="Boolean" />
+    
+    <bag name="Permissions" table="Permission" cascade="none" inverse="true" lazy="true">
+      <key column="GroupCode" />
+      <one-to-many class="EVN.Core.Domain.Permission, EVN.Core" />
+    </bag>
+  </class>
+</hibernate-mapping>

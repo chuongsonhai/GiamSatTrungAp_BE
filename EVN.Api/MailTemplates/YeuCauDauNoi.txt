@@ -1,0 +1,65 @@
+﻿[subject]Tiếp nhận yêu cầu đề nghị đấu nối vào lưới điện trung áp[/subject]
+[body]
+<div id="accTemplate">	
+<style>
+    #accTemplate{
+    	font-family:"Times New Roman",Georgia,Times;
+    	width:800px;
+    	clear:left;
+    	margin: 0 auto;
+    	overflow: hidden;
+    	position: relative;
+    	font-size:16px;
+    }
+     #accTemplate h3,#accTemplate h2,#accTemplate h1{ margin:0 0 10px 0;font-size:20px;font-weight: lighter;text-transform: uppercase; }
+    #accTemplate p{
+    	margin:0 0 6px;
+    }
+	#accTemplate .temp-code{ 
+		float:right;
+		padding:5px 10px;
+		font-weight: bold;
+		border:1px solid #000;
+		margin-bottom: 15px
+	}
+	#accTemplate .colfix{
+		clear: left;
+		overflow: hidden;
+		margin:10px 0;
+		width: 100%;
+	}
+	#accTemplate .acc-tempname{
+		text-align: center;
+		width: 100%;
+		margin:30px 0;
+		font-weight: bold;
+	}
+	#accTemplate .acc-tempname h1{
+		font-weight: bold;
+	}
+	#accTemplate .inv-accinfo{
+		padding:15px 0 15px 25px;
+	}
+</style>		
+	<div class="colfix acc-tempname">
+		<h1>Thông báo</h1>
+		<p>Về việc Tiếp nhận yêu cầu đề nghị đấu nối vào lưới điện trung áp</p>
+	</div>	
+	<div class="colfix" >
+		<div style="float:left;text-decoration: underline;font-weight: bold">
+			<i>Kính gửi Quý khách hàng</i> 
+		</div>		 
+	</div>
+	<div class="colfix">
+		<p>Xin cám ơn Quý Khách hàng đã sử dụng dịch vụ của chúng tôi.</p>
+		<p>Yêu cầu của quý khách $khachHang đã được ngành điện tiếp nhận, thông tin chi tiết yêu cầu:</p>
+		<div class="inv-accinfo">
+			<p>- Mã yêu cầu: <strong>$maYCau</strong></p>
+			<p>- Mật khẩu yêu cầu: <strong>$maDichVu</strong></p>
+			<p>- Ngày yêu cầu: <strong>$ngayYCau</strong></p>
+			<p>- Ngày tiếp nhận: <strong>$ngayDuyet</strong></p>
+		</div>		
+	</div>
+	<p style="clear:both;color:red;font-size:24px">Đây là mail tự động, vui lòng không trả lời.</p>
+</div>
+[/body]

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.CongVanYeuCau, EVN.Core" table="TTDN_CongVanYeuCau" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">TTDN_CONGVANYEUCAU_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="MaKHang" column="MaKHang" type="string"/>
+		<property name="MaDDoDDien" column="MaDDoDDien" type="string"/>
+
+		<property name="SoCongVan" column="SoCongVan" type="string"/>
+		<property name="MaYeuCau" column="MaYeuCau" type="string"/>
+		<property name="NgayYeuCau" column="NgayYeuCau" type="DateTime"/>
+		<property name="MaLoaiYeuCau" column="MaLoaiYeuCau" type="string"/>
+
+		<property name="MaDViTNhan" column="MaDViTNhan" type="string"/>
+		<property name="MaDViQLy" column="MaDViQLy" type="string"/>
+		<property name="BenNhan" column="BenNhan" type="string"/>
+		<property name="NguoiYeuCau" column="NguoiYeuCau" type="string"/>
+		<property name="DChiNguoiYeuCau" column="DChiNguoiYeuCau" type="string"/>
+		<property name="DuongPho" column="DuongPho" type="string"/>
+		<property name="SoNha" column="SoNha" type="string"/>
+		<property name="DiaChinhID" column="DiaChinhID" type="string"/>
+		<property name="TenKhachHang" column="TenKhachHang" type="string"/>
+		<property name="CoQuanChuQuan" column="CoQuanChuQuan" type="string"/>
+		<property name="DiaChiCoQuan" column="DiaChiCoQuan" type="string"/>
+
+		<property name="MST" column="MST" type="string"/>
+		<property name="DienThoai" column="DienThoai" type="string"/>
+		<property name="Email" column="Email" type="string"/>
+		<property name="Fax" column="Fax" type="string"/>
+		<property name="SoTaiKhoan" column="SoTaiKhoan" type="string"/>
+		<property name="SoPha" column="SoPha" type="string"/>
+		<property name="DienSinhHoat" column="DienSinhHoat" type="Boolean"/>
+		<property name="NgayHen" column="NgayHen" type="DateTime"/>
+		<property name="NgayHenKhaoSat" column="NgayHenKhaoSat" type="DateTime"/>
+
+		<property name="TinhTrang" column="TinhTrang" type="int"/>
+		<property name="MaHinhThuc" column="MaHinhThuc" type="string"/>
+
+		<property name="NoiDungYeuCau" column="NoiDungYeuCau" type="string"/>
+		<property name="DiaChiDungDien" column="DiaChiDungDien" type="string"/>
+		<property name="DuAnDien" column="DuAnDien" type="string"/>
+		<property name="LoaiHinh" column="LoaiHinh" type="int"/>
+		<property name="TrangThai" column="TrangThai"/>
+
+		<property name="NgayLap" column="NgayLap" type="DateTime"/>
+		<property name="NguoiLap" column="NguoiLap" type="string"/>
+		<property name="NguoiDuyet" column="NguoiDuyet" type="string"/>
+		<property name="NgayDuyet" column="NgayDuyet" type="DateTime"/>
+
+		<property name="Data" column="Data" type="string"/>
+		<property name="MaCViec" column="MaCViec" type="string"/>
+		<property name="Fkey" column="Fkey" type="string"/>
+
+		<property name="LyDoHuy" column="LyDoHuy" type="string"/>
+		<property name="SoDienThoaiKHUQ" column="SoDienThoaiKHUQ" type="string"/>
+		<property name="TenKhachHangUQ" column="TenKhachHangUQ" type="string"/>
+	</class>
+</hibernate-mapping>
+

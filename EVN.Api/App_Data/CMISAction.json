@@ -1,0 +1,23 @@
+﻿{
+  "uploadHSoGTo": "/ServiceInterface-Interface-context-root/resources/serviceInterface/uploadHSoGTo",
+  "getListHSGT": "/ServiceInterface-Interface-context-root/resources/serviceInterface/getListHSGT",
+  "getHSGT": "/ServiceInterface-Interface-context-root/resources/serviceInterface/getHSGT/123/123/",
+  "updateKQuaKSat": "/ServiceDichVu-DichVu-context-root/resources/serviceDichVu/updateKQuaKSat",
+  "themDvTienTrinh": "/ServiceDichVu-DichVu-context-root/resources/serviceDichVu/themDvTienTrinh",
+  "themMoiTiepNhanYeuCau": "/ServiceDichVu-DichVu-context-root/resources/serviceDichVu/themMoi_TiepNhanYeuCau",
+  "createBBanTrTh": "/ServiceInterface-Interface-context-root/resources/serviceInterface/createBBanTrTh",
+  "implKySo": "/ServiceInterface-Interface-context-root/resources/serviceInterface/implKySo",
+  "layThongTinTbiTreo": "/ServiceHoSoTBi-HoSoTBi-context-root/resources/serviceHoSoTBi/layThongTinTbiTreo",
+  "searchDmTram": "/ServiceDanhMuc-DanhMuc-context-root/resources/serviceDanhMuc/search_DmTram",
+  "layTiepNhanYeuCauDaTN": "/ServiceDichVu-DichVu-context-root/resources/serviceDichVu/lay_TiepNhanYeuCau_DaTN",
+  "chuyenCapDuoi": "/ServiceDichVu-DichVu-context-root/resources/serviceDichVu/chuyenCapDuoi_TiepNhanYeuCau",
+  "chiTietTienDo": "/ServiceDichVu-DichVu-context-root/resources/serviceDichVu/LayChiTietTienDo",
+  "getTTinKHangTreoThao": "/ServiceInterface-Interface-context-root/resources/serviceInterface/getTTinKHangTreoThao",
+  "layCDDiemDoByMaDDo": "/ServiceDichVu-DichVu-context-root/resources/serviceDichVu/layCDDiemDoByMaDDo",
+  "getGiaNhomNNHieuluc": "/ServiceDanhMuc-DanhMuc-context-root/resources/serviceDanhMuc/getGiaNhomNNHieuluc",
+  "getDanhMucUQ": "/ServiceDanhMuc-DanhMuc-context-root/resources/serviceDanhMuc/getDanhMuc",
+  "getDsBophan": "/ServiceDanhMuc-DanhMuc-context-root/resources/serviceDanhMuc/getDsBophan",
+  "getDsTo": "/ServiceDanhMuc-DanhMuc-context-root/resources/serviceDanhMuc/getDsTo",
+  "getDsNvien": "/ServiceDanhMuc-DanhMuc-context-root/resources/serviceDanhMuc/getDsNvien",
+  "implKySo_NV": "/ServiceInterface-Interface-context-root/resources/serviceInterface/implKySo_NV"
+}

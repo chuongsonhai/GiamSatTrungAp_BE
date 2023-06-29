@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2">
+  <class name="EVN.Core.Domain.HeThongDDChamDut, EVN.Core" table="HD_HeThongDDChamDut">
+    <id name="ID" column="ID" type="Int32" unsaved-value="0">
+		<generator class="native">
+			<param name="sequence">HD_HETHONGDDCHAMDUT_ID_SEQ</param>
+		</generator>
+    </id>
+	  <property name="ThoaThuanID">
+		  <column name="ThoaThuanID" sql-type="int" not-null="false" />
+	  </property>
+	  <property name="DiemDo">
+		  <column name="DiemDo" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="SoCongTo">
+		  <column name="SoCongTo" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="Loai">
+		  <column name="Loai" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="TI">
+		  <column name="TI" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="TU">
+		  <column name="TU" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="HeSoNhan">
+		  <column name="HeSoNhan" sql-type="nvarchar" not-null="false" />
+	  </property>
+	  <property name="ChiSoChot">
+		  <column name="ChiSoChot" sql-type="nvarchar" not-null="false" />
+	  </property>
+
+  </class>
+</hibernate-mapping>

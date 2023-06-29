@@ -1,0 +1,88 @@
+﻿<ThoaThuanTyLe>
+
+	<NgayLap><![CDATA[{0}]]></NgayLap>
+	<DiaDiem><![CDATA[{0}]]></DiaDiem>
+	<DonVi><![CDATA[{0}]]></DonVi>
+	<MaSoThue><![CDATA[{0}]]></MaSoThue>
+	<SoTaiKhoan><![CDATA[{0}]]></SoTaiKhoan>
+	<NganHang><![CDATA[{0}]]></NganHang>
+	<DienThoai><![CDATA[{0}]]></DienThoai>
+	<Fax><![CDATA[{0}]]></Fax>
+	<Email><![CDATA[{0}]]></Email>
+	<DienThoaiCSKH><![CDATA[{0}]]></DienThoaiCSKH>
+	<Website><![CDATA[{0}]]></Website>
+	<DaiDien><![CDATA[{0}]]></DaiDien>
+	<ChucVu><![CDATA[{0}]]></ChucVu>
+	<SoGiayTo><![CDATA[{0}]]></SoGiayTo>
+	<NgayCap><![CDATA[{0}]]></NgayCap>
+	<NoiCap><![CDATA[{0}]]></NoiCap>
+	<VanBanUQ><![CDATA[{0}]]></VanBanUQ>
+	<NgayUQ><![CDATA[{0}]]></NgayUQ>
+	<NguoiKyUQ><![CDATA[{0}]]></NguoiKyUQ>
+	<NgayKyUQ><![CDATA[{0}]]></NgayKyUQ>
+	<ChucVuUQ><![CDATA[{0}]]></ChucVuUQ>
+
+	<KHTen><![CDATA[{0}]]></KHTen>
+	<KHMa><![CDATA[{0}]]></KHMa>
+	<KHDiaChiGiaoDich><![CDATA[{0}]]></KHDiaChiGiaoDich>
+
+	<KHDiaChiDungDien><![CDATA[{0}]]></KHDiaChiDungDien>
+	<KHDangKyKD><![CDATA[{0}]]></KHDangKyKD>
+	<KHNoiCapDangKyKD><![CDATA[{0}]]></KHNoiCapDangKyKD>
+	<KHNgayCaoDangKyKD><![CDATA[{0}]]></KHNgayCaoDangKyKD>
+	<KHMaSoThue><![CDATA[{0}]]></KHMaSoThue>
+	<KHSoTK><![CDATA[{0}]]></KHSoTK>
+	<KHNganHang><![CDATA[{0}]]></KHNganHang>
+	<KHDienThoai><![CDATA[{0}]]></KHDienThoai>
+	<KHFax><![CDATA[{0}]]></KHFax>
+	<KHEmail><![CDATA[{0}]]></KHEmail>
+	<KHDaiDien><![CDATA[{0}]]></KHDaiDien>
+	<KHChucVu><![CDATA[{0}]]></KHChucVu>
+	<KHSoGiayTo><![CDATA[{0}]]></KHSoGiayTo>
+	<KHNgayCap><![CDATA[{0}]]></KHNgayCap>
+	<KHNoiCap><![CDATA[{0}]]></KHNoiCap>
+	<KHVanBanUQ><![CDATA[{0}]]></KHVanBanUQ>
+	<KHNgayUQ><![CDATA[{0}]]></KHNgayUQ>
+	<KHNguoiKyUQ><![CDATA[{0}]]></KHNguoiKyUQ>
+	<KHNgayKyUQ><![CDATA[{0}]]></KHNgayKyUQ>
+	<UngDung><![CDATA[{0}]]></UngDung>
+	<TrangThai><![CDATA[{0}]]></TrangThai>
+
+	<MucDichThucTeSDD>
+		<ChiTietMucDich>
+
+			<STT><![CDATA[{0}]]></STT>
+			<TenThietBi><![CDATA[{0}]]></TenThietBi>
+			<CongSuat><![CDATA[{0}]]></CongSuat>
+
+			<GiaBanDien><![CDATA[{0}]]></GiaBanDien>
+			<ThanhTien><![CDATA[{0}]]></ThanhTien>
+			<GiaBanDien><![CDATA[{0}]]></GiaBanDien>
+			<ThanhTien><![CDATA[{0}]]></ThanhTien>
+			<GiaBanDien><![CDATA[{0}]]></GiaBanDien>
+			<ThanhTien><![CDATA[{0}]]></ThanhTien>
+			<GiaBanDien><![CDATA[{0}]]></GiaBanDien>
+		</ChiTietMucDich>
+
+
+	</MucDichThucTeSDD>
+
+	<GiaDienTheoMucDich>
+
+
+		<ChiTietGiaDien>
+
+			<SoCongTo><![CDATA[{0}]]></SoCongTo>
+			<MaGhiChiSo><![CDATA[{0}]]></MaGhiChiSo>
+
+			<ApDungTuChiSo><![CDATA[{0}]]></ApDungTuChiSo>
+			<MucDichSuDung><![CDATA[{0}]]></MucDichSuDung>
+			<TyLe><![CDATA[{0}]]></TyLe>
+			<GDKhongTheoTG><![CDATA[{0}]]></GDKhongTheoTG>
+			<GDGioBT><![CDATA[{0}]]></GDGioBT>
+			<GDGioCD><![CDATA[{0}]]></GDGioCD>
+			<GDGioTD><![CDATA[{0}]]></GDGioTD>
+
+		</ChiTietGiaDien>
+	</GiaDienTheoMucDich>
+</ThoaThuanTyLe>

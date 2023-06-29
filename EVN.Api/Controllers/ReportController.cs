@@ -1,0 +1,984 @@
+﻿using EVN.Api.Jwt;
+using EVN.Api.Model;
+using EVN.Api.Model.Request;
+using EVN.Core;
+using EVN.Core.IServices;
+using FX.Core;
+using log4net;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System;
+using System.IO;
+using System.Web.Http;
+
+namespace EVN.Api.Controllers
+{
+    [RoutePrefix("api/report")]
+    public class ReportController : ApiController
+    {
+        private ILog log = LogManager.GetLogger(typeof(ReportController));
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("filter")]
+        public IHttpActionResult Filter(ReportRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+                int total = 0;
+                IReportService service = IoC.Resolve<IReportService>();
+                var list = service.ListbyQuater(request.Filter.maDViQLy, request.Filter.quater, request.Filter.year, pageindex, request.Paginator.pageSize, out total);
+
+                result.total = total;
+                result.data = list;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("export")]
+        public IHttpActionResult Export(ReportFilter filter)
+        {
+            try
+            {
+                int total = 0;
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/ReportQuater.xlsx";
+                IReportService service = IoC.Resolve<IReportService>();
+                var list = service.ListbyQuater(filter.maDViQLy, filter.quater, filter.year, 0, 0, out total);
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+                //mau file excel
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+
+                    int row = 2;
+                    int stt = 0;
+                    foreach (var item in list)
+                    {
+                        stt++;
+                        int colval = 1;
+                        ws.Cells[row, colval].Value = stt;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TONG_TGIAN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_TNHAN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_KSAT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TEN_NGUOIYCAU;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.MA_YCAU_KNAI;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_BDN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_DT_TDN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_TTX_TDN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGIAN_DNOI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_TH_TVB;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_NV_TVB;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_NT_TVB;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGIAN_NTHU;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGIAN_KSAT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TONG_TGIAN_GIAIQUYET;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGIAN_TNHAN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Right;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_CHUYENKS;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_TNHANYCAU;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TEN_DVIQLY;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_HTAT_YC;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.MA_DVIQLY;
+                        colval++;
+
+                        row++;
+                    }
+
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return NotFound();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("getbaocaotonghop")]
+        public IHttpActionResult GetBaoCaoTongHop(BienBanFilter request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                IReportService service = IoC.Resolve<IReportService>();
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.fromdate))
+                    fromDate = DateTime.ParseExact(request.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.todate))
+                    toDate = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                var list = service.GetBaoCaoTongHop(fromDate, toDate, request.isHoanTat);
+                BaoCaoTongHopModel baoCaoTongHopModel = new BaoCaoTongHopModel(list);
+
+                result.data = baoCaoTongHopModel;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("exporttonghop")]
+        public IHttpActionResult ExportTongHop(BienBanFilter request)
+        {
+            try
+            {
+                IReportService service = IoC.Resolve<IReportService>();
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/TongHop.xlsx";
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.fromdate))
+                    fromDate = DateTime.ParseExact(request.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.todate))
+                    toDate = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                var list = service.GetBaoCaoTongHop(fromDate, toDate, request.isHoanTat);
+                BaoCaoTongHopModel baoCaoTongHopModel = new BaoCaoTongHopModel(list);
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+                //mau file excel
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    string title = $"BÁO CÁO CHỈ TIÊU TIẾP CẬN ĐIỆN NĂNG TỪ NGÀY {fromDate.ToString("dd/MM/yyyy")} ĐẾN NGÀY {toDate.ToString("dd/MM/yyyy")}";
+                    if(!request.isHoanTat)
+                        title = $"BÁO CÁO CÁC CÔNG TRÌNH ĐANG THỰC HIỆN TỪ NGÀY {fromDate.ToString("dd/MM/yyyy")} ĐẾN NGÀY {toDate.ToString("dd/MM/yyyy")}";
+
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+                    ws.Cells[2, 1].Value = title;
+                    ws.Cells[7, 3].Value = baoCaoTongHopModel.TongSoCTTrongThang;
+                    ws.Cells[7, 4].Value = baoCaoTongHopModel.TongTGTrongThang;
+                    ws.Cells[7, 5].Value = baoCaoTongHopModel.TongSoCTLuyKe;
+                    ws.Cells[7, 6].Value = baoCaoTongHopModel.TongTGLuyKe;
+                    int row = 8;
+                    int stt = 0;
+                    foreach (var item in baoCaoTongHopModel.baoCaoTongHopChiTietDataModels)
+                    {
+                        stt++;
+                        int colval = 2;
+                        ws.Cells[row, colval].Value = item.TenDonVi;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SoCTTrongThang;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGTrongThang;
+
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SoCTLuyKe;
+
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGLuyKe;
+
+                        row++;
+                    }
+
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return NotFound();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("getbaocaochitietthang")]
+        public IHttpActionResult GetBaoCaoChiTietThang(BienBanFilter request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+
+                IReportService service = IoC.Resolve<IReportService>();
+                if (request.thang == 0)
+                {
+                    request.thang = DateTime.Now.Month;
+                }
+                if (request.nam == 0)
+                {
+                    request.nam = DateTime.Now.Year;
+                }
+
+
+                var fromDate = new DateTime(request.nam,request.thang,1);
+                var toDate = new DateTime(request.nam, request.thang, DateTime.DaysInMonth(request.nam, request.thang));
+               
+                var list = service.GetBaoCaoChiTiet(fromDate, toDate, request.isHoanTat);
+                BaoCaoTongHopModel baoCaoTongHopModel = new BaoCaoTongHopModel(list);
+
+                result.data = baoCaoTongHopModel;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("exportchitietthang")]
+        public IHttpActionResult ExportChiTietThang(BienBanFilter request)
+        {
+            try
+            {
+                IReportService service = IoC.Resolve<IReportService>();
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/ChiTietThang.xlsx";
+                if (request.thang == 0)
+                {
+                    request.thang = DateTime.Now.Month;
+                }
+                if (request.nam == 0)
+                {
+                    request.nam = DateTime.Now.Year;
+                }
+
+
+                var fromDate = new DateTime(request.nam, request.thang, 1);
+                var toDate = new DateTime(request.nam, request.thang, DateTime.DaysInMonth(request.nam, request.thang));
+
+                var list = service.GetBaoCaoChiTiet(fromDate, toDate, request.isHoanTat);
+                BaoCaoTongHopModel baoCaoTongHopModel = new BaoCaoTongHopModel(list);
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+                //mau file excel
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+                    ws.Cells[2, 1].Value = "BÁO CÁO CÁC CHỈ TIÊU TIẾP CẬN ĐIỆN NĂNG TỪ " + fromDate.Day + "/" + fromDate.Month + "/" + fromDate.Year + " đến " + toDate.Day + "/" + toDate.Month + "/" + toDate.Year;
+
+                    int row = 7;
+                    int colTong = 3;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongSoCTTrongThang;
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGTiepNhanTrongThang;
+
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGKhaoSatTrongThang;
+
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGTTDNTrongThang;
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGNTTrongThang;
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGTrongThang;
+
+                    row++;
+                    int stt = 0;
+                    foreach (var item in baoCaoTongHopModel.baoCaoTongHopChiTietDataModels)
+                    {
+                        stt++;
+                        int colval = 2;
+                        ws.Cells[row, colval].Value = item.TenDonVi;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SoCTTrongThang;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGTiepNhanTrongThang;
+
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGKhaoSatTrongThang;
+
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGTTDNTrongThang;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGNTTrongThang;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGTrongThang;
+
+                        row++;
+                    }
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return NotFound();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("getbaocaochitietluyke")]
+        public IHttpActionResult GetBaoCaoChiTietLuyKe(BienBanFilter request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                IReportService service = IoC.Resolve<IReportService>();
+
+                DateTime totime = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.fromdate))
+                    fromDate = DateTime.ParseExact(request.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.todate))
+                    toDate = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+
+                var list = service.GetBaoCaoChiTietLuyKe(fromDate, toDate, request.isHoanTat);
+                BaoCaoTongHopModel baoCaoTongHopModel = new BaoCaoTongHopModel(list);
+
+                result.data = baoCaoTongHopModel;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("exportchitietluyke")]
+        public IHttpActionResult ExportChiTietLuyKe(BienBanFilter request)
+        {
+            try
+            {
+                IReportService service = IoC.Resolve<IReportService>();
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/ChiTietLuyKe.xlsx";
+                DateTime totime = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                DateTime ngaydaunam = new DateTime(totime.Year, 1, 1);
+
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.fromdate))
+                    fromDate = DateTime.ParseExact(request.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.todate))
+                    toDate = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                var list = service.GetBaoCaoChiTietLuyKe(fromDate, toDate, request.isHoanTat);
+                BaoCaoTongHopModel baoCaoTongHopModel = new BaoCaoTongHopModel(list);
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+                //mau file excel
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+                    ws.Cells[2, 1].Value = "BÁO CÁO CÁC CHỈ TIÊU TIẾP CẬN ĐIỆN NĂNG TỪ " + ngaydaunam.Day + "/" + ngaydaunam.Month + "/" + ngaydaunam.Year + " đến " + totime.Day + "/" + totime.Month + "/" + totime.Year;
+                    ws.Cells[5, 3].Value = "Lũy kế tính đến " + totime.Day + "/" + totime.Month + "/" + totime.Year;
+                    int row = 7;
+                    int colTong = 3;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongSoCTLuyKe;
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGTiepNhanLuyKe;
+
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGKhaoSatLuyKe;
+
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGTTDNLuyKe;
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGNTLuyKe;
+                    colTong++;
+
+                    ws.Cells[row, colTong].Value = baoCaoTongHopModel.TongTGLuyKe;
+
+                    row++;
+                    int stt = 0;
+                    foreach (var item in baoCaoTongHopModel.baoCaoTongHopChiTietDataModels)
+                    {
+                        stt++;
+                        int colval = 2;
+                        ws.Cells[row, colval].Value = item.TenDonVi;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SoCTLuyKe;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGTiepNhanLuyKe;
+
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGKhaoSatLuyKe;
+
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGTTDNLuyKe;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGNTLuyKe;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TGLuyKe;
+
+                        row++;
+                    }
+                    
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return NotFound();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("getbaocaottdn")]
+        public IHttpActionResult GetBaoCaoTTDN(YeuCauFilterRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+                int total = 0;
+                DateTime synctime = DateTime.Today;
+                IReportService service = IoC.Resolve<IReportService>();
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.Filter.fromdate))
+                    fromDate = DateTime.ParseExact(request.Filter.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.Filter.todate))
+                    toDate = DateTime.ParseExact(request.Filter.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+
+                var list = service.GetListBaoCaoTTDN(request.Filter.maDViQLy, request.Filter.keyword, request.Filter.khachhang, request.Filter.status, fromDate, toDate, pageindex, request.Paginator.pageSize, out total);
+
+                result.total = total;
+                result.data = list;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("getbaocaothtcdn")]
+        public IHttpActionResult GetBaoCaoTHTCDN(BienBanFilter request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                IReportService service = IoC.Resolve<IReportService>();
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.fromdate))
+                    fromDate = DateTime.ParseExact(request.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.todate))
+                    toDate = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+
+                var list = service.GetListBaoCaoTHTCDN(request.maDViQly, request.keyword, null, request.status, fromDate, toDate);
+                var listModel = new BaoCaoTHTCDNViewModel(list);
+                result.data = listModel;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("exportbaocaothtcdn")]
+        public IHttpActionResult ExportBaoCaoTHTCDN(BienBanFilter request)
+        {
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                IReportService service = IoC.Resolve<IReportService>();
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.fromdate))
+                    fromDate = DateTime.ParseExact(request.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.todate))
+                    toDate = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+
+                var list = service.GetListBaoCaoTHTCDN(request.maDViQly, request.keyword, null, request.status, fromDate, toDate);
+                var listModel = new BaoCaoTHTCDNViewModel(list);
+
+
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/THTCDN.xlsx";
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+                //mau file excel
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+
+                    int row = 5;
+                    int stt = 0;
+                    foreach (var item in listModel.ListItem)
+                    {
+                        stt++;
+                        int colval = 1;
+                        ws.Cells[row, colval].Value = stt;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TenDV;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTTiepNhanTTDN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTCoTroNgaiTTDN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTDaHoanThanhTTDN;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SoNgayThucHienTBTTDN;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTTiepNhanKTDK;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTCoTroNgaiKTDK;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTDaHoanThanhKTDK;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SoNgayThucHienTBKTDK;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTTiepNhanNT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTCoTroNgaiNT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTDaHoanThanhNT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SoNgayThucHienTBNT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoNgayTB;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+
+
+                        row++;
+                    }
+                    int colvalT = 1;
+                    ws.Cells[row, colvalT].Value = "";
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = "Tổng Công Ty";
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTTiepNhanTTDN;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTCoTroNgaiTTDN;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTDaHoanThanhTTDN;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.SoNgayThucHienTBTTDN;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTTiepNhanKTDK;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTCoTroNgaiKTDK;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTDaHoanThanhKTDK;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.SoNgayThucHienTBKTDK;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTTiepNhanNT;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTCoTroNgaiNT;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTDaHoanThanhNT;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.SoNgayThucHienTBNT;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoNgayTB;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return NotFound();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("exportbaocaothkq")]
+        public IHttpActionResult ExportBaoCaoTHKQ(BienBanFilter request)
+        {
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                IReportService service = IoC.Resolve<IReportService>();
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.fromdate))
+                    fromDate = DateTime.ParseExact(request.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.todate))
+                    toDate = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+
+                var list = service.GetListBaoCaoTHTCDN(request.maDViQly, request.keyword, null, request.status, fromDate, toDate);
+                var listModel = new BaoCaoTHTCDNViewModel(list);
+
+
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/THKQ.xlsx";
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+                //mau file excel
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+
+                    int row = 5;
+                    int stt = 0;
+                    foreach (var item in listModel.ListItem)
+                    {
+                        stt++;
+                        int colval = 1;
+                        ws.Cells[row, colval].Value = stt;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TenDV;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTTiepNhanTTDN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTCoTroNgaiTTDN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTDaHoanThanhTTDN;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTChuaHoanThanhTTDN;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTTiepNhanKTDK;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTCoTroNgaiKTDK;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTDaHoanThanhKTDK;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTChuaHoanThanhKTDK;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTTiepNhanNT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTCoTroNgaiNT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTDaHoanThanhNT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoCTChuaHoanThanhNT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+
+
+
+
+                        row++;
+                    }
+                    int colvalT = 1;
+                    ws.Cells[row, colvalT].Value = "";
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = "Tổng Công Ty";
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTTiepNhanTTDN;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTCoTroNgaiTTDN;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTDaHoanThanhTTDN;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTChuaHoanThanhTTDN;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTTiepNhanKTDK;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTCoTroNgaiKTDK;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTDaHoanThanhKTDK;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTChuaHoanThanhKTDK;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTTiepNhanNT;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTCoTroNgaiNT;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTDaHoanThanhNT;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = listModel.TongSoCTChuaHoanThanhNT;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    colvalT++;
+
+
+
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return NotFound();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("getbaocaothquahan")]
+        public IHttpActionResult GetBaoCaoTHQuaHan(BienBanFilter request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                IReportService service = IoC.Resolve<IReportService>();
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.fromdate))
+                    fromDate = DateTime.ParseExact(request.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.todate))
+                    toDate = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+
+                var list = service.GetListBaoCaoTHTCDN(request.maDViQly, request.keyword, null, request.status, fromDate, toDate);
+                var listModel = new BaoCaoTHTCDNViewModel(list);
+                result.data = listModel;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("exportbaocaothquahan")]
+        public IHttpActionResult ExportTHQuaHan(BienBanFilter request)
+        {
+            try
+            {
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/TongHopQuaHan.xlsx";
+                DateTime synctime = DateTime.Today;
+                IReportService service = IoC.Resolve<IReportService>();
+                var fromDate = DateTime.MinValue;
+                var toDate = DateTime.MaxValue;
+                if (!string.IsNullOrWhiteSpace(request.fromdate))
+                    fromDate = DateTime.ParseExact(request.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(request.todate))
+                    toDate = DateTime.ParseExact(request.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+
+                var list = service.GetListBaoCaoTHQuaHan(request.maDViQly, request.keyword, null, request.status, fromDate, toDate);
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+                //mau file excel
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return NotFound();
+            }
+        }
+
+
+    }
+}

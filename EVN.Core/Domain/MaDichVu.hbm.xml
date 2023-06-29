@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+  <class name="EVN.Core.Domain.MaDichVu, EVN.Core" table="MaDichVu" lazy="true" >
+    <id name="MA_YCAU_KNAI" column="MA_YCAU_KNAI" type="string"/>
+    <property name="MA_DVIQLY" column="MA_DVIQLY" type="string"/>
+    <property name="NOI_DUNG_YCAU" column="NOI_DUNG_YCAU" type="string" />
+    <property name="TEN_KHANG" column="TEN_KHANG" type="string" />
+    <property name="EMAIL" column="EMAIL" type="string" />
+    <property name="DTHOAI" column="DTHOAI" type="string" />
+    <property name="ID_WEB" column="ID_WEB" type="string" />    
+    <property name="TINH_TRANG" column="TINH_TRANG" type="int" />
+  </class>
+</hibernate-mapping>

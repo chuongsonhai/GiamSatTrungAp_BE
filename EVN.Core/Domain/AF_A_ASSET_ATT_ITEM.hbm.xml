@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.AF_A_ASSET_ATT_ITEM, EVN.Core" table="AF_A_ASSET_ATT_ITEM" lazy="true" >
+		<id name="AFFILEID" column="AFFILEID"></id>
+		<property name="CRDTIME" column="CRDTIME" type="DateTime"/>
+		<property name="UPDDTIME" column="UPDDTIME" type="DateTime"/>
+		<property name="MDFDTIME" column="MDFDTIME" type="DateTime"/>
+		<property name="FILENAME" column="FILENAME" type="string"/>
+		<property name="FILESIZEB" column="FILESIZEB" type="Decimal"/>
+		<property name="FILETYPEID" column="FILETYPEID" type="string"/>
+		<property name="ASSETID" column="ASSETID" type="string"/>
+		<property name="SUMDESC" column="SUMDESC" type="string"/>
+		<property name="ATTTYPE" column="ATTTYPE" type="string"/>
+	</class>
+</hibernate-mapping>
+

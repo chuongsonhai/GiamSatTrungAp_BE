@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.AF_A_ASSET_ATT_ITEM_FILE, EVN.Core" table="AF_A_ASSET_ATT_ITEM_FILE" lazy="true" >
+		<id name="AFFILEID" column="AFFILEID"></id>
+		<property name="FILEDATA" column="FILEDATA" type="BinaryBlob"/>
+	</class>
+</hibernate-mapping>
+

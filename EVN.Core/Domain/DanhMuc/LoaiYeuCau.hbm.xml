@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+  <class name="EVN.Core.Domain.LoaiYeuCau, EVN.Core" table="LoaiYeuCau" lazy="true" >
+    <id name="MA_LOAI" column="MA_LOAI" type="string"/>
+    <property name="TEN_LOAI" column="TEN_LOAI" type="string" />
+    <property name="MO_TA" column="MO_TA" type="string" />
+    <property name="SO_NGAY" column="SO_NGAY" type="int" />
+    <property name="MA_TTO" column="MA_TTO" type="string" />
+    <property name="MA_DTUONG" column="MA_DTUONG" type="string" />
+    <property name="STT" column="STT" type="int" />
+    <property name="MA_NHOM_YCAU" column="MA_NHOM_YCAU" type="string" />
+    <property name="TRUNG_AP" column="TRUNG_AP" type="Boolean" />
+  </class>
+</hibernate-mapping>
+

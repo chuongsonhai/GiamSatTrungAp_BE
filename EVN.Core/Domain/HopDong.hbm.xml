@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.HopDong, EVN.Core" table="HD_MuaBanDien" lazy="true" >
+		<id name="ID" column="ID" type="int">
+			<generator class="native">
+				<param name="sequence">HD_MUABANDIEN_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="MaDViQLy" column="MaDViQLy" type="string" />
+		<property name="MaDViTNhan" column="MaDViTNhan" type="string" />
+		<property name="MaYeuCau" column="MaYeuCau" type="string" />
+
+		<property name="NgayHopDong" column="NgayHopDong" type="DateTime" />
+		<property name="DonVi" column="DonVi" type="string" />
+		<property name="MaSoThue" column="MaSoThue" type="string" />
+		<property name="DaiDien" column="DaiDien" type="string" />
+		<property name="ChucVu" column="ChucVu" type="string" />
+		<property name="DiaChi" column="DiaChi" type="string" />
+		<property name="DienThoai" column="DienThoai" type="string" />
+		<property name="Email" column="Email" type="string" />
+
+		<property name="KHMa" column="KHMa" type="string" />
+		<property name="KHTen" column="KHTen" type="string" />
+		<property name="KHDaiDien" column="KHDaiDien" type="string" />
+		<property name="KHDiaChi" column="KHDiaChi" type="string" />
+		<property name="KHMaSoThue" column="KHMaSoThue" type="string" />
+		<property name="KHDienThoai" column="KHDienThoai" type="string" />
+		<property name="KHEmail" column="KHEmail" type="string" />
+
+		<property name="NgayXacNhan" column="NgayXacNhan" type="DateTime"/>
+
+		<property name="TrangThai" column="TrangThai" type="int" />
+		<property name="DienSinhHoat" column="DienSinhHoat" type="bool" />
+		<property name="Data" column="Data" type="string" />
+		<property name="NoiDungXuLy" column="NoiDungXuLy" type="string" />
+	</class>
+</hibernate-mapping>
+

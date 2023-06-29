@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping  xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.TNgaiCongViec, EVN.Core" table="TNGAI_CVIEC" lazy="true" >
+		<id name="ID" column="ID" type="int">
+			<generator class="native">
+				<param name="sequence">TNGAI_CVIEC_seq</param>
+			</generator>
+		</id>
+		<property name="MA_TNGAI" column="MA_TNGAI" type="string" />
+		<property name="MA_CVIEC" column="MA_CVIEC" type="string" />
+		<property name="MA_LOAI_YCAU" column="MA_LOAI_YCAU" type="string" />
+		<property name="NGAY_TAO" column="NGAY_TAO" type="DateTime" />
+		<property name="NGUOI_TAO" column="NGUOI_TAO" type="string" />
+		<property name="MA_CNANG" column="MA_CNANG" type="string" />
+	</class>
+</hibernate-mapping>

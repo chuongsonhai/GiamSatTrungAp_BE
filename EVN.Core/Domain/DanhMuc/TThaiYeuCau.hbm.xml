@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping  xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.TThaiYeuCau, EVN.Core" table="TTHAIYEUCAU" lazy="true" >
+		<id name="MA_TTHAI" column="MA_TTHAI" type="string"/>
+		<property name="TTHAI" column="TTHAI" type="int" />
+		<property name="TEN_TTHAI" column="TEN_TTHAI" type="string" />
+		<property name="CVIEC_TRUOC" column="CVIEC_TRUOC" type="string" />
+		<property name="CVIEC" column="CVIEC" type="string" />
+		<property name="LOAI" column="LOAI" type="int" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.CongTo, EVN.Core" table="NT_CongTo" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">NT_CONGTO_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="BBAN_ID" column="BBAN_ID" type="int"/>
+		<property name="SO_CT" column="SO_CT" type="string"/>
+		<property name="NAMSX_CTO" column="NAMSX_CTO" type="string"/>
+		<property name="MAHIEU_CTO" column="MAHIEU_CTO" type="string"/>
+		<property name="PHA_CTO" column="PHA_CTO" type="string"/>
+		<property name="LOAI_CTO" column="LOAI_CTO" type="string"/>
+
+		<property name="TSO_BIENDONG" column="TSO_BIENDONG" type="string"/>
+		<property name="TSO_BIENAP" column="TSO_BIENAP" type="string"/>
+
+		<property name="NGAY_KDINH" column="NGAY_KDINH" type="string"/>
+		<property name="TDIEN_LTRINH" column="TDIEN_LTRINH" type="string"/>
+
+		<property name="SOLAN_LTRINH" column="SOLAN_LTRINH" type="string"/>
+		<property name="MA_CHIHOP" column="MA_CHIHOP" type="string"/>
+		<property name="SO_VIENHOP" column="SO_VIENHOP" type="string"/>
+
+		<property name="MA_CHITEM" column="MA_CHITEM" type="string"/>
+		<property name="SO_VIENTEM" column="SO_VIENTEM" type="string"/>
+		<property name="SO_BIEUGIA" column="SO_BIEUGIA" type="string"/>
+		<property name="CHIEU_DODEM" column="CHIEU_DODEM" type="string"/>
+		<property name="DO_XA" column="DO_XA" type="string"/>
+		<property name="DONVI_HIENTHI" column="DONVI_HIENTHI" type="string"/>
+		<property name="HSO_MHINH" column="HSO_MHINH" type="string"/>
+		<property name="HSO_HTDODEM" column="HSO_HTDODEM" type="string"/>
+		<property name="CHI_SO" column="CHI_SO" type="string"/>
+
+		<property name="LOAI" column="LOAI" type="int"/>
+	</class>
+</hibernate-mapping>

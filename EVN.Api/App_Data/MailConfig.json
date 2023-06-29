@@ -1,0 +1,7 @@
+﻿{
+  "MAIL_HOST": "10.9.125.5",
+  "MAIL_PORT": "25",
+  "MAIL_ACC": "capdien_trungap@evnhanoi.vn",
+  "MAIL_PASS": "Admin@1234",
+  "MAIL_SSL": "false"
+}

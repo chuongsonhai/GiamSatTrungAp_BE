@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.DataLogging, EVN.Core" table="DataLogging" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">DataLogging_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="MaDViQLy" column="MaDViQLy" type="string" />
+		<property name="MaYeuCau" column="MaYeuCau" type="string" />
+		<property name="NgayUpdate" column="NgayUpdate" type="DateTime" />
+		<property name="UserID" column="UserID" type="string" />
+		<property name="UserName" column="UserName" type="string" />
+		<property name="SourceType" column="SourceType" type="string" />
+		<property name="ActionType" column="ActionType" type="string" />
+		<property name="ComputerIP" column="ComputerIP" type="string" />
+		<property name="DataLoggingCode" column="DataLoggingCode" type="string" />
+		<property name="DataLoggingDetail" column="DataLoggingDetail" type="string" />
+
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.BienBanTT, EVN.Core" table="NT_BBTreoThao" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">NT_BBTREOTHAO_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="MA_DVIQLY" column="MA_DVIQLY" type="string"/>
+		<property name="MA_YCAU_KNAI" column="MA_YCAU_KNAI" type="string"/>
+		<property name="TEN_CTY" column="TEN_CTY" type="string"/>
+		<property name="TEN_DLUC" column="TEN_DLUC" type="string"/>
+		<property name="SO_BB" column="SO_BB" type="string"/>
+		<property name="LY_DO" column="LY_DO" type="string"/>
+		<property name="MA_LDO" column="MA_LDO" type="string"/>
+
+		<property name="MO_TA" column="MO_TA" type="string"/>
+		<property name="TEN_KHACHHANG" column="TEN_KHACHHANG" type="string"/>
+
+		<property name="SDT_KHACHHANG" column="SDT_KHACHHANG" type="string"/>
+		<property name="NGUOI_DDIEN" column="NGUOI_DDIEN" type="string"/>
+
+		<property name="DIA_DIEM" column="DIA_DIEM" type="string"/>
+		<property name="MA_DDO" column="MA_DDO" type="string"/>
+		<property name="MA_TRAM" column="MA_TRAM" type="string"/>
+
+		<property name="MA_GCS" column="MA_GCS" type="string"/>
+		<property name="VTRI_LDAT" column="VTRI_LDAT" type="string"/>
+		<property name="NVIEN_TTHAO" column="NVIEN_TTHAO" type="string"/>
+		<property name="NVIEN_TTHAO2" column="NVIEN_TTHAO2" type="string"/>
+		<property name="NVIEN_TTHAO3" column="NVIEN_TTHAO3" type="string"/>
+		<property name="NVIEN_NPHONG" column="NVIEN_NPHONG" type="string"/>
+		<property name="NGAY_TAO" column="NGAY_TAO" type="DateTime"/>
+		<property name="NGUOI_TAO" column="NGUOI_TAO" type="string"/>
+
+		<property name="SO_COT" column="SO_COT" type="string"/>
+		<property name="SO_HOP" column="SO_HOP" type="string"/>
+		
+		<property name="TRANG_THAI" column="TRANG_THAI" type="int"/>
+		<property name="Data" column="Data" type="string"/>
+		<property name="NoiDungXuLy" column="NoiDungXuLy" type="string" />
+		
+		<property name="KyNVTT" column="KyNVTT" type="Boolean" />
+		<property name="KyNVNP" column="KyNVNP" type="Boolean" />
+
+		<bag name="CongTos" table="NT_CongTo" cascade="none" inverse="true" lazy="true">
+			<key column="BBAN_ID" />
+			<one-to-many class="EVN.Core.Domain.CongTo, EVN.Core" />
+		</bag>
+		<bag name="MayBienDienAps" table="NT_MayBienDienAp" cascade="none" inverse="true" lazy="true">
+			<key column="BBAN_ID" />
+			<one-to-many class="EVN.Core.Domain.MayBienDienAp, EVN.Core" />
+		</bag>
+		<bag name="MayBienDongs" table="NT_MayBienDong" cascade="none" inverse="true" lazy="true">
+			<key column="BBAN_ID" />
+			<one-to-many class="EVN.Core.Domain.MayBienDong, EVN.Core" />
+		</bag>
+	</class>
+</hibernate-mapping>

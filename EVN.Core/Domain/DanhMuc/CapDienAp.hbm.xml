@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.CapDienAp, EVN.Core" table="CapDienAp" lazy="true" >
+		<id name="MA_CAPDA" column="MA_CAPDA" type="string"></id>
+		<property name="TEN_CAPDA" column="TEN_CAPDA" type="string" />
+		<property name="TENTAT_CAPDA" column="TENTAT_CAPDA" type="string" />
+		<property name="MO_TA" column="MO_TA" type="string" />		
+		<property name="STT_HTHI" column="STT_HTHI" type="int" />
+		<property name="TRANG_THAI" column="TRANG_THAI" type="int"/>
+	</class>
+</hibernate-mapping>
+

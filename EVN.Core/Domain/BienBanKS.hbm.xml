@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.BienBanKS, EVN.Core" table="KS_BienBanKS" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">KS_BIENBANKS_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="MaDViTNhan" column="MaDViTNhan" type="string"/>
+
+		<property name="MaDViQLy">
+			<column name="MaDViQLy" sql-type="nvarchar" not-null="false" />
+		</property>
+
+		<property name="MaYeuCau">
+			<column name="MaYeuCau" sql-type="string" not-null="false" />
+		</property>
+		<property name="SoCongVan">
+			<column name="SoCongVan" sql-type="string" not-null="false" />
+		</property>
+		<property name="NgayCongVan">
+			<column name="NgayCongVan" sql-type="datetime" not-null="false" />
+		</property>
+		<property name="MaKH">
+			<column name="MaKH" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="SoBienBan">
+			<column name="SoBienBan" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="TenCongTrinh">
+			<column name="TenCongTrinh" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="DiaDiemXayDung">
+			<column name="DiaDiemXayDung" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="KHTen">
+			<column name="KHTen" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="KHDaiDien">
+			<column name="KHDaiDien" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="KHChucDanh">
+			<column name="KHChucDanh" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="EVNDonVi">
+			<column name="EVNDonVi" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="EVNDaiDien">
+			<column name="EVNDaiDien" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="EVNChucDanh">
+			<column name="EVNChucDanh" sql-type="nvarchar" not-null="false" />
+		</property>
+
+		<property name="NgayDuocGiao">
+			<column name="NgayDuocGiao" sql-type="datetime" not-null="false" />
+		</property>
+
+		<property name="MaTroNgai">
+			<column name="MaTroNgai" sql-type="nvarchar" not-null="false" />
+		</property>
+		
+		<property name="NgayKhaoSat">
+			<column name="NgayKhaoSat" sql-type="datetime" not-null="true" />
+		</property>
+		<property name="CapDienAp">
+			<column name="CapDienAp" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="TenLoDuongDay">
+			<column name="TenLoDuongDay" sql-type="nvarchar" not-null="false" />
+		</property>
+
+		<property name="DiemDauDuKien" column="DiemDauDuKien" type="StringClob"/>
+		<property name="DayDan" column="DayDan" type="string"/>
+		<property name="SoTramBienAp" column="SoTramBienAp" type="int"/>
+		<property name="SoMayBienAp" column="SoMayBienAp" type="int"/>
+		<property name="TongCongSuat" column="TongCongSuat" type="Decimal"/>
+		<property name="ThoaThuanKyThuat" column="ThoaThuanKyThuat" type="StringClob"/>
+
+		<property name="NgayLap">
+			<column name="NgayLap" sql-type="datetime" not-null="false" />
+		</property>
+		<property name="NguoiLap">
+			<column name="NguoiLap" sql-type="nvarchar" not-null="false" />
+		</property>
+		<property name="TrangThai">
+			<column name="TrangThai" sql-type="int" not-null="false" />
+		</property>
+		<property name="Data">
+			<column name="Data" sql-type="string" not-null="false" />
+		</property>
+		<property name="MaCViec" column="MaCViec" type="string"/>
+		<property name="ThuanLoi" column="ThuanLoi" type="Boolean"/>
+		<property name="TroNgai" column="TroNgai" type="string"/>
+		
+		<bag name="ThanhPhans" table="TTDN_ThanhPhanKS" cascade="none" inverse="true" lazy="true">
+			<key column="BienBanID" />
+			<one-to-many class="EVN.Core.Domain.ThanhPhanKS, EVN.Core" />
+		</bag>
+	</class>
+</hibernate-mapping>
+

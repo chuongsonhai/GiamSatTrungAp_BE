@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.TroNgai, EVN.Core" table="TroNgai" lazy="true" >
+		<id name="MA_TNGAI" column="MA_TNGAI" type="string"></id>
+		<property name="TEN_TNGAI" column="TEN_TNGAI" type="string" />
+		<property name="LOAI" column="LOAI" type="int" />
+		<property name="DTUONG" column="DTUONG" type="string" />
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.Organization, EVN.Core" table="Organization" lazy="true" >
+		<id name="orgId" column="orgId" type="long"/>
+		<property name="orgCode" column="orgCode" type="string"/>
+		<property name="compCode" column="compCode" type="string"/>
+		<property name="parentCode" column="parentCode" type="string" />
+		<property name="orgName" column="orgName" type="string" />
+		<property name="address" column="address" type="string" />
+		<property name="idDiaChinh" column="idDiaChinh" type="int" />
+		<property name="capDvi" column="capDvi" type="int" />
+		<property name="updatetime" column="updatetime" type="DateTime" />
+
+		<property name="phone" column="phone" type="string" />
+		<property name="fax" column="fax" type="string" />
+		<property name="email" column="email" type="string" />
+		<property name="daiDien" column="daiDien" type="string" />
+		<property name="chucVu" column="chucVu" type="string" />
+		<property name="taxCode" column="taxCode" type="string" />
+		<property name="soTaiKhoan" column="soTaiKhoan" type="string" />
+		<property name="nganHang" column="nganHang" type="string" />
+		<property name="type" column="type" type="int" />
+	</class>
+</hibernate-mapping>

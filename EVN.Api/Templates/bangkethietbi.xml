@@ -1,0 +1,25 @@
+﻿<ThietBi>
+  <Ten><![CDATA[{0}]]></Ten>
+  <KHTen><![CDATA[{0}]]></KHTen>
+  <DiaChiDungDien><![CDATA[{0}]]></DiaChiDungDien>
+  <TongCongSuat><![CDATA[{0}]]></TongCongSuat>
+  <TrangThai><![CDATA[{0}]]></TrangThai>
+  <NgayLap><![CDATA[{0}]]></NgayLap>
+  <NguoiLap><![CDATA[{0}]]></NguoiLap>
+  <NgayKy><![CDATA[{0}]]></NgayKy>
+  <NguoiKy><![CDATA[{0}]]></NguoiKy>
+  <ThietBiChiTiets>
+    <ThietBiChiTiet>
+      <STT><![CDATA[{0}]]></STT>
+      <Ten><![CDATA[{0}]]></Ten>
+      <CongSuat><![CDATA[{0}]]></CongSuat>
+      <SoLuong><![CDATA[{0}]]></SoLuong>
+      <HeSoDongThoi><![CDATA[{0}]]></HeSoDongThoi>
+      <SoGio><![CDATA[{0}]]></SoGio>
+      <SoNgay><![CDATA[{0}]]></SoNgay>
+      <TongCongSuat><![CDATA[{0}]]></TongCongSuat>
+      <DienNangSuDung><![CDATA[{0}]]></DienNangSuDung>
+      <GhiChu><![CDATA[{0}]]></GhiChu>
+    </ThietBiChiTiet>
+  </ThietBiChiTiets>
+</ThietBi>
