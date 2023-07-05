@@ -74,7 +74,7 @@
       <HintPath>..\Lib\NReco.PdfGenerator.dll</HintPath>
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess">
-      <HintPath>..\..\..\Oracle.ManagedDataAccess.dll</HintPath>
+      <HintPath>..\Lib\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.dll</HintPath>
@@ -132,6 +132,7 @@
     <Compile Include="Domain\BienBanKT.cs" />
     <Compile Include="Domain\BienBanDN.cs" />
     <Compile Include="Domain\BienBanKS.cs" />
+    <Compile Include="Domain\DanhMucLoaiCanhBao.cs" />
     <Compile Include="Domain\BienBanNT.cs" />
     <Compile Include="Domain\BienBanTT.cs" />
     <Compile Include="Domain\ChamDutHopDong.cs" />
@@ -195,6 +196,7 @@
     <Compile Include="Domain\ThoaThuanDamBao.cs" />
     <Compile Include="Domain\TramBienAp.cs" />
     <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Implements\LoaiCanhBaoService.cs" />
     <Compile Include="Implements\BienBanDNService.cs" />
     <Compile Include="Implements\BienBanKSService.cs" />
     <Compile Include="Implements\BienBanKTService.cs" />
@@ -213,6 +215,7 @@
     <Compile Include="Implements\ReportService.cs" />
     <Compile Include="Implements\ThongBaoService.cs" />
     <Compile Include="Implements\TThaiYeuCauService.cs" />
+    <Compile Include="IServices\ILoaiCanhBaoService.cs" />
     <Compile Include="IServices\IDataLoggingService.cs" />
     <Compile Include="IServices\ICapDienApService.cs" />
     <Compile Include="IServices\IChamDutHopDongService.cs" />
@@ -514,7 +517,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Domain\AF_A_ASSET_ATT_ITEM_FILE.hbm.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\DanhMucLoaiCanhBao.hbm.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Domain\MailCanhBaoTCT.hbm.xml" />
   </ItemGroup>

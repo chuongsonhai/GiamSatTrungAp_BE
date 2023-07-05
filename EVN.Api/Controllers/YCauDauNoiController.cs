@@ -21,7 +21,7 @@ namespace EVN.Api.Controllers
     {
         private ILog log = LogManager.GetLogger(typeof(YCauDauNoiController));
 
-        [JwtAuthentication]
+        //[JwtAuthentication]
         [HttpPost]
         [Route("filter")]
         public IHttpActionResult Filter(YeuCauFilterRequest request)

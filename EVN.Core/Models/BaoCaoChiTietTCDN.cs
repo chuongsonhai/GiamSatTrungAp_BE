@@ -24,6 +24,5 @@ namespace EVN.Core.Models
         public virtual double TongSoNgayTCDN { get; set; }
         public virtual string HangMucQuaHan { get; set; }
         public virtual double SoNgayQuaHan { get; set; }
-
     }
 }

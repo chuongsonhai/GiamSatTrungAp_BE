@@ -1,12 +1,7 @@
-﻿using EVN.Core.CMIS;
-using FX.Core;
+﻿using FX.Core;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EVN.Core.CMIS
 {

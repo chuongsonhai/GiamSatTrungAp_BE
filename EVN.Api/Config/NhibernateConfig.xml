@@ -6,8 +6,8 @@
 		<property name="show_sql">true</property>
 		<property name="adonet.batch_size">100</property>
 		<property name="connection.connection_string">
-			User Id=UNGDUNG_TRUNGAP;Password=xC5trtxp6V6mB3C5L8ru;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));
-		</property>
+      User Id=UNGDUNG_TRUNGAP;Password=Evnhanoi@123;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.195.245)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));
+    </property>
 		<mapping assembly="EVN.Core"/>
 	</session-factory>
 

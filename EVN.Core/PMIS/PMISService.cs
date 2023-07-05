@@ -5,7 +5,6 @@ using FX.Core;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
