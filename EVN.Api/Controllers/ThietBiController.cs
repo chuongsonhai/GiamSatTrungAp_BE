@@ -14,6 +14,7 @@ namespace EVN.Api.Controllers
     public class ThietBiController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(ThietBiController));
+        //khanh kiem thu GIT
         [JwtAuthentication]
         [HttpPost]
         [Route("filter")]
