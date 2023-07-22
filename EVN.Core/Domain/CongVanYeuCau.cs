@@ -68,6 +68,7 @@ namespace EVN.Core.Domain
         public virtual string LyDoHuy { get; set; }
         public virtual string TenKhachHangUQ { get; set; }
         public virtual string SoDienThoaiKHUQ { get; set; }
+        public virtual int LoaiCanhBao { get; set; }
 
         public virtual string GetPdf(bool replace = false)
         {

@@ -1911,5 +1911,381 @@ namespace EVN.Core.Implements
             var list = new List<BaoCaoTHQuaHan>();
             return list;
         }
+
+        public IList<BaoCaoTTDN> GetListTiepNhan(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate, int pageindex, int pagesize, out int total)
+        {
+            IBienBanKSService bienBanKSService = IoC.Resolve<IBienBanKSService>();
+            IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
+            IKetQuaKSService ketQuaKSService = IoC.Resolve<IKetQuaKSService>();
+            ITroNgaiService troNgaiService = IoC.Resolve<ITroNgaiService>();
+            var query = Query.Where(p => p.TrangThai > TrangThaiCongVan.MoiTao);
+            if (fromdate != DateTime.MinValue)
+                query = query.Where(p => p.NgayYeuCau >= fromdate && p.NgayYeuCau < todate.AddDays(1));
+            if (todate != DateTime.MaxValue)
+                query = query.Where(p => p.NgayYeuCau < todate.AddDays(1));
+            if (!string.IsNullOrWhiteSpace(maDViQLy))
+                query = query.Where(p => p.MaDViQLy == maDViQLy);
+            if (status > -1)
+                query = query.Where(p => p.TrangThai == (TrangThaiCongVan)status);
+            if (!string.IsNullOrWhiteSpace(khachhang))
+                query = query.Where(p => p.CoQuanChuQuan.Contains(khachhang) || p.NguoiYeuCau.Contains(khachhang) || p.MaKHang.Contains(khachhang));
+            if (!string.IsNullOrWhiteSpace(keyword))
+                query = query.Where(p => p.MaYeuCau.Contains(keyword) || p.DuAnDien.Contains(keyword));
+
+            query = query.OrderByDescending(p => p.MaYeuCau);
+            var ret = new List<CongVanYeuCau>();
+            var result = new List<BaoCaoTTDN>();
+            ret = query.ToList();
+
+            foreach (var item in ret)
+            {
+                var detail = new BaoCaoTTDN();
+                detail.MaDViQLy = item.MaDViQLy;
+                detail.TenKH = item.TenKhachHang;
+                detail.TenCT = item.DuAnDien;
+                detail.DCCT = item.DiaChiDungDien;
+                detail.MaYC = item.MaYeuCau;
+
+                var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();
+                if (ttrinhs.Count() == 0) continue;
+                var trongais = ttrinhs.Where(p => !string.IsNullOrWhiteSpace(p.MA_TNGAI)).ToList();
+
+                var ttrinhtnhs = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TN");
+                if (ttrinhtnhs == null || !ttrinhtnhs.NGAY_KTHUC.HasValue) continue;
+
+                var ttrinhks = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
+                var ttrinhch5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
+
+                int songayTN = CommonUtils.TotalDate(ttrinhtnhs.NGAY_BDAU.Date, ttrinhtnhs.NGAY_KTHUC.Value.Date);
+                detail.ThoiGianTNHS = songayTN;
+                detail.SoNgayTNHS = songayTN;
+                detail.TongSoNgayTTDN += songayTN;
+
+                result.Add(detail);
+            }
+            if (pagesize > 0)
+            {
+                int maxtemp = pageindex <= 1 ? 4 - pageindex : 2;//load tối đa 2 trang tiếp theo, nếu page =1 hoặc 2 thì sẽ load 4 trang hoặc 3 trang
+                result = result.Skip(pageindex * pagesize).Take(pagesize * maxtemp + 1).ToList();
+                total = pageindex * pagesize + result.Count;
+                return result.Take(pagesize).ToList();
+            }
+            else
+            {
+                total = result.Count();
+                return result;
+            }
+        }
+        public IList<BaoCaoTTDN> GetListKhaoSat(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate, int pageindex, int pagesize, out int total)
+        {
+            IBienBanKSService bienBanKSService = IoC.Resolve<IBienBanKSService>();
+            IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
+            IKetQuaKSService ketQuaKSService = IoC.Resolve<IKetQuaKSService>();
+            ITroNgaiService troNgaiService = IoC.Resolve<ITroNgaiService>();
+            var query = Query.Where(p => p.TrangThai > TrangThaiCongVan.MoiTao);
+            if (fromdate != DateTime.MinValue)
+                query = query.Where(p => p.NgayYeuCau >= fromdate && p.NgayYeuCau < todate.AddDays(1));
+            if (todate != DateTime.MaxValue)
+                query = query.Where(p => p.NgayYeuCau < todate.AddDays(1));
+            if (!string.IsNullOrWhiteSpace(maDViQLy))
+                query = query.Where(p => p.MaDViQLy == maDViQLy);
+            if (status > -1)
+                query = query.Where(p => p.TrangThai == (TrangThaiCongVan)status);
+            if (!string.IsNullOrWhiteSpace(khachhang))
+                query = query.Where(p => p.CoQuanChuQuan.Contains(khachhang) || p.NguoiYeuCau.Contains(khachhang) || p.MaKHang.Contains(khachhang));
+            if (!string.IsNullOrWhiteSpace(keyword))
+                query = query.Where(p => p.MaYeuCau.Contains(keyword) || p.DuAnDien.Contains(keyword));
+
+            query = query.OrderByDescending(p => p.MaYeuCau);
+            var ret = new List<CongVanYeuCau>();
+            var result = new List<BaoCaoTTDN>();
+            ret = query.ToList();
+
+            foreach (var item in ret)
+            {
+                var detail = new BaoCaoTTDN();
+                detail.MaDViQLy = item.MaDViQLy;
+                detail.TenKH = item.TenKhachHang;
+                detail.TenCT = item.DuAnDien;
+                detail.DCCT = item.DiaChiDungDien;
+                detail.MaYC = item.MaYeuCau;
+
+                var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();
+                if (ttrinhs.Count() == 0) continue;
+                var trongais = ttrinhs.Where(p => !string.IsNullOrWhiteSpace(p.MA_TNGAI)).ToList();
+
+                var ttrinhtnhs = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TN");
+                if (ttrinhtnhs == null || !ttrinhtnhs.NGAY_KTHUC.HasValue) continue;
+
+                var ttrinhks = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
+                var ttrinhch5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
+
+
+
+
+                if (ttrinhks != null && ttrinhks.NGAY_KTHUC.HasValue)
+                {
+                    if (ttrinhch5 != null && ttrinhch5.NGAY_KTHUC.HasValue)
+                    {
+                        int songayKS = CommonUtils.TotalDate(ttrinhks.NGAY_BDAU.Date, ttrinhch5.NGAY_BDAU.Date);
+                        detail.SoNgayThucHienKS = songayKS;
+                        if (ttrinhks.NGAY_BDAU.Date == ttrinhtnhs.NGAY_KTHUC.Value.Date)
+                            songayKS -= 1;
+                        detail.TongSoNgayTTDN += songayKS;
+                    }
+                }
+                result.Add(detail);
+            }
+            if (pagesize > 0)
+            {
+                int maxtemp = pageindex <= 1 ? 4 - pageindex : 2;//load tối đa 2 trang tiếp theo, nếu page =1 hoặc 2 thì sẽ load 4 trang hoặc 3 trang
+                result = result.Skip(pageindex * pagesize).Take(pagesize * maxtemp + 1).ToList();
+                total = pageindex * pagesize + result.Count;
+                return result.Take(pagesize).ToList();
+            }
+            else
+            {
+                total = result.Count();
+                return result;
+            }
+        }
+
+        public IList<CongVanYeuCau> TinhThoiGian()
+        {
+            IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
+            IYCauNghiemThuService yCauNghiemThuService = IoC.Resolve<IYCauNghiemThuService>();
+            var response = new List<CongVanYeuCau>();
+
+
+            var query = Query.Where(p => p.TrangThai == TrangThaiCongVan.MoiTao).ToList();
+            foreach (var item in query)
+            {
+                var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();
+                var ttrinhTN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TN");
+                var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
+                var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
+                var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
+                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                if (ttrinhBDN == null)
+                {
+                    ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
+                }
+                var ttrinhDDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "DDN");
+                var ttrinhTVB = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TVB");
+                var ttrinhKTR = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KTR");
+                var ttrinhMNT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "MNT");
+                var ttrinhPC = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PC");
+                var ttrinhTC = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TC");
+                var ttrinhBTT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BTT");
+                var ttrinhDHD = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "DHD");
+                var ttrinhNT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "HT");
+
+                // tiếp nhận yêu cầu quá 2h
+                TimeSpan ts = DateTime.Now - item.NgayLap;
+                if (ts.TotalHours >= 2)
+                {
+                    item.LoaiCanhBao = 1;
+                    response.Add(item);
+                }
+                // lập thỏa thuận đấu nối quá 48h
+                TimeSpan tsthoathuanDN = new TimeSpan();
+                if (ttrinhBDN == null)
+                {
+                    if (ttrinhKS != null)
+                    {
+                        tsthoathuanDN = DateTime.Now - ttrinhKS.NGAY_BDAU;
+                    }
+                    
+                }
+                else
+                {
+                    if (ttrinhKS != null && ttrinhBDN.NGAY_KTHUC.HasValue)
+                    {
+                        tsthoathuanDN = ttrinhBDN.NGAY_KTHUC.Value - ttrinhKS.NGAY_BDAU;
+                    }
+                }
+                if (tsthoathuanDN.TotalHours > 48)
+                {
+                    item.LoaiCanhBao = 2;
+                    response.Add(item);
+                }
+
+                // lập thỏa thuận đấu nối quá 48h
+                var itemNT = yCauNghiemThuService.GetbyMaYCau(item.MaYeuCau);
+                if (itemNT != null)
+                {
+                    TimeSpan tsNT = DateTime.Now - itemNT.NgayLap;
+                    if (tsNT.TotalHours >= 2)
+                    {
+                        item.LoaiCanhBao = 3;
+                        response.Add(item);
+                    }
+
+
+                    //dự thảo và ký hợp đồng
+                    TimeSpan tsKyHopDong = new TimeSpan();
+                    if (ttrinhDHD == null)
+                    {
+                        if (ttrinhPC != null)
+                        {
+                            tsKyHopDong = DateTime.Now - ttrinhPC.NGAY_BDAU;
+                        }
+
+                    }
+                    else
+                    {
+                        if (ttrinhPC != null && ttrinhDHD.NGAY_KTHUC.HasValue)
+                        {
+                            tsKyHopDong = ttrinhDHD.NGAY_KTHUC.Value - ttrinhPC.NGAY_BDAU;
+                        }
+
+                    }
+                    if (tsKyHopDong.TotalHours > 48)
+                    {
+                        item.LoaiCanhBao = 4;
+                        response.Add(item);
+                    }
+                    //thời gian kiểm tra và nghiệm thu
+
+                    TimeSpan tsKyNghiemThu = new TimeSpan();
+                    if (ttrinhNT == null)
+                    {
+                        if (ttrinhTVB != null)
+                        {
+                            tsKyNghiemThu = DateTime.Now - ttrinhTVB.NGAY_BDAU;
+                        }
+
+                    }
+                    else
+                    {
+                        if (ttrinhTVB != null && ttrinhNT.NGAY_KTHUC.HasValue)
+                        {
+                            tsKyNghiemThu = ttrinhNT.NGAY_KTHUC.Value - ttrinhTVB.NGAY_BDAU;
+                        }
+
+                    }
+                    if (tsKyNghiemThu.TotalHours > 48)
+                    {
+                        item.LoaiCanhBao = 5;
+                        response.Add(item);
+                    }
+
+                    //thời gian giám sát kiểm tra và nghiệm thu
+
+                    TimeSpan tsGSNghiemThu = new TimeSpan();
+                    if (ttrinhNT == null)
+                    {
+                        tsGSNghiemThu = DateTime.Now - itemNT.NgayLap;
+                    }
+                    else
+                    {
+                        if (ttrinhNT.NGAY_KTHUC.HasValue)
+                        {
+                            tsGSNghiemThu = ttrinhNT.NGAY_KTHUC.Value - itemNT.NgayLap;
+                        }
+                        
+                    }
+                    if (tsKyNghiemThu.TotalHours > 48)
+                    {
+                        item.LoaiCanhBao = 6;
+                        response.Add(item);
+                    }
+                }
+                //thời gian cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối
+
+                TimeSpan tsCanhBaoHetHanTTDN = new TimeSpan();
+                if (ttrinhDDN != null && ttrinhDDN.NGAY_KTHUC.HasValue)
+                {
+                    tsCanhBaoHetHanTTDN = DateTime.Now - ttrinhDDN.NGAY_KTHUC.Value;
+                }
+
+                if (tsCanhBaoHetHanTTDN.TotalDays > 730)
+                {
+                    item.LoaiCanhBao = 7;
+                    response.Add(item);
+                }
+                // Thời gian thực hiện cấp điện mới trung áp
+
+                var TongSoNgayTCDN = 0;
+                if (ttrinhTN != null && ttrinhTN.NGAY_KTHUC.HasValue)
+                {
+                    int songayTN = CommonUtils.TotalDate(ttrinhTN.NGAY_BDAU.Date, ttrinhTN.NGAY_KTHUC.Value.Date);
+
+
+                    TongSoNgayTCDN += songayTN;
+
+                    log.Error($"songayTN: {songayTN}");
+                    //Thời gian khảo sát
+                    if (ttrinhKS != null && ttrinhKS.NGAY_KTHUC.HasValue)
+                    {
+                        if (ttrinhCH5 != null && ttrinhCH5.NGAY_KTHUC.HasValue)
+                        {
+                            int songayKS = CommonUtils.TotalDate(ttrinhKS.NGAY_BDAU.Date, ttrinhCH5.NGAY_BDAU.Date);
+
+                            if (ttrinhKS.NGAY_BDAU.Date == ttrinhTN.NGAY_KTHUC.Value.Date)
+                                songayKS -= 1;
+
+
+                            TongSoNgayTCDN += songayKS;
+                        }
+                    }
+
+                    if (ttrinhDDN != null && ttrinhDDN.NGAY_KTHUC.HasValue)
+                    {
+                        int songayTTDN = CommonUtils.TotalDate(ttrinhDDN.NGAY_BDAU.Date, ttrinhDDN.NGAY_KTHUC.Value.Date);
+                        if (ttrinhCH5 != null && ttrinhDDN.NGAY_BDAU.Date == ttrinhCH5.NGAY_KTHUC.Value.Date)
+                            songayTTDN -= 1;
+
+                        TongSoNgayTCDN += songayTTDN;
+                    }
+
+                    if (itemNT != null)
+                    {
+                        //Thời gian khách hàng thi công
+                        if (ttrinhPC != null && ttrinhPC.NGAY_KTHUC.HasValue)
+                        {
+                            if (ttrinhBTT != null && ttrinhBTT.NGAY_KTHUC.HasValue)
+                            {
+                                int songayPC = CommonUtils.TotalDate(ttrinhPC.NGAY_BDAU.Date, ttrinhBTT.NGAY_BDAU.Date);
+
+                                TongSoNgayTCDN += songayPC;
+                                log.Error($"songayPC: {songayPC}");
+                            }
+                        }
+
+                        //Thời gian ký hợp đồng, nghiệm thu
+                        if (ttrinhDHD != null && ttrinhDHD.NGAY_KTHUC.HasValue)
+                        {
+                            if (ttrinhNT != null && ttrinhNT.NGAY_KTHUC.HasValue)
+                            {
+                                DateTime fromTime = ttrinhDHD.NGAY_BDAU.Date;
+                                if (ttrinhBTT != null && fromTime < ttrinhBTT.NGAY_KTHUC.Value.Date)
+                                    fromTime = ttrinhBTT.NGAY_KTHUC.Value.Date;
+                                int songayNT = CommonUtils.TotalDate(fromTime, ttrinhNT.NGAY_BDAU.Date);
+                                if (ttrinhBTT != null && fromTime == ttrinhBTT.NGAY_KTHUC.Value.Date)
+                                    songayNT -= 1;
+
+                                TongSoNgayTCDN += songayNT;
+                                log.Error($"songayNT: {songayNT}");
+                            }
+                        }
+
+                    }
+                    if (TongSoNgayTCDN > 4)
+                    {
+                        item.LoaiCanhBao = 8;
+                        response.Add(item);
+                    }
+                }
+                
+
+
+            }
+            return response;
+        }
     }
+
+
+
+
 }
