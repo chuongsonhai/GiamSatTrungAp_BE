@@ -8,9 +8,10 @@ namespace EVN.Core.Domain
 {
     public class DanhMucLoaiCanhBao
     {
-        public virtual int Id { get; set; }
-        public virtual string TenLoaiCanhBao { get; set; }
-        public virtual int ChuKyGui { get; set; }
-        public virtual int PhanLoai { get; set; }
+        public virtual int ID { get; set; }
+        public virtual string TENLOAICANHBAO { get; set; }
+        public virtual int CHUKYCANHBAO { get; set; }
+        public virtual string THOIGIANCHAYCUOI { get; set; }
+        public virtual int TRANGTHAI { get; set; }
     }
 }

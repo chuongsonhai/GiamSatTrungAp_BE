@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.CanhBao, EVN.Core" table="GSCD_CANH_BAO" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">CANH_BAO_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="LOAI_CANHBAO_ID" column="LOAI_CANHBAO_ID" type="int"/>
+		<!--<property name="TRANGTHAI_GUI" column="TRANGTHAI_GUI" type="int"/>-->
+		<property name="THOIGIANGUI" column="THOIGIANGUI" type="DateTime"/>
+		<property name="NOIDUNG" column="NOIDUNG" type="string"/>
+		<property name="LOAI_SOLANGUI" column="LOAI_SOLANGUI" type="int"/>
+		<property name="MA_YC" column="MA_YC" type="string"/>
+		<property name="TRANGTHAI_CANHBAO" column="TRANGTHAI_CANHBAO" type="int"/>
+		<property name="DONVI_DIENLUC" column="DONVI_DIENLUC" type="string"/>
+
+	</class>
+</hibernate-mapping>
+

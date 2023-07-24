@@ -18,6 +18,8 @@ namespace EVN.Core.Implements
         public CongVanYeuCauService(string sessionFactoryConfigPath, string connectionString = null) : base(sessionFactoryConfigPath, connectionString)
         {
         }
+
+
         public IList<CongVanYeuCau> GetbyFilter(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate, int pageindex, int pagesize, out int total)
         {
             var query = Query;

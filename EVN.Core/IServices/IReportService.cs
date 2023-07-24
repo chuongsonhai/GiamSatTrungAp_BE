@@ -17,6 +17,7 @@ namespace EVN.Core.IServices
         IList<BaoCaoTTDN> GetListBaoCaoTTDN(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate, int pageindex, int pagesize, out int total);
         IList<BaoCaoYCNT> GetListBaoCaoNT(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate, int pageindex, int pagesize, out int total);
         IList<BaoCaoChiTietTCDN> GetListBaoCaoChiTietTCDN(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate, int pageindex, int pagesize, out int total);
+        IList<ThoiGianCapDienModel> GetThoigiancapdien(string maDViQLy, DateTime fromdate, DateTime todate);
         IList<BaoCaoTHTCDN> GetListBaoCaoTHTCDN(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate);
         IList<BaoCaoChiTietTCDN> GetListBaoCaoChiTietQuaHan(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate, int pageindex, int pagesize, out int total);
         IList<BaoCaoTHQuaHan> GetListBaoCaoTHQuaHan(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate);

@@ -24,54 +24,6 @@ namespace EVN.Api.Controllers
     public class BaoCaoThongKeController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(BaoCaoThongKeController));
-        // GET: BaoCaoThongKe
-        [JwtAuthentication]
-        [HttpPost]
-        [Route("filter")]
-        public IHttpActionResult Filter(YeuCauFilterRequest request)
-        {
-            ResponseResult result = new ResponseResult();
-            try
-            {
-                int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
-                int total = 0;
-                DateTime synctime = DateTime.Today;
-                ICongVanYeuCauService service = IoC.Resolve<ICongVanYeuCauService>();
-                IBienBanKSService bienBanKSService = IoC.Resolve<IBienBanKSService>();
-                var fromDate = DateTime.MinValue;
-                var toDate = DateTime.MaxValue;
-                if (!string.IsNullOrWhiteSpace(request.Filter.fromdate))
-                    fromDate = DateTime.ParseExact(request.Filter.fromdate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
-                if (!string.IsNullOrWhiteSpace(request.Filter.todate))
-                    toDate = DateTime.ParseExact(request.Filter.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
-
-                var list = service.GetThongKe(request.Filter.maDViQLy, request.Filter.keyword, fromDate, toDate, pageindex, request.Paginator.pageSize, out total);
-                var listModel = new List<YeuCauDataRequest>();
-                foreach (var item in list)
-                {
-                    var model = new YeuCauDataRequest(item);
-                    model.MaHinhThuc = "WEB EVNHANOI";
-                    var bbks = bienBanKSService.GetbyYeuCau(item.MaYeuCau);
-                    if(bbks != null)
-                    {
-                        model.CongSuat = bbks.TongCongSuat.ToString();
-                    }
-                    listModel.Add(model);
-                }
-                result.total = total;
-                result.data = listModel;
-                result.success = true;
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-                result.data = new List<YeuCauDataRequest>();
-                result.success = false;
-                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
-                return Ok(result);
-            }
-        }
 
         [JwtAuthentication]
         [HttpPost]

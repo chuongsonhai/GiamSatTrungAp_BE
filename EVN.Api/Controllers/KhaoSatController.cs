@@ -16,15 +16,15 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    [RoutePrefix("api/dmucLoaiCanhBao")]
-    public class DanhMucLoaiCanhBaoController : ApiController
+    [RoutePrefix("api/khaosat")]
+    public class KhaoSatController : ApiController
     {
-        private ILog log = LogManager.GetLogger(typeof(DanhMucLoaiCanhBaoController));
+        private ILog log = LogManager.GetLogger(typeof(KhaoSatController));
 
         //[JwtAuthentication]
         [HttpPost]
         [Route("filter")]
-        public IHttpActionResult Filter(LoaiCanhBaoFilterRequest request)
+        public IHttpActionResult Filter(KhaoSatFilterRequest request)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -32,12 +32,12 @@ namespace EVN.Api.Controllers
                 int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
                 int total = 0;
                 DateTime synctime = DateTime.Today;
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var list = service.GetbyFilter(request.Filter.TenLoaiCanhbao, request.Filter.maLoaiCanhBao, pageindex, request.Paginator.pageSize, out total);
-                var listModel = new List<LoaiCanhBaoDataRequest>();
+                IKhaoSatService service = IoC.Resolve<IKhaoSatService>();
+                var list = service.GetbyFilter(request.Filter.CANHBAO_ID, pageindex, request.Paginator.pageSize, out total);
+                var listModel = new List<KhaoSatRequest>();
                 foreach (var item in list)
                 {
-                    var model = new LoaiCanhBaoDataRequest(item);
+                    var model = new KhaoSatRequest(item);
                     listModel.Add(model);
                 }
                 result.total = total;
@@ -48,7 +48,7 @@ namespace EVN.Api.Controllers
             catch (Exception ex)
             {
                 log.Error(ex);
-                result.data = new List<LoaiCanhBaoDataRequest>();
+                result.data = new List<KhaoSatRequest>();
                 result.success = false;
                 result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
                 return Ok(result);
@@ -58,19 +58,23 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("add")]
-        public IHttpActionResult Post([FromBody] LoaiCanhBaoDataRequest model)
+        public IHttpActionResult Post([FromBody] KhaoSatRequest model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
             {
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
+                IKhaoSatService service = IoC.Resolve<IKhaoSatService>();
 
-                var item = new DanhMucLoaiCanhBao();
-                item.TENLOAICANHBAO = model.TENLOAICANHBAO;
-               // item.ID = model.MALOAICANHBAO;
-                item.CHUKYCANHBAO = model.CHUKYCANHBAO;
-                item.THOIGIANCHAYCUOI = model.THOIGIANCHAYCUOI;
-                item.TRANGTHAI = model.TRANGTHAI;
+                var item = new KhaoSat();
+                item.CANHBAO_ID = model.CANHBAO_ID;
+                item.NOIDUNG_CAUHOI = model.NOIDUNG_CAUHOI;
+                item.PHANHOI_KH = model.PHANHOI_KH;
+                item.THOIGIAN_KHAOSAT = model.THOIGIAN_KHAOSAT.Date;
+                item.NGUOI_KS = model.NGUOI_KS;
+                item.KETQUA = model.KETQUA;
+                item.TINHTRANG_KT_CB = model.TINHTRANG_KT_CB;
+                item.TRANGTHAI_XOA_KHAOSAT = model.TRANGTHAI_XOA_KHAOSAT;
+                item.DONVI_QLY = model.DONVI_QLY;
                 service.CreateNew(item);
                 service.CommitChanges();
                 result.success = true;
@@ -93,8 +97,8 @@ namespace EVN.Api.Controllers
             ResponseResult result = new ResponseResult();
             try
             {
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var item = new DanhMucLoaiCanhBao();
+                IKhaoSatService service = IoC.Resolve<IKhaoSatService>();
+                var item = new KhaoSat();
                 item = service.Getbykey(Id);
                 result.data = item;
                 result.success = true;
@@ -103,7 +107,7 @@ namespace EVN.Api.Controllers
             catch (Exception ex)
             {
                 log.Error(ex);
-                result.data = new LoaiCanhBaoDataRequest();
+                result.data = new KhaoSat();
                 result.success = false;
                 result.message = ex.Message;
                 return Ok(result);
@@ -112,19 +116,23 @@ namespace EVN.Api.Controllers
 
         //[JwtAuthentication]
         [HttpPost]
-        public IHttpActionResult UpdateById([FromBody] LoaiCanhBaoDataRequest model, [FromUri] int Id)
+        public IHttpActionResult UpdateById([FromBody] KhaoSatRequest model, [FromUri] int Id)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
             {
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var item = new DanhMucLoaiCanhBao();
+                IKhaoSatService service = IoC.Resolve<IKhaoSatService>();
+                var item = new KhaoSat();
                 item.ID = Id;
-                item.TENLOAICANHBAO = model.TENLOAICANHBAO;
-               // item.ID = model.MALOAICANHBAO;
-                item.CHUKYCANHBAO = model.CHUKYCANHBAO;
-                item.THOIGIANCHAYCUOI = model.THOIGIANCHAYCUOI;
-                item.TRANGTHAI = model.TRANGTHAI;
+                item.CANHBAO_ID = model.CANHBAO_ID;
+                item.NOIDUNG_CAUHOI = model.NOIDUNG_CAUHOI;
+                item.PHANHOI_KH = model.PHANHOI_KH;
+                item.THOIGIAN_KHAOSAT = model.THOIGIAN_KHAOSAT;
+                item.NGUOI_KS = model.NGUOI_KS;
+                item.KETQUA = model.KETQUA;
+                item.TINHTRANG_KT_CB = model.TINHTRANG_KT_CB;
+                item.TRANGTHAI_XOA_KHAOSAT = model.TRANGTHAI_XOA_KHAOSAT;
+                item.DONVI_QLY = model.DONVI_QLY;
                 service.Update(item);
                 service.CommitChanges();
                 result.success = true;
@@ -147,8 +155,8 @@ namespace EVN.Api.Controllers
             ResponseFileResult result = new ResponseFileResult();
             try
             {
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var item = new DanhMucLoaiCanhBao();
+                IKhaoSatService service = IoC.Resolve<IKhaoSatService>();
+                var item = new KhaoSat();
                 item.ID = ID;
                 //item.TenLoaiCanhBao = model.TenLoaiCanhBao;
                 //item.ChuKyGui = model.ChuKyGui;

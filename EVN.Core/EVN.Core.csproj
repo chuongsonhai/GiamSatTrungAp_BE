@@ -45,6 +45,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\Castle.Windsor.dll</HintPath>
     </Reference>
+    <Reference Include="DevExpress.Xpo.v20.1, Version=20.1.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="Excel">
       <HintPath>..\Lib\Excel.dll</HintPath>
     </Reference>
@@ -132,6 +133,15 @@
     <Compile Include="Domain\BienBanKT.cs" />
     <Compile Include="Domain\BienBanDN.cs" />
     <Compile Include="Domain\BienBanKS.cs" />
+    <Compile Include="Domain\GiamSatCongVanCanhbaoid.cs" />
+    <Compile Include="Domain\GiamsatCanhbaoCanhbaoid.cs" />
+    <Compile Include="Domain\LogCanhBao.cs" />
+    <Compile Include="Domain\GiamsatcapdienCanhBaoid.cs" />
+    <Compile Include="Domain\giamSatCapDien.cs" />
+    <Compile Include="Domain\GiamSatPhanhoiCanhbaoid.cs" />
+    <Compile Include="Domain\PhanhoiTraodoi.cs" />
+    <Compile Include="Domain\KhaoSat.cs" />
+    <Compile Include="Domain\CanhBao.cs" />
     <Compile Include="Domain\DanhMucLoaiCanhBao.cs" />
     <Compile Include="Domain\BienBanNT.cs" />
     <Compile Include="Domain\BienBanTT.cs" />
@@ -196,7 +206,16 @@
     <Compile Include="Domain\ThoaThuanDamBao.cs" />
     <Compile Include="Domain\TramBienAp.cs" />
     <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Implements\GiamSatCanhBaoCanhbaoidService.cs" />
+    <Compile Include="Implements\GiamSatCongVanCanhbaoidService.cs" />
+    <Compile Include="Implements\GiamsatcapdienCanhBaoidService.cs" />
+    <Compile Include="Implements\CanhBaoService.cs" />
+    <Compile Include="Implements\KhaoSatService.cs" />
+    <Compile Include="Implements\giamSatCapDienService.cs" />
+    <Compile Include="Implements\LogCanhBaoService.cs" />
     <Compile Include="Implements\LoaiCanhBaoService.cs" />
+    <Compile Include="Implements\GiamSatPhanhoiCanhbaoidService.cs" />
+    <Compile Include="Implements\PhanhoiTraodoiService.cs" />
     <Compile Include="Implements\BienBanDNService.cs" />
     <Compile Include="Implements\BienBanKSService.cs" />
     <Compile Include="Implements\BienBanKTService.cs" />
@@ -215,6 +234,15 @@
     <Compile Include="Implements\ReportService.cs" />
     <Compile Include="Implements\ThongBaoService.cs" />
     <Compile Include="Implements\TThaiYeuCauService.cs" />
+    <Compile Include="IServices\IGiamSatCongVanCanhbaoidService.cs" />
+    <Compile Include="IServices\IGiamSatCanhBaoCanhbaoidService.cs" />
+    <Compile Include="IServices\IGiamsatcapdienCanhBaoidService.cs" />
+    <Compile Include="IServices\ICanhBaoService.cs" />
+    <Compile Include="IServices\IKhaoSatService .cs" />
+    <Compile Include="IServices\IgiamSatCapDienService.cs" />
+    <Compile Include="IServices\ILogCanhBaoService.cs" />
+    <Compile Include="IServices\IGiamSatPhanhoiCanhbaoidService.cs" />
+    <Compile Include="IServices\IPhanhoiTraodoiService.cs" />
     <Compile Include="IServices\ILoaiCanhBaoService.cs" />
     <Compile Include="IServices\IDataLoggingService.cs" />
     <Compile Include="IServices\ICapDienApService.cs" />
@@ -241,6 +269,9 @@
     <Compile Include="Models\BaoCaoTTDN.cs" />
     <Compile Include="Models\ChiTietTCDNQuaHan.cs" />
     <Compile Include="Models\KySoOTPModel.cs" />
+    <Compile Include="Models\Thoigiancapdien.cs" />
+    <Compile Include="Models\ThoiGianCapDienModel.cs" />
+    <Compile Include="Models\SoLuongKhaoSatModel.cs" />
     <Compile Include="PMIS\AF_A_ASSET_ATT_ITEMService.cs" />
     <Compile Include="PMIS\AF_A_ASSET_ATT_ITEM_FILEService.cs" />
     <Compile Include="PMIS\IAF_A_ASSET_ATT_ITEMService.cs" />
@@ -525,6 +556,33 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Domain\DanhMuc\MauHoSo.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\CanhBao.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\KhaoSat.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\PhanhoiTraodoi.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\giamSatCapDien.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\GiamsatcapdienCanhBaoid.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\LogCanhBao.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\GiamsatCanhbaoCanhbaoid.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\GiamSatPhanhoiCanhbaoid.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\GiamSatCongVanCanhbaoid.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

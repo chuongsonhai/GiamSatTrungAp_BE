@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.giamSatCapDien, EVN.Core" table="GSCD_PHANHOI_TRAODOI" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">PHANHOI_TRAODO_SEQ</param>
+			</generator>
+		</id>
+		<!--<property name="CANHBAO_ID" column="CANHBAO_ID" type="int"/>-->
+		<property name="NOIDUNG_PHANHOI" column="NOIDUNG_PHANHOI" type="string"/>
+		<property name="NGUOI_GUI" column="NGUOI_GUI" type="string"/>
+		<property name="DONVI_QLY" column="DONVI_QLY" type="string"/>
+		<property name="THOIGIAN_GUI" column="THOIGIAN_GUI" type="DateTime"/>
+		<property name="TRANGTHAI_XOA" column="TRANGTHAI_XOA" type="int"/>
+		<property name="PHANHOI_TRAODOI_ID" column="PHANHOI_TRAODOI_ID" type="int"/>
+		<property name="FILE_DINHKEM" column="FILE_DINHKEM" type="string"/>
+	</class>
+</hibernate-mapping>
+

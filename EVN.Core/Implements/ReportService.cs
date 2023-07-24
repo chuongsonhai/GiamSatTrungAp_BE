@@ -1414,6 +1414,46 @@ namespace EVN.Core.Implements
             }
         }
 
+        public IList<ThoiGianCapDienModel> GetThoigiancapdien(string maDViQLy,  DateTime fromdate, DateTime todate)
+        {
+            IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
+
+               var query = Query.Where(p => p.NgayYeuCau >= fromdate && p.NgayYeuCau <= todate && p.MaDViQLy == maDViQLy);
+
+            var result = new List<ThoiGianCapDienModel>();
+            var listDonVi = organizationService.GetAll();
+            if("PD" == maDViQLy)
+            {
+                foreach (var dv in listDonVi)
+                {
+                    var detail = new ThoiGianCapDienModel();
+                    detail.TenDV = dv.orgName;
+                    var listCV = query.Where(x => x.MaDViQLy == dv.orgCode);
+                    detail.TongSoCTTiepNhanTTDN = listCV.Count();
+                 
+                   result.Add(detail);
+                }
+
+            }
+            else
+                    {
+                var detail = new ThoiGianCapDienModel();
+                detail.TenDV = maDViQLy;
+                var listCV = query.Where(x => x.MaDViQLy == maDViQLy);
+                detail.TongSoCTTiepNhanTTDN = listCV.Count();
+                result.Add(detail);
+            }
+
+            //var result = new SoLuongKhaoSatModel();
+            ////Số lượng
+            //result.SoLuongKhaoSat = query.Count();
+            //result.SoLuongKhaoSatThanhCong = query.Count(x => x.KETQUA == "Thành công");
+            //result.SoLuongKhaoSatThatBai = query.Count(x => x.KETQUA == "Thất bại");
+            //return result;
+
+            return result;
+        }
+
         public IList<BaoCaoTHTCDN> GetListBaoCaoTHTCDN(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate)
         {
             IBienBanKSService bienBanKSService = IoC.Resolve<IBienBanKSService>();

@@ -16,15 +16,15 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    [RoutePrefix("api/dmucLoaiCanhBao")]
-    public class DanhMucLoaiCanhBaoController : ApiController
+    [RoutePrefix("api/PhanhoiTraodoi")]
+    public class PhanhoiTraodoiController : ApiController
     {
-        private ILog log = LogManager.GetLogger(typeof(DanhMucLoaiCanhBaoController));
+        private ILog log = LogManager.GetLogger(typeof(PhanhoiTraodoiController));
 
         //[JwtAuthentication]
         [HttpPost]
         [Route("filter")]
-        public IHttpActionResult Filter(LoaiCanhBaoFilterRequest request)
+        public IHttpActionResult Filter(PhanhoiTraodoiFilterRequest request)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -32,12 +32,12 @@ namespace EVN.Api.Controllers
                 int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
                 int total = 0;
                 DateTime synctime = DateTime.Today;
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var list = service.GetbyFilter(request.Filter.TenLoaiCanhbao, request.Filter.maLoaiCanhBao, pageindex, request.Paginator.pageSize, out total);
-                var listModel = new List<LoaiCanhBaoDataRequest>();
+                IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
+                var list = service.GetbyFilter(request.Filter.CANHBAO_ID, pageindex, request.Paginator.pageSize, out total);
+                var listModel = new List<PhanhoiTraodoiRequest>();
                 foreach (var item in list)
                 {
-                    var model = new LoaiCanhBaoDataRequest(item);
+                    var model = new PhanhoiTraodoiRequest(item);
                     listModel.Add(model);
                 }
                 result.total = total;
@@ -48,7 +48,7 @@ namespace EVN.Api.Controllers
             catch (Exception ex)
             {
                 log.Error(ex);
-                result.data = new List<LoaiCanhBaoDataRequest>();
+                result.data = new List<PhanhoiTraodoiRequest>();
                 result.success = false;
                 result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
                 return Ok(result);
@@ -58,19 +58,22 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("add")]
-        public IHttpActionResult Post([FromBody] LoaiCanhBaoDataRequest model)
+        public IHttpActionResult Post([FromBody] PhanhoiTraodoiRequest model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
             {
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
+                IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
 
-                var item = new DanhMucLoaiCanhBao();
-                item.TENLOAICANHBAO = model.TENLOAICANHBAO;
-               // item.ID = model.MALOAICANHBAO;
-                item.CHUKYCANHBAO = model.CHUKYCANHBAO;
-                item.THOIGIANCHAYCUOI = model.THOIGIANCHAYCUOI;
-                item.TRANGTHAI = model.TRANGTHAI;
+                var item = new PhanhoiTraodoi();
+                item.CANHBAO_ID = model.CANHBAO_ID;
+                item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
+                item.NGUOI_GUI = model.NGUOI_GUI;
+                item.DONVI_QLY = model.DONVI_QLY;
+                item.THOIGIAN_GUI = model.THOIGIAN_GUI;
+                item.TRANGTHAI_XOA = model.TRANGTHAI_XOA;
+                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
+                item.FILE_DINHKEM = model.FILE_DINHKEM;
                 service.CreateNew(item);
                 service.CommitChanges();
                 result.success = true;
@@ -93,8 +96,8 @@ namespace EVN.Api.Controllers
             ResponseResult result = new ResponseResult();
             try
             {
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var item = new DanhMucLoaiCanhBao();
+                IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
+                var item = new PhanhoiTraodoi();
                 item = service.Getbykey(Id);
                 result.data = item;
                 result.success = true;
@@ -103,7 +106,7 @@ namespace EVN.Api.Controllers
             catch (Exception ex)
             {
                 log.Error(ex);
-                result.data = new LoaiCanhBaoDataRequest();
+                result.data = new PhanhoiTraodoiRequest();
                 result.success = false;
                 result.message = ex.Message;
                 return Ok(result);
@@ -112,19 +115,22 @@ namespace EVN.Api.Controllers
 
         //[JwtAuthentication]
         [HttpPost]
-        public IHttpActionResult UpdateById([FromBody] LoaiCanhBaoDataRequest model, [FromUri] int Id)
+        public IHttpActionResult UpdateById([FromBody] PhanhoiTraodoiRequest model, [FromUri] int Id)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
             {
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var item = new DanhMucLoaiCanhBao();
+                IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
+                var item = new PhanhoiTraodoi();
                 item.ID = Id;
-                item.TENLOAICANHBAO = model.TENLOAICANHBAO;
-               // item.ID = model.MALOAICANHBAO;
-                item.CHUKYCANHBAO = model.CHUKYCANHBAO;
-                item.THOIGIANCHAYCUOI = model.THOIGIANCHAYCUOI;
-                item.TRANGTHAI = model.TRANGTHAI;
+                item.CANHBAO_ID = model.CANHBAO_ID;
+                item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
+                item.NGUOI_GUI = model.NGUOI_GUI;
+                item.DONVI_QLY = model.DONVI_QLY;
+                item.THOIGIAN_GUI = model.THOIGIAN_GUI;
+                item.TRANGTHAI_XOA = model.TRANGTHAI_XOA;
+                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
+                item.FILE_DINHKEM = model.FILE_DINHKEM;
                 service.Update(item);
                 service.CommitChanges();
                 result.success = true;
@@ -147,8 +153,8 @@ namespace EVN.Api.Controllers
             ResponseFileResult result = new ResponseFileResult();
             try
             {
-                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var item = new DanhMucLoaiCanhBao();
+                IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
+                var item = new PhanhoiTraodoi();
                 item.ID = ID;
                 //item.TenLoaiCanhBao = model.TenLoaiCanhBao;
                 //item.ChuKyGui = model.ChuKyGui;
