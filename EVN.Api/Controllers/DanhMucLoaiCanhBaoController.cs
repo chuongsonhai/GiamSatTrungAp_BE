@@ -40,6 +40,7 @@ namespace EVN.Api.Controllers
                     var model = new LoaiCanhBaoDataRequest(item);
                     listModel.Add(model);
                 }
+             
                 result.total = total;
                 result.data = listModel;
                 result.success = true;
@@ -93,6 +94,7 @@ namespace EVN.Api.Controllers
             ResponseResult result = new ResponseResult();
             try
             {
+
                 ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
                 var item = new DanhMucLoaiCanhBao();
                 item = service.Getbykey(Id);
@@ -110,9 +112,10 @@ namespace EVN.Api.Controllers
             }
         }
 
+
         //[JwtAuthentication]
         [HttpPost]
-        public IHttpActionResult UpdateById([FromBody] LoaiCanhBaoDataRequest model, [FromUri] int Id)
+        public IHttpActionResult Updatebyid([FromBody] LoaiCanhBaoDataRequest model, [FromUri] int Id)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
@@ -121,12 +124,38 @@ namespace EVN.Api.Controllers
                 var item = new DanhMucLoaiCanhBao();
                 item.ID = Id;
                 item.TENLOAICANHBAO = model.TENLOAICANHBAO;
-               // item.ID = model.MALOAICANHBAO;
+                // item.ID = model.MALOAICANHBAO;
                 item.CHUKYCANHBAO = model.CHUKYCANHBAO;
                 item.THOIGIANCHAYCUOI = model.THOIGIANCHAYCUOI;
                 item.TRANGTHAI = model.TRANGTHAI;
                 service.Update(item);
                 service.CommitChanges();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                //result.data = new LoaiCanhBaoDataRequest();
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+
+
+        [HttpPost]
+        [Route("getlistcanhbao")]
+        public IHttpActionResult GetListCanhBao()
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+               
+                IReportService service = IoC.Resolve<IReportService>();
+                var list = service.TinhThoiGian();
+                result.data = list;
+
                 result.success = true;
                 return Ok(result);
             }
@@ -134,7 +163,11 @@ namespace EVN.Api.Controllers
             {
                 log.Error(ex);
                 result.success = false;
+
                 result.message = ex.Message;
+
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+
                 return Ok(result);
             }
         }

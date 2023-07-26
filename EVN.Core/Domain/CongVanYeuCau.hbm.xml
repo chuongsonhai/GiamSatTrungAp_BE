@@ -53,6 +53,7 @@
 		<property name="Data" column="Data" type="string"/>
 		<property name="MaCViec" column="MaCViec" type="string"/>
 		<property name="Fkey" column="Fkey" type="string"/>
+    <property name="LoaiCanhBao" column="LoaiCanhBao" type="int"/>
 
 		<property name="LyDoHuy" column="LyDoHuy" type="string"/>
 		<property name="SoDienThoaiKHUQ" column="SoDienThoaiKHUQ" type="string"/>
