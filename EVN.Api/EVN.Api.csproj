@@ -375,6 +375,7 @@
     <Compile Include="Model\KySoOTPRequest.cs" />
     <Compile Include="Model\OrganizationModel.cs" />
     <Compile Include="Model\PhuLucRequest.cs" />
+    <Compile Include="Model\Request\LogCanhBaofilterRequest.cs" />
     <Compile Include="Model\Request\CanhBaoRequestId.cs" />
     <Compile Include="Model\Request\KhaoSatRequest.cs" />
     <Compile Include="Model\Request\HoSoKemTheoRequest.cs" />

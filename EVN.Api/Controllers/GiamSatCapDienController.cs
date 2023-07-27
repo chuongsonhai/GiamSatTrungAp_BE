@@ -18,7 +18,7 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    [RoutePrefix("api/canhbao")]
+    [RoutePrefix("api")]
     public class GiamSatCapDienController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(GiamSatCapDienController));
@@ -26,7 +26,7 @@ namespace EVN.Api.Controllers
         //2.1	(GET) /canhbao/filter
         //[JwtAuthentication]
         [HttpPost]
-        [Route("filter")]
+        [Route("canhbao/filter")]
         public IHttpActionResult Filter(CanhBaoFilterRequest filter)
         {
             ResponseResult result = new ResponseResult();
@@ -63,7 +63,7 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("canhbao/finnish")]
-        public IHttpActionResult GetById([FromUri] int Id)
+        public IHttpActionResult GetById( int Id)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -89,7 +89,7 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpGet]
         [Route("canhbao/id")]
-        public IHttpActionResult GetBycanhbaoId([FromUri] int id)
+        public IHttpActionResult GetBycanhbaoId( int id)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -119,7 +119,7 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("canhbao/phanhoi/add")]
-        public IHttpActionResult Post([FromBody] PhanhoiTraodoiRequest model)
+        public IHttpActionResult Post(PhanhoiTraodoiRequest model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
@@ -156,14 +156,14 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("canhbao/phanhoi/edit")]
-        public IHttpActionResult UpdateById([FromBody] giamSatCapDien model, [FromUri] int Id)
+        public IHttpActionResult UpdateById(giamSatCapDien model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
             {
                 IgiamSatCapDienService service = IoC.Resolve<IgiamSatCapDienService>();
                 var item = new giamSatCapDien();
-                item.ID = Id;
+                item.ID = model.ID;
                 item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
                 item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
                 item.NGUOI_GUI = model.NGUOI_GUI;
@@ -187,14 +187,14 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("canhbao/phanhoi/delete")]
-        public IHttpActionResult Delete([FromUri] int ID)
+        public IHttpActionResult Delete(PhanhoiTraodoiRequest model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
             {
                 IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
                 var item = new PhanhoiTraodoi();
-                item.ID = ID;
+                item.ID = model.ID;
                 //item.TenLoaiCanhBao = model.TenLoaiCanhBao;
                 //item.ChuKyGui = model.ChuKyGui;
                 //item.PhanLoai = model.PhanLoai;
@@ -216,7 +216,7 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("canhbao/id")]
-        public IHttpActionResult PostCanhbao([FromBody] GiamsatcapdienCanhBaoid model, [FromUri] int Id)
+        public IHttpActionResult PostCanhbao(GiamsatcapdienCanhBaoid model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
@@ -224,7 +224,7 @@ namespace EVN.Api.Controllers
                 IGiamsatcapdienCanhBaoidService service = IoC.Resolve<IGiamsatcapdienCanhBaoidService>();
 
                 var item = new GiamsatcapdienCanhBaoid();
-                item.ID = Id;
+                item.ID = model.ID;
                 item.TRANGTHAI_CANHBAO = 1;
                 item.NOIDUNG = model.NOIDUNG;
                
@@ -246,9 +246,9 @@ namespace EVN.Api.Controllers
 
         //2.10	(GET) /cauhinhcanhbao/filter
         //[JwtAuthentication]
-        [HttpGet]
+        [HttpPost]
         [Route("cauhinhcanhbao/filter")]
-        public IHttpActionResult cauhinhcanhbao(int maLoaiCanhBao)
+        public IHttpActionResult cauhinhcanhbao(LoaiCanhBaoFilterRequest request)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -257,7 +257,7 @@ namespace EVN.Api.Controllers
                 // int total = 0;
                 DateTime synctime = DateTime.Today;
                 ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var list = service.Filter( maLoaiCanhBao);
+                var list = service.Filter(request.Filter.maLoaiCanhBao);
                 IList<Cauhinhcanhbao> data = new List<Cauhinhcanhbao>();
 
                 foreach (var item in list)
@@ -316,14 +316,14 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("cauhinhcanhbao/edit")]
-        public IHttpActionResult cauhinhcanhbaoedit([FromBody] LoaiCanhBaoDataRequest model, [FromUri] int Id)
+        public IHttpActionResult cauhinhcanhbaoedit([FromBody] LoaiCanhBaoDataRequest model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
             {
                 ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
                 var item = new DanhMucLoaiCanhBao();
-                item.ID = Id;
+                item.ID = model.ID;
                // item.ID = model.MALOAICANHBAO;
                 item.TENLOAICANHBAO = model.TENLOAICANHBAO;
                 item.CHUKYCANHBAO = model.CHUKYCANHBAO;
@@ -343,10 +343,9 @@ namespace EVN.Api.Controllers
 
 
         //[JwtAuthentication]
-        [HttpGet]
+        [HttpPost]
         [Route("cauhinhcanhbao/log/filter")]
-        public IHttpActionResult logFilter(int canhbaoID, int trangThai, string datacu, string datamoi,
-            string tungay, string denngay, string nguoithuchien)
+        public IHttpActionResult logFilter(LogCanhBaofilterRequest request)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -355,7 +354,8 @@ namespace EVN.Api.Controllers
                 // int total = 0;
                 DateTime synctime = DateTime.Today;
                 ILogCanhBaoService service = IoC.Resolve<ILogCanhBaoService>();
-                var list = service.GetbyFilter( canhbaoID,  trangThai,  datacu,  datamoi, tungay,  denngay,  nguoithuchien);
+                var list = service.GetbyFilter(request.Filter.canhbaoID, request.Filter.trangThai, request.Filter.datacu,
+                    request.Filter.datamoi, request.Filter.tungay, request.Filter.denngay, request.Filter.nguoithuchien);
                 IList<LogCanhBaoRequest> data = new List<LogCanhBaoRequest>();
 
                 foreach (var item in list)
