@@ -300,6 +300,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BienBanTTController.cs" />
     <Compile Include="Controllers\BienBanNTController.cs" />
+    <Compile Include="Controllers\CauhinhcanhbaoController.cs" />
     <Compile Include="Controllers\GiamSatCapDienController.cs" />
     <Compile Include="Controllers\CanhBaoController.cs" />
     <Compile Include="Controllers\PhanhoiTraodoiController.cs" />

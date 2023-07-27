@@ -18,7 +18,7 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    [RoutePrefix("api/dashboard")]
+    //[RoutePrefix("api/dashboard")]
     public class CanhBaoController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(CanhBaoController));
@@ -118,6 +118,230 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
+
+        //2.1	(GET) /canhbao/filter
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("canhbao/filter")]
+        public IHttpActionResult Filter(CanhBaoFilterRequest filter)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                // int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+                // int total = 0;
+                DateTime synctime = DateTime.Today;
+                ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+                var list = service.Filter(filter.Filter.fromdate, filter.Filter.todate, filter.Filter.maLoaiCanhBao, filter.Filter.trangThai, filter.Filter.maDViQLy);
+                IList<CanhBaoRequest> data = new List<CanhBaoRequest>();
+
+                foreach (var item in list)
+                {
+                    data.Add(new CanhBaoRequest(item));
+
+                }
+                // result.total = list.Count();
+                result.data = data;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.data = new List<CanhBaoRequest>();
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        //2.2	(POST) /canhbao/finnish
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("canhbao/finnish")]
+        public IHttpActionResult GetById(int Id)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+                var item = new CanhBao();
+                item = service.Getbykey(Id);
+                //   result.data = item;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.data = new CanhBaoRequest();
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+        //2.3	(GET) /canhbao/{id}
+        //[JwtAuthentication]
+        [HttpGet]
+        [Route("canhbao/id")]
+        public IHttpActionResult GetBycanhbaoId(int id)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                IGiamSatCanhBaoCanhbaoidService servicecanhbao = IoC.Resolve<IGiamSatCanhBaoCanhbaoidService>();
+                IGiamSatPhanhoiCanhbaoidService servicephanhoi = IoC.Resolve<IGiamSatPhanhoiCanhbaoidService>();
+                IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
+                var ThongTinCanhBao = servicecanhbao.Getbyid(id);
+                var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(ThongTinCanhBao.MA_YC);
+                var DanhSachPhanHoi = servicephanhoi.Getbyid(id);
+                var oj = new { ThongTinCanhBao, ThongTinYeuCau, DanhSachPhanHoi };
+                result.data = oj;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.data = new CanhBaoRequest();
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+        //2.9	(POST) /canhbao/{id}
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("canhbao/id")]
+        public IHttpActionResult PostCanhbao(GiamsatcapdienCanhBaoid model)
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            try
+            {
+                IGiamsatcapdienCanhBaoidService service = IoC.Resolve<IGiamsatcapdienCanhBaoidService>();
+
+                var item = new GiamsatcapdienCanhBaoid();
+                item.ID = model.ID;
+                item.TRANGTHAI_CANHBAO = 1;
+                item.NOIDUNG = model.NOIDUNG;
+
+                service.Update(item);
+                service.CommitChanges();
+                result.success = true;
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                result.success = false;
+                return Ok(result);
+            }
+        }
+
+        //2.4	(POST) / canhbao/phanhoi/add
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("canhbao/phanhoi/add")]
+        public IHttpActionResult Post(PhanhoiTraodoiRequest model)
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            try
+            {
+                IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
+
+                var item = new PhanhoiTraodoi();
+                item.CANHBAO_ID = model.CANHBAO_ID;
+                item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
+                item.NGUOI_GUI = model.NGUOI_GUI;
+
+                item.DONVI_QLY = model.DONVI_QLY;
+                item.THOIGIAN_GUI = model.THOIGIAN_GUI;
+                item.TRANGTHAI_XOA = model.TRANGTHAI_XOA;
+                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
+                item.FILE_DINHKEM = model.FILE_DINHKEM;
+                service.CreateNew(item);
+                service.CommitChanges();
+                result.success = true;
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                result.success = false;
+                return Ok(result);
+            }
+        }
+
+        //2.5	(POST) / canhbao/phanhoi/edit
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("canhbao/phanhoi/edit")]
+        public IHttpActionResult UpdateById(giamSatCapDien model)
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            try
+            {
+                IgiamSatCapDienService service = IoC.Resolve<IgiamSatCapDienService>();
+                var item = new giamSatCapDien();
+                item.ID = model.ID;
+                item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
+                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
+                item.NGUOI_GUI = model.NGUOI_GUI;
+                item.DONVI_QLY = model.DONVI_QLY;
+                item.PHANHOI_TRAODOI_ID = 1;
+                service.Update(item);
+                service.CommitChanges();
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+        //2.6	(POST) / canhbao/phanhoi/delete
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("canhbao/phanhoi/delete")]
+        public IHttpActionResult Delete(PhanhoiTraodoiRequest model)
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            try
+            {
+                IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
+                var item = new PhanhoiTraodoi();
+                item.ID = model.ID;
+                //item.TenLoaiCanhBao = model.TenLoaiCanhBao;
+                //item.ChuKyGui = model.ChuKyGui;
+                //item.PhanLoai = model.PhanLoai;
+                service.Delete(item);
+                service.CommitChanges();
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+
+
 
     }
 }
