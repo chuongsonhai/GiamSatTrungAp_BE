@@ -18,7 +18,7 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    [RoutePrefix("api")]
+    //[RoutePrefix("")]
     public class GiamSatCapDienController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(GiamSatCapDienController));
