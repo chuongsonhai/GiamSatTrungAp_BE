@@ -18,16 +18,16 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    [RoutePrefix("api/giamSatCapDien")]
+    [RoutePrefix("api/canhbao")]
     public class GiamSatCapDienController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(GiamSatCapDienController));
 
         //2.1	(GET) /canhbao/filter
         //[JwtAuthentication]
-        [HttpGet]
-        [Route("canhbao/filter")]
-        public IHttpActionResult Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi)
+        [HttpPost]
+        [Route("filter")]
+        public IHttpActionResult Filter(CanhBaoFilterRequest filter)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -36,7 +36,7 @@ namespace EVN.Api.Controllers
                // int total = 0;
                 DateTime synctime = DateTime.Today;
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
-                var list = service.Filter(tungay, denngay, maLoaiCanhBao, trangThai, maDonVi);
+                var list = service.Filter(filter.Filter.fromdate, filter.Filter.todate, filter.Filter.maLoaiCanhBao, filter.Filter.trangThai, filter.Filter.maDViQLy);
                 IList<CanhBaoRequest> data = new List<CanhBaoRequest>();
 
                 foreach (var item in list)

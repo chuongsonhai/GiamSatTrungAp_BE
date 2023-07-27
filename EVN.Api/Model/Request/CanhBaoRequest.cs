@@ -20,13 +20,17 @@ namespace EVN.Api.Model.Request
             thoiGianGui = CanhBao.THOIGIANGUI;
             donViQuanLy = CanhBao.DONVI_DIENLUC;
             trangThai = CanhBao.TRANGTHAI_CANHBAO;
+            lanGui = CanhBao.LOAI_SOLANGUI;
+            maYeuCau = CanhBao.MA_YC;
         }
         public int id { get; set; }
         public int maLoaiCanhBao { get; set; }
         public string noiDungCanhBao { get; set; }
         public DateTime thoiGianGui { get; set; }
         public string donViQuanLy { get; set; }
+        public string maYeuCau { get; set; }
         public int trangThai { get; set; }
+        public int lanGui { get; set; }
       
 
     }
