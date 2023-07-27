@@ -365,6 +365,8 @@
     <Compile Include="Model\BienBanNTModel.cs" />
     <Compile Include="Model\BienBanTTModel.cs" />
     <Compile Include="Model\BoPhanModel.cs" />
+    <Compile Include="Model\ZaloModel.cs" />
+    <Compile Include="Model\EmailModel.cs" />
     <Compile Include="Model\CanhbaoModel.cs" />
     <Compile Include="Model\CauHinhCViec.cs" />
     <Compile Include="Model\CauHinhDongBoModel.cs" />
