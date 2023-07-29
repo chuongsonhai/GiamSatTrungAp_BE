@@ -3,18 +3,18 @@
 	<class name="EVN.Core.Domain.GiamSatPhanhoiCanhbaoid, EVN.Core" table="GSCD_PHANHOI_TRAODOI" lazy="true" >
 		<id name="ID" column="ID">
 			<generator class="native">
-				<param name="sequence">PHANHOI_TRAODO_SEQ</param>
+				<param name="sequence">PHANHOI_TRAODOI_SEQ</param>
 			</generator>
 		</id>
 		<property name="idCanhBao" column="CANHBAO_ID" type="int"/>
 		<property name="idPhanHoi" column="PHANHOI_TRAODOI_ID" type="int"/>
 		<property name="noiDungPhanHoi" column="NOIDUNG_PHANHOI" type="string"/>
 		<property name="nguoiGui" column="NGUOI_GUI" type="string"/>
-		<!--<property name="DONVI_QLY" column="DONVI_QLY" type="string"/>-->
+		<property name="DONVI_QLY" column="DONVI_QLY" type="string"/>
 		<property name="thoiGianGui" column="THOIGIAN_GUI" type="DateTime"/>
-		<!--<property name="TRANGTHAI_XOA" column="TRANGTHAI_XOA" type="int"/>-->
+		<property name="TRANGTHAI_XOA" column="TRANGTHAI_XOA" type="int"/>
 		
-		<!--<property name="FILE_DINHKEM" column="FILE_DINHKEM" type="string"/>-->
+		<property name="FILE_DINHKEM" column="FILE_DINHKEM" type="string"/>
 	</class>
 </hibernate-mapping>
 

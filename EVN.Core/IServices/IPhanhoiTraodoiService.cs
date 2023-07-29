@@ -7,6 +7,7 @@ namespace EVN.Core.IServices
     public interface IPhanhoiTraodoiService : FX.Data.IBaseService<PhanhoiTraodoi, int>
     {
         PhanhoiTraodoi GetbyNo(int idloai);
+        PhanhoiTraodoi GetbyPhanHoiId(int id);
         List<PhanhoiTraodoi> Getbyid(int id);
         IList<PhanhoiTraodoi> GetbyFilter(int CANHBAO_ID,  int pageindex, int pagesize, out int total);
         

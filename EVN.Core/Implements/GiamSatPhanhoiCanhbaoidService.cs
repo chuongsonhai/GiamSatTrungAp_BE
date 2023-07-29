@@ -24,7 +24,7 @@ namespace EVN.Core.Implements
 
         public List<GiamSatPhanhoiCanhbaoid> Getbyid(int id)
         {
-            var query = Query.Where(p => p.idCanhBao == id);
+            var query = Query.Where(p => p.idCanhBao == id && p.TRANGTHAI_XOA == 0);
             return query.ToList(); 
         }
 

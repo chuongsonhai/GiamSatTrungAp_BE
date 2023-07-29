@@ -144,33 +144,7 @@ namespace EVN.Api.Controllers
 
 
 
-        [HttpPost]
-        [Route("getlistcanhbao")]
-        public IHttpActionResult GetListCanhBao()
-        {
-            ResponseResult result = new ResponseResult();
-            try
-            {
-               
-                IReportService service = IoC.Resolve<IReportService>();
-                var list = service.TinhThoiGian();
-                result.data = list;
-
-                result.success = true;
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-                result.success = false;
-
-                result.message = ex.Message;
-
-                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
-
-                return Ok(result);
-            }
-        }
+        
 
         //[JwtAuthentication]
         [HttpGet]

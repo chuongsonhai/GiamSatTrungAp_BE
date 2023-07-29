@@ -5,11 +5,13 @@ using EVN.Core;
 using EVN.Core.Domain;
 using EVN.Core.IServices;
 using EVN.Core.Repository;
+using EVN.Core.Utilities;
 using FX.Core;
 using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -20,7 +22,7 @@ namespace EVN.Api.Controllers
     public class PhanhoiTraodoiController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(PhanhoiTraodoiController));
-
+        
         //[JwtAuthentication]
         [HttpPost]
         [Route("filter")]
@@ -58,22 +60,34 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("add")]
-        public IHttpActionResult Post([FromBody] PhanhoiTraodoiRequest model)
+        public IHttpActionResult Post()
         {
             ResponseFileResult result = new ResponseFileResult();
+            var httpRequest = HttpContext.Current.Request;
+            string data = httpRequest.Form["data"];
+            IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
+            PhanhoiTraodoiRequest model = JsonConvert.DeserializeObject<PhanhoiTraodoiRequest>(data);
             try
             {
-                IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
-
                 var item = new PhanhoiTraodoi();
                 item.CANHBAO_ID = model.CANHBAO_ID;
                 item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
                 item.NGUOI_GUI = model.NGUOI_GUI;
                 item.DONVI_QLY = model.DONVI_QLY;
-                item.THOIGIAN_GUI = model.THOIGIAN_GUI;
-                item.TRANGTHAI_XOA = model.TRANGTHAI_XOA;
-                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
-                item.FILE_DINHKEM = model.FILE_DINHKEM;
+                item.THOIGIAN_GUI = DateTime.Now;
+                item.TRANGTHAI_XOA = 0;
+                var postedFile = httpRequest.Files["File"];
+                if (postedFile != null && postedFile.ContentLength > 0)
+                {
+                    string fileFolder = $"//GSCD//";
+                    string fileName = $"{model.CANHBAO_ID}-{Guid.NewGuid().ToString("N")}{Path.GetExtension(postedFile.FileName)}";
+                    string imagePath = FileUtils.SaveFile(postedFile, fileFolder, fileName);
+                    if (string.IsNullOrEmpty(imagePath))
+                    {
+                        return BadRequest();
+                    }
+                    item.FILE_DINHKEM = $"/{fileFolder}/{fileName}";
+                }
                 service.CreateNew(item);
                 service.CommitChanges();
                 result.success = true;
@@ -98,7 +112,7 @@ namespace EVN.Api.Controllers
             {
                 IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
                 var item = new PhanhoiTraodoi();
-                item = service.Getbykey(Id);
+                item = service.GetbyPhanHoiId(Id);
                 result.data = item;
                 result.success = true;
                 return Ok(result);
@@ -115,22 +129,33 @@ namespace EVN.Api.Controllers
 
         //[JwtAuthentication]
         [HttpPost]
-        public IHttpActionResult UpdateById([FromBody] PhanhoiTraodoiRequest model, [FromUri] int Id)
+        [Route("edit")]
+        public IHttpActionResult UpdateById()
         {
             ResponseFileResult result = new ResponseFileResult();
+            var httpRequest = HttpContext.Current.Request;
             try
             {
                 IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
+                string data = httpRequest.Form["data"];
+                PhanhoiTraodoiRequest model = JsonConvert.DeserializeObject<PhanhoiTraodoiRequest>(data);
                 var item = new PhanhoiTraodoi();
-                item.ID = Id;
-                item.CANHBAO_ID = model.CANHBAO_ID;
+                item = service.GetbyPhanHoiId(model.PHANHOI_TRAODOI_ID);
                 item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
-                item.NGUOI_GUI = model.NGUOI_GUI;
-                item.DONVI_QLY = model.DONVI_QLY;
-                item.THOIGIAN_GUI = model.THOIGIAN_GUI;
-                item.TRANGTHAI_XOA = model.TRANGTHAI_XOA;
-                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
-                item.FILE_DINHKEM = model.FILE_DINHKEM;
+                item.THOIGIAN_GUI = DateTime.Now;
+                item.TRANGTHAI_XOA = 0;
+                var postedFile = httpRequest.Files["File"];
+                if (postedFile != null && postedFile.ContentLength > 0)
+                {
+                    string fileFolder = $"//GSCD//";
+                    string fileName = $"{model.CANHBAO_ID}-{Guid.NewGuid().ToString("N")}{Path.GetExtension(postedFile.FileName)}";
+                    string imagePath = FileUtils.SaveFile(postedFile, fileFolder, fileName);
+                    if (string.IsNullOrEmpty(imagePath))
+                    {
+                        return BadRequest();
+                    }
+                    item.FILE_DINHKEM = $"/{fileFolder}/{fileName}";
+                }
                 service.Update(item);
                 service.CommitChanges();
                 result.success = true;
@@ -145,9 +170,11 @@ namespace EVN.Api.Controllers
             }
         }
 
+        
+
         //[JwtAuthentication]
         [HttpGet]
-        [Route("delete")]
+        [Route("delete/{ID}")]
         public IHttpActionResult Delete([FromUri] int ID)
         {
             ResponseFileResult result = new ResponseFileResult();
@@ -155,11 +182,9 @@ namespace EVN.Api.Controllers
             {
                 IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
                 var item = new PhanhoiTraodoi();
-                item.ID = ID;
-                //item.TenLoaiCanhBao = model.TenLoaiCanhBao;
-                //item.ChuKyGui = model.ChuKyGui;
-                //item.PhanLoai = model.PhanLoai;
-                service.Delete(item);
+                item = service.GetbyPhanHoiId(ID);
+                item.TRANGTHAI_XOA = 1;
+                service.Update(item);
                 service.CommitChanges();
                 result.success = true;
                 return Ok(result);
@@ -172,6 +197,8 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
+
+        
 
 
 
