@@ -24,14 +24,18 @@ namespace EVN.Core.Implements
         }
 
 
-        public IList<LogCanhBao> GetbyFilter(int canhbaoID, int trangThai, string datacu, string datamoi,
-            string tungay, string denngay, string nguoithuchien)
+        //public IList<LogCanhBao> GetbyFilter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string donViQuanLy)
+        //{
+        //    DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+        //    DateTime denNgayCast = DateTime.ParseExact(denngay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+        //    var query = Query.Where(p => p.THOIGIAN >= tuNgayCast && p.THOIGIAN <= denNgayCast && p.ID == maLoaiCanhBao &&
+        //    p.TRANGTHAI == trangThai && p. );
+        //    return query.ToList();
+        //}
+
+        public IList<LogCanhBao> Filter(int id)
         {
-            DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(denngay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            var query = Query.Where(p => p.CANHBAO_ID == canhbaoID && p.TRANGTHAI == trangThai && p.DATA_CU == datacu 
-            && p.DATA_MOI == datamoi && p.THOIGIAN >= tuNgayCast && p.THOIGIAN <= denNgayCast && p.NGUOITHUCHIEN == nguoithuchien);
-  
+            var query = Query.Where(p => p.CANHBAO_ID == id);
             return query.ToList();
         }
 

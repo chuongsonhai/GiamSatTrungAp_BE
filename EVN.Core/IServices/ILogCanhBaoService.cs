@@ -7,11 +7,11 @@ namespace EVN.Core.IServices
     public interface ILogCanhBaoService : FX.Data.IBaseService<LogCanhBao, int>
     {
         LogCanhBao GetbyNo(int idloai);
-        IList<LogCanhBao> GetbyFilter(int canhbaoID, int trangThai, string datacu, string datamoi,
-            string tungay, string denngay, string nguoithuchien);        
+        //IList<LogCanhBao> GetbyFilter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string donViQuanLy);        
 
         bool Save(LogCanhBao loaiCanhBao, out string message);
 
+        IList<LogCanhBao> Filter(int id);
 
     }
 }

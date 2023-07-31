@@ -12,7 +12,6 @@
 		<property name="DONVI_QLY" column="DONVI_QLY" type="string"/>
 		<property name="THOIGIAN_GUI" column="THOIGIAN_GUI" type="DateTime"/>
 		<property name="TRANGTHAI_XOA" column="TRANGTHAI_XOA" type="int"/>
-		<property name="PHANHOI_TRAODOI_ID" column="PHANHOI_TRAODOI_ID" type="int"/>
 		<property name="FILE_DINHKEM" column="FILE_DINHKEM" type="string"/>
 	</class>
 </hibernate-mapping>

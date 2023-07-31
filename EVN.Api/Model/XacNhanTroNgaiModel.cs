@@ -6,9 +6,9 @@ using System.Web;
 
 namespace EVN.Api.Model
 {
-    public class KhaoSatModel
+    public class XacNhanTroNgaiModel
     {
-        public KhaoSatModel(KhaoSat lKhaoSat) : base()
+        public XacNhanTroNgaiModel(XacNhanTroNgai lKhaoSat) : base()
         {
             ID = lKhaoSat.ID;
             CANHBAO_ID = lKhaoSat.CANHBAO_ID;
@@ -18,7 +18,7 @@ namespace EVN.Api.Model
             NGUOI_KS = lKhaoSat.NGUOI_KS;
             KETQUA = lKhaoSat.KETQUA;
             TINHTRANG_KT_CB = lKhaoSat.TINHTRANG_KT_CB;
-            TRANGTHAI_XOA_KHAOSAT = lKhaoSat.TRANGTHAI_XOA_KHAOSAT;
+            TRANGTHAI = lKhaoSat.TRANGTHAI;
             DONVI_QLY = lKhaoSat.DONVI_QLY;
 
         }
@@ -30,7 +30,7 @@ namespace EVN.Api.Model
         public virtual string NGUOI_KS { get; set; }
         public virtual string KETQUA { get; set; }
         public virtual string TINHTRANG_KT_CB { get; set; }
-        public virtual string TRANGTHAI_XOA_KHAOSAT { get; set; }
+        public virtual int TRANGTHAI { get; set; }
         public virtual string DONVI_QLY { get; set; }
     }
    

@@ -25,4 +25,6 @@ namespace EVN.Api.Model.Request
         public string maDViQLy { get; set; } = string.Empty;
     }
 
+
+
 }

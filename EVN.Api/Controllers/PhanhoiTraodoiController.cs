@@ -72,7 +72,6 @@ namespace EVN.Api.Controllers
                 item.DONVI_QLY = model.DONVI_QLY;
                 item.THOIGIAN_GUI = model.THOIGIAN_GUI;
                 item.TRANGTHAI_XOA = model.TRANGTHAI_XOA;
-                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
                 item.FILE_DINHKEM = model.FILE_DINHKEM;
                 service.CreateNew(item);
                 service.CommitChanges();
@@ -129,7 +128,6 @@ namespace EVN.Api.Controllers
                 item.DONVI_QLY = model.DONVI_QLY;
                 item.THOIGIAN_GUI = model.THOIGIAN_GUI;
                 item.TRANGTHAI_XOA = model.TRANGTHAI_XOA;
-                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
                 item.FILE_DINHKEM = model.FILE_DINHKEM;
                 service.Update(item);
                 service.CommitChanges();

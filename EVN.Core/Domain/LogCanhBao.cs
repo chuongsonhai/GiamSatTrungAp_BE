@@ -15,5 +15,6 @@ namespace EVN.Core.Domain
         public virtual string DATA_MOI { get; set; }
         public virtual DateTime THOIGIAN { get; set; }
         public virtual string NGUOITHUCHIEN { get; set; }
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EVN.Core.Domain;
+using EVN.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,9 @@ namespace EVN.Core.IServices
     {
         CanhBao GetbyNo(int idloai);
         CanhBao Getbyid(int id);
+        SoLuongGuiModel GetSoLuongGui(string tungay, string denngay);
         IList<CanhBao> GetbyCanhbao(string tungay, string denngay);
+        IList<CanhBao> Filter1(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi, int pageindex, int pagesize, out int total);
         IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi);
     }
 }

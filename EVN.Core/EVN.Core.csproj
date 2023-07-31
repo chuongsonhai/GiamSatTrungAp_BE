@@ -140,7 +140,7 @@
     <Compile Include="Domain\giamSatCapDien.cs" />
     <Compile Include="Domain\GiamSatPhanhoiCanhbaoid.cs" />
     <Compile Include="Domain\PhanhoiTraodoi.cs" />
-    <Compile Include="Domain\KhaoSat.cs" />
+    <Compile Include="Domain\XacNhanTroNgai.cs" />
     <Compile Include="Domain\CanhBao.cs" />
     <Compile Include="Domain\DanhMucLoaiCanhBao.cs" />
     <Compile Include="Domain\BienBanNT.cs" />
@@ -210,7 +210,7 @@
     <Compile Include="Implements\GiamSatCongVanCanhbaoidService.cs" />
     <Compile Include="Implements\GiamsatcapdienCanhBaoidService.cs" />
     <Compile Include="Implements\CanhBaoService.cs" />
-    <Compile Include="Implements\KhaoSatService.cs" />
+    <Compile Include="Implements\XacNhanTroNgaiService.cs" />
     <Compile Include="Implements\giamSatCapDienService.cs" />
     <Compile Include="Implements\LogCanhBaoService.cs" />
     <Compile Include="Implements\LoaiCanhBaoService.cs" />
@@ -238,7 +238,7 @@
     <Compile Include="IServices\IGiamSatCanhBaoCanhbaoidService.cs" />
     <Compile Include="IServices\IGiamsatcapdienCanhBaoidService.cs" />
     <Compile Include="IServices\ICanhBaoService.cs" />
-    <Compile Include="IServices\IKhaoSatService .cs" />
+    <Compile Include="IServices\IXacNhanTroNgaiService .cs" />
     <Compile Include="IServices\IgiamSatCapDienService.cs" />
     <Compile Include="IServices\ILogCanhBaoService.cs" />
     <Compile Include="IServices\IGiamSatPhanhoiCanhbaoidService.cs" />
@@ -269,6 +269,7 @@
     <Compile Include="Models\BaoCaoTTDN.cs" />
     <Compile Include="Models\ChiTietTCDNQuaHan.cs" />
     <Compile Include="Models\KySoOTPModel.cs" />
+    <Compile Include="Models\SoLuongGuiModel.cs" />
     <Compile Include="Models\Thoigiancapdien.cs" />
     <Compile Include="Models\ThoiGianCapDienModel.cs" />
     <Compile Include="Models\SoLuongKhaoSatModel.cs" />
@@ -561,7 +562,7 @@
     <EmbeddedResource Include="Domain\CanhBao.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Domain\KhaoSat.hbm.xml" />
+    <EmbeddedResource Include="Domain\XacNhanTroNgai.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Domain\PhanhoiTraodoi.hbm.xml" />

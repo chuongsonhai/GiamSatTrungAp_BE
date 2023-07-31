@@ -13,5 +13,6 @@ namespace EVN.Core.IServices
         GiamsatCanhbaoCanhbaoid Getbyid(int id);
         IList<GiamsatCanhbaoCanhbaoid> GetbyCanhbao(string tungay, string denngay);
         IList<GiamsatCanhbaoCanhbaoid> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi);
+        IList<GiamsatCanhbaoCanhbaoid> Filtercanhbao(int id);
     }
 }

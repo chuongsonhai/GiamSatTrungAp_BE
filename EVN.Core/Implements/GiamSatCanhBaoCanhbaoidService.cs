@@ -27,6 +27,11 @@ namespace EVN.Core.Implements
         {
             return Get(p => p.idCanhBao == id);
         }
+        public IList<GiamsatCanhbaoCanhbaoid> Filtercanhbao(int id)
+        {
+            var query = Query.Where(p => p.idCanhBao == id);
+            return query.ToList();
+        }
         public IList<GiamsatCanhbaoCanhbaoid> GetbyCanhbao(string  tungay, string denngay)
         {
             DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);

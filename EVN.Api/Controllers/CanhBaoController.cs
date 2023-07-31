@@ -25,18 +25,18 @@ namespace EVN.Api.Controllers
 
         //1.(GET) dashboard/canhbao
         //[JwtAuthentication]
-        [HttpGet]
+        [HttpPost]
         [Route("dashboard/canhbao")]
-        public IHttpActionResult GetCanhbao(string tungay, string denngay)
+        public IHttpActionResult GetCanhbao(CanhBaoFilterRequestdashboardcanhbao model)
         {
 
             ResponseResult result = new ResponseResult();
             try
             {
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
-                var list = service.GetbyCanhbao(tungay, denngay);
+                
                 IList<CanhbaoModel> data = new List<CanhbaoModel>();
-
+                var list = service.GetbyCanhbao(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
                 foreach (var item in list)
                 {
                   data.Add(new CanhbaoModel(item));
@@ -60,14 +60,14 @@ namespace EVN.Api.Controllers
         //2.(GET) dashboard/khaosat
         //[JwtAuthentication]
         [HttpGet]
-        [Route("khaosat")]
+        [Route("dashboard/khaosat")]
         public IHttpActionResult GetKhaosat(string tungay, string denngay)
         {
 
             ResponseResult result = new ResponseResult();
             try
             {
-                IKhaoSatService service = IoC.Resolve<IKhaoSatService>();
+                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
                 var list = service.GetSoLuongKhaoSat(tungay, denngay);
 
               //  result.total = list.Count();
@@ -88,7 +88,7 @@ namespace EVN.Api.Controllers
 
         //3.(GET) dashboard/thoigiancapdien
         [HttpPost]
-        [Route("GetThoigiancapdien")]
+        [Route("dashboard/thoigiancapdien")]
         public IHttpActionResult GetThoigiancapdien(string donViQuanLy, DateTime tungay, DateTime denngay)
         {
             ResponseResult result = new ResponseResult();
@@ -159,14 +159,15 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("canhbao/finnish")]
-        public IHttpActionResult GetById(int Id)
+        public IHttpActionResult GetById(CanhBao model)
         {
             ResponseResult result = new ResponseResult();
             try
             {
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
                 var item = new CanhBao();
-                item = service.Getbykey(Id);
+                // item = service.Getbykey(Id);
+                item.ID = model.ID;
                 //   result.data = item;
                 result.success = true;
                 return Ok(result);
@@ -258,11 +259,9 @@ namespace EVN.Api.Controllers
                 item.CANHBAO_ID = model.CANHBAO_ID;
                 item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
                 item.NGUOI_GUI = model.NGUOI_GUI;
-
                 item.DONVI_QLY = model.DONVI_QLY;
                 item.THOIGIAN_GUI = model.THOIGIAN_GUI;
-                item.TRANGTHAI_XOA = model.TRANGTHAI_XOA;
-                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
+                item.TRANGTHAI_XOA = 0;
                 item.FILE_DINHKEM = model.FILE_DINHKEM;
                 service.CreateNew(item);
                 service.CommitChanges();
