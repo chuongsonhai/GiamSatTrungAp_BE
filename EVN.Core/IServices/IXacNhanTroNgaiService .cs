@@ -10,10 +10,13 @@ namespace EVN.Core.IServices
         XacNhanTroNgai GetbyNo(int idloai);
         IList<XacNhanTroNgai> GetbyFilter(string tungay, string denngay, int trangThaiKhaoSat, string maYeuCau, string donViQuanLy
             , int pageindex, int pagesize, out int total);
-        IList<XacNhanTroNgai> GetbykhachhangFilter(string tungay, string denngay, int maLoaiCanhBao, string donViQuanLy
-            , int pageindex, int pagesize, out int total);
+        //IList<XacNhanTroNgai> GetbykhachhangFilter(string tungay, string denngay, int maLoaiCanhBao, string donViQuanLy
+        //    , int pageindex, int pagesize, out int total);
         IList<XacNhanTroNgai> GetbyKhaoSat(string tungay, string denngay);
+        XacNhanTroNgai GetKhaoSat(int id);
         bool Save(XacNhanTroNgai loaiCanhBao, out string message);
+        IList<XacNhanTroNgai> khaosatfilter(string tungay, string denngay, int trangThaiKhaoSat, string donViQuanLy
+        , int pageindex, int pagesize, out int total);
         SoLuongKhaoSatModel GetSoLuongKhaoSat(string tungay, string denngay );
     }
 }

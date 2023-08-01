@@ -13,9 +13,7 @@ namespace EVN.Api.Model.Request
         [JsonProperty("filterKH")]
         public KhaoSatFilter FilterKH { get; set; }
 
-
     }
-
     public class KhaoSatFilter
     {
 

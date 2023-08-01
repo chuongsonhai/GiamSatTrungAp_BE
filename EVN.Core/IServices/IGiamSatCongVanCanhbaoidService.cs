@@ -25,7 +25,7 @@ namespace EVN.Core.IServices
         //bool Cancel(GiamSatCongVanCanhbaoid yeucau);
 
         GiamSatCongVanCanhbaoid GetbyMaYCau(string maYCau);
-
+        IList<GiamSatCongVanCanhbaoid> Filterkhaosat(string maycau);
         bool CancelYeuCauKhaoSat(GiamSatCongVanCanhbaoid congvan);
     }
 }
