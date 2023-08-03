@@ -201,33 +201,7 @@ namespace EVN.Api.Controllers
         }
 
 
-        //2.2 (GET)/dashboard/khaosat
-        //[JwtAuthentication]
-        [HttpPost]
-        [Route("dashboard/khaosat")]
-        public IHttpActionResult GetKhaosat(XacNhanTroNgaiFilterkhaosatRequest Request)
-        {
-
-            ResponseResult result = new ResponseResult();
-            try
-            {
-                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
-                var list = service.GetSoLuongKhaoSat(Request.Filterdashboadkhaosat.tuNgay, Request.Filterdashboadkhaosat.denNgay);
-
-                //  result.total = list.Count();
-                result.data = list;
-                result.success = true;
-                return Ok(result);
-
-            }
-            catch (Exception ex)
-            {
-                result.success = false;
-                var mess = ex.Message;
-                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
-                return Ok(result);
-            }
-        }
+     
 
         //2.6 (POST) /khaosat/phanhoi/add
         //[JwtAuthentication]

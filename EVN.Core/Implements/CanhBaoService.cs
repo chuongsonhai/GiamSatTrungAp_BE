@@ -95,19 +95,39 @@ namespace EVN.Core.Implements
 
         public IList<CanhBao> FilterBytrangThaiAndDViQuanLy(string fromDate, string toDate, int trangThai, string DonViDienLuc)
         {
-            DateTime tuNgayCast = DateTime.ParseExact(fromDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(toDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO == trangThai && p.DONVI_DIENLUC == DonViDienLuc);
-            return query.ToList();
-        }
+            if (DonViDienLuc == "-1")
+            {
+                DateTime tuNgayCast = DateTime.ParseExact(fromDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                DateTime denNgayCast = DateTime.ParseExact(toDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO == trangThai && "-1" == DonViDienLuc);
+                return query.ToList();
+            }
+            else
+            {
+                DateTime tuNgayCast = DateTime.ParseExact(fromDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                DateTime denNgayCast = DateTime.ParseExact(toDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO == trangThai && p.DONVI_DIENLUC == DonViDienLuc);
+                return query.ToList();
+            }
+            }
    
 
         public IList<CanhBao> FilterByMaYCauAndDViQuanLy(string fromDate, string toDate, string MaYeuCau, string DonViDienLuc)
         {
-            DateTime tuNgayCast = DateTime.ParseExact(fromDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(toDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.MA_YC == MaYeuCau && p.DONVI_DIENLUC == DonViDienLuc);
-            return query.ToList();
+            if (DonViDienLuc == "-1")
+            {
+                DateTime tuNgayCast = DateTime.ParseExact(fromDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                DateTime denNgayCast = DateTime.ParseExact(toDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.MA_YC == MaYeuCau && "-1" == DonViDienLuc);
+                return query.ToList();
+            }
+            else
+            {
+                DateTime tuNgayCast = DateTime.ParseExact(fromDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                DateTime denNgayCast = DateTime.ParseExact(toDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.MA_YC == MaYeuCau && p.DONVI_DIENLUC == DonViDienLuc);
+                return query.ToList();
+            }
         }
 
     }

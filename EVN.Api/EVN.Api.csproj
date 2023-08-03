@@ -302,6 +302,7 @@
     <Compile Include="Controllers\BienBanNTController.cs" />
     <Compile Include="Controllers\CauhinhcanhbaoController.cs" />
     <Compile Include="Controllers\CanhBaoController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EmailZaloController.cs" />
     <Compile Include="Controllers\PhanhoiTraodoiController.cs" />
     <Compile Include="Controllers\XacNhanTroNgaiController.cs" />
