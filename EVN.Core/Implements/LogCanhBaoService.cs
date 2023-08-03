@@ -23,7 +23,11 @@ namespace EVN.Core.Implements
             return Get(p => p.ID == idloai);
         }
 
-
+        public IList<LogCanhBao> GetByMaCanhBao(int MaCanhBao)
+        {
+            var query = Query.Where(p => p.CANHBAO_ID == MaCanhBao);
+            return query.ToList();
+        }
         //public IList<LogCanhBao> GetbyFilter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string donViQuanLy)
         //{
         //    DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);

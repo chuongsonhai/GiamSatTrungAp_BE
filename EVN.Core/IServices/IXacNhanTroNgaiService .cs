@@ -18,5 +18,8 @@ namespace EVN.Core.IServices
         IList<XacNhanTroNgai> khaosatfilter(string tungay, string denngay, int trangThaiKhaoSat, string donViQuanLy
         , int pageindex, int pagesize, out int total);
         SoLuongKhaoSatModel GetSoLuongKhaoSat(string tungay, string denngay );
+        IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai(int ID, int TrangThaiKhaoSat);
+        IList<XacNhanTroNgai> FilterByCanhBaoID(int ID);
+        XacNhanTroNgai UpdateKhaoid(int id);
     }
 }

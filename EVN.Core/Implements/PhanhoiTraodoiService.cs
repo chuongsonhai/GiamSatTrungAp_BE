@@ -28,12 +28,17 @@ namespace EVN.Core.Implements
             return query.ToList(); 
         }
 
-        public IList<PhanhoiTraodoi> GetbyFilter(int CANHBAO_ID,  int pageindex, int pagesize, out int total)
+        public IList<PhanhoiTraodoi> GetbyFilter(int ID,  int pageindex, int pagesize, out int total)
         {
-            var query = Query.Where(p => p.CANHBAO_ID == CANHBAO_ID);
+            var query = Query.Where(p => p.ID == ID);
             total = query.Count();
             query = query.OrderByDescending(p => p.ID);
             return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
+        }
+
+        public PhanhoiTraodoi Updatephanhoiid(int id)
+        {
+            return Get(p => p.ID == id);
         }
 
         public bool Save(PhanhoiTraodoi danhMucLoaiCanhBao, out string message)

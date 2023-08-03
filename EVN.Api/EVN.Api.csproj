@@ -366,6 +366,7 @@
     <Compile Include="Model\BienBanNTModel.cs" />
     <Compile Include="Model\BienBanTTModel.cs" />
     <Compile Include="Model\BoPhanModel.cs" />
+    <Compile Include="Model\FilterKhaoSatByCanhBaoRequest.cs" />
     <Compile Include="Model\Request\CanhBaoFilterRequestid.cs" />
     <Compile Include="Model\Request\CanhBaoFilterRequestdashboardcanhbao.cs" />
     <Compile Include="Model\Request\EmailModelFilter.cs" />
@@ -384,6 +385,7 @@
     <Compile Include="Model\ChuyenTiepModel.cs" />
     <Compile Include="Model\GiaNhomData.cs" />
     <Compile Include="Model\HoSoKemTheoModel.cs" />
+    <Compile Include="Model\XacNhanTroNgaiModelkhaosatid.cs" />
     <Compile Include="Model\XacNhanTroNgaiModel.cs" />
     <Compile Include="Model\KySoOTPRequest.cs" />
     <Compile Include="Model\OrganizationModel.cs" />

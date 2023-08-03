@@ -8,9 +8,10 @@ namespace EVN.Core.IServices
     {
         PhanhoiTraodoi GetbyNo(int idloai);
         List<PhanhoiTraodoi> Getbyid(int id);
-        IList<PhanhoiTraodoi> GetbyFilter(int CANHBAO_ID,  int pageindex, int pagesize, out int total);
+        IList<PhanhoiTraodoi> GetbyFilter(int ID,  int pageindex, int pagesize, out int total);
         
         bool Save(PhanhoiTraodoi loaiCanhBao, out string message);
+        PhanhoiTraodoi Updatephanhoiid(int id);
 
     }
 }

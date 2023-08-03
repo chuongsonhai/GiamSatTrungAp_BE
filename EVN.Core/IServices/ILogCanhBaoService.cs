@@ -12,6 +12,6 @@ namespace EVN.Core.IServices
         bool Save(LogCanhBao loaiCanhBao, out string message);
 
         IList<LogCanhBao> Filter(int id);
-
+        IList<LogCanhBao> GetByMaCanhBao(int MaCanhBao);
     }
 }

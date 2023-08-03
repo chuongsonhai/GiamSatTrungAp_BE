@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace EVN.Api.Model.Request
 {
-    public class CanhBaoRequest
+    public class ZaloModelFilter
     {
-        public CanhBaoRequest()
+        public ZaloModelFilter()
         {
         }
-        public CanhBaoRequest(CanhBao CanhBao) : base()
+        public ZaloModelFilter(CanhBao CanhBao) : base()
         {
             id = CanhBao.ID;
             maLoaiCanhBao = CanhBao.LOAI_CANHBAO_ID;

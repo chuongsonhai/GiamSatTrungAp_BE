@@ -42,6 +42,11 @@ namespace EVN.Core.Implements
             return Get(p => p.CANHBAO_ID == id);
         }
 
+        public XacNhanTroNgai UpdateKhaoid(int id)
+        {
+            return Get(p => p.ID == id);
+        }
+
         public IList<XacNhanTroNgai> khaosatfilter(string tungay, string denngay, int trangThaiKhaoSat, string donViQuanLy
         , int pageindex, int pagesize, out int total)
         {
@@ -70,7 +75,17 @@ namespace EVN.Core.Implements
         //    total = query.Count();
         //    return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
         //}
+        public IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai(int ID, int TrangThaiKhaoSat)
+        {
+            var query = Query.Where(p => p.CANHBAO_ID == ID && p.TRANGTHAI == TrangThaiKhaoSat);
+            return query.ToList();
+        }
 
+        public IList<XacNhanTroNgai> FilterByCanhBaoID(int ID)
+        {
+            var query = Query.Where(p => p.CANHBAO_ID == ID);
+            return query.ToList();
+        }
         public bool Save(XacNhanTroNgai lkhaosat, out string message)
         {
             message = "";

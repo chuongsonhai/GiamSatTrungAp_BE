@@ -10,6 +10,7 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -32,6 +33,12 @@ namespace EVN.Api.Controllers
                 int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
                 int total = 0;
                 DateTime synctime = DateTime.Today;
+                //var fromDate = DateTime.MinValue.ToString();
+                //var toDate = DateTime.MaxValue.ToString();
+                //if (!string.IsNullOrWhiteSpace(request.FilterKH.tuNgay))
+                //    fromDate = DateTime.ParseExact(request.FilterKH.tuNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                //if (!string.IsNullOrWhiteSpace(request.FilterKH.denNgay))
+                //    toDate = DateTime.ParseExact(request.FilterKH.denNgay, DateTimeParse.Format, null, DateTimeStyles.None);
                 ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
                 IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
                 List<object> resultList = new List<object>();
@@ -63,50 +70,7 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
-        //[JwtAuthentication]
-        [HttpPost]
-        [Route("khaosat/filter")]
-        public IHttpActionResult Filter(XacNhanTroNgaiFilterRequest request)
-        {
-            ResponseResult result = new ResponseResult();
-            try
-            {
-                int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
-                int total = 0;
-                DateTime synctime = DateTime.Today;
-                IXacNhanTroNgaiService khaosatService = IoC.Resolve<IXacNhanTroNgaiService>();
-                IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
-                List<object> resultList = new List<object>();
-                //var list = canhBaoService.GetbykhachhangFilter(request.Filter.tuNgay, request.Filter.denNgay, request.Filter.trangThaiKhaoSat,
-                //    request.Filter.maYeuCau, request.Filter.donViQuanLy, pageindex, request.Paginator.pageSize, out total);
-                var list = khaosatService.khaosatfilter(request.Filter.tuNgay, request.Filter.denNgay, request.Filter.trangThaiKhaoSat,
-                  request.Filter.donViQuanLy, pageindex, request.Paginator.pageSize, out total);
-                foreach (var canhbao in list)
-                {
-                   // var listLog = serviceyeucau.Filterkhaosat(canhbao.ID);
-                    //foreach (var kh in listLog)
-                    //{
-                    //    resultList.Add(new { kh.MaYeuCau, kh.TenKhachHang, kh.TrangThai });
-                    //}
-                }
-                result.total = total;
-                result.data = resultList;
-                result.success = true;
-                if (result.total == 0)
-                {
-                    result.message = "Không có dữ liệu";
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-                result.data = new List<XacNhanTroNgaiRequest>();
-                result.success = false;
-                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
-                return Ok(result);
-            }
-        }
+     
 
         //2.3 (GET) /khaosat/{id}
         //[JwtAuthentication]
@@ -214,13 +178,15 @@ namespace EVN.Api.Controllers
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
                 var item = new XacNhanTroNgai();
-                item.ID = model.idKhaoSat;
-                item.NOIDUNG_CAUHOI = model.noiDungKhaoSat;
-                item.PHANHOI_KH = model.khachHangPhanHoi;        
-                item.KETQUA = model.ketQuaKhaoSat;
-                item.NGUOI_KS = model.nguoiKhaoSat;
-                item.TRANGTHAI = model.trangThaiKhaoSat;
-                service.Update(item);
+               
+                service.UpdateKhaoid(model.idKhaoSat);
+                var khaosat = service.UpdateKhaoid(model.idKhaoSat);
+                khaosat.ID = model.idKhaoSat;
+                khaosat.NOIDUNG_CAUHOI = model.noiDungKhaoSat;
+                khaosat.PHANHOI_KH = model.khachHangPhanHoi;
+                khaosat.KETQUA = model.ketQuaKhaoSat;
+                khaosat.NGUOI_KS = model.nguoiKhaoSat;
+                khaosat.TRANGTHAI = model.trangThaiKhaoSat;
                 service.CommitChanges();
                 result.success = true;
                 return Ok(result);
@@ -306,12 +272,12 @@ namespace EVN.Api.Controllers
             try
             {
                 IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
-                var item = new PhanhoiTraodoi();
-                item.ID = model.ID;
-                item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
-                item.NGUOI_GUI = model.NGUOI_GUI;
-                item.TRANGTHAI_XOA = 1;
-                service.Update(item);
+               // var item = new PhanhoiTraodoi();
+               // service.Updatephanhoiid(model.ID);
+                var phanhoi = service.Updatephanhoiid(model.ID);
+                phanhoi.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
+                phanhoi.NGUOI_GUI = model.NGUOI_GUI;
+                phanhoi.TRANGTHAI_XOA = 1;
                 service.CommitChanges();
                 result.success = true;
                 return Ok(result);
@@ -356,6 +322,115 @@ namespace EVN.Api.Controllers
                 result.data = new List<PhanhoiTraodoiRequest>();
                 result.success = false;
                 result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        //2.2 (GET) /khaosat/filter
+        [HttpPost]
+        [Route("khaosat/filter")]
+        public IHttpActionResult Filter(FilterKhaoSatByCanhBaoRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                //var fromDate = DateTime.MinValue;
+                //var toDate = DateTime.MaxValue;
+                //if (!string.IsNullOrWhiteSpace(request.tuNgay))
+                //    fromDate = DateTime.ParseExact(request.tuNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                //if (!string.IsNullOrWhiteSpace(request.denNgay))
+                //    toDate = DateTime.ParseExact(request.denNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                IXacNhanTroNgaiService xacMinhTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                ICongVanYeuCauService congVanYeuCauService = IoC.Resolve<ICongVanYeuCauService>();
+                // lọc cảnh báo theo thời gian, mã đơn vị quản lý, trạng thái 
+                var list = canhBaoService.FilterByMaYCauAndDViQuanLy(request.tuNgay, request.denNgay, request.MaYeuCau, request.donViQuanLy);
+
+                //danh sách kết quả
+                var resultList = new List<object>();
+
+
+                foreach (var canhbao in list)
+                {
+                    //lọc ra các thông tin liên quan đến khảo sát
+                    var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai(canhbao.ID, request.TrangThaiKhaoSat);
+                    var listKhaoSatFilter = new List<object>();
+                    foreach (var khaosat in listKhaoSat)
+                    {
+                        listKhaoSatFilter.Add(new { khaosat.ID, khaosat.TRANGTHAI, khaosat.THOIGIAN_KHAOSAT, khaosat.KETQUA });
+                    }
+
+                    //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
+                    var congVanYeuCau = congVanYeuCauService.GetbyMaYCau(canhbao.MA_YC);
+
+                    //tạo ra response API
+                    var obj = new { congVanYeuCau.MaYeuCau, congVanYeuCau.TenKhachHang, listKhaoSatFilter, congVanYeuCau.TrangThai };
+                    resultList.Add(obj);
+                }
+                result.data = resultList;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.data = new List<XacNhanTroNgai>();
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        //2.9 (GET) /khaosat/log/filter
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("khaosat/log/filter")]
+        public IHttpActionResult FilterLog([FromBody] FilterKhaoSatByCanhBaologRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                //var fromDate = DateTime.MinValue;
+                //var toDate = DateTime.MaxValue;
+                //if (!string.IsNullOrWhiteSpace(request.tuNgay))
+                //    fromDate = DateTime.ParseExact(request.tuNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                //if (!string.IsNullOrWhiteSpace(request.denNgay))
+                //    toDate = DateTime.ParseExact(request.denNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                IXacNhanTroNgaiService xacMinhTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                ILogCanhBaoService logCanhBaoService = IoC.Resolve<ILogCanhBaoService>();
+                var list = canhBaoService.FilterBytrangThaiAndDViQuanLy(request.tuNgay, request.denNgay, request.trangThai, request.donViQuanLy);
+                var resultList = new List<object>();
+                foreach (var canhbao in list)
+                {
+                    //lay ra danh sach khao sat ung voi moi canh bao va add vao list khao sat filter
+                    var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoID(canhbao.ID);
+                    var listKhaoSatFilter = new List<object>();
+                    foreach (var khaosat in listKhaoSat)
+                    {
+                        listKhaoSatFilter.Add(new { khaosat.ID, khaosat.NOIDUNG_CAUHOI });
+                    }
+
+                    //lay ra danh sach Log canh bao ung voi moi canh bao va add vao list Log canh bao filter
+                    var listLog = logCanhBaoService.GetByMaCanhBao(canhbao.ID);
+                    var listLogCanhBao = new List<object>();
+                    foreach (var log in listLog)
+                    {
+                        listLogCanhBao.Add(new { log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN });
+                    }
+
+                    var obj = new { canhbao.DONVI_DIENLUC, canhbao.TRANGTHAI_CANHBAO, listKhaoSatFilter, listLogCanhBao };
+                    resultList.Add(obj);
+                }
+                result.data = resultList;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
                 return Ok(result);
             }
         }
