@@ -1422,7 +1422,7 @@ namespace EVN.Core.Implements
 
             var result = new List<ThoiGianCapDienModel>();
             var listDonVi = organizationService.GetAll();
-            if("PD" == maDViQLy)
+            if("-1" == maDViQLy)
             {
                 foreach (var dv in listDonVi)
                 {
