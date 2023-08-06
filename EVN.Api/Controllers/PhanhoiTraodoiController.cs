@@ -22,7 +22,6 @@ namespace EVN.Api.Controllers
     public class PhanhoiTraodoiController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(PhanhoiTraodoiController));
-        
         //[JwtAuthentication]
         [HttpPost]
         [Route("filter")]
@@ -170,7 +169,6 @@ namespace EVN.Api.Controllers
             }
         }
 
-        
 
         //[JwtAuthentication]
         [HttpGet]

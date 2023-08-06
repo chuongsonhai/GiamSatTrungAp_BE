@@ -9,7 +9,7 @@
 		<property name="MaYeuCau" column="MaYeuCau" type="string"/>
 		<property name="TenKhachHang" column="TenKhachHang" type="string"/>
 		<property name="DienThoai" column="DienThoai" type="string"/>
-		<property name="TrangThai" column="TrangThai"/>
+		<property name="TrangThai" column="TrangThai" type="int"/>
 		
 		<!--<property name="MaKHang" column="MaKHang" type="string"/>
 		<property name="MaDDoDDien" column="MaDDoDDien" type="string"/>

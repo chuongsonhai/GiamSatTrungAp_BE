@@ -133,6 +133,7 @@
     <Compile Include="Domain\BienBanKT.cs" />
     <Compile Include="Domain\BienBanDN.cs" />
     <Compile Include="Domain\BienBanKS.cs" />
+    <Compile Include="Domain\Xacnhantrongaikhaosatfilter.cs" />
     <Compile Include="Domain\GiamSatCongVanCanhbaoid.cs" />
     <Compile Include="Domain\GiamsatCanhbaoCanhbaoid.cs" />
     <Compile Include="Domain\LogCanhBao.cs" />
@@ -140,7 +141,7 @@
     <Compile Include="Domain\giamSatCapDien.cs" />
     <Compile Include="Domain\GiamSatPhanhoiCanhbaoid.cs" />
     <Compile Include="Domain\PhanhoiTraodoi.cs" />
-    <Compile Include="Domain\KhaoSat.cs" />
+    <Compile Include="Domain\XacNhanTroNgai.cs" />
     <Compile Include="Domain\CanhBao.cs" />
     <Compile Include="Domain\DanhMucLoaiCanhBao.cs" />
     <Compile Include="Domain\BienBanNT.cs" />
@@ -177,6 +178,8 @@
     <Compile Include="Domain\ThanhPhanKS.cs" />
     <Compile Include="Domain\ThanhPhanKT.cs" />
     <Compile Include="Domain\ThoaThuanTyLe.cs" />
+    <Compile Include="Domain\Email.cs" />
+    <Compile Include="Domain\Zalo.cs" />
     <Compile Include="Domain\YCauNghiemThu.cs" />
     <Compile Include="Domain\CongVanYeuCau.cs" />
     <Compile Include="Domain\DanhMuc\CongViec.cs" />
@@ -206,11 +209,13 @@
     <Compile Include="Domain\ThoaThuanDamBao.cs" />
     <Compile Include="Domain\TramBienAp.cs" />
     <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Implements\EmailService.cs" />
+    <Compile Include="Implements\ZaloService.cs" />
     <Compile Include="Implements\GiamSatCanhBaoCanhbaoidService.cs" />
     <Compile Include="Implements\GiamSatCongVanCanhbaoidService.cs" />
     <Compile Include="Implements\GiamsatcapdienCanhBaoidService.cs" />
     <Compile Include="Implements\CanhBaoService.cs" />
-    <Compile Include="Implements\KhaoSatService.cs" />
+    <Compile Include="Implements\XacNhanTroNgaiService.cs" />
     <Compile Include="Implements\giamSatCapDienService.cs" />
     <Compile Include="Implements\LogCanhBaoService.cs" />
     <Compile Include="Implements\LoaiCanhBaoService.cs" />
@@ -234,11 +239,13 @@
     <Compile Include="Implements\ReportService.cs" />
     <Compile Include="Implements\ThongBaoService.cs" />
     <Compile Include="Implements\TThaiYeuCauService.cs" />
+    <Compile Include="IServices\IZaloService.cs" />
+    <Compile Include="IServices\IEmailService.cs" />
     <Compile Include="IServices\IGiamSatCongVanCanhbaoidService.cs" />
     <Compile Include="IServices\IGiamSatCanhBaoCanhbaoidService.cs" />
     <Compile Include="IServices\IGiamsatcapdienCanhBaoidService.cs" />
     <Compile Include="IServices\ICanhBaoService.cs" />
-    <Compile Include="IServices\IKhaoSatService .cs" />
+    <Compile Include="IServices\IXacNhanTroNgaiService .cs" />
     <Compile Include="IServices\IgiamSatCapDienService.cs" />
     <Compile Include="IServices\ILogCanhBaoService.cs" />
     <Compile Include="IServices\IGiamSatPhanhoiCanhbaoidService.cs" />
@@ -269,6 +276,7 @@
     <Compile Include="Models\BaoCaoTTDN.cs" />
     <Compile Include="Models\ChiTietTCDNQuaHan.cs" />
     <Compile Include="Models\KySoOTPModel.cs" />
+    <Compile Include="Models\SoLuongGuiModel.cs" />
     <Compile Include="Models\Thoigiancapdien.cs" />
     <Compile Include="Models\ThoiGianCapDienModel.cs" />
     <Compile Include="Models\SoLuongKhaoSatModel.cs" />
@@ -561,7 +569,7 @@
     <EmbeddedResource Include="Domain\CanhBao.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Domain\KhaoSat.hbm.xml" />
+    <EmbeddedResource Include="Domain\XacNhanTroNgai.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Domain\PhanhoiTraodoi.hbm.xml" />
@@ -583,6 +591,15 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Domain\GiamSatCongVanCanhbaoid.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\Xacnhantrongaikhaosatfilter.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\Email.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\Zalo.hbm - Copy.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

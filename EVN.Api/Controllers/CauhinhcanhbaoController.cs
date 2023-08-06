@@ -26,8 +26,55 @@ namespace EVN.Api.Controllers
         //2.10	(GET) /cauhinhcanhbao/filter
         //[JwtAuthentication]
         [HttpPost]
-        [Route("filter")]
-        public IHttpActionResult cauhinhcanhbao(LoaiCanhBaoFilterRequest request)
+        [Route("log/filter")]
+        public IHttpActionResult FilterLog([FromBody] CauHinhCanhBaoLogFilterRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+                int total = 0;
+                //DateTime synctime = DateTime.Today;
+                //var fromDate = DateTime.MinValue;
+                //var toDate = DateTime.MaxValue;
+                //if (!string.IsNullOrWhiteSpace(request.Filter.tuNgay))
+                //    fromDate = DateTime.ParseExact(request.Filter.tuNgay, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                //if (!string.IsNullOrWhiteSpace(request.Filter.denNgay))
+                //    toDate = DateTime.ParseExact(request.Filter.denNgay, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
+                ILogCanhBaoService service = IoC.Resolve<ILogCanhBaoService>();
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                List<object> resultList = new List<object>();
+                var listCanhBao = canhBaoService.Filter1(request.Filter.fromDate, request.Filter.toDate, request.Filter.maLoaiCanhBao, request.Filter.trangThai, request.Filter.donViQuanLy, pageindex, request.Paginator.pageSize, out total);
+                foreach (var canhbao in listCanhBao)
+                {
+                    IList<LogCanhBao> listLog = service.Filter(canhbao.ID);
+                    foreach (var log in listLog)
+                    {
+                        resultList.Add(new { log.ID, canhbao.LOAI_CANHBAO_ID, canhbao.NOIDUNG, log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, canhbao.TRANGTHAI_CANHBAO });
+                    }
+                }
+                result.total = total;
+                result.data = resultList;
+                result.success = true;
+                if (result.total == 0)
+                {
+                    result.message = "Không có dữ liệu";
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.data = null;
+                return Ok(result);
+            }
+        }
+        //2.10	(GET) /cauhinhcanhbao/filter
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("cauhinhcanhbao/filter")]
+        public IHttpActionResult cauhinhcanhbao(CauhinhcanhbaoFilterRequest request)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -58,7 +105,6 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
-
 
         //2.11	(POST) /cauhinhcanhbao/add
         //[JwtAuthentication]
@@ -156,7 +202,7 @@ namespace EVN.Api.Controllers
 
         //[JwtAuthentication]
         [HttpPost]
-        [Route("log/filter")]
+        [Route("log/filter2")]
         public IHttpActionResult logFilter(LogCanhBaofilterRequest request)
         {
             ResponseResult result = new ResponseResult();
@@ -189,6 +235,7 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
+
 
     }
 }

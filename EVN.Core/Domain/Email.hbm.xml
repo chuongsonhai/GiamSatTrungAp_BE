@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.Email, EVN.Core" table="GSCD_DATA_EMAIL_ALL_TEST" lazy="true" >
+		<id name="ID" column="ID" type="int"></id>
+		<property name="MA_DVIQLY" column="MA_DVIQLY" type="string"/>
+		<property name="MA_KHANG" column="MA_KHANG" type="string"/>
+		<property name="MA_DVU" column="MA_DVU" type="char"/>
+		<property name="EMAIL" column="EMAIL" type="char"/>
+		<property name="NOI_DUNG" column="NOI_DUNG" type="char"/>
+		<property name="TINH_TRANG" column="TINH_TRANG" type="int"/>
+		<property name="NGAY_TAO" column="NGAY_TAO" type="Date"/>
+		<property name="NGUOI_TAO" column="NGUOI_TAO" type="char"/>
+		<property name="NGAY_SUA" column="NGAY_SUA" type="Date"/>
+		<property name="NGUOI_SUA" column="NGUOI_SUA" type="char"/>
+		<property name="ID_HDON" column="ID_HDON" type="int"/>
+		<property name="TIEU_DE" column="TIEU_DE" type="char"/>
+	</class>
+</hibernate-mapping>
+

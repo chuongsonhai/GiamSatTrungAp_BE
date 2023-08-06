@@ -14,13 +14,13 @@ namespace EVN.Api.Model.Request
         }
         public Cauhinhcanhbao(DanhMucLoaiCanhBao loaiCanhBao) : base()
         {
-
-            tenLoaiCanhbao = loaiCanhBao.TENLOAICANHBAO;
             maLoaiCanhBao = loaiCanhBao.ID;
+            tenLoaiCanhbao = loaiCanhBao.TENLOAICANHBAO;
             chuKy = loaiCanhBao.CHUKYCANHBAO;
             thoiGianChayCuoi = loaiCanhBao.THOIGIANCHAYCUOI;
             trangThai = loaiCanhBao.TRANGTHAI;
         }
+
         public int maLoaiCanhBao { get; set; }
         public string tenLoaiCanhbao { get; set; }
         public int chuKy { get; set; }
