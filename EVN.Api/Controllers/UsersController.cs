@@ -83,7 +83,7 @@ namespace EVN.Api.Controllers
                     return Ok(result);
                 }
                 item.email = model.email;
-
+                item.phoneNumber = model.phoneNumber;
                 item.orgId = org.orgId.ToString();
                 item.maDViQLy = org.orgCode;
 

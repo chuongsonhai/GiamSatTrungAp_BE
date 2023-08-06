@@ -8,7 +8,7 @@
 		</id>
 		<property name="TENLOAICANHBAO" column="TENLOAICANHBAO" type="string"/>
 		<property name="CHUKYCANHBAO" column="CHUKYCANHBAO" type="int"/>
-		<property name="THOIGIANCHAYCUOI" column="THOIGIANCHAYCUOI" type="string"/>
+		<property name="THOIGIANCHAYCUOI" column="THOIGIANCHAYCUOI" type="DateTime"/>
 		<property name="TRANGTHAI" column="TRANGTHAI" type="int"/>
 
 	</class>

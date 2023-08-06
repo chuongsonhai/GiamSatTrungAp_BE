@@ -44,10 +44,10 @@ namespace EVN.Core.Implements
 
                 DvTienTrinh tientrinh = new DvTienTrinh();
                 tientrinh.MA_BPHAN_GIAO = item.MaDViQLy;
-                tientrinh.MA_NVIEN_GIAO = userdata.maNVien;
+                //tientrinh.MA_NVIEN_GIAO = userdata.maNVien;
 
                 tientrinh.MA_BPHAN_NHAN = item.MaDViQLy;
-                tientrinh.MA_NVIEN_NHAN = userdata.maNVien;
+                //tientrinh.MA_NVIEN_NHAN = userdata.maNVien;
 
                 if (ttrinhtruoc != null)
                 {
@@ -77,8 +77,8 @@ namespace EVN.Core.Implements
                 tientrinh.NGAY_TAO = DateTime.Now;
                 tientrinh.NGAY_SUA = DateTime.Now;
 
-                tientrinh.NGUOI_TAO = userdata.maNVien;
-                tientrinh.NGUOI_SUA = userdata.maNVien;
+                //tientrinh.NGUOI_TAO = userdata.maNVien;
+                //tientrinh.NGUOI_SUA = userdata.maNVien;
                 tientrinhsrv.CreateNew(tientrinh);
 
                 congvan.TrangThai = TrangThaiNghiemThu.Huy;

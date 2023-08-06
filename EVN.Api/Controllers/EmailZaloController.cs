@@ -55,6 +55,56 @@ namespace EVN.Api.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("sendnotification")]
+        public IHttpActionResult Send()
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+            IEmailService service = IoC.Resolve<IEmailService>();
+            IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
+            IUserdataService userdataService = IoC.Resolve<IUserdataService>();
+            try
+            {
+                
+                var listCB = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO == 1).ToList();
+                foreach (var item in listCB)
+                {
+                    IList<UserNhanCanhBao> listNguoiNhan = userNhanCanhBaoService.GetbyMaDviQly(item.DONVI_DIENLUC);
+                    foreach (var nguoiNhan in listNguoiNhan)
+                    {
+                        var user = userdataService.Getbykey(nguoiNhan.USER_ID);
+                        Email email = new Email();
+                        email.MA_DVIQLY = item.DONVI_DIENLUC;
+                        email.MA_DVU = "GSCDTA";
+                        email.NOI_DUNG = item.NOIDUNG;
+                        email.NGAY_TAO = DateTime.Now;
+                        email.NGUOI_TAO = "admin";
+                        email.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                        email.TINH_TRANG = 1;
+                        email.EMAIL = user.email;
+
+                        service.CreateNew(email);
+                    }
+                    item.TRANGTHAI_CANHBAO = 2;
+                    CBservice.Update(item);
+                }
+
+                
+                service.CommitChanges();
+                result.success = true;
+                result.message = "Thêm mới thành công";
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
         //[HttpPost]
         //[Route("zalo/add")]
         //public IHttpActionResult AddZalo([FromBody] ZaloModelFilter request)

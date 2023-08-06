@@ -38,6 +38,7 @@ namespace EVN.Core
         Huy = 13
     }
 
+
     public static class LoaiHSoCode
     {
         public static string CV_DN = "55";

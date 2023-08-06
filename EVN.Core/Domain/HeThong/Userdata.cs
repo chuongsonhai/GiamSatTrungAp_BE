@@ -12,6 +12,7 @@ namespace EVN.Core.Domain
         public virtual string username { get; set; }
         public virtual string fullName { get; set; }
         public virtual string email { get; set; }
+        public virtual string phoneNumber { get; set; }
         public virtual int deptId { get; set; }
         public virtual string orgId { get; set; }
         public virtual string staffCode { get; set; }

@@ -24,7 +24,7 @@ namespace EVN.Core.Implements
 
         public PhanhoiTraodoi GetbyPhanHoiId(int id)
         {
-            return Get(p => p.PHANHOI_TRAODOI_ID == id);
+            return Get(p => p.ID == id);
         }
 
         public List<PhanhoiTraodoi> Getbyid(int id)

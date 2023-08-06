@@ -15,16 +15,16 @@ namespace EVN.Api.Model
         public int ID { get; set; }
         public string MA_DVIQLY { get; set; }
         public string MA_KHANG { get; set; }
-        public char MA_DVU { get; set; }
-        public char EMAIL { get; set; }
-        public char NOI_DUNG { get; set; }
+        public string MA_DVU { get; set; }
+        public string EMAIL { get; set; }
+        public string NOI_DUNG { get; set; }
         public int TINH_TRANG { get; set; }
         public DateTime NGAY_TAO { get; set; }
-        public char NGUOI_TAO { get; set; }
+        public string NGUOI_TAO { get; set; }
         public DateTime NGAY_SUA { get; set; }
-        public char NGUOI_SUA { get; set; }
+        public string NGUOI_SUA { get; set; }
         public int ID_HDON { get; set; }
-        public char TIEU_DE { get; set; }
+        public string TIEU_DE { get; set; }
 
 
     }

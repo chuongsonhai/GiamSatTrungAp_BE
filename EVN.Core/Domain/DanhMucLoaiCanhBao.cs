@@ -11,7 +11,7 @@ namespace EVN.Core.Domain
         public virtual int ID { get; set; }
         public virtual string TENLOAICANHBAO { get; set; }
         public virtual int CHUKYCANHBAO { get; set; }
-        public virtual string THOIGIANCHAYCUOI { get; set; }
+        public virtual DateTime THOIGIANCHAYCUOI { get; set; }
         public virtual int TRANGTHAI { get; set; }
     }
 }

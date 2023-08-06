@@ -139,7 +139,7 @@ namespace EVN.Api.Controllers
                 string data = httpRequest.Form["data"];
                 PhanhoiTraodoiRequest model = JsonConvert.DeserializeObject<PhanhoiTraodoiRequest>(data);
                 var item = new PhanhoiTraodoi();
-                item = service.GetbyPhanHoiId(model.PHANHOI_TRAODOI_ID);
+                item = service.GetbyPhanHoiId(model.ID);
                 item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
                 item.THOIGIAN_GUI = DateTime.Now;
                 item.TRANGTHAI_XOA = 0;

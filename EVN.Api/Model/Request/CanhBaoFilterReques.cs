@@ -18,7 +18,7 @@ namespace EVN.Api.Model.Request
     {
         public string keyword { get; set; } = string.Empty;
         public int trangThai { get; set; } = 1;
-        public int SoLanGui { get; set; } = 1;
+        public int SoLanGui { get; set; } = 0;
         public int maLoaiCanhBao { get; set; } = 1;
         public string fromdate { get; set; } = string.Empty;
         public string todate { get; set; } = string.Empty;

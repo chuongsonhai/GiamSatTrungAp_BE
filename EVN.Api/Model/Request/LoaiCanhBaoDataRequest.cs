@@ -23,7 +23,7 @@ namespace EVN.Api.Model.Request
         public int ID { get; set; }
         public string TENLOAICANHBAO { get; set; }
         public int CHUKYCANHBAO { get; set; }
-        public string THOIGIANCHAYCUOI { get; set; }
+        public DateTime THOIGIANCHAYCUOI { get; set; }
         public int TRANGTHAI { get; set; }
 
     }

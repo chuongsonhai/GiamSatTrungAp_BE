@@ -18,6 +18,7 @@ namespace EVN.Api.Model
             username = user.username;
             fullName = user.fullName;
             email = user.email;
+            phoneNumber = user.phoneNumber;
             maDViQLy = user.maDViQLy;
             maBPhan = user.maBPhan;
             maNVien = user.maNVien;
@@ -30,6 +31,7 @@ namespace EVN.Api.Model
         public virtual string username { get; set; }
         public virtual string fullName { get; set; }
         public virtual string email { get; set; }
+        public virtual string phoneNumber { get; set; }
 
         public virtual string maDViQLy { get; set; }
         public virtual string maBPhan { get; set; }
@@ -43,6 +45,7 @@ namespace EVN.Api.Model
         public Userdata ToEntity(Userdata entity)
         {
             entity.email = email;
+            entity.phoneNumber = phoneNumber;
             entity.fullName = fullName;
             entity.staffCode = maNVien;
             entity.maNVien = maNVien;

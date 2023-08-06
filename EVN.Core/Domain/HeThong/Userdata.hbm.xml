@@ -20,7 +20,8 @@
 		<property name="NotifyId" column="NotifyId" type="string" />
 		<property name="password" column="password" type="string" />
 		<property name="passwordsalt" column="passwordsalt" type="string" />
-		<property name="isactive" column="isactive" type="Boolean" />
+    <property name="isactive" column="isactive" type="Boolean" />
+    <property name="phoneNumber" column="PHONENUMBER" type="string" />
 		
 		<bag name="Roles" table="User_Role" lazy="true">
 			<key column="userid" />

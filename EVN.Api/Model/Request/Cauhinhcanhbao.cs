@@ -24,7 +24,7 @@ namespace EVN.Api.Model.Request
         public int maLoaiCanhBao { get; set; }
         public string tenLoaiCanhbao { get; set; }
         public int chuKy { get; set; }
-        public string thoiGianChayCuoi { get; set; }
+        public DateTime thoiGianChayCuoi { get; set; }
         public int trangThai { get; set; }
 
     }

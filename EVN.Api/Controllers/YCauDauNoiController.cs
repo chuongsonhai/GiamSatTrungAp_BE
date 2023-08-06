@@ -330,6 +330,10 @@ namespace EVN.Api.Controllers
             {
                 ICongVanYeuCauService service = IoC.Resolve<ICongVanYeuCauService>();
                 var item = service.GetbyMaYCau(model.maYCau);
+                
+                item.LyDoHuy = model.noiDung;
+                result.success = service.Cancel(item);
+
                 if (item.TrangThai == TrangThaiCongVan.Huy)
                 {
                     ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
@@ -340,8 +344,8 @@ namespace EVN.Api.Controllers
                     canhbao.THOIGIANGUI = DateTime.Now;
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = item.MaDViQLy;
-                    canhbao.NOIDUNG = "Cảnh báo việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối"+ ";Mã Yêu cầu:"+ item.MaYeuCau + ";Đơn vị quản lý:"+item.MaDViQLy;
-                    
+                    canhbao.NOIDUNG = "Cảnh báo việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối" + ";Mã Yêu cầu:" + item.MaYeuCau + ";Đơn vị quản lý:" + item.MaDViQLy;
+
                     ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                     string message = "";
                     LogCanhBao logCB = new LogCanhBao();
@@ -362,8 +366,8 @@ namespace EVN.Api.Controllers
                     result.success = true;
                     return Ok(result);
                 }
-                item.LyDoHuy = model.noiDung;
-                result.success = service.Cancel(item);
+
+
                 return Ok(result);
             }
             catch (Exception ex)

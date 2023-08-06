@@ -44,13 +44,38 @@ namespace EVN.Api.Controllers
                 ILogCanhBaoService service = IoC.Resolve<ILogCanhBaoService>();
                 ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
                 List<object> resultList = new List<object>();
-                var listCanhBao = canhBaoService.Filter1(request.Filter.fromDate, request.Filter.toDate, request.Filter.maLoaiCanhBao, request.Filter.trangThai, request.Filter.donViQuanLy, pageindex, request.Paginator.pageSize, out total);
+                var listCanhBao = canhBaoService.GetAllCanhBao( out total);
                 foreach (var canhbao in listCanhBao)
                 {
                     IList<LogCanhBao> listLog = service.Filter(canhbao.ID);
+                    string textTrangThai = "";
+                    if(canhbao.TRANGTHAI_CANHBAO == 1)
+                    {
+                        textTrangThai = "Mới tạo";
+                    } else if(canhbao.TRANGTHAI_CANHBAO == 2)
+                    {
+                        textTrangThai = "Đã gửi thông báo";
+                    }
+                    else if (canhbao.TRANGTHAI_CANHBAO == 3)
+                    {
+                        textTrangThai = "Đã tiếp nhận theo dõi";
+                    }
+                    else if (canhbao.TRANGTHAI_CANHBAO == 4)
+                    {
+                        textTrangThai = "Đã chuyển đơn vị xử lý";
+                    }
+                    else if (canhbao.TRANGTHAI_CANHBAO == 5)
+                    {
+                        textTrangThai = "Gửi lại cảnh báo";
+                    }
+                    else if (canhbao.TRANGTHAI_CANHBAO == 6)
+                    {
+                        textTrangThai = "Kết thúc cảnh báo";
+                    }
+
                     foreach (var log in listLog)
                     {
-                        resultList.Add(new { log.ID, canhbao.LOAI_CANHBAO_ID, canhbao.NOIDUNG, log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, canhbao.TRANGTHAI_CANHBAO });
+                        resultList.Add(new { log.ID,CANHBAO_ID= canhbao.ID , canhbao.LOAI_CANHBAO_ID, canhbao.NOIDUNG, log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, TRANGTHAI_CANHBAO= textTrangThai });
                     }
                 }
                 result.total = total;
@@ -73,7 +98,7 @@ namespace EVN.Api.Controllers
         //2.10	(GET) /cauhinhcanhbao/filter
         //[JwtAuthentication]
         [HttpPost]
-        [Route("cauhinhcanhbao/filter")]
+        [Route("filter")]
         public IHttpActionResult cauhinhcanhbao(CauhinhcanhbaoFilterRequest request)
         {
             ResponseResult result = new ResponseResult();
@@ -201,40 +226,40 @@ namespace EVN.Api.Controllers
 
 
         //[JwtAuthentication]
-        [HttpPost]
-        [Route("log/filter2")]
-        public IHttpActionResult logFilter(LogCanhBaofilterRequest request)
-        {
-            ResponseResult result = new ResponseResult();
-            try
-            {
-                // int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
-                // int total = 0;
-                DateTime synctime = DateTime.Today;
-                ILogCanhBaoService service = IoC.Resolve<ILogCanhBaoService>();
-                var list = service.GetbyFilter(request.Filter.canhbaoID, request.Filter.trangThai, request.Filter.datacu,
-                    request.Filter.datamoi, request.Filter.tungay, request.Filter.denngay, request.Filter.nguoithuchien);
-                IList<LogCanhBaoRequest> data = new List<LogCanhBaoRequest>();
+        //[HttpPost]
+        //[Route("log/filter2")]
+        //public IHttpActionResult logFilter(LogCanhBaofilterRequest request)
+        //{
+        //    ResponseResult result = new ResponseResult();
+        //    try
+        //    {
+        //        // int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+        //        // int total = 0;
+        //        DateTime synctime = DateTime.Today;
+        //        ILogCanhBaoService service = IoC.Resolve<ILogCanhBaoService>();
+        //        var list = service.GetbyFilter(request.Filter.canhbaoID, request.Filter.trangThai, request.Filter.datacu,
+        //            request.Filter.datamoi, request.Filter.tungay, request.Filter.denngay, request.Filter.nguoithuchien);
+        //        IList<LogCanhBaoRequest> data = new List<LogCanhBaoRequest>();
 
-                foreach (var item in list)
-                {
-                    data.Add(new LogCanhBaoRequest(item));
+        //        foreach (var item in list)
+        //        {
+        //            data.Add(new LogCanhBaoRequest(item));
 
-                }
-                // result.total = list.Count();
-                result.data = data;
-                result.success = true;
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-                result.data = new List<LogCanhBao>();
-                result.success = false;
-                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
-                return Ok(result);
-            }
-        }
+        //        }
+        //        // result.total = list.Count();
+        //        result.data = data;
+        //        result.success = true;
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Error(ex);
+        //        result.data = new List<LogCanhBao>();
+        //        result.success = false;
+        //        result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+        //        return Ok(result);
+        //    }
+        //}
 
 
     }
