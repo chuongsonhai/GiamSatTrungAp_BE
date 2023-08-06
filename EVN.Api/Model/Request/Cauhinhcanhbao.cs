@@ -16,7 +16,7 @@ namespace EVN.Api.Model.Request
         {
 
             tenLoaiCanhbao = loaiCanhBao.TENLOAICANHBAO;
-         //   maLoaiCanhBao = loaiCanhBao.ID;
+            maLoaiCanhBao = loaiCanhBao.ID;
             chuKy = loaiCanhBao.CHUKYCANHBAO;
             thoiGianChayCuoi = loaiCanhBao.THOIGIANCHAYCUOI;
             trangThai = loaiCanhBao.TRANGTHAI;

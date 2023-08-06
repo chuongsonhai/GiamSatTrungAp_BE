@@ -33,6 +33,7 @@ namespace EVN.Api.Controllers
 
                 IReportService service = IoC.Resolve<IReportService>();
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 var list = service.TinhThoiGian();
                 
                 foreach(var item in list)
@@ -71,12 +72,24 @@ namespace EVN.Api.Controllers
                             canhbao.NOIDUNG = " Thời gian thực hiện cấp điện mới trung áp; Mã Yêu cầu:" + item.MaYeuCau + ";Tên KH:" + item.NguoiYeuCau + ";SDT:" + item.DienThoai;
                             break;
                     }
+                    string message = "";
+                    LogCanhBao logCB = new LogCanhBao();
+                    if(CBservice.CreateCanhBao(canhbao,out message))
+                    {
+                        logCB.CANHBAO_ID = canhbao.ID;
+                        logCB.DATA_MOI = JsonConvert.SerializeObject(canhbao);
+                        logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                        logCB.THOIGIAN = DateTime.Now;
+                        logCB.TRANGTHAI = 1;
+                        LogCBservice.CreateNew(logCB);
+                        LogCBservice.CommitChanges();
+                    } else
+                    {
+                        throw new Exception(message);
+                    }
 
-                    CBservice.CreateNew(canhbao);
-                    
-                    
                 }
-                service.CommitChanges();
+                
                 result.success = true;
                 return Ok(result);
             }
@@ -92,10 +105,6 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
-
-
-
-
 
         //1.(GET) dashboard/canhbao
         //[JwtAuthentication]
@@ -336,7 +345,7 @@ namespace EVN.Api.Controllers
                 item.DONVI_QLY = model.DONVI_QLY;
                 item.THOIGIAN_GUI = model.THOIGIAN_GUI;
                 item.TRANGTHAI_XOA = model.TRANGTHAI_XOA;
-                item.PHANHOI_TRAODOI_ID = model.PHANHOI_TRAODOI_ID;
+                item.ID = model.PHANHOI_TRAODOI_ID;
                 item.FILE_DINHKEM = model.FILE_DINHKEM;
                 service.CreateNew(item);
                 service.CommitChanges();

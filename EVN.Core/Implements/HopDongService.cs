@@ -3,6 +3,7 @@ using EVN.Core.IServices;
 using EVN.Core.Repository;
 using FX.Core;
 using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,6 +85,34 @@ namespace EVN.Core.Implements
                 item.TrangThai = 0;
 
                 Save(item);
+
+                ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                var canhbao = new CanhBao();
+                canhbao.LOAI_CANHBAO_ID = 16;
+                canhbao.LOAI_SOLANGUI = 1;
+                canhbao.MA_YC = congvan.MaYeuCau;
+                canhbao.THOIGIANGUI = DateTime.Now;
+                canhbao.TRANGTHAI_CANHBAO = 1;
+                canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
+                canhbao.NOIDUNG = "Cảnh báo khách hàng từ chối ký hợp đồng mua bán điện" + ";Mã Yêu cầu:" + congvan.MaYeuCau + ";Đơn vị quản lý:" + congvan.MaDViQLy;
+                ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+                string message = "";
+                LogCanhBao logCB = new LogCanhBao();
+                if (CBservice.CreateCanhBao(canhbao, out message))
+                {
+                    logCB.CANHBAO_ID = canhbao.ID;
+                    logCB.DATA_MOI = JsonConvert.SerializeObject(canhbao);
+                    logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                    logCB.THOIGIAN = DateTime.Now;
+                    logCB.TRANGTHAI = 1;
+                    LogCBservice.CreateNew(logCB);
+                    LogCBservice.CommitChanges();
+                }
+                else
+                {
+                    throw new Exception(message);
+                }
+
                 CommitTran();
 
                 IDeliverService deliver = new DeliverService();

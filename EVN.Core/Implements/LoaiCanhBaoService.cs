@@ -33,9 +33,17 @@ namespace EVN.Core.Implements
 
         public IList<DanhMucLoaiCanhBao> Filter(int maLoaiCanhBao)
         {
-
-            var query = Query.Where(p => p.ID == maLoaiCanhBao );
-            return query.ToList();
+            if(maLoaiCanhBao != 0)
+            {
+                var query = Query.Where(p => p.ID == maLoaiCanhBao);
+                return query.ToList();
+            }
+            else
+            {
+                return Query.ToList();
+            }
+            
+            
         }
 
         public bool Save(DanhMucLoaiCanhBao danhMucLoaiCanhBao, out string message)

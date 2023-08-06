@@ -4,6 +4,7 @@ using EVN.Core.IServices;
 using EVN.Core.Repository;
 using FX.Core;
 using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -503,6 +504,34 @@ namespace EVN.Core.Implements
                 tbao.BPhanNhan = ketqua.MA_BPHAN_GIAO;
                 tbao.CongViec = ketqua.NGUYEN_NHAN;
                 tbservice.Save(tbao);
+
+
+                ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                var canhbao = new CanhBao();
+                canhbao.LOAI_CANHBAO_ID = 15;
+                canhbao.LOAI_SOLANGUI = 1;
+                canhbao.MA_YC = yeucau.MaYeuCau;
+                canhbao.THOIGIANGUI = DateTime.Now;
+                canhbao.TRANGTHAI_CANHBAO = 1;
+                canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                canhbao.NOIDUNG = "Cảnh báo  trở ngại khi thi công treo tháo" + ";Mã Yêu cầu:" + yeucau.MaYeuCau + ";Đơn vị quản lý:" + yeucau.MaDViQLy;
+                ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+                string message = "";
+                LogCanhBao logCB = new LogCanhBao();
+                if (CBservice.CreateCanhBao(canhbao, out message))
+                {
+                    logCB.CANHBAO_ID = canhbao.ID;
+                    logCB.DATA_MOI = JsonConvert.SerializeObject(canhbao);
+                    logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                    logCB.THOIGIAN = DateTime.Now;
+                    logCB.TRANGTHAI = 1;
+                    LogCBservice.CreateNew(logCB);
+                    LogCBservice.CommitChanges();
+                }
+                else
+                {
+                    throw new Exception(message);
+                }
 
                 CommitTran();
                 return true;

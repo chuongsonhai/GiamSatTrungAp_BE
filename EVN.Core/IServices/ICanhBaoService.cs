@@ -13,5 +13,7 @@ namespace EVN.Core.IServices
         CanhBao Getbyid(int id);
         IList<CanhBao> GetbyCanhbao(string tungay, string denngay);
         IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi);
+
+        bool CreateCanhBao(CanhBao canhbao, out string message);
     }
 }

@@ -46,5 +46,21 @@ namespace EVN.Core.Implements
             return query.ToList();
         }
 
+        public bool CreateCanhBao(CanhBao canhbao, out string message)
+        {
+            message = "";
+            try
+            {
+                CreateNew(canhbao);
+                CommitChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                message = ex.Message;
+                return false;
+            }
+        }
+
     }
 }

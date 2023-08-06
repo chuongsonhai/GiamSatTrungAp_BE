@@ -5,6 +5,7 @@ using EVN.Core.PMIS;
 using EVN.Core.Repository;
 using FX.Core;
 using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -740,6 +741,37 @@ namespace EVN.Core.Implements
                 }
 
                 ycausrv.Save(yeucau);
+
+
+                ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                var canhbao = new CanhBao();
+                canhbao.LOAI_CANHBAO_ID = 11;
+                canhbao.LOAI_SOLANGUI = 1;
+                canhbao.MA_YC = ketqua.MA_YCAU_KNAI;
+                canhbao.THOIGIANGUI = DateTime.Now;
+                canhbao.TRANGTHAI_CANHBAO = 1;
+                canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                canhbao.NOIDUNG = "Cảnh báo việc hủy yêu cầu lập thỏa thuận đấu nối" + ";Mã Yêu cầu:" + ketqua.MA_YCAU_KNAI + ";Đơn vị quản lý:" + yeucau.MaDViQLy;
+                ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+                string message = "";
+                LogCanhBao logCB = new LogCanhBao();
+                if (CBservice.CreateCanhBao(canhbao, out message))
+                {
+                    logCB.CANHBAO_ID = canhbao.ID;
+                    logCB.DATA_MOI = JsonConvert.SerializeObject(canhbao);
+                    logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                    logCB.THOIGIAN = DateTime.Now;
+                    logCB.TRANGTHAI = 1;
+                    LogCBservice.CreateNew(logCB);
+                    LogCBservice.CommitChanges();
+                }
+                else
+                {
+                    throw new Exception(message);
+                }
+
+
+
                 CommitTran();
 
                 IDeliverService deliver = new DeliverService();
@@ -762,6 +794,7 @@ namespace EVN.Core.Implements
                     sendmailsrv.Process(sendmail, "TraLaiYeuCauDauNoi", bodyParams);
                     deliver.Deliver(yeucau.MaYeuCau);
                 }
+
                 catch (Exception ex)
                 {
                     log.Error(ex);

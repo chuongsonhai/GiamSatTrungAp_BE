@@ -27,12 +27,12 @@ namespace EVN.Core.Implements
         public IList<LogCanhBao> GetbyFilter(int canhbaoID, int trangThai, string datacu, string datamoi,
             string tungay, string denngay, string nguoithuchien)
         {
-            DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(denngay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            var query = Query.Where(p => p.CANHBAO_ID == canhbaoID && p.TRANGTHAI == trangThai && p.DATA_CU == datacu 
-            && p.DATA_MOI == datamoi && p.THOIGIAN >= tuNgayCast && p.THOIGIAN <= denNgayCast && p.NGUOITHUCHIEN == nguoithuchien);
+            //DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+            //DateTime denNgayCast = DateTime.ParseExact(denngay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+            //var query = Query.Where(p => p.CANHBAO_ID == canhbaoID && p.TRANGTHAI == trangThai && p.DATA_CU == datacu 
+            //&& p.DATA_MOI == datamoi && p.THOIGIAN >= tuNgayCast && p.THOIGIAN <= denNgayCast && p.NGUOITHUCHIEN == nguoithuchien);
   
-            return query.ToList();
+            return Query.ToList();
         }
 
         public bool Save(LogCanhBao danhMucLoaiCanhBao, out string message)

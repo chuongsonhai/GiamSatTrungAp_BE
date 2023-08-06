@@ -14,7 +14,7 @@ namespace EVN.Api.Model.Request
         }
         public LogCanhBaoRequest(LogCanhBao logCanhbao) : base()
         {
-            //ID = logCanhbao.ID;
+            ID = logCanhbao.ID;
             CANHBAO_ID = logCanhbao.CANHBAO_ID;
             TRANGTHAI = logCanhbao.TRANGTHAI;
             DATA_CU = logCanhbao.DATA_CU;
@@ -22,7 +22,7 @@ namespace EVN.Api.Model.Request
             THOIGIAN = logCanhbao.THOIGIAN;
             NGUOITHUCHIEN = logCanhbao.NGUOITHUCHIEN;
         }
-       // public int ID { get; set; }
+        public int ID { get; set; }
         public int CANHBAO_ID { get; set; }
         public int TRANGTHAI { get; set; }
         public string DATA_CU { get; set; }

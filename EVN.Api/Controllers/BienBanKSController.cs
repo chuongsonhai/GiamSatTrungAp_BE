@@ -188,6 +188,33 @@ namespace EVN.Api.Controllers
                     item.TroNgai = trongai.TEN_TNGAI;
                     ketquaks.THUAN_LOI = false;
                     item.ThuanLoi = false;
+
+                    ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                    var canhbao = new CanhBao();
+                    canhbao.LOAI_CANHBAO_ID = 10;
+                    canhbao.LOAI_SOLANGUI = 1;
+                    canhbao.MA_YC = item.MaYeuCau;
+                    canhbao.THOIGIANGUI = DateTime.Now;
+                    canhbao.TRANGTHAI_CANHBAO = 1;
+                    canhbao.DONVI_DIENLUC = item.MaDViQLy;
+                    canhbao.NOIDUNG = "Cảnh báo trờ ngại khảo sát lập thỏa thuận đấu nối" + ";Mã Yêu cầu:" + item.MaYeuCau + ";Đơn vị quản lý:" + item.MaDViQLy;
+                    ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+                    string messageCB = "";
+                    LogCanhBao logCB = new LogCanhBao();
+                    if (CBservice.CreateCanhBao(canhbao, out messageCB))
+                    {
+                        logCB.CANHBAO_ID = canhbao.ID;
+                        logCB.DATA_MOI = JsonConvert.SerializeObject(canhbao);
+                        logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                        logCB.THOIGIAN = DateTime.Now;
+                        logCB.TRANGTHAI = 1;
+                        LogCBservice.CreateNew(logCB);
+                        LogCBservice.CommitChanges();
+                    }
+                    else
+                    {
+                        throw new Exception(messageCB);
+                    }
                 }
 
                 item.MaTroNgai = ketquaks.MA_TNGAI;

@@ -332,6 +332,33 @@ namespace EVN.Api.Controllers
                 var item = service.GetbyMaYCau(model.maYCau);
                 if (item.TrangThai == TrangThaiCongVan.Huy)
                 {
+                    ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                    var canhbao = new CanhBao();
+                    canhbao.LOAI_CANHBAO_ID = 9;
+                    canhbao.LOAI_SOLANGUI = 1;
+                    canhbao.MA_YC = item.MaYeuCau;
+                    canhbao.THOIGIANGUI = DateTime.Now;
+                    canhbao.TRANGTHAI_CANHBAO = 1;
+                    canhbao.DONVI_DIENLUC = item.MaDViQLy;
+                    canhbao.NOIDUNG = "Cảnh báo việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối"+ ";Mã Yêu cầu:"+ item.MaYeuCau + ";Đơn vị quản lý:"+item.MaDViQLy;
+                    
+                    ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+                    string message = "";
+                    LogCanhBao logCB = new LogCanhBao();
+                    if (CBservice.CreateCanhBao(canhbao, out message))
+                    {
+                        logCB.CANHBAO_ID = canhbao.ID;
+                        logCB.DATA_MOI = JsonConvert.SerializeObject(canhbao);
+                        logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                        logCB.THOIGIAN = DateTime.Now;
+                        logCB.TRANGTHAI = 1;
+                        LogCBservice.CreateNew(logCB);
+                        LogCBservice.CommitChanges();
+                    }
+                    else
+                    {
+                        throw new Exception(message);
+                    }
                     result.success = true;
                     return Ok(result);
                 }

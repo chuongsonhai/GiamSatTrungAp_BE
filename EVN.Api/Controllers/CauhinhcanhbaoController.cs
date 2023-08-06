@@ -18,7 +18,7 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    //[RoutePrefix("api/dashboard")]
+    [RoutePrefix("api/cauhinhcanhbao")]
     public class CauhinhcanhbaoController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(CanhBaoController));
@@ -26,7 +26,7 @@ namespace EVN.Api.Controllers
         //2.10	(GET) /cauhinhcanhbao/filter
         //[JwtAuthentication]
         [HttpPost]
-        [Route("cauhinhcanhbao/filter")]
+        [Route("filter")]
         public IHttpActionResult cauhinhcanhbao(LoaiCanhBaoFilterRequest request)
         {
             ResponseResult result = new ResponseResult();
@@ -63,8 +63,7 @@ namespace EVN.Api.Controllers
         //2.11	(POST) /cauhinhcanhbao/add
         //[JwtAuthentication]
         [HttpPost]
-        [Route("cauhinhcanhbao/add")]
-        public IHttpActionResult cauhinhcanhbaoadd([FromBody] LoaiCanhBaoDataRequest model)
+        public IHttpActionResult cauhinhcanhbaoadd([FromBody] Cauhinhcanhbao model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
@@ -73,8 +72,9 @@ namespace EVN.Api.Controllers
 
                 var item = new DanhMucLoaiCanhBao();
 
-                item.TENLOAICANHBAO = model.TENLOAICANHBAO;
-                item.CHUKYCANHBAO = model.CHUKYCANHBAO;
+                item.TENLOAICANHBAO = model.tenLoaiCanhbao;
+                item.CHUKYCANHBAO = model.chuKy;
+                item.TRANGTHAI = 0;
                 service.CreateNew(item);
                 service.CommitChanges();
                 result.success = true;
@@ -91,25 +91,58 @@ namespace EVN.Api.Controllers
             }
         }
 
-        //2.12	(POST) /cauhinhcanhbao/edit
-        //[JwtAuthentication]
-        [HttpPost]
-        [Route("cauhinhcanhbao/edit")]
-        public IHttpActionResult cauhinhcanhbaoedit([FromBody] LoaiCanhBaoDataRequest model)
+        [HttpGet]
+        [Route("{id}")]
+        public IHttpActionResult cauhinhcanhbaoedit([FromUri] int ID)
         {
-            ResponseFileResult result = new ResponseFileResult();
+            ResponseResult result = new ResponseResult();
             try
             {
                 ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
                 var item = new DanhMucLoaiCanhBao();
-                item.ID = model.ID;
+                item = service.GetbyNo(ID);
+                Cauhinhcanhbao obj = new Cauhinhcanhbao(item);
                 // item.ID = model.MALOAICANHBAO;
-                item.TENLOAICANHBAO = model.TENLOAICANHBAO;
-                item.CHUKYCANHBAO = model.CHUKYCANHBAO;
+                result.data = obj;
+                result.success = true;
+                return Ok(result);
+
+
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+
+        //2.12	(POST) /cauhinhcanhbao/edit
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("edit")]
+        public IHttpActionResult cauhinhcanhbaoedit()
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            var httpRequest = HttpContext.Current.Request;
+            try
+            {
+                string data = httpRequest.Form["data"];
+                Cauhinhcanhbao model = JsonConvert.DeserializeObject<Cauhinhcanhbao>(data);
+                ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
+                var item = new DanhMucLoaiCanhBao();
+                item = service.GetbyNo(model.maLoaiCanhBao);
+                // item.ID = model.MALOAICANHBAO;
+                item.TENLOAICANHBAO = model.tenLoaiCanhbao;
+                item.CHUKYCANHBAO = model.chuKy;
                 service.Update(item);
                 service.CommitChanges();
                 result.success = true;
                 return Ok(result);
+
+
             }
             catch (Exception ex)
             {
@@ -123,7 +156,7 @@ namespace EVN.Api.Controllers
 
         //[JwtAuthentication]
         [HttpPost]
-        [Route("cauhinhcanhbao/log/filter")]
+        [Route("log/filter")]
         public IHttpActionResult logFilter(LogCanhBaofilterRequest request)
         {
             ResponseResult result = new ResponseResult();
