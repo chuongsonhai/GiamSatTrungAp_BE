@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
@@ -25,7 +26,7 @@ namespace EVN.Api.Controllers
 
         [HttpGet]
         [Route("createCanhBao")]
-        public IHttpActionResult GetListCanhBao()
+        public async Task<IHttpActionResult> GetListCanhBao()
         {
             ResponseResult result = new ResponseResult();
             try
@@ -35,8 +36,8 @@ namespace EVN.Api.Controllers
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 var list = service.TinhThoiGian();
-                
-                foreach(var item in list)
+                var listCanhBao = new List<CanhBao>();
+                foreach (var item in list)
                 {
                     var canhbao = new CanhBao();
                     canhbao.LOAI_CANHBAO_ID = item.LoaiCanhBao;
@@ -49,7 +50,7 @@ namespace EVN.Api.Controllers
                     {
                         case 1:
                             canhbao.NOIDUNG = " thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng quá 02 giờ; Mã Yêu cầu:" + item.MaYeuCau + ";Tên KH:" + item.NguoiYeuCau + ";SDT:" + item.DienThoai;
-                        break;
+                            break;
                         case 2:
                             canhbao.NOIDUNG = "Thời gian thực hiện lập thỏa thuận đấu nối quá 02 ngày; Mã Yêu cầu:" + item.MaYeuCau + ";Tên KH:" + item.NguoiYeuCau + ";SDT:" + item.DienThoai;
                             break;
@@ -72,24 +73,56 @@ namespace EVN.Api.Controllers
                             canhbao.NOIDUNG = " Thời gian thực hiện cấp điện mới trung áp; Mã Yêu cầu:" + item.MaYeuCau + ";Tên KH:" + item.NguoiYeuCau + ";SDT:" + item.DienThoai;
                             break;
                     }
-                    string message = "";
-                    LogCanhBao logCB = new LogCanhBao();
-                    if(CBservice.CreateCanhBao(canhbao,out message))
-                    {
-                        logCB.CANHBAO_ID = canhbao.ID;
-                        logCB.DATA_MOI = JsonConvert.SerializeObject(canhbao);
-                        logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
-                        logCB.THOIGIAN = DateTime.Now;
-                        logCB.TRANGTHAI = 1;
-                        LogCBservice.CreateNew(logCB);
-                        LogCBservice.CommitChanges();
-                    } else
-                    {
-                        throw new Exception(message);
-                    }
+
+                    listCanhBao.Add(canhbao);
 
                 }
-                
+                string message = "";
+             
+
+                if (listCanhBao.Any())
+                {
+                    // group data theo MA_YC và TRANGTHAI_CANHBAO
+                    var canhBaoGroup = listCanhBao.GroupBy(x => new { x.MA_YC})
+                        .Select(x => new { key = x.Key, value = x.Select(d => d) })
+                        .ToList();
+                    // Lấy các bản ghi duy nhất theo MA_YC và TRANGTHAI_CANHBAO
+                    var danhSachCanhBaoMoi = canhBaoGroup.Where(x => x.value.Count() == 1).SelectMany(x => x.value).ToList();
+                    // lặp danh sách để thêm mới 
+                    foreach (var newCanhBao in danhSachCanhBaoMoi)
+                    {
+                        var checkTonTai = await CBservice.CheckExits(newCanhBao.MA_YC);
+                        // nếu ko tồn tại thì insert
+ 
+                        if (!checkTonTai)
+                        {
+                            //CBservice.CreateNew(newCanhBao);
+                            CBservice.CreateCanhBao(newCanhBao, out message);
+                            if (string.IsNullOrEmpty(message))
+                            {
+                                LogCanhBao logCB = new LogCanhBao();
+                                // cần ins cả vào đây
+                                logCB.CANHBAO_ID = newCanhBao.ID;
+                                logCB.DATA_MOI = JsonConvert.SerializeObject(newCanhBao);
+                                logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                                logCB.THOIGIAN = DateTime.Now;
+                                logCB.TRANGTHAI = 1;
+                                LogCBservice.CreateNew(logCB);
+                                LogCBservice.CommitChanges();
+                            }
+                            else
+                            {
+                                throw new Exception(message);
+                            }
+                        }
+                        else
+                            //nếu tồn tại thì bỏ qua tiếp tục
+                            // có tồn tại rồi thì nhảy vào case này
+
+                            continue;
+                    }
+                    service.CommitChanges();
+                }
                 result.success = true;
                 return Ok(result);
             }
@@ -105,6 +138,8 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
+
+
 
         //1.(GET) dashboard/canhbao
         //[JwtAuthentication]

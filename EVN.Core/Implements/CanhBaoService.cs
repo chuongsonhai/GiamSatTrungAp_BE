@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace EVN.Core.Implements
@@ -22,6 +23,11 @@ namespace EVN.Core.Implements
         public CanhBao GetbyNo(int idloai)
         {
             return Get(p => p.ID == idloai);
+        }
+        public async Task<bool> CheckExits(string maYeuCau)
+        {
+            var result =  Query.Any(x => x.MA_YC == maYeuCau );
+            return result;
         }
 
         public CanhBao Getbyid(int id)
@@ -170,7 +176,7 @@ namespace EVN.Core.Implements
             try
             {
                 CreateNew(canhbao);
-                CommitChanges();
+              //  CommitChanges();
                 return true;
             }
             catch(Exception ex)
