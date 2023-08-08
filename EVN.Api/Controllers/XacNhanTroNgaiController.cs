@@ -87,7 +87,7 @@ namespace EVN.Api.Controllers
                 IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
                 IGiamSatCanhBaoCanhbaoidService servicecanhbao = IoC.Resolve<IGiamSatCanhBaoCanhbaoidService>();
                 var khaosat = khaosatService.GetKhaoSat(id);
-                var ThongTinCanhBao = servicecanhbao.Getbyid(id);
+                var ThongTinCanhBao = servicecanhbao.Getbyid(khaosat.CANHBAO_ID);
                 var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(ThongTinCanhBao.MA_YC);
                // var oj = new { khaosat, ThongTinYeuCau };
                 var oj1 = new
@@ -102,8 +102,6 @@ namespace EVN.Api.Controllers
                         nguoiKhaoSat = khaosat.NGUOI_KS,
                         thoiGianKhaoSat = khaosat.THOIGIAN_KHAOSAT
                     }
-
-
                 };
                 //var oj = new
                 //{

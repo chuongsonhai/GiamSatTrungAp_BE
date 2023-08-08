@@ -39,7 +39,7 @@ namespace EVN.Core.Implements
 
         public XacNhanTroNgai GetKhaoSat(int id)
         {
-            return Get(p => p.CANHBAO_ID == id);
+            return Get(p => p.ID == id);
         }
 
         public XacNhanTroNgai UpdateKhaoid(int id)
