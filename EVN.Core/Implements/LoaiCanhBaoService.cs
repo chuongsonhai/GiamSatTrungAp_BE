@@ -27,23 +27,33 @@ namespace EVN.Core.Implements
         {
             var query = Query.Where(p => p.TENLOAICANHBAO == TenLoaiCanhBao && p.ID == maLoaiCanhBao);
             total = query.Count();
-            query = query.OrderByDescending(p => p.ID);
+            query = query.OrderByDescending(p => p.ID );
             return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
         }
 
-        public IList<DanhMucLoaiCanhBao> Filter(int maLoaiCanhBao)
+        public IList<DanhMucLoaiCanhBao> Filter(int maLoaiCanhBao, int chuky)
         {
-            if(maLoaiCanhBao != 0)
+            var query = Query;
+            if(maLoaiCanhBao != -1)
             {
-                var query = Query.Where(p => p.ID == maLoaiCanhBao);
+                if(chuky != -1)
+                {
+                    query = Query.Where(p => p.ID == maLoaiCanhBao && p.CHUKYCANHBAO == chuky);
+                } else
+                {
+                    query = Query.Where(p => p.ID == maLoaiCanhBao);
+                }
                 return query.ToList();
+
             }
-            else
+            if(chuky != -1)
             {
-                return Query.ToList();
+                 query = Query.Where(p => p.CHUKYCANHBAO == chuky);
+                
             }
-            
-            
+
+            return query.ToList();
+
         }
 
         public bool Save(DanhMucLoaiCanhBao danhMucLoaiCanhBao, out string message)

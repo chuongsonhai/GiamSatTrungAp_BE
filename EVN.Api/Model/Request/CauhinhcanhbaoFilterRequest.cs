@@ -17,6 +17,7 @@ namespace EVN.Api.Model.Request
     public class CauhinhcanhbaoFilter
     {
         public int maLoaiCanhBao { get; set; } = 0;
+        public int chuky { get; set; } = 0;
     }
 
 }
