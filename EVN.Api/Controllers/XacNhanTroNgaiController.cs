@@ -17,49 +17,49 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    //[RoutePrefix("khaosat")]
+    [RoutePrefix("khaosat")]
     public class XacNhanTroNgaiController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(XacNhanTroNgaiController));
 
         //[JwtAuthentication]
         [HttpPost]
-        [Route("khaosat/khachhang/filter")]
+        [Route("khachhang/filter")]
         public IHttpActionResult khachhangFilter(XacNhanTroNgaiFilterkhRequest request)
         {
             ResponseResult result = new ResponseResult();
             try
-            {
-                int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
-                int total = 0;
-                DateTime synctime = DateTime.Today;
-                //var fromDate = DateTime.MinValue.ToString();
-                //var toDate = DateTime.MaxValue.ToString();
-                //if (!string.IsNullOrWhiteSpace(request.FilterKH.tuNgay))
-                //    fromDate = DateTime.ParseExact(request.FilterKH.tuNgay, DateTimeParse.Format, null, DateTimeStyles.None);
-                //if (!string.IsNullOrWhiteSpace(request.FilterKH.denNgay))
-                //    toDate = DateTime.ParseExact(request.FilterKH.denNgay, DateTimeParse.Format, null, DateTimeStyles.None);
-                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
-                IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
-                List<object> resultList = new List<object>();
-                var list = canhBaoService.GetbykhachhangFilter(request.FilterKH.tuNgay, request.FilterKH.denNgay, request.FilterKH.maLoaiCanhBao,
-                    request.FilterKH.donViQuanLy, pageindex, request.Paginator.pageSize, out total);
-                foreach (var canhbao in list)
-                {
-                    var listLog = serviceyeucau.Filterkhaosat(canhbao.MA_YC);
-                    foreach (var kh in listLog)
+            {                     
+                    int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+                    int total = 0;
+                    DateTime synctime = DateTime.Today;
+                    //var fromDate = DateTime.MinValue.ToString();
+                    //var toDate = DateTime.MaxValue.ToString();
+                    //if (!string.IsNullOrWhiteSpace(request.FilterKH.tuNgay))
+                    //    fromDate = DateTime.ParseExact(request.FilterKH.tuNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                    //if (!string.IsNullOrWhiteSpace(request.FilterKH.denNgay))
+                    //    toDate = DateTime.ParseExact(request.FilterKH.denNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                    ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                    IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
+                    var resultList = new List<object>();
+                    var list = canhBaoService.GetbykhachhangFilter(request.FilterKH.tuNgay, request.FilterKH.denNgay, request.FilterKH.maLoaiCanhBao,
+                        request.FilterKH.donViQuanLy, pageindex, request.Paginator.pageSize, out total);
+                    foreach (var canhbao in list)
                     {
-                        resultList.Add(new { kh.MaYeuCau, kh.TenKhachHang, kh.TrangThai });
+                        var listLog = serviceyeucau.Filterkhaosat(canhbao.MA_YC);
+                        foreach (var kh in listLog)
+                        {
+                            resultList.Add(new { kh.MaYeuCau, kh.TenKhachHang, kh.TrangThai });
+                        }
                     }
-                }
-                result.total = total;
-                result.data = resultList;
-                result.success = true;
-                if (result.total == 0)
-                {
-                    result.message = "Không có dữ liệu";
-                }
-                return Ok(result);
+                    result.total = total;
+                    result.data = resultList;
+                    result.success = true;
+                    if (result.total == 0)
+                    {
+                        result.message = "Không có dữ liệu";
+                    }
+                    return Ok(result);                
             }
             catch (Exception ex)
             {
@@ -70,53 +70,32 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
-     
-
         //2.3 (GET) /khaosat/{id}
         //[JwtAuthentication]
         [HttpGet]
-        [Route("khaosat/id")]
-        //public IHttpActionResult GetById(XacNhanTroNgakhaosatid model)
-        //{
+        [Route("{id}")]
             public IHttpActionResult GetBykhaosatId(int id)
             {
                 ResponseResult result = new ResponseResult();
                 try
-                {
+                {                
                 IXacNhanTroNgaiService khaosatService = IoC.Resolve<IXacNhanTroNgaiService>();
                 IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
                 IGiamSatCanhBaoCanhbaoidService servicecanhbao = IoC.Resolve<IGiamSatCanhBaoCanhbaoidService>();
                 var khaosat = khaosatService.GetKhaoSat(id);
                 var ThongTinCanhBao = servicecanhbao.Getbyid(khaosat.CANHBAO_ID);
                 var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(ThongTinCanhBao.MA_YC);
-               // var oj = new { khaosat, ThongTinYeuCau };
                 var oj1 = new
-                {
-                    khaosat = new
-                    {
+                { 
                         maYeuCau = ThongTinYeuCau.MaYeuCau,
                         ketQuaKhaoSat = khaosat.KETQUA,
                         trangThaiYeuCau = ThongTinYeuCau.TrangThai,
                         trangThaiKhaoSat = khaosat.TRANGTHAI,
                         tenKhachHang = ThongTinYeuCau.TenKhachHang,
-                        nguoiKhaoSat = khaosat.NGUOI_KS,
-                        thoiGianKhaoSat = khaosat.THOIGIAN_KHAOSAT
-                    }
+                        nguoiKhaoSat = HttpContext.Current.User.Identity.Name,
+                        thoiGianKhaoSat = khaosat.THOIGIAN_KHAOSAT   
                 };
-                //var oj = new
-                //{
-                //    data1 = new
-                //    {
-                //        maLoaiCanhBao = ThongTinCanhBao.maLoaiCanhBao,
-                //        noiDungCanhBao = ThongTinCanhBao.noidungCanhBao,
-                //    },
-                //    data3 = new
-                //    {
-                //        maLoaiCanhBao = ThongTinCanhBao.maLoaiCanhBao,
-                //        noiDungCanhBao = ThongTinCanhBao.noidungCanhBao,
-                //    }
-                //};
-                result.data = oj1;
+                    result.data = oj1;
                     result.success = true;
                     return Ok(result);
                 }
@@ -129,19 +108,19 @@ namespace EVN.Api.Controllers
                     return Ok(result);
                 }
             }
-       // }
 
         //2.5 (POST) /khaosat/add
         //[JwtAuthentication]
+        //thêm mới khảo sát 
         [HttpPost]
-        [Route("khaosat/add")]
+        [Route("add")]
         public IHttpActionResult Post([FromBody] XacNhanTroNgaikhaosatadd model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
-
+                IUserdataService userdataService = IoC.Resolve<IUserdataService>();
                 var item = new XacNhanTroNgai();
         
                 item.NOIDUNG_CAUHOI = model.noiDungKhaoSat;
@@ -153,7 +132,6 @@ namespace EVN.Api.Controllers
                 service.CommitChanges();
                 result.success = true;
                 return Ok(result);
-
             }
             catch (Exception ex)
             {
@@ -164,10 +142,10 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
-
         //2.4 (POST) /khaosat/{id}
         //[JwtAuthentication]
-        [Route("khaosat/id")]
+        //sửa khảo sát
+        [Route("{id}")]
         [HttpPost]
         public IHttpActionResult UpdateById([FromBody] XacNhanTroNgakhaosatid model)
         {
@@ -176,10 +154,9 @@ namespace EVN.Api.Controllers
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
                 var item = new XacNhanTroNgai();
-               
-                service.UpdateKhaoid(model.idKhaoSat);
-                var khaosat = service.UpdateKhaoid(model.idKhaoSat);
-                khaosat.ID = model.idKhaoSat;
+
+                //sửa nội dung khảo sát
+                var khaosat = service.GetKhaoSat(model.idKhaoSat);
                 khaosat.NOIDUNG_CAUHOI = model.noiDungKhaoSat;
                 khaosat.PHANHOI_KH = model.khachHangPhanHoi;
                 khaosat.KETQUA = model.ketQuaKhaoSat;
@@ -197,14 +174,11 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
-
-
-     
-
         //2.6 (POST) /khaosat/phanhoi/add
         //[JwtAuthentication]
+        // thêm mới phản hồi
         [HttpPost]
-        [Route("khaosat/phanhoi/add")]
+        [Route("phanhoi/add")]
         public IHttpActionResult Post([FromBody] PhanhoiTraodoiRequest model)
         {
             ResponseFileResult result = new ResponseFileResult();
@@ -233,12 +207,12 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
-
         //2.7 (POST) /khaosat/phanhoi/{id}
         //[JwtAuthentication]
+        // sửa nội dung phản hồi
         [HttpPost]
-        [Route("khaosat/phanhoi/id")]
-        public IHttpActionResult UpdateById([FromBody] PhanhoiTraodoiRequest model)
+        [Route("phanhoi/{id}")]
+        public IHttpActionResult UpdateById([FromUri] int id, [FromBody] PhanhoiTraodoiRequest model )
         {
             ResponseFileResult result = new ResponseFileResult();
             try
@@ -246,7 +220,11 @@ namespace EVN.Api.Controllers
                 IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
                // var item = new PhanhoiTraodoi();
                // service.Updatephanhoiid(model.ID);
-                var phanhoi = service.Updatephanhoiid(model.ID);
+
+                // lấy phản hồi trao đổi bằng ID 
+                var phanhoi = service.GetbyPhanHoiId(id);
+
+                //cập nhật nội dung phản hồi trao đổi
                 phanhoi.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
                 phanhoi.NGUOI_GUI = model.NGUOI_GUI;
                 phanhoi.TRANGTHAI_XOA = 1;
@@ -265,18 +243,17 @@ namespace EVN.Api.Controllers
 
         //2.8 (GET) /khaosat/phanhoi/id
         //[JwtAuthentication]
-        [HttpPost]
-        [Route("khaosat/phanhoi/id2.8")]
-        public IHttpActionResult Filter(XacnhantrongaiFilterRequestid request)
+        [HttpGet]
+        [Route("phanhoi/{id}")]
+        public IHttpActionResult Filter([FromUri] int id)
         {
             ResponseResult result = new ResponseResult();
             try
             {
-                int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
                 int total = 0;
                 DateTime synctime = DateTime.Today;
                 IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
-                var list = service.GetbyFilter(request.Filter.ID, pageindex, request.Paginator.pageSize, out total);
+                var list = service.FilterByID(id);
                 var listModel = new List<PhanhoiTraodoiRequestid>();
                 foreach (var item in list)
                 {
@@ -300,7 +277,7 @@ namespace EVN.Api.Controllers
 
         //2.2 (GET) /khaosat/filter
         [HttpPost]
-        [Route("khaosat/filter")]
+        [Route("filter")]
         public IHttpActionResult Filter(FilterKhaoSatByCanhBaoRequest request)
         {
             ResponseResult result = new ResponseResult();
@@ -356,7 +333,7 @@ namespace EVN.Api.Controllers
         //2.9 (GET) /khaosat/log/filter
         //[JwtAuthentication]
         [HttpPost]
-        [Route("khaosat/log/filter")]
+        [Route("log/filter")]
         public IHttpActionResult FilterLog([FromBody] FilterKhaoSatByCanhBaologRequest request)
         {
             ResponseResult result = new ResponseResult();

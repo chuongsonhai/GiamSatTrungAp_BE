@@ -42,9 +42,11 @@ namespace EVN.Core.Implements
             {
                 DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
                 DateTime denNgayCast = DateTime.ParseExact(denngay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.LOAI_CANHBAO_ID == maLoaiCanhBao
-                && "-1" == donViQuanLy);
-
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && "-1" == donViQuanLy);
+                if(maLoaiCanhBao != -1)
+                {
+                    query = query.Where(p => p.LOAI_CANHBAO_ID == maLoaiCanhBao);
+                }
                 total = query.Count();
                 return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
             }
@@ -52,9 +54,11 @@ namespace EVN.Core.Implements
             {
                 DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
                 DateTime denNgayCast = DateTime.ParseExact(denngay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.LOAI_CANHBAO_ID == maLoaiCanhBao
-                && p.DONVI_DIENLUC == donViQuanLy);
-
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == donViQuanLy);
+                if(maLoaiCanhBao != -1)
+                {
+                    query = query.Where(p => p.LOAI_CANHBAO_ID == maLoaiCanhBao);
+                }
                 total = query.Count();
                 return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
             }
