@@ -17,12 +17,13 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    [RoutePrefix("khaosat")]
+    [RoutePrefix("api/KhaoSat")]
     public class XacNhanTroNgaiController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(XacNhanTroNgaiController));
 
         //[JwtAuthentication]
+        
         [HttpPost]
         [Route("khachhang/filter")]
         public IHttpActionResult khachhangFilter(XacNhanTroNgaiFilterkhRequest request)
@@ -46,10 +47,52 @@ namespace EVN.Api.Controllers
                         request.FilterKH.donViQuanLy, pageindex, request.Paginator.pageSize, out total);
                     foreach (var canhbao in list)
                     {
-                        var listLog = serviceyeucau.Filterkhaosat(canhbao.MA_YC);
-                        foreach (var kh in listLog)
+                        var listCongVan = serviceyeucau.Filterkhaosat(canhbao.MA_YC);
+                        foreach (var congvan in listCongVan)
                         {
-                            resultList.Add(new { kh.MaYeuCau, kh.TenKhachHang, kh.TrangThai });
+                        string textTrangThai = "";
+                        if (congvan.TrangThai == TrangThaiCongVan.MoiTao)
+                        {
+                            textTrangThai = "Mới tạo";
+                        }
+                        else if (congvan.TrangThai == TrangThaiCongVan.TiepNhan)
+                        {
+                            textTrangThai = "Tiếp Nhận";
+                        }
+                        else if (congvan.TrangThai == TrangThaiCongVan.PhanCongKS)
+                        {
+                            textTrangThai = "Phân Công Khảo Sát";
+                        }
+                        else if (congvan.TrangThai  == TrangThaiCongVan.GhiNhanKS)
+                        {
+                            textTrangThai = "Ghi Nhận Khảo Sát";
+                        }
+                        else if (congvan.TrangThai == TrangThaiCongVan.BienBanKS)
+                        {
+                            textTrangThai = "Biên Bản Khảo sát";
+                        }
+                        else if (congvan.TrangThai == TrangThaiCongVan.DuThaoTTDN)
+                        {
+                            textTrangThai = "Dự thảo thỏa thuận đấu nối";
+                        }else if(congvan.TrangThai == TrangThaiCongVan.KHKy)
+                        {
+                            textTrangThai = "Khách Hàng Ký";
+                        }
+                        else if (congvan.TrangThai == TrangThaiCongVan.DuChuKy)
+                        {
+                            textTrangThai = "Đủ Chữ Ký";
+                        }else if(congvan.TrangThai == TrangThaiCongVan.HoanThanh)
+                        {
+                            textTrangThai = "Hoàn Thành";
+                        }else if(congvan.TrangThai == TrangThaiCongVan.ChuyenTiep)
+                        {
+                            textTrangThai = "Chuyển Tiếp";
+                        }
+                        else if (congvan.TrangThai == TrangThaiCongVan.Huy)
+                        {
+                            textTrangThai = "Hủy";
+                        }
+                        resultList.Add(new { congvan.MaYeuCau, congvan.TenKhachHang, TrangThai = textTrangThai });
                         }
                     }
                     result.total = total;
@@ -85,12 +128,90 @@ namespace EVN.Api.Controllers
                 var khaosat = khaosatService.GetKhaoSat(id);
                 var ThongTinCanhBao = servicecanhbao.Getbyid(khaosat.CANHBAO_ID);
                 var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(ThongTinCanhBao.MA_YC);
+                var textTrangThaiKhaoSat = "";
+                var textTrangThaiYeuCau = "";
+
+                //chuyển trạng thái cảnh báo sang kiểu text
+                if (khaosat.TRANGTHAI == 1)
+                {
+                    textTrangThaiKhaoSat = "Mới tạo danh sách";
+                }
+                else if (khaosat.TRANGTHAI == 2)
+                {
+                    textTrangThaiKhaoSat = "Tạo phiếu khảo sát";
+                }
+                else if (khaosat.TRANGTHAI == 3)
+                {
+                    textTrangThaiKhaoSat = "Cập nhật kết quả khảo sát";
+                }
+                else if (khaosat.TRANGTHAI == 4)
+                {
+                    textTrangThaiKhaoSat = "Chuyển đơn vị";
+                }
+                else if (khaosat.TRANGTHAI == 5)
+                {
+                    textTrangThaiKhaoSat = "Đơn vị cập nhật giải trình";
+                }
+                else if (khaosat.TRANGTHAI == 6)
+                {
+                    textTrangThaiKhaoSat = "Kết thúc khảo sát";
+                }
+
+
+
+                //chuyển trạng thái công văn sang kiểu text
+                if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.MoiTao)
+                {
+                    textTrangThaiYeuCau = "Mới tạo";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.TiepNhan)
+                {
+                    textTrangThaiYeuCau = "Tiếp nhận";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.PhanCongKS)
+                {
+                    textTrangThaiYeuCau = "Phân công khảo sát";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.GhiNhanKS)
+                {
+                    textTrangThaiYeuCau = "Ghi nhận khảo sát";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.BienBanKS)
+                {
+                    textTrangThaiYeuCau = "Biên bản khảo sát";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.DuThaoTTDN)
+                {
+                    textTrangThaiYeuCau = "Dự thảo thỏa thuận đấu nối";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.KHKy)
+                {
+                    textTrangThaiYeuCau = "Khách hàng ký";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.DuChuKy)
+                {
+                    textTrangThaiYeuCau = "Đủ chữ ký";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.HoanThanh)
+                {
+                    textTrangThaiYeuCau = "Hoàn thành";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.ChuyenTiep)
+                {
+                    textTrangThaiYeuCau = "Chuyển tiếp";
+                }
+                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.Huy)
+                {
+                    textTrangThaiYeuCau = "Hủy";
+                }
+
+
                 var oj1 = new
                 { 
                         maYeuCau = ThongTinYeuCau.MaYeuCau,
                         ketQuaKhaoSat = khaosat.KETQUA,
-                        trangThaiYeuCau = ThongTinYeuCau.TrangThai,
-                        trangThaiKhaoSat = khaosat.TRANGTHAI,
+                        trangThaiYeuCau = textTrangThaiYeuCau,
+                        trangThaiKhaoSat = textTrangThaiKhaoSat,
                         tenKhachHang = ThongTinYeuCau.TenKhachHang,
                         nguoiKhaoSat = HttpContext.Current.User.Identity.Name,
                         thoiGianKhaoSat = khaosat.THOIGIAN_KHAOSAT   
@@ -126,8 +247,8 @@ namespace EVN.Api.Controllers
                 item.NOIDUNG_CAUHOI = model.noiDungKhaoSat;
                 item.PHANHOI_KH = model.khachHangPhanHoi;
                 item.KETQUA = model.ketQuaKhaoSat;
-                item.NGUOI_KS = model.nguoiKhaoSat;  
-                item.TRANGTHAI = model.trangThaiKhaoSat;
+                item.NGUOI_KS = HttpContext.Current.User.Identity.Name;
+                item.TRANGTHAI = 3;
                 service.CreateNew(item);
                 service.CommitChanges();
                 result.success = true;
@@ -160,8 +281,8 @@ namespace EVN.Api.Controllers
                 khaosat.NOIDUNG_CAUHOI = model.noiDungKhaoSat;
                 khaosat.PHANHOI_KH = model.khachHangPhanHoi;
                 khaosat.KETQUA = model.ketQuaKhaoSat;
-                khaosat.NGUOI_KS = model.nguoiKhaoSat;
-                khaosat.TRANGTHAI = model.trangThaiKhaoSat;
+                khaosat.NGUOI_KS = HttpContext.Current.User.Identity.Name;
+                khaosat.TRANGTHAI = 3;
                 service.CommitChanges();
                 result.success = true;
                 return Ok(result);
@@ -189,7 +310,7 @@ namespace EVN.Api.Controllers
                 var item = new PhanhoiTraodoi();
             
                 item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
-                item.NGUOI_GUI = model.NGUOI_GUI;
+                item.NGUOI_GUI = HttpContext.Current.User.Identity.Name;
                 item.TRANGTHAI_XOA = 0;
 
                 service.CreateNew(item);
@@ -226,7 +347,7 @@ namespace EVN.Api.Controllers
 
                 //cập nhật nội dung phản hồi trao đổi
                 phanhoi.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
-                phanhoi.NGUOI_GUI = model.NGUOI_GUI;
+                phanhoi.NGUOI_GUI = HttpContext.Current.User.Identity.Name;
                 phanhoi.TRANGTHAI_XOA = 1;
                 service.CommitChanges();
                 result.success = true;
@@ -292,7 +413,7 @@ namespace EVN.Api.Controllers
                 IXacNhanTroNgaiService xacMinhTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
                 ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
                 ICongVanYeuCauService congVanYeuCauService = IoC.Resolve<ICongVanYeuCauService>();
-                // lọc cảnh báo theo thời gian, mã đơn vị quản lý, trạng thái 
+                // lọc cảnh báo theo thời gian, mã đơn vị quản lý 
                 var list = canhBaoService.FilterByMaYCauAndDViQuanLy(request.tuNgay, request.denNgay, request.MaYeuCau, request.donViQuanLy);
 
                 //danh sách kết quả
@@ -306,14 +427,83 @@ namespace EVN.Api.Controllers
                     var listKhaoSatFilter = new List<object>();
                     foreach (var khaosat in listKhaoSat)
                     {
-                        listKhaoSatFilter.Add(new { khaosat.ID, khaosat.TRANGTHAI, khaosat.THOIGIAN_KHAOSAT, khaosat.KETQUA });
+                        var textTrangThaiKhaoSat = "";
+                        if (khaosat.TRANGTHAI == 1)
+                        {
+                            textTrangThaiKhaoSat = "Mới tạo danh sách";
+                        }
+                        else if (khaosat.TRANGTHAI == 2)
+                        {
+                            textTrangThaiKhaoSat = "Tạo phiếu khảo sát";
+                        }
+                        else if (khaosat.TRANGTHAI == 3)
+                        {
+                            textTrangThaiKhaoSat = "Cập nhật kết quả khảo sát";
+                        }
+                        else if (khaosat.TRANGTHAI == 4)
+                        {
+                            textTrangThaiKhaoSat = "Chuyển đơn vị";
+                        }
+                        else if (khaosat.TRANGTHAI == 5)
+                        {
+                            textTrangThaiKhaoSat = "Đơn vị cập nhật giải trình";
+                        }
+                        else if (khaosat.TRANGTHAI == 6)
+                        {
+                            textTrangThaiKhaoSat = "Kết thúc khảo sát";
+                        }
+                        listKhaoSatFilter.Add(new { khaosat.ID, TrangThaiKhaoSat = textTrangThaiKhaoSat, khaosat.THOIGIAN_KHAOSAT, khaosat.KETQUA });
                     }
 
                     //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
                     var congVanYeuCau = congVanYeuCauService.GetbyMaYCau(canhbao.MA_YC);
-
+                    string textTrangThai = "";
+                    if (congVanYeuCau.TrangThai == TrangThaiCongVan.MoiTao)
+                    {
+                        textTrangThai = "Mới tạo";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.TiepNhan)
+                    {
+                        textTrangThai = "Tiếp Nhận";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.PhanCongKS)
+                    {
+                        textTrangThai = "Phân Công Khảo Sát";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.GhiNhanKS)
+                    {
+                        textTrangThai = "Ghi Nhận Khảo Sát";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.BienBanKS)
+                    {
+                        textTrangThai = "Biên Bản Khảo sát";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.DuThaoTTDN)
+                    {
+                        textTrangThai = "Dự thảo thỏa thuận đấu nối";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.KHKy)
+                    {
+                        textTrangThai = "Khách Hàng Ký";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.DuChuKy)
+                    {
+                        textTrangThai = "Đủ Chữ Ký";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.HoanThanh)
+                    {
+                        textTrangThai = "Hoàn Thành";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.ChuyenTiep)
+                    {
+                        textTrangThai = "Chuyển Tiếp";
+                    }
+                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.Huy)
+                    {
+                        textTrangThai = "Hủy";
+                    }
                     //tạo ra response API
-                    var obj = new { congVanYeuCau.MaYeuCau, congVanYeuCau.TenKhachHang, listKhaoSatFilter, congVanYeuCau.TrangThai };
+                    var obj = new { congVanYeuCau.MaYeuCau, congVanYeuCau.TenKhachHang, DanhSachKhaoSat =  listKhaoSatFilter, TrangThaiCongVan = textTrangThai };
                     resultList.Add(obj);
                 }
                 result.data = resultList;
@@ -368,7 +558,7 @@ namespace EVN.Api.Controllers
                         listLogCanhBao.Add(new { log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN });
                     }
 
-                    var obj = new { canhbao.DONVI_DIENLUC, canhbao.TRANGTHAI_CANHBAO, listKhaoSatFilter, listLogCanhBao };
+                    var obj = new { canhbao.DONVI_DIENLUC, canhbao.TRANGTHAI_CANHBAO, DanhSachKhaoSat = listKhaoSatFilter, DanhSachLogCanhBao = listLogCanhBao };
                     resultList.Add(obj);
                 }
                 result.data = resultList;

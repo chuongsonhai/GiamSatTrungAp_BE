@@ -6,6 +6,15 @@ using System.Threading.Tasks;
 
 namespace EVN.Core
 {
+    public enum TrangThaiKhaoSat
+    {
+        MoiTao = 1,
+        TaoPhieuKhaoSat = 2,
+        CapNhatKetQuaKhaoSat = 3,
+        ChuyenDonVi= 4,
+        DonViCapNhatGiaiTrinh= 5,
+        KetThucKhaoSat = 6
+    }
     public enum TrangThaiCongVan
     {
         MoiTao = 0,
