@@ -99,7 +99,7 @@ namespace EVN.Api.Controllers
                     {
                       //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
                         ZaloClient za = new ZaloClient();
-                        var idzalo = za.get_idzalo("84963201110"); // Lay thong tin idzalo tu sdt
+                        var idzalo = za.get_idzalo(nguoiNhan1.phoneNumber); // Lay thong tin idzalo tu sdt
                         Zalo zalo = new Zalo(); ;
                         zalo.MA_DVIQLY = item.DONVI_DIENLUC;
                         zalo.MA_DVU = "TA";
