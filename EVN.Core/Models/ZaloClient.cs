@@ -122,7 +122,7 @@ namespace EVN.Core.Models
 
             if ((result.ToString().Contains("-213")) || (result.ToString().Contains("-201")))
             {
-               // id_zalo = "-1";
+               id_zalo = "-1";
             }
             else
             {
