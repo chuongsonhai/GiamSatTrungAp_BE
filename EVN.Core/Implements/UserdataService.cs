@@ -19,7 +19,15 @@ namespace EVN.Core.Implements
         public UserdataService(string sessionFactoryConfigPath, string connectionString = null) : base(sessionFactoryConfigPath, connectionString)
         {
         }
+        public IList<Userdata> GetbyMaDviQly(string MaDviQly)
+        {
+            return Query.Where(p => p.maDViQLy == MaDviQly ).ToList();
+        }
 
+        public Userdata Getbysdt(string sdt)
+        {
+            return Get(p => p.phoneNumber == sdt);
+        }
         public Userdata Authenticate(string username, string password)
         {
             var user = Get(p => p.username.ToUpper() == username.ToUpper());

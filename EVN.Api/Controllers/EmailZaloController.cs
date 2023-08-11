@@ -3,6 +3,7 @@ using EVN.Api.Model;
 using EVN.Api.Model.Request;
 using EVN.Core.Domain;
 using EVN.Core.IServices;
+using EVN.Core.Models;
 using FX.Core;
 using log4net;
 using System;
@@ -71,6 +72,8 @@ namespace EVN.Api.Controllers
                 foreach (var item in listCB)
                 {
                     IList<UserNhanCanhBao> listNguoiNhan = userNhanCanhBaoService.GetbyMaDviQly(item.DONVI_DIENLUC);
+                    IList<Userdata> listNguoiNhanzalo = userdataService.GetbyMaDviQly(item.DONVI_DIENLUC);
+                    //Email
                     foreach (var nguoiNhan in listNguoiNhan)
                     {
                         var user = userdataService.Getbykey(nguoiNhan.USER_ID);
@@ -86,7 +89,29 @@ namespace EVN.Api.Controllers
 
                         service.CreateNew(email);
                     }
+<<<<<<< Updated upstream
                     item.TRANGTHAI_CANHBAO = 2;
+=======
+
+                    //Zalo
+                    foreach (var nguoiNhan1 in listNguoiNhanzalo)
+                    {
+                      //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
+                        ZaloClient za = new ZaloClient();
+                        var idzalo = za.get_idzalo("84963201110"); // Lay thong tin idzalo tu sdt
+                        Zalo zalo = new Zalo(); ;
+                        zalo.MA_DVIQLY = item.DONVI_DIENLUC;
+                        zalo.MA_DVU = "TA";
+                        zalo.NOI_DUNG = item.NOIDUNG;
+                        zalo.NGAY_TAO = DateTime.Now;
+                        zalo.NGUOI_TAO = "admin";
+                        zalo.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                        zalo.TINH_TRANG = 1;
+                        zalo.ID_ZALO = idzalo;
+                        zaloservice.CreateNew(zalo);
+                    }
+                        item.TRANGTHAI_CANHBAO = 2;
+>>>>>>> Stashed changes
                     CBservice.Update(item);
                 }
 

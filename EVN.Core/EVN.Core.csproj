@@ -272,6 +272,12 @@
     <Compile Include="MailDeliver\IDeliverService.cs" />
     <Compile Include="MailDeliver\DeliverService.cs" />
     <Compile Include="MailDeliver\MailConfig.cs" />
+    <Compile Include="Models\APIConfig.cs" />
+    <Compile Include="Models\ZaloBaseClient.cs" />
+    <Compile Include="Models\APIException.cs" />
+    <Compile Include="Models\ZaloEndpoint.cs" />
+    <Compile Include="Models\DataProvide_Oracle.cs" />
+    <Compile Include="Models\ZaloClient.cs" />
     <Compile Include="Models\BaoCaoChiTietTCDN.cs" />
     <Compile Include="Models\BaoCaoTHQuaHan.cs" />
     <Compile Include="Models\BaoCaoTHTCDN.cs" />
