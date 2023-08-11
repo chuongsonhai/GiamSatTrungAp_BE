@@ -22,5 +22,6 @@ namespace EVN.Core.IServices
                 int pageindex, int pagesize, out int total);
         IList<CanhBao> FilterBytrangThaiAndDViQuanLy(string fromDate, string toDate, int trangThai, string DonViDienLuc);
         IList<CanhBao> FilterByMaYCauAndDViQuanLy(string fromDate, string toDate, string MaYeuCau, string DonViDienLuc);
+        IList<CanhBao> FilterByMaYCauAndDviQLyAndLoaiCanhBao(string fromDate, string toDate, int MaLoaiCanhBao, string MaYeuCau, string DonViQuanLy);
     }
 }

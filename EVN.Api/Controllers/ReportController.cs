@@ -8,6 +8,7 @@ using log4net;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Web.Http;
 
@@ -979,6 +980,199 @@ namespace EVN.Api.Controllers
             }
         }
 
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("giamsat")]
+        public IHttpActionResult GiamSat(CanhBaoFilterRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                var listCanhBao = canhBaoService.FilterByMaYCauAndDviQLyAndLoaiCanhBao(request.Filter.fromdate, request.Filter.todate, request.Filter.maLoaiCanhBao, request.Filter.MaYeuCau, request.Filter.maDViQLy);
+                int SoLuongCanhBaoChamTienDo = 0;
+                int SoLuongCanhBaoTroNgai = 0;
 
+                foreach( var canhbao in listCanhBao)
+                {
+                    if(canhbao.LOAI_CANHBAO_ID == 1 || canhbao.LOAI_CANHBAO_ID == 2 || canhbao.LOAI_CANHBAO_ID == 3 || canhbao.LOAI_CANHBAO_ID == 4 ||
+                         canhbao.LOAI_CANHBAO_ID == 5 || canhbao.LOAI_CANHBAO_ID == 6 || canhbao.LOAI_CANHBAO_ID == 7 || canhbao.LOAI_CANHBAO_ID == 8)
+                    {
+                        SoLuongCanhBaoChamTienDo++;
+                    }
+                    else
+                    {
+                        SoLuongCanhBaoTroNgai++;
+                    }
+                }
+                var objData = new { MaYeuCau = request.Filter.MaYeuCau, DonViQuanLy = request.Filter.maDViQLy, SoLuongCanhBaoChamTienDo, SoLuongCanhBaoTroNgai };
+                result.data = objData;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+
+                result.message = ex.Message;
+
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+
+                return Ok(result);
+            }
+        }
+        [HttpPost]
+        [Route("giamsat/detail")]
+        public IHttpActionResult GiamSatDetail(CanhBaoFilterRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                var listCanhBao = canhBaoService.FilterByMaYCauAndDviQLyAndLoaiCanhBao(request.Filter.fromdate, request.Filter.todate, request.Filter.maLoaiCanhBao, request.Filter.MaYeuCau, request.Filter.maDViQLy);
+                var canhBaoFilterList = new List<object>();
+                foreach (var canhbao in listCanhBao)
+                {
+                    var textLoaiCanhBao = "";
+                    if (canhbao.LOAI_CANHBAO_ID == 1 || canhbao.LOAI_CANHBAO_ID == 2 || canhbao.LOAI_CANHBAO_ID == 3 || canhbao.LOAI_CANHBAO_ID == 4 ||
+                         canhbao.LOAI_CANHBAO_ID == 5 || canhbao.LOAI_CANHBAO_ID == 6 || canhbao.LOAI_CANHBAO_ID == 7 || canhbao.LOAI_CANHBAO_ID == 8)
+                    {
+                        textLoaiCanhBao = "Chậm tiến độ";
+                    }
+                    else
+                    {
+                        textLoaiCanhBao = "Trở Ngại";
+                    }
+
+                    var textTrangThaiCanhBao = "";
+                     //chuyển trạng thái cảnh báo sang kiểu text
+                if (canhbao.TRANGTHAI_CANHBAO == 1)
+                {
+                        textTrangThaiCanhBao = "Mới tạo danh sách";
+                }
+                else if (canhbao.TRANGTHAI_CANHBAO == 2)
+                {
+                        textTrangThaiCanhBao = "Đã gửi thông báo";
+                }
+                else if (canhbao.TRANGTHAI_CANHBAO == 3)
+                {
+                        textTrangThaiCanhBao = "Đã tiếp nhận theo dõi";
+                }
+                else if (canhbao.TRANGTHAI_CANHBAO == 4)
+                {
+                        textTrangThaiCanhBao = "Chuyển đơn vị xử lý";
+                }
+                else if (canhbao.TRANGTHAI_CANHBAO == 5)
+                {
+                        textTrangThaiCanhBao = "Gửi lại cảnh báo";
+                }
+                else if (canhbao.TRANGTHAI_CANHBAO == 6)
+                {
+                        textTrangThaiCanhBao = "Đã đóng cảnh báo";
+                }
+                    var obj = new { canhbao.MA_YC, canhbao.DONVI_DIENLUC, LoaiCanhBao = textLoaiCanhBao, canhbao.THOIGIANGUI, TrangThaiCanhBao = textTrangThaiCanhBao, canhbao.NOIDUNG };
+                    canhBaoFilterList.Add(obj);
+                }
+                result.data = canhBaoFilterList;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+
+                result.message = ex.Message;
+
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+
+                return Ok(result);
+            }
+        }
+
+        [HttpPost]
+        [Route("khaosat")]
+        public IHttpActionResult KhaoSat(CanhBaoFilterRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                IXacNhanTroNgaiService xacNhanTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
+                var listCanhBao = canhBaoService.FilterByMaYCauAndDviQLyAndLoaiCanhBao(request.Filter.fromdate, request.Filter.todate, request.Filter.maLoaiCanhBao, request.Filter.MaYeuCau, request.Filter.maDViQLy);
+                var resultList = new List<object>();
+                foreach (var canhbao in listCanhBao)
+                {
+                    var SoLuongKhaoSatThanhCong = 0;
+                    var SoLuongKhaoSatThatBai = 0;
+                    var listKhaoSat = xacNhanTroNgaiService.FilterByCanhBaoID(canhbao.ID);
+                    foreach(var khaosat in listKhaoSat)
+                    {
+                        if(khaosat.KETQUA == "Thành công")
+                        {
+                            SoLuongKhaoSatThanhCong++;
+                        }
+                        else 
+                        {
+                            SoLuongKhaoSatThatBai++;
+                        }
+                        resultList.Add(new { canhbao.MA_YC, canhbao.DONVI_DIENLUC, SoLuongKhaoSatThanhCong, SoLuongKhaoSatThatBai});
+                    }
+                }
+                result.data = resultList;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+
+                result.message = ex.Message;
+
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+
+                return Ok(result);
+            }
+        }
+
+        [HttpPost]
+        [Route("khaosat/detail")]
+        public IHttpActionResult KhaoSatDetail(CanhBaoFilterRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                IXacNhanTroNgaiService xacNhanTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
+                var listCanhBao = canhBaoService.FilterByMaYCauAndDviQLyAndLoaiCanhBao(request.Filter.fromdate, request.Filter.todate, request.Filter.maLoaiCanhBao, request.Filter.MaYeuCau, request.Filter.maDViQLy);
+                var resultList = new List<object>();
+                foreach (var canhbao in listCanhBao)
+                {
+                    var resultKhaoSat = new List<object>();
+                    var listKhaoSat = xacNhanTroNgaiService.FilterByCanhBaoID(canhbao.ID);
+                    foreach (var khaosat in listKhaoSat)
+                    {
+                        resultKhaoSat.Add(new { ThoiGianKhaoSat = khaosat.THOIGIAN_KHAOSAT, TrangThaiKhaoSat = khaosat.TRANGTHAI, NoiDungKhaoSat = khaosat.NOIDUNG_CAUHOI,NoiDungPhanHoi = khaosat.PHANHOI_KH});
+                    }
+                    resultList.Add(new { canhbao.MA_YC, canhbao.DONVI_DIENLUC, canhbao.LOAI_CANHBAO_ID, resultKhaoSat });
+                }
+                result.data = resultList;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+
+                result.message = ex.Message;
+
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+
+                return Ok(result);
+            }
+        }
     }
 }

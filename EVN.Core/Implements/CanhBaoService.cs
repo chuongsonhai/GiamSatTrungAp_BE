@@ -184,5 +184,36 @@ namespace EVN.Core.Implements
             }
         }
 
+        public IList<CanhBao> FilterByMaYCauAndDviQLyAndLoaiCanhBao(string fromDate, string toDate, int MaLoaiCanhBao, string MaYeuCau, string DonViQuanLy)
+        {
+            if (DonViQuanLy != "-1")
+            {
+                DateTime tuNgayCast = DateTime.ParseExact(fromDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                DateTime denNgayCast = DateTime.ParseExact(toDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                //var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO == trangThai
+                //&& p.LOAI_CANHBAO_ID == maLoaiCanhBao && p.DONVI_DIENLUC == maDonVi);
+
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast.AddDays(1) && p.DONVI_DIENLUC == DonViQuanLy &&  p.MA_YC == MaYeuCau);
+                if (MaLoaiCanhBao != -1)
+                {
+                    query = query.Where(p => p.LOAI_CANHBAO_ID == MaLoaiCanhBao);
+                }
+                return query.ToList();
+            }
+            else
+            {
+                DateTime tuNgayCast = DateTime.ParseExact(fromDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                DateTime denNgayCast = DateTime.ParseExact(toDate, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                //var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO == trangThai
+                //&& p.LOAI_CANHBAO_ID == maLoaiCanhBao && p.DONVI_DIENLUC == maDonVi);
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.MA_YC == MaYeuCau);
+                if (MaLoaiCanhBao != -1)
+                {
+                    query = query.Where(p => p.LOAI_CANHBAO_ID == MaLoaiCanhBao);
+                }
+                return query.ToList();
+            }
+        }
+
     }
 }

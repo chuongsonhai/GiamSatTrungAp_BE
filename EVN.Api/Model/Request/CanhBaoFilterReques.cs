@@ -23,6 +23,7 @@ namespace EVN.Api.Model.Request
         public string fromdate { get; set; } = string.Empty;
         public string todate { get; set; } = string.Empty;
         public string maDViQLy { get; set; } = string.Empty;
+        public string MaYeuCau { get; set; }
     }
 
 
