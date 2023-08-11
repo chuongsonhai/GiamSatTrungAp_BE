@@ -608,7 +608,7 @@
     <EmbeddedResource Include="Domain\Email.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Domain\Zalo.hbm - Copy.xml" />
+    <EmbeddedResource Include="Domain\Zalo.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Domain\UserNhanCanhBao.hbm.xml" />

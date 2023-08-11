@@ -63,6 +63,7 @@ namespace EVN.Api.Controllers
             ResponseFileResult result = new ResponseFileResult();
             ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
             IEmailService service = IoC.Resolve<IEmailService>();
+            IZaloService zaloservice = IoC.Resolve<IZaloService>();
             IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
             IUserdataService userdataService = IoC.Resolve<IUserdataService>();
             try
@@ -89,9 +90,9 @@ namespace EVN.Api.Controllers
 
                         service.CreateNew(email);
                     }
-<<<<<<< Updated upstream
+
                     item.TRANGTHAI_CANHBAO = 2;
-=======
+
 
                     //Zalo
                     foreach (var nguoiNhan1 in listNguoiNhanzalo)
@@ -111,7 +112,6 @@ namespace EVN.Api.Controllers
                         zaloservice.CreateNew(zalo);
                     }
                         item.TRANGTHAI_CANHBAO = 2;
->>>>>>> Stashed changes
                     CBservice.Update(item);
                 }
 
