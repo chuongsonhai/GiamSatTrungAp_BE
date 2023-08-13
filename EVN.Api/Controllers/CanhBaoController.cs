@@ -129,7 +129,6 @@ namespace EVN.Api.Controllers
                 result.data = data;
                 result.success = true;
                 return Ok(result);
-
             }
             catch (Exception ex)
             {
@@ -192,7 +191,6 @@ namespace EVN.Api.Controllers
                 foreach (var item in list)
                 {
                     data.Add(new CanhBaoRequest(item));
-
                 }
                 // result.total = list.Count();
                 result.data = data;
@@ -208,7 +206,6 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
-
         //2.2	(POST) /canhbao/finnish
         //[JwtAuthentication]
         [HttpPost]

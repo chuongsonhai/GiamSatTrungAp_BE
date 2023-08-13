@@ -62,6 +62,7 @@ namespace EVN.Api.Controllers
             ResponseFileResult result = new ResponseFileResult();
             ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
             IEmailService service = IoC.Resolve<IEmailService>();
+            IZaloService zaloservice = IoC.Resolve<IZaloService>();
             IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
             IUserdataService userdataService = IoC.Resolve<IUserdataService>();
             try
@@ -76,17 +77,30 @@ namespace EVN.Api.Controllers
                         var user = userdataService.Getbykey(nguoiNhan.USER_ID);
                         Email email = new Email();
                         email.MA_DVIQLY = item.DONVI_DIENLUC;
-                        email.MA_DVU = "GSCDTA";
+                        email.MA_DVU = "TA";
                         email.NOI_DUNG = item.NOIDUNG;
                         email.NGAY_TAO = DateTime.Now;
                         email.NGUOI_TAO = "admin";
                         email.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
                         email.TINH_TRANG = 1;
                         email.EMAIL = user.email;
-
                         service.CreateNew(email);
+                     
                     }
-                    item.TRANGTHAI_CANHBAO = 2;
+                    foreach (var nguoiNhan in listNguoiNhan)
+                    {
+                        Zalo zalo = new Zalo(); ;
+                        zalo.MA_DVIQLY = item.DONVI_DIENLUC;
+                        zalo.MA_DVU = "TA";
+                        zalo.NOI_DUNG = item.NOIDUNG;
+                        zalo.NGAY_TAO = DateTime.Now;
+                        zalo.NGUOI_TAO = "admin";
+                        zalo.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                        zalo.TINH_TRANG = 1;
+                        zalo.ID_ZALO = "1234";
+                        zaloservice.CreateNew(zalo);
+                    }
+                        item.TRANGTHAI_CANHBAO = 2;
                     CBservice.Update(item);
                 }
 
@@ -105,41 +119,6 @@ namespace EVN.Api.Controllers
             }
         }
 
-        //[HttpPost]
-        //[Route("zalo/add")]
-        //public IHttpActionResult AddZalo([FromBody] ZaloModelFilter request)
-        //{
-        //    ResponseFileResult result = new ResponseFileResult();
-        //    try
-        //    {
-        //        IZaloService service = IoC.Resolve<IZaloService>();
-        //        Zalo zalo = new Zalo();
-        //        zalo.ID = request.Filter.ID;
-        //        zalo.MA_DVIQLY = request.Filter.MA_DVIQLY;
-        //        zalo.MA_DVU = request.Filter.MA_DVU;
-        //        zalo.MA_KHANG = request.Filter.MA_KHANG;
-        //        zalo.NOI_DUNG = request.Filter.NOI_DUNG;
-        //        zalo.NGAY_SUA = request.Filter.NGAY_SUA;
-        //        zalo.NGUOI_SUA = request.Filter.NGUOI_SUA;
-        //        zalo.NGAY_TAO = request.Filter.NGAY_TAO;
-        //        zalo.NGUOI_TAO = request.Filter.NGUOI_TAO;
-        //        zalo.TIEU_DE = request.Filter.TIEU_DE;
-        //        zalo.TINH_TRANG = request.Filter.TINH_TRANG;
-        //        zalo.ID_ZALO = request.Filter.ID_ZALO;
-        //        zalo.ID_HDON = request.Filter.ID_HDON;
-        //        service.CreateNew(zalo);
-        //        service.CommitChanges();
-        //        result.success = true;
-        //        result.message = "Thêm mới thành công";
-        //        return Ok(result);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        log.Error(ex);
-        //        result.success = false;
-        //        result.message = ex.Message;
-        //        return Ok(result);
-        //    }
-        //}
+     
     }
 }
