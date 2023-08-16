@@ -185,7 +185,7 @@ namespace EVN.Api.Controllers
                 // int total = 0;
                 DateTime synctime = DateTime.Today;
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
-                var list = service.Filter(filter.Filter.fromdate, filter.Filter.todate, filter.Filter.maLoaiCanhBao, filter.Filter.trangThai, filter.Filter.maDViQLy, filter.Filter.SoLanGui);
+                var list = service.Filter(filter.Filter.fromdate, filter.Filter.todate, filter.Filter.maLoaiCanhBao, filter.Filter.trangThai, filter.Filter.maDViQLy, filter.Filter.SoLanGui, filter.Filter.keyword);
                 IList<CanhBaoRequest> data = new List<CanhBaoRequest>();
 
                 foreach (var item in list)

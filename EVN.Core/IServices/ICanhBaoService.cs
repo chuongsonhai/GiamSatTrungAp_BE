@@ -15,11 +15,10 @@ namespace EVN.Core.IServices
         SoLuongGuiModel GetSoLuongGui(string tungay, string denngay);
         IList<CanhBao> GetbyCanhbao(string tungay, string denngay);
         IList<CanhBao> GetAllCanhBao( out int total);
-        IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi, int solangui);
+        IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi, int solangui, string maYeuCau);
 
         bool CreateCanhBao(CanhBao canhbao, out string message);
-        IList<CanhBao> GetbykhachhangFilter(string tungay, string denngay, int maLoaiCanhBao, string donViQuanLy,
-                int pageindex, int pagesize, out int total);
+        IList<CanhBao> GetbykhachhangFilter(string tungay, string denngay, int maLoaiCanhBao, string donViQuanLy);
         IList<CanhBao> FilterBytrangThaiAndDViQuanLy(string fromDate, string toDate, int trangThai, string DonViDienLuc);
         IList<CanhBao> FilterByMaYCauAndDViQuanLy(string fromDate, string toDate, string MaYeuCau, string DonViDienLuc);
     }

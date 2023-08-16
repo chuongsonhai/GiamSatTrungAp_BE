@@ -43,8 +43,8 @@ namespace EVN.Api.Controllers
                     ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
                     IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
                     var resultList = new List<object>();
-                    var list = canhBaoService.GetbykhachhangFilter(request.FilterKH.tuNgay, request.FilterKH.denNgay, request.FilterKH.maLoaiCanhBao,
-                        request.FilterKH.donViQuanLy, pageindex, request.Paginator.pageSize, out total);
+                    var list = canhBaoService.GetbykhachhangFilter(request.Filter.fromdate, request.Filter.todate, request.Filter.maLoaiCanhBao,
+                        request.Filter.maDViQLy);
                     foreach (var canhbao in list)
                     {
                         var listCongVan = serviceyeucau.Filterkhaosat(canhbao.MA_YC);
@@ -92,16 +92,12 @@ namespace EVN.Api.Controllers
                         {
                             textTrangThai = "Hủy";
                         }
-                        resultList.Add(new { congvan.MaYeuCau, congvan.TenKhachHang, TrangThai = textTrangThai });
+                        resultList.Add(new { congvan.MaYeuCau, congvan.TenKhachHang, TrangThai = textTrangThai, DienThoai = congvan.DienThoai, CanhBao = canhbao });
                         }
                     }
                     result.total = total;
                     result.data = resultList;
                     result.success = true;
-                    if (result.total == 0)
-                    {
-                        result.message = "Không có dữ liệu";
-                    }
                     return Ok(result);                
             }
             catch (Exception ex)
@@ -209,12 +205,17 @@ namespace EVN.Api.Controllers
                 var oj1 = new
                 { 
                         maYeuCau = ThongTinYeuCau.MaYeuCau,
-                        ketQuaKhaoSat = khaosat.KETQUA,
+                        KETQUA = khaosat.KETQUA,
                         trangThaiYeuCau = textTrangThaiYeuCau,
                         trangThaiKhaoSat = textTrangThaiKhaoSat,
                         tenKhachHang = ThongTinYeuCau.TenKhachHang,
                         nguoiKhaoSat = HttpContext.Current.User.Identity.Name,
-                        thoiGianKhaoSat = khaosat.THOIGIAN_KHAOSAT   
+                        thoiGianKhaoSat = khaosat.THOIGIAN_KHAOSAT,
+                        CANHBAO_ID = ThongTinCanhBao.idCanhBao,
+                        NOIDUNG_CAUHOI = khaosat.NOIDUNG_CAUHOI,
+                        PHANHOI_KH = khaosat.PHANHOI_KH,
+                        PHANHOI_DV = khaosat.PHANHOI_DV
+
                 };
                     result.data = oj1;
                     result.success = true;
@@ -235,20 +236,24 @@ namespace EVN.Api.Controllers
         //thêm mới khảo sát 
         [HttpPost]
         [Route("add")]
-        public IHttpActionResult Post([FromBody] XacNhanTroNgaikhaosatadd model)
+        public IHttpActionResult Post()
         {
             ResponseFileResult result = new ResponseFileResult();
+            var httpRequest = HttpContext.Current.Request;
+            string data = httpRequest.Form["data"];
+            XacNhanTroNgaikhaosatadd model = JsonConvert.DeserializeObject<XacNhanTroNgaikhaosatadd>(data);
             try
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
                 IUserdataService userdataService = IoC.Resolve<IUserdataService>();
                 var item = new XacNhanTroNgai();
-        
-                item.NOIDUNG_CAUHOI = model.noiDungKhaoSat;
-                item.PHANHOI_KH = model.khachHangPhanHoi;
-                item.KETQUA = model.ketQuaKhaoSat;
-                item.NGUOI_KS = HttpContext.Current.User.Identity.Name;
+
+                item.NOIDUNG_CAUHOI = model.NOIDUNG_CAUHOI;
+                item.PHANHOI_KH = model.PHANHOI_KH;
+                item.KETQUA = model.KETQUA;
+                item.NGUOI_KS = model.NGUOI_KS;
                 item.TRANGTHAI = 3;
+                item.CANHBAO_ID = model.CANHBAO_ID;
                 service.CreateNew(item);
                 service.CommitChanges();
                 result.success = true;
@@ -266,22 +271,26 @@ namespace EVN.Api.Controllers
         //2.4 (POST) /khaosat/{id}
         //[JwtAuthentication]
         //sửa khảo sát
-        [Route("{id}")]
+        [Route("edit")]
         [HttpPost]
-        public IHttpActionResult UpdateById([FromBody] XacNhanTroNgakhaosatid model)
+        public IHttpActionResult UpdateById()
         {
             ResponseFileResult result = new ResponseFileResult();
+            var httpRequest = HttpContext.Current.Request;
+            string data = httpRequest.Form["data"];
+            XacNhanTroNgaikhaosatadd model = JsonConvert.DeserializeObject<XacNhanTroNgaikhaosatadd>(data);
             try
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
                 var item = new XacNhanTroNgai();
 
                 //sửa nội dung khảo sát
-                var khaosat = service.GetKhaoSat(model.idKhaoSat);
-                khaosat.NOIDUNG_CAUHOI = model.noiDungKhaoSat;
-                khaosat.PHANHOI_KH = model.khachHangPhanHoi;
-                khaosat.KETQUA = model.ketQuaKhaoSat;
-                khaosat.NGUOI_KS = HttpContext.Current.User.Identity.Name;
+                var khaosat = service.GetKhaoSat(model.ID);
+                khaosat.NOIDUNG_CAUHOI = model.NOIDUNG_CAUHOI;
+                khaosat.PHANHOI_KH = model.PHANHOI_KH;
+                khaosat.PHANHOI_DV = model.PHANHOI_DV;
+                khaosat.KETQUA = model.KETQUA;
+                khaosat.NGUOI_KS = model.NGUOI_KS;
                 khaosat.TRANGTHAI = 3;
                 service.CommitChanges();
                 result.success = true;
@@ -414,99 +423,60 @@ namespace EVN.Api.Controllers
                 ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
                 ICongVanYeuCauService congVanYeuCauService = IoC.Resolve<ICongVanYeuCauService>();
                 // lọc cảnh báo theo thời gian, mã đơn vị quản lý 
-                var list = canhBaoService.FilterByMaYCauAndDViQuanLy(request.tuNgay, request.denNgay, request.MaYeuCau, request.donViQuanLy);
-
+                var canhbao = canhBaoService.Getbykey(request.IdCanhBao);
                 //danh sách kết quả
-                var resultList = new List<object>();
-
-
-                foreach (var canhbao in list)
+                //lọc ra các thông tin liên quan đến khảo sát
+                var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai(canhbao.ID);
+                //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
+                var congVanYeuCau = congVanYeuCauService.GetbyMaYCau(canhbao.MA_YC);
+                string textTrangThai = "";
+                if (congVanYeuCau.TrangThai == TrangThaiCongVan.MoiTao)
                 {
-                    //lọc ra các thông tin liên quan đến khảo sát
-                    var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai(canhbao.ID, request.TrangThaiKhaoSat);
-                    var listKhaoSatFilter = new List<object>();
-                    foreach (var khaosat in listKhaoSat)
-                    {
-                        var textTrangThaiKhaoSat = "";
-                        if (khaosat.TRANGTHAI == 1)
-                        {
-                            textTrangThaiKhaoSat = "Mới tạo danh sách";
-                        }
-                        else if (khaosat.TRANGTHAI == 2)
-                        {
-                            textTrangThaiKhaoSat = "Tạo phiếu khảo sát";
-                        }
-                        else if (khaosat.TRANGTHAI == 3)
-                        {
-                            textTrangThaiKhaoSat = "Cập nhật kết quả khảo sát";
-                        }
-                        else if (khaosat.TRANGTHAI == 4)
-                        {
-                            textTrangThaiKhaoSat = "Chuyển đơn vị";
-                        }
-                        else if (khaosat.TRANGTHAI == 5)
-                        {
-                            textTrangThaiKhaoSat = "Đơn vị cập nhật giải trình";
-                        }
-                        else if (khaosat.TRANGTHAI == 6)
-                        {
-                            textTrangThaiKhaoSat = "Kết thúc khảo sát";
-                        }
-                        listKhaoSatFilter.Add(new { khaosat.ID, TrangThaiKhaoSat = textTrangThaiKhaoSat, khaosat.THOIGIAN_KHAOSAT, khaosat.KETQUA });
-                    }
-
-                    //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
-                    var congVanYeuCau = congVanYeuCauService.GetbyMaYCau(canhbao.MA_YC);
-                    string textTrangThai = "";
-                    if (congVanYeuCau.TrangThai == TrangThaiCongVan.MoiTao)
-                    {
-                        textTrangThai = "Mới tạo";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.TiepNhan)
-                    {
-                        textTrangThai = "Tiếp Nhận";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.PhanCongKS)
-                    {
-                        textTrangThai = "Phân Công Khảo Sát";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.GhiNhanKS)
-                    {
-                        textTrangThai = "Ghi Nhận Khảo Sát";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.BienBanKS)
-                    {
-                        textTrangThai = "Biên Bản Khảo sát";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.DuThaoTTDN)
-                    {
-                        textTrangThai = "Dự thảo thỏa thuận đấu nối";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.KHKy)
-                    {
-                        textTrangThai = "Khách Hàng Ký";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.DuChuKy)
-                    {
-                        textTrangThai = "Đủ Chữ Ký";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.HoanThanh)
-                    {
-                        textTrangThai = "Hoàn Thành";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.ChuyenTiep)
-                    {
-                        textTrangThai = "Chuyển Tiếp";
-                    }
-                    else if (congVanYeuCau.TrangThai == TrangThaiCongVan.Huy)
-                    {
-                        textTrangThai = "Hủy";
-                    }
-                    //tạo ra response API
-                    var obj = new { congVanYeuCau.MaYeuCau, congVanYeuCau.TenKhachHang, DanhSachKhaoSat =  listKhaoSatFilter, TrangThaiCongVan = textTrangThai };
-                    resultList.Add(obj);
+                    textTrangThai = "Mới tạo";
                 }
-                result.data = resultList;
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.TiepNhan)
+                {
+                    textTrangThai = "Tiếp Nhận";
+                }
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.PhanCongKS)
+                {
+                    textTrangThai = "Phân Công Khảo Sát";
+                }
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.GhiNhanKS)
+                {
+                    textTrangThai = "Ghi Nhận Khảo Sát";
+                }
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.BienBanKS)
+                {
+                    textTrangThai = "Biên Bản Khảo sát";
+                }
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.DuThaoTTDN)
+                {
+                    textTrangThai = "Dự thảo thỏa thuận đấu nối";
+                }
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.KHKy)
+                {
+                    textTrangThai = "Khách Hàng Ký";
+                }
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.DuChuKy)
+                {
+                    textTrangThai = "Đủ Chữ Ký";
+                }
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.HoanThanh)
+                {
+                    textTrangThai = "Hoàn Thành";
+                }
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.ChuyenTiep)
+                {
+                    textTrangThai = "Chuyển Tiếp";
+                }
+                else if (congVanYeuCau.TrangThai == TrangThaiCongVan.Huy)
+                {
+                    textTrangThai = "Hủy";
+                }
+                //tạo ra response API
+                var obj = new { congVanYeuCau.MaYeuCau, congVanYeuCau.TenKhachHang, DienThoai=congVanYeuCau.DienThoai, TrangThaiCongVan = textTrangThai , canhbao=canhbao, DanhSachKhaoSat = listKhaoSat,};
+                result.data = obj;
                 result.success = true;
                 return Ok(result);
             }
@@ -562,6 +532,35 @@ namespace EVN.Api.Controllers
                     resultList.Add(obj);
                 }
                 result.data = resultList;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+        [HttpGet]
+        [Route("updateStatus/{ID}/{Status}")]
+        public IHttpActionResult updateStatus([FromUri] int ID, [FromUri] int Status)
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            try
+            {
+                //ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
+
+                var item = new XacNhanTroNgai();
+
+                //sửa nội dung khảo sát
+                var khaosat = service.GetKhaoSat(ID);
+                khaosat.TRANGTHAI = Status;
+                service.Update(khaosat);
+                service.CommitChanges();
                 result.success = true;
                 return Ok(result);
             }
