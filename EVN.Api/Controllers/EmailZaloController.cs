@@ -119,6 +119,36 @@ namespace EVN.Api.Controllers
             }
         }
 
-     
+        [HttpPost]
+        [Route("filter")]
+        public IHttpActionResult Filter(UserNhanCanhBaoFilterRequest filter)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                // int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+                // int total = 0;
+                DateTime synctime = DateTime.Today;
+                IUserNhanCanhBaoService service = IoC.Resolve<IUserNhanCanhBaoService>();
+                var list = service.GetbyMaDviQly(filter.Filter.maDViQLy);
+                IList<UserNhanCanhBao> data = new List<UserNhanCanhBao>();
+
+                
+                // result.total = list.Count();
+                result.data = list;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.data = new List<UserNhanCanhBao>();
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+
     }
 }

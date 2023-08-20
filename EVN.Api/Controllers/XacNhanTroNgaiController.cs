@@ -242,6 +242,7 @@ namespace EVN.Api.Controllers
             var httpRequest = HttpContext.Current.Request;
             string data = httpRequest.Form["data"];
             XacNhanTroNgaikhaosatadd model = JsonConvert.DeserializeObject<XacNhanTroNgaikhaosatadd>(data);
+            ILogKhaoSatService LogKhaoSatservice = IoC.Resolve<ILogKhaoSatService>();
             try
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
@@ -252,10 +253,20 @@ namespace EVN.Api.Controllers
                 item.PHANHOI_KH = model.PHANHOI_KH;
                 item.KETQUA = model.KETQUA;
                 item.NGUOI_KS = model.NGUOI_KS;
-                item.TRANGTHAI = 3;
+                item.TRANGTHAI = 2;
                 item.CANHBAO_ID = model.CANHBAO_ID;
                 service.CreateNew(item);
                 service.CommitChanges();
+
+                var logKS = new LogKhaoSat();
+                logKS.KHAOSAT_ID = item.ID;
+                logKS.DATA_MOI  = JsonConvert.SerializeObject(item);
+                logKS.TRANGTHAI = 1;
+                logKS.THOIGIAN = DateTime.Now;
+                logKS.NGUOITHUCHIEN = model.NGUOI_KS;
+                LogKhaoSatservice.CreateNew(logKS);
+                LogKhaoSatservice.CommitChanges();
+                
                 result.success = true;
                 return Ok(result);
             }
@@ -282,17 +293,35 @@ namespace EVN.Api.Controllers
             try
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
+                ILogKhaoSatService LogKhaoSatservice = IoC.Resolve<ILogKhaoSatService>();
                 var item = new XacNhanTroNgai();
 
                 //sửa nội dung khảo sát
                 var khaosat = service.GetKhaoSat(model.ID);
+                var datacu = JsonConvert.SerializeObject(khaosat);
                 khaosat.NOIDUNG_CAUHOI = model.NOIDUNG_CAUHOI;
                 khaosat.PHANHOI_KH = model.PHANHOI_KH;
                 khaosat.PHANHOI_DV = model.PHANHOI_DV;
                 khaosat.KETQUA = model.KETQUA;
                 khaosat.NGUOI_KS = model.NGUOI_KS;
-                khaosat.TRANGTHAI = 3;
+                if (string.IsNullOrEmpty(model.PHANHOI_DV)) 
+                {
+                    khaosat.TRANGTHAI = 3;
+                } else
+                {
+                    khaosat.TRANGTHAI = 5;
+                }
                 service.CommitChanges();
+
+                var logKS = new LogKhaoSat();
+                logKS.KHAOSAT_ID = khaosat.ID;
+                logKS.DATA_MOI = JsonConvert.SerializeObject(khaosat);
+                logKS.DATA_CU = datacu;
+                logKS.TRANGTHAI = khaosat.TRANGTHAI;
+                logKS.THOIGIAN = DateTime.Now;
+                logKS.NGUOITHUCHIEN = khaosat.NGUOI_KS;
+                LogKhaoSatservice.CreateNew(logKS);
+                LogKhaoSatservice.CommitChanges();
                 result.success = true;
                 return Ok(result);
             }
@@ -493,7 +522,7 @@ namespace EVN.Api.Controllers
         //2.9 (GET) /khaosat/log/filter
         //[JwtAuthentication]
         [HttpPost]
-        [Route("log/filter")]
+        //[Route("log/filter")]
         public IHttpActionResult FilterLog([FromBody] FilterKhaoSatByCanhBaologRequest request)
         {
             ResponseResult result = new ResponseResult();
@@ -544,6 +573,37 @@ namespace EVN.Api.Controllers
             }
         }
 
+        [HttpPost]
+        //[Route("filter")]
+        [Route("log/filter")]
+        public IHttpActionResult KhaoSatLogFilter(FilterLogKhaoSatRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                //if (!string.IsNullOrWhiteSpace(request.tuNgay))
+                //    fromDate = DateTime.ParseExact(request.tuNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                //if (!string.IsNullOrWhiteSpace(request.denNgay))
+                //    toDate = DateTime.ParseExact(request.denNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                ILogKhaoSatService logKhaoSatService = IoC.Resolve<ILogKhaoSatService>();
+                // lọc cảnh báo theo thời gian, mã đơn vị quản lý 
+                var listLog = logKhaoSatService.Filter(request.Filter.fromdate, request.Filter.todate, request.Filter.IdKhaoSat);
+                //danh sách kết quả
+                //tạo ra response API
+                result.data = listLog;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.data = new List<XacNhanTroNgai>();
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
         [HttpGet]
         [Route("updateStatus/{ID}/{Status}")]
         public IHttpActionResult updateStatus([FromUri] int ID, [FromUri] int Status)
@@ -553,14 +613,25 @@ namespace EVN.Api.Controllers
             {
                 //ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
-
+                ILogKhaoSatService LogKhaoSatservice = IoC.Resolve<ILogKhaoSatService>();
                 var item = new XacNhanTroNgai();
 
                 //sửa nội dung khảo sát
                 var khaosat = service.GetKhaoSat(ID);
+                var datacu = JsonConvert.SerializeObject(khaosat);
                 khaosat.TRANGTHAI = Status;
                 service.Update(khaosat);
                 service.CommitChanges();
+
+                var logKS = new LogKhaoSat();
+                logKS.KHAOSAT_ID = khaosat.ID;
+                logKS.DATA_CU = datacu;
+                logKS.DATA_MOI = JsonConvert.SerializeObject(khaosat);
+                logKS.TRANGTHAI = Status;
+                logKS.THOIGIAN = DateTime.Now;
+                logKS.NGUOITHUCHIEN = khaosat.NGUOI_KS;
+                LogKhaoSatservice.CreateNew(logKS);
+                LogKhaoSatservice.CommitChanges();
                 result.success = true;
                 return Ok(result);
             }

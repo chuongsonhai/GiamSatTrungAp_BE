@@ -133,6 +133,7 @@
     <Compile Include="Domain\BienBanKT.cs" />
     <Compile Include="Domain\BienBanDN.cs" />
     <Compile Include="Domain\BienBanKS.cs" />
+    <Compile Include="Domain\LogKhaoSat.cs" />
     <Compile Include="Domain\UserNhanCanhBao.cs" />
     <Compile Include="Domain\Xacnhantrongaikhaosatfilter.cs" />
     <Compile Include="Domain\GiamSatCongVanCanhbaoid.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Domain\ThoaThuanDamBao.cs" />
     <Compile Include="Domain\TramBienAp.cs" />
     <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Implements\LogKhaoSatService.cs" />
     <Compile Include="Implements\UserNhanCanhBaoService.cs" />
     <Compile Include="Implements\EmailService.cs" />
     <Compile Include="Implements\ZaloService.cs" />
@@ -241,6 +243,7 @@
     <Compile Include="Implements\ReportService.cs" />
     <Compile Include="Implements\ThongBaoService.cs" />
     <Compile Include="Implements\TThaiYeuCauService.cs" />
+    <Compile Include="IServices\ILogKhaoSatService.cs" />
     <Compile Include="IServices\IUserNhanCanhBaoService.cs" />
     <Compile Include="IServices\IZaloService.cs" />
     <Compile Include="IServices\IEmailService.cs" />
@@ -606,6 +609,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Domain\UserNhanCanhBao.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Domain\LogKhaoSat.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

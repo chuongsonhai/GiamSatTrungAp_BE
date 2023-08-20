@@ -79,7 +79,7 @@ namespace EVN.Core.Implements
         {
             var query = Query;
             
-                query.Where(p => p.CANHBAO_ID == ID);
+                query.Where(p => p.CANHBAO_ID == ID).OrderBy(p=>p.THOIGIAN_KHAOSAT);
             
             
             return query.ToList();
