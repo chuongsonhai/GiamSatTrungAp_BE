@@ -35,7 +35,7 @@ namespace EVN.Core.Implements
             var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast);
             return query.ToList();
         }
-        public IList<CanhBao> GetbykhachhangFilter(string tungay, string denngay, int maLoaiCanhBao, string donViQuanLy)
+        public IList<CanhBao> GetbykhachhangFilter(string tungay, string denngay, int maLoaiCanhBao, string donViQuanLy, int pageindex, int pagesize, out int total)
         {
             if (donViQuanLy == "-1")
             {
@@ -46,7 +46,9 @@ namespace EVN.Core.Implements
                 {
                     query = query.Where(p => p.LOAI_CANHBAO_ID == maLoaiCanhBao);
                 }
-                return query.ToList();
+                total = query.Count();
+                query = query.OrderByDescending(p => p.ID);
+                return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
             }
             else
             {
@@ -57,7 +59,9 @@ namespace EVN.Core.Implements
                 {
                     query = query.Where(p => p.LOAI_CANHBAO_ID == maLoaiCanhBao);
                 }
-                return query.ToList();
+                total = query.Count();
+                query = query.OrderByDescending(p => p.ID);
+                return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
             }
         }
         public SoLuongGuiModel GetSoLuongGui(string tungay, string denngay)
