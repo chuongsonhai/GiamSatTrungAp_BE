@@ -44,7 +44,7 @@ namespace EVN.Api.Controllers
                     IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
                     var resultList = new List<object>();
                     var list = canhBaoService.GetbykhachhangFilter(request.Filter.fromdate, request.Filter.todate, request.Filter.maLoaiCanhBao,
-                        request.Filter.maDViQLy);
+                        request.Filter.maDViQLy, pageindex, request.Paginator.pageSize, out total);
                     foreach (var canhbao in list)
                     {
                         var listCongVan = serviceyeucau.Filterkhaosat(canhbao.MA_YC);
@@ -97,7 +97,7 @@ namespace EVN.Api.Controllers
                     }
                     result.total = total;
                     result.data = resultList;
-                    result.success = true;
+                    result.success = true
                     return Ok(result);                
             }
             catch (Exception ex)
