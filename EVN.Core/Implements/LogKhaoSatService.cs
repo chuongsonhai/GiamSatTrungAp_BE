@@ -23,12 +23,14 @@ namespace EVN.Core.Implements
             return Get(p => p.ID == idloai);
         }
 
-        public IList<LogKhaoSat> Filter(string tungay, string denngay, int MaKhaoSat)
+        public IList<LogKhaoSat> Filter(string tungay, string denngay, int MaKhaoSat, int pageindex, int pageSize, out int total)
         {
             DateTime tuNgayCast = DateTime.ParseExact(tungay, "d/M/yyyy", CultureInfo.InvariantCulture);
             DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture);
             var query = Query.Where(p => p.THOIGIAN >= tuNgayCast && p.THOIGIAN <= denNgayCast && p.KHAOSAT_ID == MaKhaoSat);
-            return query.ToList();
+            total = query.Count();
+            query = query.OrderByDescending(p => p.ID);
+            return query.Skip(pageindex * pageSize).Take(pageSize).ToList();
         }
         //public IList<LogCanhBao> GetbyFilter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string donViQuanLy)
         //{

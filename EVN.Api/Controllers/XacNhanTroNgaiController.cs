@@ -97,7 +97,7 @@ namespace EVN.Api.Controllers
                     }
                     result.total = total;
                     result.data = resultList;
-                    result.success = true
+                result.success = true;
                     return Ok(result);                
             }
             catch (Exception ex)
@@ -581,15 +581,20 @@ namespace EVN.Api.Controllers
             ResponseResult result = new ResponseResult();
             try
             {
-                //if (!string.IsNullOrWhiteSpace(request.tuNgay))
-                //    fromDate = DateTime.ParseExact(request.tuNgay, DateTimeParse.Format, null, DateTimeStyles.None);
-                //if (!string.IsNullOrWhiteSpace(request.denNgay))
-                //    toDate = DateTime.ParseExact(request.denNgay, DateTimeParse.Format, null, DateTimeStyles.None);
+                int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+                int total = 0;
+               
                 ILogKhaoSatService logKhaoSatService = IoC.Resolve<ILogKhaoSatService>();
-                // lọc cảnh báo theo thời gian, mã đơn vị quản lý 
-                var listLog = logKhaoSatService.Filter(request.Filter.fromdate, request.Filter.todate, request.Filter.IdKhaoSat);
-                //danh sách kết quả
-                //tạo ra response API
+                
+                //lấy danh sách log khảo sát
+                var listLog = logKhaoSatService.Filter(request.Filter.fromdate, request.Filter.todate, request.Filter.IdKhaoSat, pageindex, request.Paginator.pageSize, out total);
+                
+                if(total == 0)
+                {
+                    result.message = "Không có dữ liệu";
+                }
+
+                result.total = total;
                 result.data = listLog;
                 result.success = true;
                 return Ok(result);

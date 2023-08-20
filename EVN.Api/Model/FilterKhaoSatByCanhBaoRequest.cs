@@ -13,7 +13,7 @@ namespace EVN.Api.Model.Request
         public FilterKhaoSatByCanhBaoRequest2 Filter { get; set; }
     }
 
-    public class FilterKhaoSatByCanhBaoRequest2 : BaseRequest
+    public class FilterKhaoSatByCanhBaoRequest2
     {
         public string fromdate { get; set; }
         public string todate { get; set; }

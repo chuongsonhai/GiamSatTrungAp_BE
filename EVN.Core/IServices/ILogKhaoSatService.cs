@@ -11,7 +11,7 @@ namespace EVN.Core.IServices
 
         bool Save(LogKhaoSat loaiKhaoSat, out string message);
 
-        IList<LogKhaoSat> Filter(string tungay, string denngay, int MaKhaoSat);
+        IList<LogKhaoSat> Filter(string tungay, string denngay, int MaKhaoSat, int pageindex, int pagesize, out int total);
         IList<LogKhaoSat> GetByMaKhaoSat(int id);
     }
 }
