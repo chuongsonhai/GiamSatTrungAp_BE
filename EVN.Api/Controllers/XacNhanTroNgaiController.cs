@@ -97,7 +97,7 @@ namespace EVN.Api.Controllers
                     }
                     result.total = total;
                     result.data = resultList;
-                    result.success = true
+                    result.success = true;
                     return Ok(result);                
             }
             catch (Exception ex)

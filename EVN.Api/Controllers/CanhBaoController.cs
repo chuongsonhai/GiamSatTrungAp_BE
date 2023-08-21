@@ -48,13 +48,13 @@ namespace EVN.Api.Controllers
                     switch (item.LoaiCanhBao)
                     {
                         case 1:
-                            canhbao.NOIDUNG = " thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng quá 02 giờ; Mã Yêu cầu:" + item.MaYeuCau + ";Tên KH:" + item.NguoiYeuCau + ";SDT:" + item.DienThoai;
-                        break;
+                            canhbao.NOIDUNG = " Cảnh báo lần…("+ canhbao.LOAI_SOLANGUI + ") <br>Khách hàng" + item.TenKhachHang+", số điện thoại"+ item.DienThoai+", địa chỉ:"+ item.DiaChiDungDien +", mã yêu cầu"+ canhbao.MA_YC +", ngày tiếp nhận:"+ item.NgayLap +"Đơn vị tiếp nhận hồ sơ:"+ item.MaDViQLy+ "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            break;
                         case 2:
-                            canhbao.NOIDUNG = "Thời gian thực hiện lập thỏa thuận đấu nối quá 02 ngày; Mã Yêu cầu:" + item.MaYeuCau + ";Tên KH:" + item.NguoiYeuCau + ";SDT:" + item.DienThoai;
+                            canhbao.NOIDUNG = " Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>Khách hàng" + item.TenKhachHang + ", số điện thoại" + item.DienThoai + ", địa chỉ:" + item.DiaChiDungDien + ", mã yêu cầu" + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + "Đơn vị tiếp nhận hồ sơ:" + item.MaDViQLy + "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                             break;
                         case 3:
-                            canhbao.NOIDUNG = "Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu; Mã Yêu cầu:" + item.MaYeuCau + ";Tên KH:" + item.NguoiYeuCau + ";SDT:" + item.DienThoai;
+                            canhbao.NOIDUNG = " Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>Khách hàng" + item.TenKhachHang + ", số điện thoại" + item.DienThoai + ", địa chỉ:" + item.DiaChiDungDien + ", mã yêu cầu" + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + "Đơn vị tiếp nhận hồ sơ:" + item.MaDViQLy + "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu nghiệm thu đóng điện, đơn vị chưa thực hiện tiếp nhận yêu cầu nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                             break;
                         case 4:
                             canhbao.NOIDUNG = "Thời gian dự thảo và ký hợp đồng mua bán điện; Mã Yêu cầu:" + item.MaYeuCau + ";Tên KH:" + item.NguoiYeuCau + ";SDT:" + item.DienThoai;
