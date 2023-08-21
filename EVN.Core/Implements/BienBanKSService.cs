@@ -741,8 +741,7 @@ namespace EVN.Core.Implements
                 }
 
                 ycausrv.Save(yeucau);
-
-
+   
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                 var canhbao = new CanhBao();
                 canhbao.LOAI_CANHBAO_ID = 11;
@@ -751,7 +750,7 @@ namespace EVN.Core.Implements
                 canhbao.THOIGIANGUI = DateTime.Now;
                 canhbao.TRANGTHAI_CANHBAO = 1;
                 canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                canhbao.NOIDUNG = "Cảnh báo việc hủy yêu cầu lập thỏa thuận đấu nối" + ";Mã Yêu cầu:" + ketqua.MA_YCAU_KNAI + ";Đơn vị quản lý:" + yeucau.MaDViQLy;
+                canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>Khách hàng" + yeucau.TenKhachHang + ", số điện thoại" + yeucau.DienThoai + ", địa chỉ:" + yeucau.DiaChiCoQuan + ", mã yêu cầu" + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayYeuCau + "Đơn vị tiếp nhận hồ sơ:" + yeucau.MaDViQLy + "Khách hàng từ chối hoặc góp ý chỉnh sửa nội dung dự thảo thỏa thuận đấu nối, đơn vị hãy xử lý thông tin khách hàng từ chối ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();

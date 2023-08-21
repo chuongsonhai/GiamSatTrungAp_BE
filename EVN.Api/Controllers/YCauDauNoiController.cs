@@ -344,7 +344,7 @@ namespace EVN.Api.Controllers
                     canhbao.THOIGIANGUI = DateTime.Now;
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = item.MaDViQLy;
-                    canhbao.NOIDUNG = "Cảnh báo việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối" + ";Mã Yêu cầu:" + item.MaYeuCau + ";Đơn vị quản lý:" + item.MaDViQLy;
+                    canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>Khách hàng" + item.TenKhachHang + ", số điện thoại" + item.DienThoai + ", địa chỉ:" + item.DiaChiDungDien + ", mã yêu cầu" + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + "Đơn vị tiếp nhận hồ sơ:" + item.MaDViQLy + "Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
 
                     ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                     string message = "";

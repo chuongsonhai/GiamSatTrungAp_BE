@@ -94,7 +94,7 @@ namespace EVN.Core.Implements
                 canhbao.THOIGIANGUI = DateTime.Now;
                 canhbao.TRANGTHAI_CANHBAO = 1;
                 canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
-                canhbao.NOIDUNG = "Cảnh báo khách hàng từ chối ký hợp đồng mua bán điện" + ";Mã Yêu cầu:" + congvan.MaYeuCau + ";Đơn vị quản lý:" + congvan.MaDViQLy;
+                canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>Khách hàng" + item.KHTen + ", số điện thoại" + item.DienThoai + ", địa chỉ:" + item.DiaChi + ", mã yêu cầu" + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + "Đơn vị tiếp nhận hồ sơ:" +item.MaDViQLy + "Thời gian ký thỏa thuận đấu nối vượt quá 02 năm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();
