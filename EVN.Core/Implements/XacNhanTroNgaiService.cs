@@ -77,9 +77,8 @@ namespace EVN.Core.Implements
         //}
         public IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai(int ID)
         {
-            var query = Query;
-            
-                query.Where(p => p.CANHBAO_ID == ID).OrderBy(p=>p.THOIGIAN_KHAOSAT);
+
+            var query = Query.Where(p => p.CANHBAO_ID == ID).OrderBy(p=>p.THOIGIAN_KHAOSAT);
             
             
             return query.ToList();
