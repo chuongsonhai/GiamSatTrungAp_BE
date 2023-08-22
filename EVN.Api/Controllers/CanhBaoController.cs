@@ -104,7 +104,7 @@ namespace EVN.Api.Controllers
                                 // cần ins cả vào đây
                                 logCB.CANHBAO_ID = newCanhBao.ID;
                                 logCB.DATA_MOI = JsonConvert.SerializeObject(newCanhBao);
-                                logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                                logCB.NGUOITHUCHIEN = "HeThong";
                                 logCB.THOIGIAN = DateTime.Now;
                                 logCB.TRANGTHAI = 1;
                                 LogCBservice.CreateNew(logCB);
@@ -283,11 +283,13 @@ namespace EVN.Api.Controllers
                 IGiamSatCanhBaoCanhbaoidService servicecanhbao = IoC.Resolve<IGiamSatCanhBaoCanhbaoidService>();
                 IGiamSatPhanhoiCanhbaoidService servicephanhoi = IoC.Resolve<IGiamSatPhanhoiCanhbaoidService>();
                 IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
+                ILogCanhBaoService LogCanhBaoservice = IoC.Resolve<ILogCanhBaoService>();
                 var ThongTinCanhBao = servicecanhbao.Getbyid(id);
                 // mới chỉ lấy dc trạng thái của TTDN, chưa lấy dc của nghiệm thu
                 var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(ThongTinCanhBao.MA_YC);
                 var DanhSachPhanHoi = servicephanhoi.Getbyid(id);
-                var oj = new { ThongTinCanhBao, ThongTinYeuCau, DanhSachPhanHoi };
+                var DanhSachTuongTac = LogCanhBaoservice.Filter(id);
+                var oj = new { ThongTinCanhBao, ThongTinYeuCau, DanhSachPhanHoi, DanhSachTuongTac };
                 result.data = oj;
                 result.success = true;
                 return Ok(result);
@@ -409,11 +411,22 @@ namespace EVN.Api.Controllers
             try
             {
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+                ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 var item = new CanhBao();
                 item = service.Getbyid(ID);
                 item.TRANGTHAI_CANHBAO = Status;
                 service.Update(item);
                 service.CommitChanges();
+                LogCanhBao logCB = new LogCanhBao();
+                // cần ins cả vào đây
+                logCB.CANHBAO_ID = ID;
+                logCB.DATA_MOI = JsonConvert.SerializeObject(item);
+                logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                logCB.THOIGIAN = DateTime.Now;
+                logCB.TRANGTHAI = 1;
+                LogCBservice.CreateNew(logCB);
+                LogCBservice.CommitChanges();
+
                 result.success = true;
                 return Ok(result);
             }

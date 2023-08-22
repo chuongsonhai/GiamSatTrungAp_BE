@@ -30,29 +30,59 @@ namespace EVN.Api.Controllers
         public IHttpActionResult FilterLog([FromBody] CauHinhCanhBaoLogFilterRequest request)
         {
             ResponseResult result = new ResponseResult();
-            try
-            {
-                int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
-                int total = 0;
-                //DateTime synctime = DateTime.Today;
-                //var fromDate = DateTime.MinValue;
-                //var toDate = DateTime.MaxValue;
-                //if (!string.IsNullOrWhiteSpace(request.Filter.tuNgay))
-                //    fromDate = DateTime.ParseExact(request.Filter.tuNgay, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
-                //if (!string.IsNullOrWhiteSpace(request.Filter.denNgay))
-                //    toDate = DateTime.ParseExact(request.Filter.denNgay, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
-                ILogCanhBaoService service = IoC.Resolve<ILogCanhBaoService>();
-                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
-                List<object> resultList = new List<object>();
-                var listCanhBao = canhBaoService.GetAllCanhBao( out total);
-                foreach (var canhbao in listCanhBao)
+            ILogCanhBaoService service = IoC.Resolve<ILogCanhBaoService>();
+            ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+            List<object> resultList = new List<object>();
+            try {
+                if (string.IsNullOrEmpty(request.Filter.canhBaoId.ToString())) {
+                    int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+                    int total = 0;
+                    
+                    var listCanhBao = canhBaoService.GetAllCanhBao(out total);
+                    foreach (var canhbao in listCanhBao)
+                    {
+                        IList<LogCanhBao> listLog = service.Filter(canhbao.ID);
+                        string textTrangThai = "";
+                        if (canhbao.TRANGTHAI_CANHBAO == 1)
+                        {
+                            textTrangThai = "Mới tạo";
+                        }
+                        else if (canhbao.TRANGTHAI_CANHBAO == 2)
+                        {
+                            textTrangThai = "Đã gửi thông báo";
+                        }
+                        else if (canhbao.TRANGTHAI_CANHBAO == 3)
+                        {
+                            textTrangThai = "Đã tiếp nhận theo dõi";
+                        }
+                        else if (canhbao.TRANGTHAI_CANHBAO == 4)
+                        {
+                            textTrangThai = "Đã chuyển đơn vị xử lý";
+                        }
+                        else if (canhbao.TRANGTHAI_CANHBAO == 5)
+                        {
+                            textTrangThai = "Gửi lại cảnh báo";
+                        }
+                        else if (canhbao.TRANGTHAI_CANHBAO == 6)
+                        {
+                            textTrangThai = "Kết thúc cảnh báo";
+                        }
+
+                        foreach (var log in listLog)
+                        {
+                            resultList.Add(new { log.ID, CANHBAO_ID = canhbao.ID, canhbao.LOAI_CANHBAO_ID, canhbao.NOIDUNG, log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, TRANGTHAI_CANHBAO = textTrangThai });
+                        }
+                    }
+                } else
                 {
+                    var canhbao = canhBaoService.Getbyid(request.Filter.canhBaoId);
                     IList<LogCanhBao> listLog = service.Filter(canhbao.ID);
                     string textTrangThai = "";
-                    if(canhbao.TRANGTHAI_CANHBAO == 1)
+                    if (canhbao.TRANGTHAI_CANHBAO == 1)
                     {
                         textTrangThai = "Mới tạo";
-                    } else if(canhbao.TRANGTHAI_CANHBAO == 2)
+                    }
+                    else if (canhbao.TRANGTHAI_CANHBAO == 2)
                     {
                         textTrangThai = "Đã gửi thông báo";
                     }
@@ -75,16 +105,16 @@ namespace EVN.Api.Controllers
 
                     foreach (var log in listLog)
                     {
-                        resultList.Add(new { log.ID,CANHBAO_ID= canhbao.ID , canhbao.LOAI_CANHBAO_ID, canhbao.NOIDUNG, log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, TRANGTHAI_CANHBAO= textTrangThai });
+                        resultList.Add(new { log.ID, CANHBAO_ID = canhbao.ID, canhbao.LOAI_CANHBAO_ID, canhbao.NOIDUNG, log.DATA_CU, log.DATA_MOI, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, TRANGTHAI_CANHBAO = textTrangThai });
                     }
                 }
-                result.total = total;
+                //result.total = total;
                 result.data = resultList;
                 result.success = true;
-                if (result.total == 0)
-                {
-                    result.message = "Không có dữ liệu";
-                }
+                //if (result.total == 0)
+                //{
+                //    result.message = "Không có dữ liệu";
+                //}
                 return Ok(result);
             }
             catch (Exception ex)

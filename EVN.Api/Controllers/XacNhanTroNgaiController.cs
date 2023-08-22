@@ -17,14 +17,14 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    //[RoutePrefix("khaosat")]
+    [RoutePrefix("api/khaosat")]
     public class XacNhanTroNgaiController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(XacNhanTroNgaiController));
 
         //[JwtAuthentication]
         [HttpPost]
-        [Route("khaosat/khachhang/filter")]
+        [Route("khachhang/filter")]
         public IHttpActionResult khachhangFilter(XacNhanTroNgaiFilterkhRequest request)
         {
             ResponseResult result = new ResponseResult();
@@ -42,14 +42,14 @@ namespace EVN.Api.Controllers
                 ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
                 IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
                 List<object> resultList = new List<object>();
-                var list = canhBaoService.GetbykhachhangFilter(request.FilterKH.tuNgay, request.FilterKH.denNgay, request.FilterKH.maLoaiCanhBao,
-                    request.FilterKH.donViQuanLy, pageindex, request.Paginator.pageSize, out total);
+                var list = canhBaoService.GetbykhachhangFilter(request.Filter.fromdate, request.Filter.todate, request.Filter.maLoaiCanhBao,
+                    request.Filter.maDViQLy, pageindex, request.Paginator.pageSize, out total);
                 foreach (var canhbao in list)
                 {
                     var listLog = serviceyeucau.Filterkhaosat(canhbao.MA_YC);
                     foreach (var kh in listLog)
                     {
-                        resultList.Add(new { kh.MaYeuCau, kh.TenKhachHang, kh.TrangThai });
+                        resultList.Add(new { kh.MaYeuCau, kh.TenKhachHang, kh.TrangThai,kh.DienThoai, canhbao.LOAI_CANHBAO_ID, canhbao.TRANGTHAI_CANHBAO, CanhBao = canhbao  });
                     }
                 }
                 result.total = total;
@@ -75,7 +75,7 @@ namespace EVN.Api.Controllers
         //2.3 (GET) /khaosat/{id}
         //[JwtAuthentication]
         [HttpGet]
-        [Route("khaosat/id")]
+        [Route("id")]
         //public IHttpActionResult GetById(XacNhanTroNgakhaosatid model)
         //{
             public IHttpActionResult GetBykhaosatId(int id)
@@ -136,7 +136,7 @@ namespace EVN.Api.Controllers
         //2.5 (POST) /khaosat/add
         //[JwtAuthentication]
         [HttpPost]
-        [Route("khaosat/add")]
+        [Route("add")]
         public IHttpActionResult Post([FromBody] XacNhanTroNgaikhaosatadd model)
         {
             ResponseFileResult result = new ResponseFileResult();
@@ -169,7 +169,7 @@ namespace EVN.Api.Controllers
 
         //2.4 (POST) /khaosat/{id}
         //[JwtAuthentication]
-        [Route("khaosat/id")]
+        [Route("id")]
         [HttpPost]
         public IHttpActionResult UpdateById([FromBody] XacNhanTroNgakhaosatid model)
         {
@@ -206,7 +206,7 @@ namespace EVN.Api.Controllers
         //2.6 (POST) /khaosat/phanhoi/add
         //[JwtAuthentication]
         [HttpPost]
-        [Route("khaosat/phanhoi/add")]
+        [Route("phanhoi/add")]
         public IHttpActionResult Post([FromBody] PhanhoiTraodoiRequest model)
         {
             ResponseFileResult result = new ResponseFileResult();
@@ -239,7 +239,7 @@ namespace EVN.Api.Controllers
         //2.7 (POST) /khaosat/phanhoi/{id}
         //[JwtAuthentication]
         [HttpPost]
-        [Route("khaosat/phanhoi/id")]
+        [Route("phanhoi/id")]
         public IHttpActionResult UpdateById([FromBody] PhanhoiTraodoiRequest model)
         {
             ResponseFileResult result = new ResponseFileResult();
@@ -268,7 +268,7 @@ namespace EVN.Api.Controllers
         //2.8 (GET) /khaosat/phanhoi/id
         //[JwtAuthentication]
         [HttpPost]
-        [Route("khaosat/phanhoi/id2.8")]
+        [Route("phanhoi/id2.8")]
         public IHttpActionResult Filter(XacnhantrongaiFilterRequestid request)
         {
             ResponseResult result = new ResponseResult();
@@ -302,7 +302,7 @@ namespace EVN.Api.Controllers
 
         //2.2 (GET) /khaosat/filter
         [HttpPost]
-        [Route("khaosat/filter")]
+        [Route("filter")]
         public IHttpActionResult Filter(FilterKhaoSatByCanhBaoRequest request)
         {
             ResponseResult result = new ResponseResult();
@@ -358,7 +358,7 @@ namespace EVN.Api.Controllers
         //2.9 (GET) /khaosat/log/filter
         //[JwtAuthentication]
         [HttpPost]
-        [Route("khaosat/log/filter")]
+        [Route("log/filter")]
         public IHttpActionResult FilterLog([FromBody] FilterKhaoSatByCanhBaologRequest request)
         {
             ResponseResult result = new ResponseResult();

@@ -23,7 +23,7 @@ namespace EVN.Api.Model.Request
         public int maLoaiCanhBao { get; set; }
         public int trangThai { get; set; }
         public string donViQuanLy { get; set; }
-
+        public int canhBaoId { get; set; }
 
     }
 

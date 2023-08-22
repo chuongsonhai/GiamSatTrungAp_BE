@@ -10,17 +10,17 @@ namespace EVN.Api.Model.Request
   
     public class XacNhanTroNgaiFilterkhRequest : BaseRequest
     {
-        [JsonProperty("filterKH")]
-        public KhaoSatFilter FilterKH { get; set; }
+        [JsonProperty("filter")]
+        public KhaoSatFilter Filter { get; set; }
 
     }
     public class KhaoSatFilter
     {
 
-        public string tuNgay { get; set; }
-        public string denNgay { get; set; }
+        public string fromdate { get; set; }
+        public string todate { get; set; }
         public int maLoaiCanhBao { get; set; } = 0;
-        public string donViQuanLy { get; set; } = string.Empty;
+        public string maDViQLy { get; set; } = string.Empty;
 
     }
 

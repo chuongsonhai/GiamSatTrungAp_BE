@@ -66,6 +66,7 @@ namespace EVN.Api.Controllers
             string data = httpRequest.Form["data"];
             IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
             PhanhoiTraodoiRequest model = JsonConvert.DeserializeObject<PhanhoiTraodoiRequest>(data);
+            ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
             try
             {
                 var item = new PhanhoiTraodoi();
@@ -89,6 +90,16 @@ namespace EVN.Api.Controllers
                 }
                 service.CreateNew(item);
                 service.CommitChanges();
+                LogCanhBao logCB = new LogCanhBao();
+                logCB.CANHBAO_ID = item.CANHBAO_ID;
+                logCB.DATA_MOI = JsonConvert.SerializeObject(item);
+                logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                logCB.THOIGIAN = DateTime.Now;
+                logCB.TRANGTHAI = 4;
+                LogCBservice.CreateNew(logCB);
+                LogCBservice.CommitChanges();
+
+
                 result.success = true;
                 return Ok(result);
 
