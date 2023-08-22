@@ -33,6 +33,12 @@ namespace EVN.Core.Implements
             return query.ToList(); 
         }
 
+        public IList<PhanhoiTraodoi> FilterByID(int ID)
+        {
+            var query = Query.Where(p => p.ID == ID);
+            return query.ToList();
+        }
+
         public IList<PhanhoiTraodoi> GetbyFilter(int ID,  int pageindex, int pagesize, out int total)
         {
             var query = Query.Where(p => p.ID == ID);

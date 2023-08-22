@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 namespace EVN.Core.Domain
 
 {
@@ -9,6 +10,17 @@ namespace EVN.Core.Domain
         //  public virtual int TRANGTHAI_GUI { get; set; }
         public virtual string MA_DVIQLY { get; set; }
         public virtual int TRANGTHAI { get; set; }
+    }
+
+    public class UserNhanCanhBaoFilterRequest : BaseRequest
+    {
+        [JsonProperty("filter")]
+        public UserNhanCanhBaoFilter Filter { get; set; }
+    }
+
+    public class UserNhanCanhBaoFilter
+    {
+        public string maDViQLy { get; set; } = string.Empty;
     }
 
 }

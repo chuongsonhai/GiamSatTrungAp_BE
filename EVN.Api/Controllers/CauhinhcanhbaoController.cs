@@ -138,7 +138,7 @@ namespace EVN.Api.Controllers
                 // int total = 0;
                 DateTime synctime = DateTime.Today;
                 ILoaiCanhBaoService service = IoC.Resolve<ILoaiCanhBaoService>();
-                var list = service.Filter(request.Filter.maLoaiCanhBao);
+                var list = service.Filter(request.Filter.maLoaiCanhBao, request.Filter.chuky);
                 IList<Cauhinhcanhbao> data = new List<Cauhinhcanhbao>();
 
                 foreach (var item in list)

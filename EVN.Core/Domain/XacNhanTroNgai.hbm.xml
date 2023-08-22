@@ -15,6 +15,7 @@
 		<property name="TINHTRANG_KT_CB" column="TINHTRANG_KT_CB" type="string"/>
 		<property name="TRANGTHAI" column="TRANGTHAI" type="int"/>
 		<property name="DONVI_QLY" column="DONVI_QLY" type="string"/>
+		<property name="PHANHOI_DV" column="PHANHOI_DV" type="string"/>
 	</class>
 </hibernate-mapping>
 

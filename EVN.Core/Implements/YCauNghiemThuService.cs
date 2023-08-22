@@ -523,7 +523,8 @@ namespace EVN.Core.Implements
                 IYCauNghiemThuService congvansrv = IoC.Resolve<IYCauNghiemThuService>();
                 IDvTienTrinhService tientrinhsrv = IoC.Resolve<IDvTienTrinhService>();
                 IHoSoGiayToService hoSoGiayToService =IoC.Resolve<IHoSoGiayToService>();
-
+                ICongVanYeuCauService service = IoC.Resolve<ICongVanYeuCauService>();
+                var item = service.GetbyMaYCau(congvan.MaYeuCau);
                 BeginTran();
                 var hsgt = hoSoGiayToService.GetHoSoGiayTo(congvan.MaDViQLy, congvan.MaYeuCau, LoaiHSoCode.CV_NT);
                 if (hsgt != null)
@@ -540,7 +541,7 @@ namespace EVN.Core.Implements
                 canhbao.THOIGIANGUI = DateTime.Now;
                 canhbao.TRANGTHAI_CANHBAO = 1;
                 canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
-                canhbao.NOIDUNG = "Cảnh báo việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu" + ";Mã Yêu cầu:" + congvan.MaYeuCau + ";Đơn vị quản lý:" + congvan.MaDViQLy;
+                canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>Khách hàng" + item.TenKhachHang + ", số điện thoại" + item.DienThoai + ", địa chỉ:" + item.DiaChiDungDien + ", mã yêu cầu" + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + "Đơn vị tiếp nhận hồ sơ:" + item.MaDViQLy + "Đã gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();

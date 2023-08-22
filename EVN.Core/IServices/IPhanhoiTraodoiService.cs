@@ -10,7 +10,7 @@ namespace EVN.Core.IServices
         PhanhoiTraodoi GetbyPhanHoiId(int id);
         List<PhanhoiTraodoi> Getbyid(int id);
         IList<PhanhoiTraodoi> GetbyFilter(int ID,  int pageindex, int pagesize, out int total);
-        
+        IList<PhanhoiTraodoi> FilterByID(int ID);
         bool Save(PhanhoiTraodoi loaiCanhBao, out string message);
         PhanhoiTraodoi Updatephanhoiid(int id);
 

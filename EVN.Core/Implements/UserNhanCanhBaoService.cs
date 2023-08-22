@@ -21,7 +21,14 @@ namespace EVN.Core.Implements
         }
         public IList<UserNhanCanhBao> GetbyMaDviQly(string MaDviQly)
         {
-            return Query.Where(p => p.MA_DVIQLY == MaDviQly).ToList();
+            if(MaDviQly != "-1")
+            {
+                return Query.Where(p => p.MA_DVIQLY == MaDviQly).ToList();
+            } else
+            {
+                return Query.ToList();
+            }
+            
         }
 
         

@@ -514,7 +514,7 @@ namespace EVN.Core.Implements
                 canhbao.THOIGIANGUI = DateTime.Now;
                 canhbao.TRANGTHAI_CANHBAO = 1;
                 canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                canhbao.NOIDUNG = "Cảnh báo  trở ngại khi thi công treo tháo" + ";Mã Yêu cầu:" + yeucau.MaYeuCau + ";Đơn vị quản lý:" + yeucau.MaDViQLy;
+                canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>Khách hàng" + tbao.KhachHang + ", số điện thoại" + yeucau.DienThoai + ", địa chỉ:" + yeucau.DiaChiCoQuan + ", mã yêu cầu" + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayLap + "Đơn vị tiếp nhận hồ sơ:" + yeucau.MaDViQLy + "Đã quá 48 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điều kiện điểm đấu nối và nghiệm thu 1 khoảng thời gian mà chưa nghiệm thu, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();

@@ -14,5 +14,6 @@ namespace EVN.Core.Domain
         public virtual string TINHTRANG_KT_CB { get; set; }
         public virtual int TRANGTHAI { get; set; } 
         public virtual string DONVI_QLY { get; set; }
+        public virtual string PHANHOI_DV { get; set; }
     }
 }

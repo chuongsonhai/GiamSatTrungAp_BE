@@ -47,19 +47,22 @@ namespace EVN.Api.Model.Request
         }
         public XacNhanTroNgaikhaosatadd(XacNhanTroNgai lKhaoSat) : base()
         {
-
-            noiDungKhaoSat = lKhaoSat.NOIDUNG_CAUHOI;
-            khachHangPhanHoi = lKhaoSat.PHANHOI_KH;
-            ketQuaKhaoSat = lKhaoSat.KETQUA;
-            nguoiKhaoSat = lKhaoSat.NGUOI_KS;
-            trangThaiKhaoSat = lKhaoSat.TRANGTHAI;
+            CANHBAO_ID = lKhaoSat.CANHBAO_ID;
+            NOIDUNG_CAUHOI = lKhaoSat.NOIDUNG_CAUHOI;
+            PHANHOI_KH = lKhaoSat.PHANHOI_KH;
+            PHANHOI_DV = lKhaoSat.PHANHOI_DV;
+            KETQUA = lKhaoSat.KETQUA;
+            NGUOI_KS = lKhaoSat.NGUOI_KS;
+            ID = lKhaoSat.ID;
         }
 
-        public string noiDungKhaoSat { get; set; }
-        public string khachHangPhanHoi { get; set; }
-        public string ketQuaKhaoSat { get; set; }
-        public string nguoiKhaoSat { get; set; }
-        public int trangThaiKhaoSat { get; set; }
+        public int ID { get; set; }
+        public string NOIDUNG_CAUHOI { get; set; }
+        public int CANHBAO_ID { get; set; }
+        public string PHANHOI_KH { get; set; }
+        public string PHANHOI_DV { get; set; }
+        public string KETQUA { get; set; }
+        public string NGUOI_KS { get; set; }
 
     }
 

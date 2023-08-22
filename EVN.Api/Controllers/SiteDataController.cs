@@ -69,7 +69,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-        [JwtAuthentication]
+        //[JwtAuthentication]
         [HttpGet]
         [Route("GetByteArray")]
         public IHttpActionResult GetByteArray(string path)

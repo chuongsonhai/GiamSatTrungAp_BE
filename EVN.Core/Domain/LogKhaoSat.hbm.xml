@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.LogKhaoSat, EVN.Core" table="GSCD_LOG_KHAOSAT" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">GSCD_LOG_KHAOSAT_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="KHAOSAT_ID" column="KHAOSAT_ID" type="int"/>
+		<property name="TRANGTHAI" column="TRANGTHAI" type="int"/>
+		<property name="DATA_CU" column="DATA_CU" type="string"/>
+		<property name="DATA_MOI" column="DATA_MOI" type="string"/>
+		<property name="THOIGIAN" column="THOIGIAN" type="DateTime"/>
+		<property name="NGUOITHUCHIEN" column="NGUOITHUCHIEN" type="string"/>
+	</class>
+</hibernate-mapping>
+
