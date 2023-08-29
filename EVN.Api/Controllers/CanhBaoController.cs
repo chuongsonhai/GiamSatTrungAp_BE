@@ -141,71 +141,9 @@ namespace EVN.Api.Controllers
 
 
 
-        //1.(GET) dashboard/canhbao
-        //[JwtAuthentication]
-        [HttpPost]
-        [Route("dashboard/canhbao")]
-        public IHttpActionResult GetCanhbao(CanhBaoFilterRequestdashboardcanhbao model)
-        {
-
-            ResponseResult result = new ResponseResult();
-            try
-            {
-                ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
-                
-                IList<CanhbaoModel> data = new List<CanhbaoModel>();
-                var list = service.GetbyCanhbao(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
-                foreach (var item in list)
-                {
-                  data.Add(new CanhbaoModel(item));
-              
-                }
-                result.total = list.Count();
-                result.data = data;
-                result.success = true;
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                result.success = false;
-                var mess = ex.Message;
-                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
-                return Ok(result);
-            }
-        }
-
-        //3.(GET) dashboard/thoigiancapdien
-        [HttpPost]
-        [Route("dashboard/thoigiancapdien")]
-        public IHttpActionResult GetThoigiancapdien(string donViQuanLy, DateTime tungay, DateTime denngay)
-        {
-            ResponseResult result = new ResponseResult();
-            try
-            {
-
-                DateTime synctime = DateTime.Today;
-                IReportService service = IoC.Resolve<IReportService>();
-                var fromDate = DateTime.MinValue;
-                var toDate = DateTime.MaxValue;
-               
-
-                var list = service.GetThoigiancapdien(donViQuanLy, tungay, denngay);
-             
-                var listModel = new Thoigiancapdien(list);
 
 
-                result.data = listModel;
-                result.success = true;
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                log.Error(ex);
-                result.success = false;
-                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
-                return Ok(result);
-            }
-        }
+       
 
         //2.1	(GET) /canhbao/filter
         //[JwtAuthentication]

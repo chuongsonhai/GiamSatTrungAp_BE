@@ -117,15 +117,15 @@ namespace EVN.Core.Implements
 
         public SoLuongKhaoSatModel GetSoLuongKhaoSat(string tungay, string denngay)
         {
-            DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(denngay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+            DateTime tuNgayCast = DateTime.ParseExact(tungay, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture);
             var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast);
             var result = new SoLuongKhaoSatModel();
 
             //Số lượng
             result.SoLuongKhaoSat = query.Count();
-        //1    //result.SoLuongKhaoSatThanhCong = query.Count(x => x.KETQUA == "Thành công");
-            //result.SoLuongKhaoSatThatBai = query.Count(x => x.KETQUA == "Thất bại");
+            result.SoLuongKhaoSatThanhCong = query.Count(x => x.TRANGTHAI == 1);
+            result.SoLuongKhaoSatThatBai = query.Count(x => x.TRANGTHAI == 0);
             return result;
         }
 
