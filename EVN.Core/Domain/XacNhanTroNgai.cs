@@ -6,6 +6,7 @@ namespace EVN.Core.Domain
     {
         public virtual int ID { get; set; }
         public virtual int CANHBAO_ID { get; set; }
+        public virtual string MA_YC { get; set; }
         public virtual string NOIDUNG_CAUHOI { get; set; }
         public virtual string PHANHOI_KH { get; set; }
         public virtual DateTime THOIGIAN_KHAOSAT { get; set; } = DateTime.Now;

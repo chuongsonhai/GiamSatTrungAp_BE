@@ -54,6 +54,7 @@ namespace EVN.Api.Model.Request
             KETQUA = lKhaoSat.KETQUA;
             NGUOI_KS = lKhaoSat.NGUOI_KS;
             ID = lKhaoSat.ID;
+            MA_YC = lKhaoSat.MA_YC;
         }
 
         public int ID { get; set; }
@@ -63,6 +64,7 @@ namespace EVN.Api.Model.Request
         public string PHANHOI_DV { get; set; }
         public string KETQUA { get; set; }
         public string NGUOI_KS { get; set; }
+        public string MA_YC { get; set; }
 
     }
 

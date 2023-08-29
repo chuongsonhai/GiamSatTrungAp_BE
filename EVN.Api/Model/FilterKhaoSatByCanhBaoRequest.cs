@@ -34,6 +34,7 @@ namespace EVN.Api.Model.Request
         public int TrangThaiKhaoSat { get; set; }
         public int IdCanhBao { get; set; }
         public int IdKhaoSat { get; set; }
+        public string IdYeuCau { get; set; }
 
         //trang thai canh bao
         //public int trangThai { get; set; }

@@ -84,9 +84,9 @@ namespace EVN.Core.Implements
             return query.ToList();
         }
 
-        public IList<XacNhanTroNgai> FilterByCanhBaoID(int ID)
+        public IList<XacNhanTroNgai> FilterByMaYeuCau(string ID)
         {
-            var query = Query.Where(p => p.CANHBAO_ID == ID);
+            var query = Query.Where(p => p.MA_YC == ID);
             return query.ToList();
         }
         public bool Save(XacNhanTroNgai lkhaosat, out string message)

@@ -21,7 +21,7 @@ namespace EVN.Api.Model.Request
         public string todate { get; set; }
         public int maLoaiCanhBao { get; set; } = 0;
         public string maDViQLy { get; set; } = string.Empty;
-
+        public string keyword { get; set; }
     }
 
 }

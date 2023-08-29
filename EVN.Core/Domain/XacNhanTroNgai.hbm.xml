@@ -6,7 +6,8 @@
 				<param name="sequence">KHAO_SAT_ID_SEQ</param>
 			</generator>
 		</id>
-		<property name="CANHBAO_ID" column="CANHBAO_ID" type="int"/>
+    <property name="CANHBAO_ID" column="CANHBAO_ID" type="int"/>
+    <property name="MA_YC" column="MA_YC" type="string"/>
 		<property name="NOIDUNG_CAUHOI" column="NOIDUNG_CAUHOI" type="string"/>
 		<property name="PHANHOI_KH" column="PHANHOI_KH" type="string"/>
 		<property name="THOIGIAN_KHAOSAT" column="THOIGIAN_KHAOSAT" type="DateTime"/>

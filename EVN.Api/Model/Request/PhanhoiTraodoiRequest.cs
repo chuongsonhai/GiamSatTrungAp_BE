@@ -21,9 +21,11 @@ namespace EVN.Api.Model.Request
             DONVI_QLY = lPhanhoiTraodoi.DONVI_QLY;
             THOIGIAN_GUI = lPhanhoiTraodoi.THOIGIAN_GUI;
             TRANGTHAI_XOA = lPhanhoiTraodoi.TRANGTHAI_XOA;
+            MA_YC = lPhanhoiTraodoi.MA_YC;
         }
         public int ID { get; set; }
         public int CANHBAO_ID { get; set; }
+        public string MA_YC { get; set; }
         public string NOIDUNG_PHANHOI { get; set; }
         public string NGUOI_GUI { get; set; }
         public string DONVI_QLY { get; set; }
