@@ -148,7 +148,7 @@ namespace EVN.Api.Controllers
                    // PHANHOI_DV = khaosat.PHANHOI_DV
 
                 };
-                    result.data = oj1;
+                    result.data = khaosat;
                     result.success = true;
                     return Ok(result);
                 }
@@ -174,21 +174,26 @@ namespace EVN.Api.Controllers
             string data = httpRequest.Form["data"];
             XacNhanTroNgaikhaosatadd model = JsonConvert.DeserializeObject<XacNhanTroNgaikhaosatadd>(data);
             ILogKhaoSatService LogKhaoSatservice = IoC.Resolve<ILogKhaoSatService>();
+            IYCauNghiemThuService NTservice = IoC.Resolve<IYCauNghiemThuService>();
             try
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
                 IUserdataService userdataService = IoC.Resolve<IUserdataService>();
+                YCauNghiemThu YCNT = NTservice.GetbyMaYCau(model.MA_YCAU);
+                
                 var item = new XacNhanTroNgai();
-
-                item.MA_DVI = model.MA_DVI;
+                string mucdichsd = "";
+                if (YCNT.DienSinhHoat)
+                {
+                     mucdichsd = "Sinh hoạt";
+                } else {  mucdichsd = "Ngoài sinh hoạt"; }
+                item.MA_DVI = YCNT.MaDViQLy;
                 item.MA_YCAU = model.MA_YCAU;
-                item.MA_KH = model.MA_KH;
-                item.TEN_KH = model.TEN_KH;
-                item.DIA_CHI = model.DIA_CHI;
-                item.DIEN_THOAI = model.DIEN_THOAI;
-                item.MUCDICH_SD_DIEN = model.MUCDICH_SD_DIEN;
-                item.NGAY_TIEPNHAN = model.NGAY_TIEPNHAN;
-                item.NGAY_HOANTHANH = model.NGAY_HOANTHANH;
+                item.MA_KH = YCNT.MaKHang;
+                item.TEN_KH = YCNT.CoQuanChuQuan;
+                item.DIA_CHI = YCNT.DiaChiDungDien;
+                item.DIEN_THOAI = YCNT.DienThoai;
+                item.MUCDICH_SD_DIEN = mucdichsd;
                 item.SO_NGAY_CT = model.SO_NGAY_CT;
                 item.SO_NGAY_TH_ND = model.SO_NGAY_TH_ND;
                 item.TRANGTHAI_GQ = model.TRANGTHAI_GQ;
@@ -196,7 +201,7 @@ namespace EVN.Api.Controllers
                 item.DGCD_TH_CHUONGTRINH = model.DGCD_TH_CHUONGTRINH;
                 item.DGCD_TH_DANGKY = model.DGCD_TH_DANGKY;
                 item.DGCD_KH_PHANHOI = model.DGCD_KH_PHANHOI;
-                item.CHENH_LECH = model.CHENH_LECH;
+                item.CHENH_LECH = model.DGCD_TH_DANGKY - model.DGCD_KH_PHANHOI;
                 item.DGYC_DK_DEDANG = model.DGYC_DK_DEDANG;
                 item.DGYC_XACNHAN_NCHONG_KTHOI = model.DGYC_XACNHAN_NCHONG_KTHOI;
                 item.DGYC_THAIDO_CNGHIEP = model.DGYC_THAIDO_CNGHIEP;
@@ -209,13 +214,13 @@ namespace EVN.Api.Controllers
                 item.KSAT_CHI_PHI = model.KSAT_CHI_PHI;
                 item.DGHL_CAPDIEN = model.DGHL_CAPDIEN;
                 item.TRANGTHAI_GOI = model.TRANGTHAI_GOI;
-                item.NGAY = model.NGAY;
+                item.NGAY = DateTime.Now;
                 item.NGUOI_KSAT = model.NGUOI_KSAT;
                 item.Y_KIEN_KH = model.Y_KIEN_KH;
                 item.NOIDUNG = model.NOIDUNG;
                 item.PHAN_HOI = model.PHAN_HOI;
                 item.GHI_CHU = model.GHI_CHU;
-                item.TRANGTHAI = 2;
+                item.TRANGTHAI = 1;
                 service.CreateNew(item);
                 service.CommitChanges();
 
@@ -260,23 +265,14 @@ namespace EVN.Api.Controllers
                 //sửa nội dung khảo sát
                 var khaosat = service.GetKhaoSat(model.ID);
                 var datacu = JsonConvert.SerializeObject(khaosat);
-                khaosat.MA_DVI = model.MA_DVI;
                 khaosat.MA_YCAU = model.MA_YCAU;
-                khaosat.MA_KH = model.MA_KH;
-                khaosat.TEN_KH = model.TEN_KH;
-                khaosat.DIA_CHI = model.DIA_CHI;
-                khaosat.DIEN_THOAI = model.DIEN_THOAI;
-                khaosat.MUCDICH_SD_DIEN = model.MUCDICH_SD_DIEN;
                 khaosat.NGAY_TIEPNHAN = model.NGAY_TIEPNHAN;
                 khaosat.NGAY_HOANTHANH = model.NGAY_HOANTHANH;
-                khaosat.SO_NGAY_CT = model.SO_NGAY_CT;
-                khaosat.SO_NGAY_TH_ND = model.SO_NGAY_TH_ND;
                 khaosat.TRANGTHAI_GQ = model.TRANGTHAI_GQ;
                 khaosat.TONG_CONGSUAT_CD = model.TONG_CONGSUAT_CD;
                 khaosat.DGCD_TH_CHUONGTRINH = model.DGCD_TH_CHUONGTRINH;
                 khaosat.DGCD_TH_DANGKY = model.DGCD_TH_DANGKY;
                 khaosat.DGCD_KH_PHANHOI = model.DGCD_KH_PHANHOI;
-                khaosat.CHENH_LECH = model.CHENH_LECH;
                 khaosat.DGYC_DK_DEDANG = model.DGYC_DK_DEDANG;
                 khaosat.DGYC_XACNHAN_NCHONG_KTHOI = model.DGYC_XACNHAN_NCHONG_KTHOI;
                 khaosat.DGYC_THAIDO_CNGHIEP = model.DGYC_THAIDO_CNGHIEP;
@@ -289,8 +285,7 @@ namespace EVN.Api.Controllers
                 khaosat.KSAT_CHI_PHI = model.KSAT_CHI_PHI;
                 khaosat.DGHL_CAPDIEN = model.DGHL_CAPDIEN;
                 khaosat.TRANGTHAI_GOI = model.TRANGTHAI_GOI;
-                khaosat.NGAY = model.NGAY;
-                khaosat.NGUOI_KSAT = model.NGUOI_KSAT;
+                khaosat.NGAY = DateTime.Now;
                 khaosat.Y_KIEN_KH = model.Y_KIEN_KH;
                 khaosat.NOIDUNG = model.NOIDUNG;
                 khaosat.PHAN_HOI = model.PHAN_HOI;

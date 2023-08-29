@@ -63,7 +63,6 @@ namespace EVN.Api.Model.Request
             DGCD_TH_CHUONGTRINH = lKhaoSat.DGCD_TH_CHUONGTRINH;
             DGCD_TH_DANGKY = lKhaoSat.DGCD_TH_DANGKY;
             DGCD_KH_PHANHOI = lKhaoSat.DGCD_KH_PHANHOI;
-            CHENH_LECH = lKhaoSat.CHENH_LECH;
             DGYC_DK_DEDANG = lKhaoSat.DGYC_DK_DEDANG;
             DGYC_XACNHAN_NCHONG_KTHOI = lKhaoSat.DGYC_XACNHAN_NCHONG_KTHOI;
             DGYC_THAIDO_CNGHIEP = lKhaoSat.DGYC_THAIDO_CNGHIEP;
@@ -102,7 +101,6 @@ namespace EVN.Api.Model.Request
         public int DGCD_TH_CHUONGTRINH { get; set; }
         public int DGCD_TH_DANGKY { get; set; }
         public int DGCD_KH_PHANHOI { get; set; }
-        public int CHENH_LECH { get; set; }
         public int DGYC_DK_DEDANG { get; set; }
         public int DGYC_XACNHAN_NCHONG_KTHOI { get; set; }
         public int DGYC_THAIDO_CNGHIEP { get; set; }
