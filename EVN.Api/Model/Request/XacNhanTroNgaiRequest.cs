@@ -15,7 +15,6 @@ namespace EVN.Api.Model.Request
         public XacNhanTroNgaiRequest(XacNhanTroNgai lKhaoSat) : base()
         {
             ID = lKhaoSat.ID;
-            CANHBAO_ID = lKhaoSat.CANHBAO_ID;
             //NOIDUNG_CAUHOI = lKhaoSat.NOIDUNG_CAUHOI;
             //PHANHOI_KH = lKhaoSat.PHANHOI_KH;
             //THOIGIAN_KHAOSAT = lKhaoSat.THOIGIAN_KHAOSAT;
@@ -83,7 +82,6 @@ namespace EVN.Api.Model.Request
             NOIDUNG = lKhaoSat.NOIDUNG;
             PHAN_HOI = lKhaoSat.PHAN_HOI;
             GHI_CHU = lKhaoSat.GHI_CHU;
-            CANHBAO_ID = lKhaoSat.CANHBAO_ID;
             TRANGTHAI = lKhaoSat.TRANGTHAI;
 
         }

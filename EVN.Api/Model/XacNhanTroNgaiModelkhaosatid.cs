@@ -46,7 +46,6 @@ namespace EVN.Api.Model
             NOIDUNG = lKhaoSat.NOIDUNG;
             PHAN_HOI = lKhaoSat.PHAN_HOI;
             GHI_CHU = lKhaoSat.GHI_CHU;
-            CANHBAO_ID = lKhaoSat.CANHBAO_ID;
             TRANGTHAI = lKhaoSat.TRANGTHAI;
 
         }

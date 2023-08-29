@@ -99,8 +99,8 @@ namespace EVN.Api.Controllers
                 IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
                 IGiamSatCanhBaoCanhbaoidService servicecanhbao = IoC.Resolve<IGiamSatCanhBaoCanhbaoidService>();
                 var khaosat = khaosatService.GetKhaoSat(id);
-                var ThongTinCanhBao = servicecanhbao.Getbyid(khaosat.CANHBAO_ID);
-                var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(ThongTinCanhBao.MA_YC);
+                //var ThongTinCanhBao = servicecanhbao.Getbyid(khaosat.CANHBAO_ID);
+                //var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(ThongTinCanhBao.MA_YC);
                 var textTrangThaiKhaoSat = "";
                 var textTrangThaiYeuCau = "";
 
@@ -131,52 +131,6 @@ namespace EVN.Api.Controllers
                 }
 
 
-
-                //chuyển trạng thái công văn sang kiểu text
-                if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.MoiTao)
-                {
-                    textTrangThaiYeuCau = "Mới tạo";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.TiepNhan)
-                {
-                    textTrangThaiYeuCau = "Tiếp nhận";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.PhanCongKS)
-                {
-                    textTrangThaiYeuCau = "Phân công khảo sát";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.GhiNhanKS)
-                {
-                    textTrangThaiYeuCau = "Ghi nhận khảo sát";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.BienBanKS)
-                {
-                    textTrangThaiYeuCau = "Biên bản khảo sát";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.DuThaoTTDN)
-                {
-                    textTrangThaiYeuCau = "Dự thảo thỏa thuận đấu nối";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.KHKy)
-                {
-                    textTrangThaiYeuCau = "Khách hàng ký";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.DuChuKy)
-                {
-                    textTrangThaiYeuCau = "Đủ chữ ký";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.HoanThanh)
-                {
-                    textTrangThaiYeuCau = "Hoàn thành";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.ChuyenTiep)
-                {
-                    textTrangThaiYeuCau = "Chuyển tiếp";
-                }
-                else if (ThongTinYeuCau.TrangThai == TrangThaiCongVan.Huy)
-                {
-                    textTrangThaiYeuCau = "Hủy";
-                }
 
 
                 var oj1 = new
@@ -262,8 +216,6 @@ namespace EVN.Api.Controllers
                 item.PHAN_HOI = model.PHAN_HOI;
                 item.GHI_CHU = model.GHI_CHU;
                 item.TRANGTHAI = 2;
-                item.CANHBAO_ID = model.CANHBAO_ID;
-                item.MA_YC = model.MA_YC;
                 service.CreateNew(item);
                 service.CommitChanges();
 
@@ -343,7 +295,6 @@ namespace EVN.Api.Controllers
                 khaosat.NOIDUNG = model.NOIDUNG;
                 khaosat.PHAN_HOI = model.PHAN_HOI;
                 khaosat.GHI_CHU = model.GHI_CHU;
-                khaosat.CANHBAO_ID = model.CANHBAO_ID;
 
                 if (string.IsNullOrEmpty(model.PHAN_HOI)) 
                 {
@@ -538,7 +489,7 @@ namespace EVN.Api.Controllers
                 foreach (var canhbao in list)
                 {
                     //lay ra danh sach khao sat ung voi moi canh bao va add vao list khao sat filter
-                    var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai(canhbao.ID);
+                    var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai("tet");
                     var listKhaoSatFilter = new List<object>();
                     foreach (var khaosat in listKhaoSat)
                     {
