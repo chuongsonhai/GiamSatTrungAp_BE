@@ -91,7 +91,7 @@ namespace EVN.Api.Controllers
                      
                     }
 
-                    item.TRANGTHAI_CANHBAO = 2;
+                   // item.TRANGTHAI_CANHBAO = 2;
 
 
                     //Zalo

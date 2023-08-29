@@ -1414,15 +1414,15 @@ namespace EVN.Core.Implements
             }
         }
 
-        public IList<ThoiGianCapDienModel> GetThoigiancapdien(string maDViQLy,  DateTime fromdate, DateTime todate)
+        public IList<ThoiGianCapDienModel> GetThoigiancapdien(string donViQuanLy, DateTime tuNgay, DateTime denNgay)
         {
             IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
 
-               var query = Query.Where(p => p.NgayYeuCau >= fromdate && p.NgayYeuCau <= todate && p.MaDViQLy == maDViQLy);
+               var query = Query.Where(p => p.NgayYeuCau >= tuNgay && p.NgayYeuCau <= denNgay && p.MaDViQLy == donViQuanLy);
 
             var result = new List<ThoiGianCapDienModel>();
             var listDonVi = organizationService.GetAll();
-            if("-1" == maDViQLy)
+            if("-1" == donViQuanLy)
             {
                 foreach (var dv in listDonVi)
                 {
@@ -1438,8 +1438,8 @@ namespace EVN.Core.Implements
             else
                     {
                 var detail = new ThoiGianCapDienModel();
-                detail.TenDV = maDViQLy;
-                var listCV = query.Where(x => x.MaDViQLy == maDViQLy);
+                detail.TenDV = donViQuanLy;
+                var listCV = query.Where(x => x.MaDViQLy == donViQuanLy);
                 detail.TongSoCTTiepNhanTTDN = listCV.Count();
                 result.Add(detail);
             }
