@@ -99,8 +99,8 @@ namespace EVN.Api.Controllers
                 var toDate = DateTime.MaxValue;
                 if (!string.IsNullOrWhiteSpace(Request.Filtertgcd.tuNgay))
                     fromDate = DateTime.ParseExact(Request.Filtertgcd.tuNgay, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                if (!string.IsNullOrWhiteSpace(Request.Filtertgcd.tuNgay))
-                    toDate = DateTime.ParseExact(Request.Filtertgcd.tuNgay, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                if (!string.IsNullOrWhiteSpace(Request.Filtertgcd.denNgay))
+                    toDate = DateTime.ParseExact(Request.Filtertgcd.denNgay, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
 
                 var list = service.GetThoigiancapdien(Request.Filtertgcd.donViQuanLy, fromDate, toDate);
