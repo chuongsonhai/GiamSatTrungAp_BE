@@ -135,6 +135,7 @@
     <Compile Include="Domain\BienBanKS.cs" />
     <Compile Include="Domain\LogKhaoSat.cs" />
     <Compile Include="Domain\UserNhanCanhBao.cs" />
+    <Compile Include="Domain\XacMinhTroNgaiNew.cs" />
     <Compile Include="Domain\Xacnhantrongaikhaosatfilter.cs" />
     <Compile Include="Domain\GiamSatCongVanCanhbaoid.cs" />
     <Compile Include="Domain\GiamsatCanhbaoCanhbaoid.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="Implements\LogKhaoSatService.cs" />
     <Compile Include="Implements\UserNhanCanhBaoService.cs" />
     <Compile Include="Implements\EmailService.cs" />
+    <Compile Include="Implements\XacMinhTroNgaiNewService.cs" />
     <Compile Include="Implements\ZaloService.cs" />
     <Compile Include="Implements\GiamSatCanhBaoCanhbaoidService.cs" />
     <Compile Include="Implements\GiamSatCongVanCanhbaoidService.cs" />
@@ -245,6 +247,7 @@
     <Compile Include="Implements\TThaiYeuCauService.cs" />
     <Compile Include="IServices\ILogKhaoSatService.cs" />
     <Compile Include="IServices\IUserNhanCanhBaoService.cs" />
+    <Compile Include="IServices\IXacMinhTroNgaiNewService.cs" />
     <Compile Include="IServices\IZaloService.cs" />
     <Compile Include="IServices\IEmailService.cs" />
     <Compile Include="IServices\IGiamSatCongVanCanhbaoidService.cs" />
@@ -276,6 +279,10 @@
     <Compile Include="MailDeliver\DeliverService.cs" />
     <Compile Include="MailDeliver\MailConfig.cs" />
     <Compile Include="Models\APIConfig.cs" />
+    <Compile Include="Models\BaoCaoChiTietGiamSatTienDo.cs" />
+    <Compile Include="Models\BaoCaoTongHopDanhGiaMucDo.cs" />
+    <Compile Include="Models\ChuyenKhaiThacTotal.cs" />
+    <Compile Include="Models\TroNgaiTotal.cs" />
     <Compile Include="Models\ZaloBaseClient.cs" />
     <Compile Include="Models\APIException.cs" />
     <Compile Include="Models\ZaloEndpoint.cs" />
@@ -618,6 +625,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Domain\LogKhaoSat.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Domain\XacMinhTroNgaiNew.hbm.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
