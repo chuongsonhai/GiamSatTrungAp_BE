@@ -11,5 +11,6 @@ namespace EVN.Core.Models
         public int SoLuongKhaoSat { set; get; }
         public int SoLuongKhaoSatThanhCong { set; get; }
         public int SoLuongKhaoSatThatBai { set; get; }
+        public int soLuongKhaoSatDungNgang { set; get; }
     }
 }

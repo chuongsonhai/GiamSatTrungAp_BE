@@ -35,16 +35,19 @@ namespace EVN.Api.Controllers
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
 
                 IList<CanhbaoModel> data = new List<CanhbaoModel>();
-                var list = service.GetbyCanhbao(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
-                foreach (var item in list)
-                {
-                    data.Add(new CanhbaoModel(item));
-
-                }
-                result.total = list.Count();
-                result.data = data;
+                var list = service.GetSoLuongGui(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
+                result.data = list;
                 result.success = true;
                 return Ok(result);
+                //foreach (var item in list)
+                //{
+                //    data.Add(new CanhbaoModel(item));
+
+                //}
+                //result.total = list.Count();
+                //result.data = data;
+                //result.success = true;
+                //return Ok(result);
             }
             catch (Exception ex)
             {
@@ -98,9 +101,9 @@ namespace EVN.Api.Controllers
                 var fromDate = DateTime.MinValue;
                 var toDate = DateTime.MaxValue;
                 if (!string.IsNullOrWhiteSpace(Request.Filtertgcd.tuNgay))
-                    fromDate = DateTime.ParseExact(Request.Filtertgcd.tuNgay, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    fromDate = DateTime.ParseExact(Request.Filtertgcd.tuNgay, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
                 if (!string.IsNullOrWhiteSpace(Request.Filtertgcd.denNgay))
-                    toDate = DateTime.ParseExact(Request.Filtertgcd.denNgay, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                    toDate = DateTime.ParseExact(Request.Filtertgcd.denNgay, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
 
                 var list = service.GetThoigiancapdien(Request.Filtertgcd.donViQuanLy, fromDate, toDate);

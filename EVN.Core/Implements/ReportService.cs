@@ -1430,7 +1430,6 @@ namespace EVN.Core.Implements
                     detail.TenDV = dv.orgName;
                     var listCV = query.Where(x => x.MaDViQLy == dv.orgCode);
                     detail.TongSoCTTiepNhanTTDN = listCV.Count();
-                 
                    result.Add(detail);
                 }
 

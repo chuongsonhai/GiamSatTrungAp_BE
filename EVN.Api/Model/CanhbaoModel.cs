@@ -20,6 +20,8 @@ namespace EVN.Api.Model
         }
         public int maLoaiCanhBao { get; set; }
         public int soLuongDaGui { get; set; }
+        public int soLuongThanhCong { get; set; }
+        public int soLuongThatBai { get; set; }
 
     }
 }

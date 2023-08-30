@@ -71,15 +71,16 @@ namespace EVN.Core.Implements
         public SoLuongGuiModel GetSoLuongGui(string tungay, string denngay)
         {
    
-            DateTime tuNgayCast = DateTime.ParseExact(tungay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(denngay, "yyyy/MM/dd", CultureInfo.InvariantCulture);
+            DateTime tuNgayCast = DateTime.ParseExact(tungay, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture);
             var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast);
             var result = new SoLuongGuiModel();
-
             //Số lượng
-            result.soLuongDaGui = query.Count();
-            result.soLuongThanhCong = query.Count(x => x.TRANGTHAI_CANHBAO == 0);
-            result.soLuongThatBai = query.Count(x => x.TRANGTHAI_CANHBAO == 1);
+
+            result.maLoaiCanhBao = query.Count(x => x.LOAI_CANHBAO_ID <= 16);
+            result.soLuongDaGui = query.Count(x => x.TRANGTHAI_CANHBAO >= 2 );
+            result.soLuongThanhCong = query.Count(x => x.TRANGTHAI_CANHBAO <= 6);
+            result.soLuongThatBai = query.Count(x => x.TRANGTHAI_CANHBAO > 6);
             return result;
         }
         public IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi, int solangui, string maYeuCau)
