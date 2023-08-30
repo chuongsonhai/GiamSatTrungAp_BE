@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace EVN.Core.Domain
-
 {
-    public class XacNhanTroNgai
+    public class XacMinhTroNgaiNew
     {
-
-        
         public virtual int ID { get; set; }
         public virtual string MA_DVI { get; set; }
         public virtual string MA_YCAU { get; set; }
@@ -14,8 +16,8 @@ namespace EVN.Core.Domain
         public virtual string DIA_CHI { get; set; }
         public virtual string DIEN_THOAI { get; set; }
         public virtual string MUCDICH_SD_DIEN { get; set; }
-        public virtual DateTime NGAY_TIEPNHAN { get; set; } = DateTime.Now;
-        public virtual DateTime NGAY_HOANTHANH { get; set; } = DateTime.Now;
+        public virtual DateTime NGAY_TIEPNHAN { get; set; }
+        public virtual DateTime NGAY_HOANTHANH { get; set; }
         public virtual string SO_NGAY_CT { get; set; }
         public virtual string SO_NGAY_TH_ND { get; set; }
         public virtual int TRANGTHAI_GQ { get; set; }
@@ -36,13 +38,15 @@ namespace EVN.Core.Domain
         public virtual int KSAT_CHI_PHI { get; set; }
         public virtual int DGHL_CAPDIEN { get; set; }
         public virtual int TRANGTHAI_GOI { get; set; }
-        public virtual DateTime NGAY { get; set; } = DateTime.Now;
+        public virtual DateTime NGAY { get; set; }
         public virtual string NGUOI_KSAT { get; set; }
         public virtual string Y_KIEN_KH { get; set; }
         public virtual string NOIDUNG { get; set; }
         public virtual string PHAN_HOI { get; set; }
         public virtual string GHI_CHU { get; set; }
+        public virtual int CANHBAO_ID { get; set; }
         public virtual int TRANGTHAI { get; set; }
+
 
     }
 }

@@ -75,18 +75,18 @@ namespace EVN.Core.Implements
         //    total = query.Count();
         //    return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
         //}
-        public IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai(int ID)
+        public IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai(string MA_YCAU)
         {
 
-            var query = Query.Where(p => p.CANHBAO_ID == ID).OrderBy(p=>p.NGAY);
+            var query = Query.Where(p => p.MA_YCAU == MA_YCAU).OrderBy(p=>p.NGAY);
             
             
             return query.ToList();
         }
 
-        public IList<XacNhanTroNgai> FilterByCanhBaoID(int ID)
+        public IList<XacNhanTroNgai> FilterByMaYeuCau(string ID)
         {
-            var query = Query.Where(p => p.CANHBAO_ID == ID);
+            var query = Query.Where(p => p.MA_YCAU == ID);
             return query.ToList();
         }
         public bool Save(XacNhanTroNgai lkhaosat, out string message)

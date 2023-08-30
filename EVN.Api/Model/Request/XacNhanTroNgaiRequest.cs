@@ -15,7 +15,6 @@ namespace EVN.Api.Model.Request
         public XacNhanTroNgaiRequest(XacNhanTroNgai lKhaoSat) : base()
         {
             ID = lKhaoSat.ID;
-            CANHBAO_ID = lKhaoSat.CANHBAO_ID;
             //NOIDUNG_CAUHOI = lKhaoSat.NOIDUNG_CAUHOI;
             //PHANHOI_KH = lKhaoSat.PHANHOI_KH;
             //THOIGIAN_KHAOSAT = lKhaoSat.THOIGIAN_KHAOSAT;
@@ -64,7 +63,6 @@ namespace EVN.Api.Model.Request
             DGCD_TH_CHUONGTRINH = lKhaoSat.DGCD_TH_CHUONGTRINH;
             DGCD_TH_DANGKY = lKhaoSat.DGCD_TH_DANGKY;
             DGCD_KH_PHANHOI = lKhaoSat.DGCD_KH_PHANHOI;
-            CHENH_LECH = lKhaoSat.CHENH_LECH;
             DGYC_DK_DEDANG = lKhaoSat.DGYC_DK_DEDANG;
             DGYC_XACNHAN_NCHONG_KTHOI = lKhaoSat.DGYC_XACNHAN_NCHONG_KTHOI;
             DGYC_THAIDO_CNGHIEP = lKhaoSat.DGYC_THAIDO_CNGHIEP;
@@ -83,7 +81,6 @@ namespace EVN.Api.Model.Request
             NOIDUNG = lKhaoSat.NOIDUNG;
             PHAN_HOI = lKhaoSat.PHAN_HOI;
             GHI_CHU = lKhaoSat.GHI_CHU;
-            CANHBAO_ID = lKhaoSat.CANHBAO_ID;
             TRANGTHAI = lKhaoSat.TRANGTHAI;
 
         }
@@ -104,7 +101,6 @@ namespace EVN.Api.Model.Request
         public int DGCD_TH_CHUONGTRINH { get; set; }
         public int DGCD_TH_DANGKY { get; set; }
         public int DGCD_KH_PHANHOI { get; set; }
-        public int CHENH_LECH { get; set; }
         public int DGYC_DK_DEDANG { get; set; }
         public int DGYC_XACNHAN_NCHONG_KTHOI { get; set; }
         public int DGYC_THAIDO_CNGHIEP { get; set; }
@@ -124,6 +120,11 @@ namespace EVN.Api.Model.Request
         public string PHAN_HOI { get; set; }
         public string GHI_CHU { get; set; }
         public int CANHBAO_ID { get; set; }
+        public string PHANHOI_KH { get; set; }
+        public string PHANHOI_DV { get; set; }
+        public string KETQUA { get; set; }
+        public string NGUOI_KS { get; set; }
+        public string MA_YC { get; set; }
         public int TRANGTHAI { get; set; }
 
     }

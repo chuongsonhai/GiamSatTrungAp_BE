@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.XacMinhTroNgaiNew, EVN.Core" table="GSCD_XACMINH_TRONGAI_NEW" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">XACMINH_TRONGAI_NEW_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="MA_DVI" column="MA_DVI" type="string"/>
+		<property name="MA_YCAU" column="MA_YCAU" type="string"/>
+		<property name="MA_KH" column="MA_KH" type="string"/>
+		<property name="TEN_KH" column="TEN_KH" type="string"/>
+		<property name="DIA_CHI" column="DIA_CHI" type="string"/>
+		<property name="DIEN_THOAI" column="DIEN_THOAI" type="string"/>
+		<property name="MUCDICH_SD_DIEN" column="MUCDICH_SD_DIEN" type="string"/>
+		<property name="NGAY_TIEPNHAN" column="NGAY_TIEPNHAN" type="Date"/>
+		<property name="NGAY_HOANTHANH" column="NGAY_HOANTHANH" type="Date"/>
+		<property name="SO_NGAY_CT" column="SO_NGAY_CT" type="string"/>
+		<property name="SO_NGAY_TH_ND" column="SO_NGAY_TH_ND" type="string"/>
+		<property name="TRANGTHAI_GQ" column="TRANGTHAI_GQ" type="int"/>
+		<property name="TONG_CONGSUAT_CD" column="TONG_CONGSUAT_CD" type="int"/>
+		<property name="DGCD_TH_CHUONGTRINH" column="DGCD_TH_CHUONGTRINH" type="int"/>
+		<property name="DGCD_TH_DANGKY" column="DGCD_TH_DANGKY" type="int"/>
+		<property name="DGCD_KH_PHANHOI" column="DGCD_KH_PHANHOI" type="int"/>
+		<property name="CHENH_LECH" column="CHENH_LECH" type="int"/>
+		<property name="DGYC_DK_DEDANG" column="DGYC_DK_DEDANG" type="int"/>
+		<property name="DGYC_XACNHAN_NCHONG_KTHOI" column="DGYC_XACNHAN_NCHONG_KTHOI" type="int"/>
+		<property name="DGYC_THAIDO_CNGHIEP" column="DGYC_THAIDO_CNGHIEP" type="int"/>
+		<property name="DGKS_TDO_KSAT" column="DGKS_TDO_KSAT" type="int"/>
+		<property name="DGKS_MINH_BACH" column="DGKS_MINH_BACH" type="int"/>
+		<property name="DGKS_CHU_DAO" column="DGKS_CHU_DAO" type="int"/>
+		<property name="DGNT_THUAN_TIEN" column="DGNT_THUAN_TIEN" type="int"/>
+		<property name="DGNT_MINH_BACH" column="DGNT_MINH_BACH" type="int"/>
+		<property name="DGNT_CHU_DAO" column="DGNT_MINH_BACH" type="int"/>
+		<property name="KSAT_CHI_PHI" column="KSAT_CHI_PHI" type="int"/>
+		<property name="DGHL_CAPDIEN" column="DGHL_CAPDIEN" type="int"/>
+		<property name="TRANGTHAI_GOI" column="TRANGTHAI_GOI" type="int"/>
+		<property name="NGAY" column="NGAY" type="Date"/>
+		<property name="NGUOI_KSAT" column="NGUOI_KSAT" type="string"/>
+		<property name="Y_KIEN_KH" column="Y_KIEN_KH" type="string"/>
+		<property name="NOIDUNG" column="NOIDUNG" type="string"/>
+		<property name="PHAN_HOI" column="PHAN_HOI" type="string"/>
+		<property name="GHI_CHU" column="GHI_CHU" type="string"/>
+		<property name="CANHBAO_ID" column="CANHBAO_ID" type="int"/>
+		<property name="TRANGTHAI" column="TRANGTHAI" type="int"/>
+	</class>
+</hibernate-mapping>
+

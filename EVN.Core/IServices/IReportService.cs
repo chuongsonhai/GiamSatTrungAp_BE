@@ -22,5 +22,7 @@ namespace EVN.Core.IServices
         IList<BaoCaoChiTietTCDN> GetListBaoCaoChiTietQuaHan(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate, int pageindex, int pagesize, out int total);
         IList<BaoCaoTHQuaHan> GetListBaoCaoTHQuaHan(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate);
         IList<CongVanYeuCau> TinhThoiGian();
+        IList<BaoCaoChiTietGiamSatTienDo> GetBaoCaoChiTietGiamSatTienDo(string tuNgay, string denNgay, string MaYeuCau, string MaDonViQuanLy);
+        
     }
 }

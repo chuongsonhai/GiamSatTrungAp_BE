@@ -1,6 +1,7 @@
 ﻿using EVN.Api.Jwt;
 using EVN.Api.Model;
 using EVN.Api.Model.Request;
+using EVN.Api.Model.ViewModel;
 using EVN.Core;
 using EVN.Core.IServices;
 using FX.Core;
@@ -153,7 +154,6 @@ namespace EVN.Api.Controllers
 
                         row++;
                     }
-
                     return Ok(package.GetAsByteArray());
                 }
             }
@@ -753,6 +753,8 @@ namespace EVN.Api.Controllers
             }
         }
 
+
+
         [JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaothkq")]
@@ -760,7 +762,6 @@ namespace EVN.Api.Controllers
         {
             try
             {
-
                 DateTime synctime = DateTime.Today;
                 IReportService service = IoC.Resolve<IReportService>();
                 var fromDate = DateTime.MinValue;
@@ -840,11 +841,6 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Value = item.TongSoCTChuaHoanThanhNT;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         colval++;
-
-
-
-
-
                         row++;
                     }
                     int colvalT = 1;
@@ -900,8 +896,625 @@ namespace EVN.Api.Controllers
                     ws.Cells[row, colvalT].Value = listModel.TongSoCTChuaHoanThanhNT;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     colvalT++;
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return NotFound();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("exportbaocaochitietgiamsatiendo")]
+        public IHttpActionResult ExportBaoCaoChiTietGiamSatTienDo(BienBanFilter request)
+        {
+            try
+            {
+                DateTime synctime = DateTime.Today;
+                IReportService service = IoC.Resolve<IReportService>();
+
+                var list = service.GetBaoCaoChiTietGiamSatTienDo(request.fromdate, request.todate, request.maYCau, request.maDViQly);
+                //var listModel = new BaoCaoChiTietGiamSatTienDoViewModel(list);
 
 
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoChiTietGiamSatTienDo.xlsx";
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+                //mau file excel
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+
+                    int row = 9;
+                    int stt = 0;
+                    foreach (var item in list)
+                    {
+                        stt++;
+                        int colval = 1;
+                        ws.Cells[row, colval].Value = stt;
+                            colval++;
+
+                        ws.Cells[row, colval].Value = item.MaDViQuanLy;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.MaYeuCau;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TenKhachHang;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.DiaChi;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SDT;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongCongSuatDangKy;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NgayTiepNhan;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.HangMucCanhBao;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NguongCanhBao;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TrangThai;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NgayGioGiamSat;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NguoiGiamSat;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NoiDungKhaoSat;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NoiDungXuLyYKienKH;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.PhanHoi;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.XacMinhNguyenNhanChamGiaiQuyet;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NDGhiNhanVaChuyenDonViXuLy;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.KetQua;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
+                        row++;
+                    }               
+                    
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return NotFound();
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("exportbaocaothdanhgiamucdo")]
+        public IHttpActionResult ExportBaoCaoTongHopDanhGiaMucDo(BienBanFilter request)
+        {
+            try
+            {
+                DateTime synctime = DateTime.Today;
+                IXacMinhTroNgaiNewService service = IoC.Resolve<IXacMinhTroNgaiNewService>();
+
+                //danh sách khảo sát có trạng thái chuyẻn khai thác 
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.fromdate, request.todate);
+
+                //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.fromdate, request.todate);
+
+                //danh sách tổng số  (trang thai = chuyển khai thác)
+                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.fromdate, request.todate);
+
+                //danh sách tổng số khảo sát (trang thai = trở ngại)
+                var troNgai = service.GetListTroNgaiTotal(request.fromdate, request.todate);
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoTongHopDanhGiaMucDo.xlsx";
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+                //mau file excel
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+
+                    int row = 8;
+                    int row1 = 9;
+                    int stt = 0;
+                    foreach (var item in list)
+                    {
+                        stt++;
+                        int colval = 1;
+                        ws.Cells[row, colval].Value = stt;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.DonVi;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = "Chuyển khai thác";
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TongSoVuCoChenhLech;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.YCauCapDienDeDangThuanTienCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.YCauCapDienDeDangThuanTienKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.YCauCapDienNhanhChongKipThoiCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.YCauCapDienNhanhChongKipThoiKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.YCauCapDienThaiDoChuyenNghiepCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.YCauCapDienThaiDoChuyenNghiepKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TTDNTienDoKhaoSatCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TTDNTienDoKhaoSatKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TTDNMinhBachCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TTDNMinhBachKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TTDNChuDaoCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TTDNChuDaoKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NghiemThuThuanTienCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NghiemThuThuanTienKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NghiemThuMinhBachCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NghiemThuMinhBachKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NghiemThuChuDaoCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NghiemThuChuDaoKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.ChiPhiCo;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+
+                        ws.Cells[row, colval].Value = item.ChiPhiKhong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.RatKhongHaiLong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.KhongHaiLong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.BinhThuong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.HaiLong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.RatHaiLong;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+                        row +=2;
+                    }
+
+                    foreach (var item in list1)
+                    {
+                        
+                        int colval = 3;
+                        
+
+                        ws.Cells[row1, colval].Value = "Có trở ngại hoặc hết hạn TTĐN";
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.TongSoVuCoChenhLech;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.YCauCapDienDeDangThuanTienCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.YCauCapDienDeDangThuanTienKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.YCauCapDienNhanhChongKipThoiCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.YCauCapDienNhanhChongKipThoiKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.YCauCapDienThaiDoChuyenNghiepCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.YCauCapDienThaiDoChuyenNghiepKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.TTDNTienDoKhaoSatCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.TTDNTienDoKhaoSatKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.TTDNMinhBachCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.TTDNMinhBachKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.TTDNChuDaoCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.TTDNChuDaoKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.NghiemThuThuanTienCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.NghiemThuThuanTienKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.NghiemThuMinhBachCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.NghiemThuMinhBachKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.NghiemThuChuDaoCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.NghiemThuChuDaoKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.ChiPhiCo;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+
+                        ws.Cells[row1, colval].Value = item.ChiPhiKhong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.RatKhongHaiLong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.KhongHaiLong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.BinhThuong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.HaiLong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row1, colval].Value = item.RatHaiLong;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        row1 +=2;
+                    }
+
+                    row1 -= 1;
+                    int colvalT = 2;
+                    ws.Cells[row1, colvalT].Value = "Tổng Cộng";
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = "Chuyển khai thác";
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoVuCoChenhLech;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienDeDangThuanTienCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienDeDangThuanTienKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienNhanhChongKipThoiCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienNhanhChongKipThoiKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienThaiDoChuyenNghiepCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienThaiDoChuyenNghiepKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNTienDoKhaoSatCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNTienDoKhaoSatKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNMinhBachCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNMinhBachKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNChuDaoCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNChuDaoKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuThuanTienCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuThuanTienKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuMinhBachCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuMinhBachKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuChuDaoCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuChuDaoKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoChiPhiCo;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoChiPhiKhong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoRatKhongHaiLong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoKhongHaiLong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoBinhThuong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoHaiLong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoRatHaiLong;
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    row1++;
+                    int colvalT1 = 3;
+
+                    ws.Cells[row1, colvalT1].Value = "Có trở ngại hoặc hết hạn TTĐN";
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoVuCoChenhLech;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienDeDangThuanTienCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienDeDangThuanTienKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienNhanhChongKipThoiCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienNhanhChongKipThoiKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienThaiDoChuyenNghiepCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienThaiDoChuyenNghiepKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNTienDoKhaoSatCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNTienDoKhaoSatKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNMinhBachCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNMinhBachKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNChuDaoCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNChuDaoKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuThuanTienCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuThuanTienKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuMinhBachCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuMinhBachKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuChuDaoCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuChuDaoKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoChiPhiCo;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoChiPhiKhong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoRatKhongHaiLong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoKhongHaiLong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoBinhThuong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoHaiLong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
+
+                    ws.Cells[row1, colvalT1].Value = troNgai.TongSoRatHaiLong;
+                    ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT1++;
 
                     return Ok(package.GetAsByteArray());
                 }
@@ -936,6 +1549,344 @@ namespace EVN.Api.Controllers
                 result.data = listModel;
                 result.success = true;
                 return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("exportchitietmucdohailong")]
+        public IHttpActionResult ExportBaoCaoChiTietMucDoHaiLong(BienBanFilter request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                IXacMinhTroNgaiNewService service = IoC.Resolve<IXacMinhTroNgaiNewService>();
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoChiTietMucDoHaiLong.xlsx";
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+
+                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.maDViQly, request.fromdate, request.todate);
+
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+
+                    int row = 8;
+                    int stt = 0;
+                    foreach (var item in list)
+                    {
+                        stt++;
+                        int colval = 1;
+                        ws.Cells[row, colval].Value = stt;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.MA_DVI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.MA_YCAU;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.MA_KH;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.TEN_KH;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.DIA_CHI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.DIEN_THOAI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.MUCDICH_SD_DIEN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_TIEPNHAN.ToString();
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NGAY_HOANTHANH.ToString();
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SO_NGAY_CT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.SO_NGAY_TH_ND;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        if (item.TRANGTHAI_GQ == 1) 
+                        {
+                            ws.Cells[row, colval].Value = "Kết thúc chuyển khai thác khách hàng";
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+                        else
+                        {
+                            ws.Cells[row, colval].Value = "Kết thúc do có trở ngại";
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        ws.Cells[row, colval].Value = item.TONG_CONGSUAT_CD;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.DGCD_TH_CHUONGTRINH;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.DGCD_TH_DANGKY;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.DGCD_KH_PHANHOI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.DGCD_KH_PHANHOI - item.DGCD_TH_CHUONGTRINH;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        if(item.DGYC_DK_DEDANG == 1)
+                        {
+                        ws.Cells[row, colval].Value = 1;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval+=2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        if(item.DGYC_XACNHAN_NCHONG_KTHOI == 1)
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        if (item.DGYC_THAIDO_CNGHIEP == 1)
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval+=2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                         if(item.DGKS_TDO_KSAT == 1)
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        if (item.DGKS_MINH_BACH == 1) 
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        if (item.DGKS_CHU_DAO == 1)
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        if(item.DGNT_THUAN_TIEN == 1)
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        if(item.DGNT_MINH_BACH == 1)
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        if (item.DGNT_CHU_DAO == 1)
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        if (item.KSAT_CHI_PHI == 1)
+                        {
+
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval++;
+                        }
+
+                        if (item.DGHL_CAPDIEN == 1)
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 5;
+                        }else if(item.DGHL_CAPDIEN == 2)
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 4;
+                        }else if(item.DGHL_CAPDIEN == 3)
+                        {
+                            colval+=2;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 3;
+                        }
+                        else if (item.DGHL_CAPDIEN == 4)
+                        {
+                            colval += 3;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else if (item.DGHL_CAPDIEN == 5)
+                        {
+                            colval += 4;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval ++;
+                        }
+                        if(item.TRANGTHAI_GOI == 1)
+                        {
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 3;
+                        }else if(item.TRANGTHAI_GOI == 2)
+                        {
+                            colval++;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval += 2;
+                        }
+                        else if (item.TRANGTHAI_GOI == 3)
+                        {
+                            colval+=2;
+                            ws.Cells[row, colval].Value = 1;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            colval ++;
+                        }
+                        ws.Cells[row, colval].Value = item.NGAY.ToString();
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;                        
+
+                        ws.Cells[row, colval].Value = item.NGUOI_KSAT;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.Y_KIEN_KH;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NOIDUNG;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.PHAN_HOI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.GHI_CHU;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        row++;
+                        
+                    }
+                    return Ok(package.GetAsByteArray());
+                }
             }
             catch (Exception ex)
             {
