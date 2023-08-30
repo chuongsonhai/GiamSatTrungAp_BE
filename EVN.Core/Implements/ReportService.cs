@@ -2356,6 +2356,7 @@ namespace EVN.Core.Implements
                 foreach (var canhbao in listCanhBao)
                 {
                     var listXacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
+
                     var listPhanHoiTraoDoi = phanhoiTraodoiService.Getbyid(canhbao.ID);
                     
                     var detail = new BaoCaoChiTietGiamSatTienDo();
@@ -2375,6 +2376,7 @@ namespace EVN.Core.Implements
                         detail.NguoiGiamSat = xacNhanTroNgai.NGUOI_KSAT;
                         detail.NoiDungKhaoSat = xacNhanTroNgai.PHAN_HOI;
                     }
+
                     detail.NoiDungXuLyYKienKH = "";
                     foreach(var phanHoiTraoDoi in listPhanHoiTraoDoi)
                     {
