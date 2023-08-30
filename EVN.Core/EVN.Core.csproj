@@ -449,6 +449,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="bin\Release\EVN.Core.dll.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -627,7 +628,37 @@
     <EmbeddedResource Include="Domain\LogKhaoSat.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bin\Release\Aspose.Words.dll" />
+    <Content Include="bin\Release\Aspose.Words.xml" />
+    <Content Include="bin\Release\BouncyCastle.Crypto.dll" />
+    <Content Include="bin\Release\Castle.Core.dll" />
+    <Content Include="bin\Release\Castle.Windsor.dll" />
+    <Content Include="bin\Release\de\PdfSharp.Charting.resources.dll" />
+    <Content Include="bin\Release\de\PdfSharp.resources.dll" />
+    <Content Include="bin\Release\EVN.Core.dll" />
+    <Content Include="bin\Release\EVN.Core.pdb" />
+    <Content Include="bin\Release\Excel.dll" />
+    <Content Include="bin\Release\FX.Context.dll" />
+    <Content Include="bin\Release\FX.Core.dll" />
+    <Content Include="bin\Release\FX.Data.dll" />
+    <Content Include="bin\Release\FX.Utils.dll" />
+    <Content Include="bin\Release\itextsharp.dll" />
+    <Content Include="bin\Release\itextsharp.xml" />
+    <Content Include="bin\Release\log4net.dll" />
+    <Content Include="bin\Release\Newtonsoft.Json.dll" />
+    <Content Include="bin\Release\Newtonsoft.Json.xml" />
+    <Content Include="bin\Release\NReco.PdfGenerator.dll" />
+    <Content Include="bin\Release\Oracle.ManagedDataAccess.dll" />
+    <Content Include="bin\Release\PdfSharp.Charting.dll" />
+    <Content Include="bin\Release\PdfSharp.Charting.xml" />
+    <Content Include="bin\Release\PdfSharp.dll" />
+    <Content Include="bin\Release\PdfSharp.xml" />
+    <Content Include="bin\Release\RestSharp.dll" />
+    <Content Include="bin\Release\RestSharp.xml" />
     <Content Include="Domain\XacMinhTroNgaiNew.hbm.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\Debug\de\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

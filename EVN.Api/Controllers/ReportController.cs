@@ -1,7 +1,6 @@
 ﻿using EVN.Api.Jwt;
 using EVN.Api.Model;
 using EVN.Api.Model.Request;
-using EVN.Api.Model.ViewModel;
 using EVN.Core;
 using EVN.Core.IServices;
 using FX.Core;

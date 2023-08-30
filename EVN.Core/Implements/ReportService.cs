@@ -2355,7 +2355,7 @@ namespace EVN.Core.Implements
                 var listCanhBao = canhBaoService.FilterByMaYCauAndDViQuanLy(tuNgay, denNgay, MaYeuCau, MaDonViQuanLy);
                 foreach (var canhbao in listCanhBao)
                 {
-                    var listXacNhanTroNgai = xacNhanTroNgaiService.FilterByCanhBaoID(canhbao.ID);
+                   // var listXacNhanTroNgai = xacNhanTroNgaiService.FilterByCanhBaoID(canhbao.ID);
                     var listPhanHoiTraoDoi = phanhoiTraodoiService.Getbyid(canhbao.ID);
                     
                     var detail = new BaoCaoChiTietGiamSatTienDo();
@@ -2370,11 +2370,11 @@ namespace EVN.Core.Implements
                     detail.NguongCanhBao = canhbao.NOIDUNG;
                     detail.NgayGioGiamSat = canhbao.THOIGIANGUI;
 
-                    foreach (var xacNhanTroNgai in listXacNhanTroNgai)
-                    {
-                        detail.NguoiGiamSat = xacNhanTroNgai.NGUOI_KS;
-                        detail.NoiDungKhaoSat = xacNhanTroNgai.PHANHOI_KH;
-                    }
+                    //foreach (var xacNhanTroNgai in listXacNhanTroNgai)
+                    //{
+                    //    detail.NguoiGiamSat = xacNhanTroNgai.NGUOI_KS;
+                    //    detail.NoiDungKhaoSat = xacNhanTroNgai.PHANHOI_KH;
+                    //}
                     detail.NoiDungXuLyYKienKH = "";
                     foreach(var phanHoiTraoDoi in listPhanHoiTraoDoi)
                     {
