@@ -559,6 +559,10 @@
     <Content Include="Templates\THKQ.xlsx" />
     <Content Include="Templates\THTCDN.xlsx" />
     <Content Include="Templates\THTT.xlsx" />
+    <Content Include="Templates\BaoCaoChiTietGiamSatTienDo.xlsx" />
+    <Content Include="Templates\BaoCaoChiTietMucDoHaiLong.xlsx" />
+    <Content Include="Templates\BaoCaoTongHopDanhGiaMucDo.xlsx" />
+    <Content Include="Templates\BaoCaoTongHopTienDo.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\BaoCaoThongKe\" />

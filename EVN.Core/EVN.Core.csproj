@@ -282,6 +282,7 @@
     <Compile Include="Models\BaoCaoChiTietGiamSatTienDo.cs" />
     <Compile Include="Models\BaoCaoTongHopDanhGiaMucDo.cs" />
     <Compile Include="Models\ChuyenKhaiThacTotal.cs" />
+    <Compile Include="Models\BaocaoTienDoCanhBaoModel.cs" />
     <Compile Include="Models\TroNgaiTotal.cs" />
     <Compile Include="Models\ZaloBaseClient.cs" />
     <Compile Include="Models\APIException.cs" />

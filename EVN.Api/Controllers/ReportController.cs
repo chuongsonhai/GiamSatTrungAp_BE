@@ -3,6 +3,7 @@ using EVN.Api.Model;
 using EVN.Api.Model.Request;
 using EVN.Core;
 using EVN.Core.IServices;
+using EVN.Core.Models;
 using FX.Core;
 using log4net;
 using OfficeOpenXml;
@@ -905,7 +906,121 @@ namespace EVN.Api.Controllers
             }
         }
 
-        [JwtAuthentication]
+        //bieugiamsatbaocaotonghoptiendo
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("exportbaocaotonghoptiendo")]
+        public IHttpActionResult ExportBaoCaoTongHopTienDo(BienBanFilter request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoTongHopTienDo.xlsx";
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+
+                var list = service.GetBaoCaotonghoptiendo(request.maDViQly, request.fromdate, request.todate);
+                // var list = service.GetSoLuongGui(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
+
+                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                {
+                    ExcelWorksheet ws = package.Workbook.Worksheets[1];
+
+                    int row = 10;
+                    int stt = 0;
+                    foreach (var item in list)
+                    {
+                        stt++;
+                        int colval = 1;
+                        ws.Cells[row, colval].Value = stt;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.maDvi;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.CB_TONG;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.CB_SOCBLAN;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.CB_CBTRONGAI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.CB_CBDVI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_DNN_TONG;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_DNN_TYLE;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_DNN_TRONGAI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_DNN_CHAM;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_KH_TONG;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_KH_TYLE;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_KH_CBTRONGAI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_KH_CBCHAM;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_LOI_TONG;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_LOI_TYLE;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_LOI_CBTRONGAI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+
+                        ws.Cells[row, colval].Value = item.NN_LOI_CBCHAM;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        colval++;
+                        row++;
+
+                    }
+                    return Ok(package.GetAsByteArray());
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        //[JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaochitietgiamsatiendo")]
         public IHttpActionResult ExportBaoCaoChiTietGiamSatTienDo(BienBanFilter request)
@@ -1558,7 +1673,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-        [JwtAuthentication]
+       // [JwtAuthentication]
         [HttpPost]
         [Route("exportchitietmucdohailong")]
         public IHttpActionResult ExportBaoCaoChiTietMucDoHaiLong(BienBanFilter request)

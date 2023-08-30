@@ -17,6 +17,7 @@ namespace EVN.Core.IServices
         ChuyenKhaiThacTotal GetListTroNgaiTotal(string fromdate, string todate);
 
         IList<XacMinhTroNgaiNew> GetBaoCaoChiTietMucDoHaiLong(string maDViQly, string fromdate, string todate);
+   
 
     }
 }
