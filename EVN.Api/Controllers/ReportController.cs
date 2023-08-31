@@ -9,6 +9,7 @@ using log4net;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Web.Http;
 
@@ -555,6 +556,8 @@ namespace EVN.Api.Controllers
             }
         }
 
+
+
         [JwtAuthentication]
         [HttpPost]
         [Route("getbaocaothtcdn")]
@@ -910,7 +913,7 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaotonghoptiendo")]
-        public IHttpActionResult ExportBaoCaoTongHopTienDo(BienBanFilter request)
+        public IHttpActionResult ExportBaoCaoTongHopTienDo(BaocaoTHTienDo request)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -922,7 +925,7 @@ namespace EVN.Api.Controllers
 
                 FileInfo fileTemp = new FileInfo(fileTemplate);
 
-                var list = service.GetBaoCaotonghoptiendo(request.maDViQly, request.fromdate, request.todate);
+                var list = service.GetBaoCaotonghoptiendo(request.Filterbctd.maDViQly, request.Filterbctd.TenLoaiCanhBao, request.Filterbctd.fromdate, request.Filterbctd.todate);
                 // var list = service.GetSoLuongGui(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
 
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
@@ -1010,6 +1013,39 @@ namespace EVN.Api.Controllers
                     }
                     return Ok(package.GetAsByteArray());
                 }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        //getbaocaotonghoptiendo
+        [HttpPost]
+        [Route("getbaocaotonghoptiendo")]
+        public IHttpActionResult GetBaoCaoTonghopTienDo(BaocaoTHTienDo request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+                //var fromDate = DateTime.MinValue;
+                //var toDate = DateTime.MaxValue;
+                //if (!string.IsNullOrWhiteSpace(request.Filterbctd.fromdate))
+                //    fromDate = DateTime.ParseExact(request.Filterbctd.fromdate, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+                //if (!string.IsNullOrWhiteSpace(request.Filterbctd.todate))
+                //    toDate = DateTime.ParseExact(request.Filterbctd.todate, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
+
+                var list = service.GetBaoCaotonghoptiendo(request.Filterbctd.maDViQly, request.Filterbctd.TenLoaiCanhBao, request.Filterbctd.fromdate, request.Filterbctd.todate);
+   
+                result.data = list;
+                result.success = true;
+                return Ok(result);
             }
             catch (Exception ex)
             {

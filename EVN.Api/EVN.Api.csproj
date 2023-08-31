@@ -371,6 +371,7 @@
     <Compile Include="Model\Request\CanhBaoFilterRequestid.cs" />
     <Compile Include="Model\Request\CanhBaoFilterRequestdashboardcanhbao.cs" />
     <Compile Include="Model\Request\EmailModelFilter.cs" />
+    <Compile Include="Model\Request\BaocaoTHTienDo.cs" />
     <Compile Include="Model\Request\XacNhanTGCDRequest.cs" />
     <Compile Include="Model\Request\ZaloModelFilter.cs" />
     <Compile Include="Model\Request\CauHinhCanhBaoLogFilterRequest.cs" />
