@@ -367,6 +367,7 @@
     <Compile Include="Model\BienBanNTModel.cs" />
     <Compile Include="Model\BienBanTTModel.cs" />
     <Compile Include="Model\BoPhanModel.cs" />
+    <Compile Include="Model\KetThucCanhbaoModel.cs" />
     <Compile Include="Model\FilterKhaoSatByCanhBaoRequest.cs" />
     <Compile Include="Model\Request\CanhBaoFilterRequestid.cs" />
     <Compile Include="Model\Request\CanhBaoFilterRequestdashboardcanhbao.cs" />

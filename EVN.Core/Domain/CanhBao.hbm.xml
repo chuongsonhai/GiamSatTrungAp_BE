@@ -14,7 +14,7 @@
 		<property name="MA_YC" column="MA_YC" type="string"/>
 		<property name="TRANGTHAI_CANHBAO" column="TRANGTHAI_CANHBAO" type="int"/>
 		<property name="DONVI_DIENLUC" column="DONVI_DIENLUC" type="string"/>
-
+		<property name="NGUYENHHAN_CANHBAO" column="NGUYENHHAN_CANHBAO" type="int"/>
 	</class>
 </hibernate-mapping>
 

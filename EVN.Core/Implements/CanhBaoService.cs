@@ -103,25 +103,23 @@ namespace EVN.Core.Implements
                         data.maDvi = org.orgName;
                         data.CB_TONG = query.Count();
                         data.CB_SOCBLAN = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
-  
-
                         data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
                         data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
 
-                        data.NN_DNN_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6);
-                        data.NN_DNN_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
-                        data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
-                        data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+                        data.NN_DNN_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 1);
+                        data.NN_DNN_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 1);
+                        data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
+                        data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
 
-                        data.NN_KH_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6);
-                        data.NN_KH_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
-                        data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
-                        data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+                        data.NN_KH_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 2);
+                        data.NN_KH_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 2);
+                        data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
+                        data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
 
-                        data.NN_LOI_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6);
-                        data.NN_LOI_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
-                        data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
-                        data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+                        data.NN_LOI_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 3);
+                        data.NN_LOI_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 3);
+                        data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
+                        data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
 
                         data1.Add(data);
                     }
@@ -136,20 +134,20 @@ namespace EVN.Core.Implements
                 data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
                 data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
 
-                data.NN_DNN_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6);
-                data.NN_DNN_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
-                data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
-                data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+                data.NN_DNN_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 1);
+                data.NN_DNN_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 1);
+                data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
+                data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
 
-                data.NN_KH_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6);
-                data.NN_KH_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
-                data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
-                data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+                data.NN_KH_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 2);
+                data.NN_KH_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 2);
+                data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
+                data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
 
-                data.NN_LOI_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6);
-                data.NN_LOI_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
-                data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
-                data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+                data.NN_LOI_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 3);
+                data.NN_LOI_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 3);
+                data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
+                data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
                 data1.Add(data);
             }
             return data1;

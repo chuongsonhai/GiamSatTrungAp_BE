@@ -13,6 +13,7 @@ namespace EVN.Core.Domain
         public virtual string MA_YC { get; set; }
         public virtual int TRANGTHAI_CANHBAO { get; set; }
         public virtual string DONVI_DIENLUC { get; set; }
+        public virtual int NGUYENHHAN_CANHBAO { get; set; }
     }
 
 }
