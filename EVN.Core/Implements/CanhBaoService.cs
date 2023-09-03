@@ -30,6 +30,11 @@ namespace EVN.Core.Implements
             return result;
         }
 
+        public CanhBao GetByMaYeuCau(string MaYeuCau)
+        {
+            return Get(p => p.MA_YC == MaYeuCau);
+        }
+
         public CanhBao Getbyid(int id)
         {
             return Get(p => p.ID == id);

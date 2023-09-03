@@ -3,9 +3,7 @@ namespace EVN.Core.Domain
 
 {
     public class XacNhanTroNgai
-    {
-
-        
+    {  
         public virtual int ID { get; set; }
         public virtual string MA_DVI { get; set; }
         public virtual string MA_YCAU { get; set; }
@@ -43,6 +41,5 @@ namespace EVN.Core.Domain
         public virtual string PHAN_HOI { get; set; }
         public virtual string GHI_CHU { get; set; }
         public virtual int TRANGTHAI { get; set; }
-
     }
 }

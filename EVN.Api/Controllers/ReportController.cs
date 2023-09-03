@@ -1024,6 +1024,7 @@ namespace EVN.Api.Controllers
         }
 
         //getbaocaotonghoptiendo
+        [JwtAuthentication]
         [HttpPost]
         [Route("getbaocaotonghoptiendo")]
         public IHttpActionResult GetBaoCaoTonghopTienDo(BaocaoTHTienDo request)
@@ -1033,7 +1034,7 @@ namespace EVN.Api.Controllers
             {
 
                 DateTime synctime = DateTime.Today;
-                ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+                ICanhBaoService  service = IoC.Resolve<ICanhBaoService>();
                 //var fromDate = DateTime.MinValue;
                 //var toDate = DateTime.MaxValue;
                 //if (!string.IsNullOrWhiteSpace(request.Filterbctd.fromdate))
@@ -1056,25 +1057,50 @@ namespace EVN.Api.Controllers
             }
         }
 
-        //[JwtAuthentication]
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("getbaocaochitietgiamsattiendo")]
+        public IHttpActionResult GetBaoCaoChiTietGiamSatTienDo(BaoCaoChiTietGiamSatTienDoReq request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
+                
+                var list = service.GetBaoCaoChiTietGiamSatTienDo(request.Filterbcgstd.maDViQly, request.Filterbcgstd.fromdate, request.Filterbcgstd.todate);
+
+                result.data = list;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaochitietgiamsatiendo")]
-        public IHttpActionResult ExportBaoCaoChiTietGiamSatTienDo(BienBanFilter request)
+        public IHttpActionResult exportbaocaochitietgiamsattiendo(BaoCaoChiTietGiamSatTienDoReq request)
         {
             try
             {
                 DateTime synctime = DateTime.Today;
-                IReportService service = IoC.Resolve<IReportService>();
+                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
 
-                var list = service.GetBaoCaoChiTietGiamSatTienDo(request.fromdate, request.todate, request.maYCau, request.maDViQly);
-                //var listModel = new BaoCaoChiTietGiamSatTienDoViewModel(list);
+                var list = service.GetBaoCaoChiTietGiamSatTienDo(request.Filterbcgstd.fromdate, request.Filterbcgstd.todate, request.Filterbcgstd.maDViQly);
 
+                string filetemplate = AppDomain.CurrentDomain.BaseDirectory + "templates/baocaochitietgiamsattiendo.xlsx";
 
-                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoChiTietGiamSatTienDo.xlsx";
-
-                FileInfo fileTemp = new FileInfo(fileTemplate);
+                FileInfo filetemp = new FileInfo(filetemplate);
                 //mau file excel
-                using (ExcelPackage package = new ExcelPackage(fileTemp, true))
+                using (ExcelPackage package = new ExcelPackage(filetemp, true))
                 {
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
 
@@ -1085,7 +1111,7 @@ namespace EVN.Api.Controllers
                         stt++;
                         int colval = 1;
                         ws.Cells[row, colval].Value = stt;
-                            colval++;
+                        colval++;
 
                         ws.Cells[row, colval].Value = item.MaDViQuanLy;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
@@ -1156,9 +1182,13 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Value = item.KetQua;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         colval++;
+
+                        ws.Cells[row, colval].Value = item.GhiChu;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        colval++;
                         row++;
-                    }               
-                    
+                    }
+
                     return Ok(package.GetAsByteArray());
                 }
             }
@@ -1169,27 +1199,66 @@ namespace EVN.Api.Controllers
             }
         }
 
-        [JwtAuthentication]
+        //[JwtAuthentication]
+        [HttpPost]
+        [Route("getbaocaothdanhgiamucdo")]
+        public IHttpActionResult GetBaoCaoTongHopDanhGiaMucDo(BaoCaoTHDanhGiaMucDoHaiLong request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
+
+
+                //danh sách khảo sát có trạng thái chuyẻn khai thác 
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
+
+                //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
+
+                //danh sách tổng số khảo sát có trạng thái = chuyển khai thác
+                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.fromdate);
+
+                //danh sách tổng số khảo sát có trang thai = trở ngại hoặc hết hạn TTDN 
+                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.fromdate);
+
+                var finalList = new { listSoLuongKhaoSatTrangThaiChuyenKhaiThac = list, listSoLuongKhaoSatTrangThaiTroNgai = list1 , tongSoKhaoSatTrangThaiChuyenKhaiThac = chuyenKhaiThac, tongSoKhaoSatTrangThaiTroNgai = troNgai };
+                result.data = finalList;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        //[JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaothdanhgiamucdo")]
-        public IHttpActionResult ExportBaoCaoTongHopDanhGiaMucDo(BienBanFilter request)
+        public IHttpActionResult ExportBaoCaoTongHopDanhGiaMucDo(BaoCaoTHDanhGiaMucDoHaiLong request)
         {
             try
             {
                 DateTime synctime = DateTime.Today;
-                IXacMinhTroNgaiNewService service = IoC.Resolve<IXacMinhTroNgaiNewService>();
+                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
 
                 //danh sách khảo sát có trạng thái chuyẻn khai thác 
-                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.fromdate, request.todate);
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
 
                 //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
-                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.fromdate, request.todate);
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
 
-                //danh sách tổng số  (trang thai = chuyển khai thác)
-                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.fromdate, request.todate);
+                //danh sách tổng số khảo sát có trạng thái = chuyển khai thác
+                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.fromdate);
 
-                //danh sách tổng số khảo sát (trang thai = trở ngại)
-                var troNgai = service.GetListTroNgaiTotal(request.fromdate, request.todate);
+                //danh sách tổng số khảo sát có trang thai = trở ngại hoặc hết hạn TTDN 
+                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.fromdate);
                 string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoTongHopDanhGiaMucDo.xlsx";
 
                 FileInfo fileTemp = new FileInfo(fileTemplate);
@@ -1709,7 +1778,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-       // [JwtAuthentication]
+        //[JwtAuthentication]
         [HttpPost]
         [Route("exportchitietmucdohailong")]
         public IHttpActionResult ExportBaoCaoChiTietMucDoHaiLong(BienBanFilter request)
@@ -1719,7 +1788,7 @@ namespace EVN.Api.Controllers
             {
 
                 DateTime synctime = DateTime.Today;
-                IXacMinhTroNgaiNewService service = IoC.Resolve<IXacMinhTroNgaiNewService>();
+                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
                 string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoChiTietMucDoHaiLong.xlsx";
 
                 FileInfo fileTemp = new FileInfo(fileTemplate);
@@ -2037,6 +2106,36 @@ namespace EVN.Api.Controllers
                     }
                     return Ok(package.GetAsByteArray());
                 }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("getchitietmucdohailong")]
+        public IHttpActionResult GetBaoCaoChiTietMucDoHaiLong(BaoCaoChiTietGiamSatTienDoReq request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+
+                DateTime synctime = DateTime.Today;
+                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
+                string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoChiTietMucDoHaiLong.xlsx";
+
+                FileInfo fileTemp = new FileInfo(fileTemplate);
+
+                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcgstd.maDViQly, request.Filterbcgstd.fromdate, request.Filterbcgstd.todate);
+
+                result.data = list;
+                result.success = true;
+                return Ok(result);
             }
             catch (Exception ex)
             {

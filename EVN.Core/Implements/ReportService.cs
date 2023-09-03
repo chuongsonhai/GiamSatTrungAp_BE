@@ -2340,56 +2340,7 @@ namespace EVN.Core.Implements
             }
             return response;
         }
-        public IList<BaoCaoChiTietGiamSatTienDo> GetBaoCaoChiTietGiamSatTienDo(string tuNgay, string denNgay, string MaYeuCau, string MaDonViQuanLy)
-        {
-            ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
-            IXacNhanTroNgaiService xacNhanTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
-            IPhanhoiTraodoiService phanhoiTraodoiService = IoC.Resolve<IPhanhoiTraodoiService>();
-            var query = Query.Where(p => p.TrangThai > TrangThaiCongVan.MoiTao);
-
-            query = query.OrderByDescending(p => p.MaYeuCau);
-            
-            var result = new List<BaoCaoChiTietGiamSatTienDo>();
-            foreach (var congvan in query)
-            {
-                var listCanhBao = canhBaoService.FilterByMaYCauAndDViQuanLy(tuNgay, denNgay, MaYeuCau, MaDonViQuanLy);
-                foreach (var canhbao in listCanhBao)
-                {
-                    var listXacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
-
-                    var listPhanHoiTraoDoi = phanhoiTraodoiService.Getbyid(canhbao.ID);
-                    
-                    var detail = new BaoCaoChiTietGiamSatTienDo();
-                    detail.MaYeuCau = congvan.MaYeuCau;
-                    detail.MaDViQuanLy = congvan.MaDViQLy;
-                    detail.TenKhachHang = congvan.TenKhachHang;
-                    detail.DiaChi = congvan.DChiNguoiYeuCau;
-                    detail.SDT = congvan.DienThoai;
-                    detail.TongCongSuatDangKy = 1;
-                    detail.NgayTiepNhan = congvan.NgayYeuCau;
-                    detail.HangMucCanhBao = canhbao.LOAI_CANHBAO_ID;
-                    detail.NguongCanhBao = canhbao.NOIDUNG;
-                    detail.NgayGioGiamSat = canhbao.THOIGIANGUI;
-
-                    foreach (var xacNhanTroNgai in listXacNhanTroNgai)
-                    {
-                        detail.NguoiGiamSat = xacNhanTroNgai.NGUOI_KSAT;
-                        detail.NoiDungKhaoSat = xacNhanTroNgai.PHAN_HOI;
-                    }
-
-                    detail.NoiDungXuLyYKienKH = "";
-                    foreach(var phanHoiTraoDoi in listPhanHoiTraoDoi)
-                    {
-                        detail.PhanHoi = phanHoiTraoDoi.NOIDUNG_PHANHOI;
-                    }
-                    detail.XacMinhNguyenNhanChamGiaiQuyet = "";
-                    detail.NDGhiNhanVaChuyenDonViXuLy = "";
-                    detail.KetQua = "";
-                    result.Add(detail);
-                }
-            }
-            return result;
-        }
+       
 
     }
 

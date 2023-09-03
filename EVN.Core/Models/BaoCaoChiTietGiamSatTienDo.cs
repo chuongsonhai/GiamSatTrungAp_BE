@@ -16,9 +16,9 @@ namespace EVN.Core.Models
         public virtual string SDT { get; set; }
         public virtual int TongCongSuatDangKy { get; set; }
         public virtual DateTime NgayTiepNhan { get; set; }
-        public virtual int HangMucCanhBao { get; set; }
+        public virtual string HangMucCanhBao { get; set; }
         public virtual string NguongCanhBao{ get; set; }
-        public virtual int TrangThai { get; set; }
+        public virtual string TrangThai { get; set; }
         public virtual DateTime NgayGioGiamSat { get; set; }
         public virtual string NguoiGiamSat { get; set; }
         public virtual string NoiDungKhaoSat { get; set; }
@@ -27,5 +27,6 @@ namespace EVN.Core.Models
         public virtual string XacMinhNguyenNhanChamGiaiQuyet { get; set; }
         public virtual string NDGhiNhanVaChuyenDonViXuLy { get; set; }
         public virtual string KetQua{ get; set; }
+        public virtual string GhiChu { get; set; }
     }
 }
