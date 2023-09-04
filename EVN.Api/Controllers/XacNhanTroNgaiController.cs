@@ -184,7 +184,7 @@ namespace EVN.Api.Controllers
 
                 YCauNghiemThu YCNT = NTservice.GetbyMaYCau(model.MA_YCAU);
                 var canhbao = canhBaoService.GetByMaYeuCau(model.MA_YCAU);
-                var congvanyeucau = congVanYeuCauService.GetbyMaYCau(canhbao.MA_YC);
+                
                 var item = new XacNhanTroNgai();
                 string mucdichsd = "";
                 if (YCNT.DienSinhHoat)
@@ -222,8 +222,8 @@ namespace EVN.Api.Controllers
                 item.NOIDUNG = model.NOIDUNG;
                 item.PHAN_HOI = model.PHAN_HOI;
                 item.GHI_CHU = model.GHI_CHU;
-                item.DGCD_TH_CHUONGTRINH = (item.NGAY - canhbao.THOIGIANGUI).Hours;
-                item.DGCD_TH_DANGKY = (item.NGAY - congvanyeucau.NgayYeuCau).Hours;
+                item.DGCD_TH_CHUONGTRINH = (item.NGAY - canhbao.THOIGIANGUI).TotalHours;
+                item.DGCD_TH_DANGKY = (DateTime.Now - canhbao.THOIGIANGUI).TotalHours;
                 item.HANGMUC_KHAOSAT = model.HANGMUC_KHAOSAT;
                 item.TRANGTHAI = 1;
                 service.CreateNew(item);
@@ -272,15 +272,12 @@ namespace EVN.Api.Controllers
                 //sửa nội dung khảo sát
                 var khaosat = service.GetKhaoSat(model.ID);
                 var canhbao = canhBaoService.GetByMaYeuCau(khaosat.MA_YCAU);
-                var congvanyeucau = congVanYeuCauService.GetbyMaYCau(canhbao.MA_YC);
                 var datacu = JsonConvert.SerializeObject(khaosat);
                 khaosat.MA_YCAU = model.MA_YCAU;
                 khaosat.NGAY_TIEPNHAN = model.NGAY_TIEPNHAN;
                 khaosat.NGAY_HOANTHANH = model.NGAY_HOANTHANH;
                 khaosat.TRANGTHAI_GQ = model.TRANGTHAI_GQ;
                 khaosat.TONG_CONGSUAT_CD = model.TONG_CONGSUAT_CD;
-                khaosat.DGCD_TH_CHUONGTRINH = (khaosat.NGAY - canhbao.THOIGIANGUI).Hours;
-                khaosat.DGCD_TH_DANGKY = (khaosat.NGAY - congvanyeucau.NgayYeuCau).Hours;
                 khaosat.DGCD_KH_PHANHOI = model.DGCD_KH_PHANHOI;
                 khaosat.DGYC_DK_DEDANG = model.DGYC_DK_DEDANG;
                 khaosat.DGYC_XACNHAN_NCHONG_KTHOI = model.DGYC_XACNHAN_NCHONG_KTHOI;
@@ -299,6 +296,8 @@ namespace EVN.Api.Controllers
                 khaosat.NOIDUNG = model.NOIDUNG;
                 khaosat.PHAN_HOI = model.PHAN_HOI;
                 khaosat.GHI_CHU = model.GHI_CHU;
+                khaosat.DGCD_TH_CHUONGTRINH = (khaosat.NGAY - canhbao.THOIGIANGUI).Hours;
+                khaosat.DGCD_TH_DANGKY = (DateTime.Now - canhbao.THOIGIANGUI).Hours;
 
                 if (string.IsNullOrEmpty(model.PHAN_HOI)) 
                 {

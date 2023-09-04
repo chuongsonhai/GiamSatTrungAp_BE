@@ -63,10 +63,10 @@ namespace EVN.Api.Model
         public virtual string SO_NGAY_TH_ND { get; set; }
         public virtual int TRANGTHAI_GQ { get; set; }
         public virtual int TONG_CONGSUAT_CD { get; set; }
-        public virtual int DGCD_TH_CHUONGTRINH { get; set; }
-        public virtual int DGCD_TH_DANGKY { get; set; }
+        public virtual double DGCD_TH_CHUONGTRINH { get; set; }
+        public virtual double DGCD_TH_DANGKY { get; set; }
         public virtual int DGCD_KH_PHANHOI { get; set; }
-        public virtual int CHENH_LECH { get; set; }
+        public virtual double CHENH_LECH { get; set; }
         public virtual int DGYC_DK_DEDANG { get; set; }
         public virtual int DGYC_XACNHAN_NCHONG_KTHOI { get; set; }
         public virtual int DGYC_THAIDO_CNGHIEP { get; set; }
