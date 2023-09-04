@@ -126,7 +126,7 @@ namespace EVN.Api.Model.Request
         public string NGUOI_KS { get; set; }
         public string MA_YC { get; set; }
         public int TRANGTHAI { get; set; }
-
+        public int HANGMUC_KHAOSAT { get; set; }
     }
 
     public class XacNhanTroNgakhaosatid

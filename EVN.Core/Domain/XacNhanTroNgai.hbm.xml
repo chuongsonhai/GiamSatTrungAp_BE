@@ -42,6 +42,7 @@
     <property name="PHAN_HOI" column="PHAN_HOI" type="string"/>
     <property name="GHI_CHU" column="GHI_CHU" type="string"/>
     <property name="TRANGTHAI" column="TRANGTHAI" type="int"/>
+	<property name="HANGMUC_KHAOSAT" column="HANGMUC_KHAOSAT" type="int"/>
 	</class>
 </hibernate-mapping>
 

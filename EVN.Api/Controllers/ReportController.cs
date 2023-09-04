@@ -910,7 +910,7 @@ namespace EVN.Api.Controllers
         }
 
         //bieugiamsatbaocaotonghoptiendo
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaotonghoptiendo")]
         public IHttpActionResult ExportBaoCaoTongHopTienDo(BaocaoTHTienDo request)
@@ -1066,10 +1066,10 @@ namespace EVN.Api.Controllers
             try
             {
 
-                DateTime synctime = DateTime.Today;
-                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
+                DateTime synctime = DateTime.Today;               
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
                 
-                var list = service.GetBaoCaoChiTietGiamSatTienDo(request.Filterbcgstd.maDViQly, request.Filterbcgstd.fromdate, request.Filterbcgstd.todate);
+                var list = canhBaoService.GetBaoCaoChiTietGiamSatTienDo(request.Filterbcgstd.maDViQly, request.Filterbcgstd.fromdate, request.Filterbcgstd.todate, request.Filterbcgstd.MaLoaiCanhBao);
 
                 result.data = list;
                 result.success = true;
@@ -1092,9 +1092,9 @@ namespace EVN.Api.Controllers
             try
             {
                 DateTime synctime = DateTime.Today;
-                IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
 
-                var list = service.GetBaoCaoChiTietGiamSatTienDo(request.Filterbcgstd.fromdate, request.Filterbcgstd.todate, request.Filterbcgstd.maDViQly);
+                var list = canhBaoService.GetBaoCaoChiTietGiamSatTienDo(request.Filterbcgstd.maDViQly, request.Filterbcgstd.fromdate, request.Filterbcgstd.todate, request.Filterbcgstd.MaLoaiCanhBao);
 
                 string filetemplate = AppDomain.CurrentDomain.BaseDirectory + "templates/baocaochitietgiamsattiendo.xlsx";
 
@@ -1213,16 +1213,16 @@ namespace EVN.Api.Controllers
 
 
                 //danh sách khảo sát có trạng thái chuyẻn khai thác 
-                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
-                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách tổng số khảo sát có trạng thái = chuyển khai thác
-                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.fromdate);
+                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách tổng số khảo sát có trang thai = trở ngại hoặc hết hạn TTDN 
-                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.fromdate);
+                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 var finalList = new { listSoLuongKhaoSatTrangThaiChuyenKhaiThac = list, listSoLuongKhaoSatTrangThaiTroNgai = list1 , tongSoKhaoSatTrangThaiChuyenKhaiThac = chuyenKhaiThac, tongSoKhaoSatTrangThaiTroNgai = troNgai };
                 result.data = finalList;
@@ -1249,16 +1249,16 @@ namespace EVN.Api.Controllers
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
 
                 //danh sách khảo sát có trạng thái chuyẻn khai thác 
-                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
-                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách tổng số khảo sát có trạng thái = chuyển khai thác
-                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.fromdate);
+                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách tổng số khảo sát có trang thai = trở ngại hoặc hết hạn TTDN 
-                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.fromdate);
+                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
                 string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoTongHopDanhGiaMucDo.xlsx";
 
                 FileInfo fileTemp = new FileInfo(fileTemplate);
@@ -1778,10 +1778,10 @@ namespace EVN.Api.Controllers
             }
         }
 
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("exportchitietmucdohailong")]
-        public IHttpActionResult ExportBaoCaoChiTietMucDoHaiLong(BienBanFilter request)
+        public IHttpActionResult ExportBaoCaoChiTietMucDoHaiLong(BaoCaoChiTietMucDoHaiLongReq request)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -1793,7 +1793,7 @@ namespace EVN.Api.Controllers
 
                 FileInfo fileTemp = new FileInfo(fileTemplate);
 
-                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.maDViQly, request.fromdate, request.todate);
+                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcmdhl.maDViQly, request.Filterbcmdhl.fromdate, request.Filterbcmdhl.todate, request.Filterbcmdhl.HangMucKhaoSat);
 
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
@@ -2116,10 +2116,10 @@ namespace EVN.Api.Controllers
             }
         }
 
-        [JwtAuthentication]
+        //[JwtAuthentication]
         [HttpPost]
         [Route("getchitietmucdohailong")]
-        public IHttpActionResult GetBaoCaoChiTietMucDoHaiLong(BaoCaoChiTietGiamSatTienDoReq request)
+        public IHttpActionResult GetBaoCaoChiTietMucDoHaiLong(BaoCaoChiTietMucDoHaiLongReq request)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -2131,7 +2131,7 @@ namespace EVN.Api.Controllers
 
                 FileInfo fileTemp = new FileInfo(fileTemplate);
 
-                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcgstd.maDViQly, request.Filterbcgstd.fromdate, request.Filterbcgstd.todate);
+                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcmdhl.maDViQly, request.Filterbcmdhl.fromdate, request.Filterbcmdhl.todate, request.Filterbcmdhl.HangMucKhaoSat);
 
                 result.data = list;
                 result.success = true;

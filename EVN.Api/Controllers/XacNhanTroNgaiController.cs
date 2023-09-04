@@ -167,7 +167,7 @@ namespace EVN.Api.Controllers
         //thêm mới khảo sát 
         [HttpPost]
         [Route("add")]
-        public IHttpActionResult Post( )
+        public IHttpActionResult Post()
         {
             ResponseFileResult result = new ResponseFileResult();
             var httpRequest = HttpContext.Current.Request;
@@ -220,6 +220,7 @@ namespace EVN.Api.Controllers
                 item.NOIDUNG = model.NOIDUNG;
                 item.PHAN_HOI = model.PHAN_HOI;
                 item.GHI_CHU = model.GHI_CHU;
+                item.HANGMUC_KHAOSAT = model.HANGMUC_KHAOSAT;
                 item.TRANGTHAI = 1;
                 service.CreateNew(item);
                 service.CommitChanges();

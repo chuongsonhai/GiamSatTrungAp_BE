@@ -41,5 +41,7 @@ namespace EVN.Core.Domain
         public virtual string PHAN_HOI { get; set; }
         public virtual string GHI_CHU { get; set; }
         public virtual int TRANGTHAI { get; set; }
+        public virtual int HANGMUC_KHAOSAT { get; set; }
+
     }
 }
