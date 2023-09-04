@@ -179,8 +179,12 @@ namespace EVN.Api.Controllers
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
                 IUserdataService userdataService = IoC.Resolve<IUserdataService>();
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                ICongVanYeuCauService congVanYeuCauService = IoC.Resolve<ICongVanYeuCauService>();
+
                 YCauNghiemThu YCNT = NTservice.GetbyMaYCau(model.MA_YCAU);
-                
+                var canhbao = canhBaoService.GetByMaYeuCau(model.MA_YCAU);
+                var congvanyeucau = congVanYeuCauService.GetbyMaYCau(canhbao.MA_YC);
                 var item = new XacNhanTroNgai();
                 string mucdichsd = "";
                 if (YCNT.DienSinhHoat)
@@ -198,8 +202,6 @@ namespace EVN.Api.Controllers
                 item.SO_NGAY_TH_ND = model.SO_NGAY_TH_ND;
                 item.TRANGTHAI_GQ = model.TRANGTHAI_GQ;
                 item.TONG_CONGSUAT_CD = model.TONG_CONGSUAT_CD;
-                item.DGCD_TH_CHUONGTRINH = model.DGCD_TH_CHUONGTRINH;
-                item.DGCD_TH_DANGKY = model.DGCD_TH_DANGKY;
                 item.DGCD_KH_PHANHOI = model.DGCD_KH_PHANHOI;
                 item.CHENH_LECH = model.DGCD_TH_DANGKY - model.DGCD_KH_PHANHOI;
                 item.DGYC_DK_DEDANG = model.DGYC_DK_DEDANG;
@@ -220,6 +222,8 @@ namespace EVN.Api.Controllers
                 item.NOIDUNG = model.NOIDUNG;
                 item.PHAN_HOI = model.PHAN_HOI;
                 item.GHI_CHU = model.GHI_CHU;
+                item.DGCD_TH_CHUONGTRINH = (item.NGAY - canhbao.THOIGIANGUI).Hours;
+                item.DGCD_TH_DANGKY = (item.NGAY - congvanyeucau.NgayYeuCau).Hours;
                 item.HANGMUC_KHAOSAT = model.HANGMUC_KHAOSAT;
                 item.TRANGTHAI = 1;
                 service.CreateNew(item);
@@ -261,18 +265,22 @@ namespace EVN.Api.Controllers
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
                 ILogKhaoSatService LogKhaoSatservice = IoC.Resolve<ILogKhaoSatService>();
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                ICongVanYeuCauService congVanYeuCauService = IoC.Resolve<ICongVanYeuCauService>();
                 var item = new XacNhanTroNgai();
 
                 //sửa nội dung khảo sát
                 var khaosat = service.GetKhaoSat(model.ID);
+                var canhbao = canhBaoService.GetByMaYeuCau(khaosat.MA_YCAU);
+                var congvanyeucau = congVanYeuCauService.GetbyMaYCau(canhbao.MA_YC);
                 var datacu = JsonConvert.SerializeObject(khaosat);
                 khaosat.MA_YCAU = model.MA_YCAU;
                 khaosat.NGAY_TIEPNHAN = model.NGAY_TIEPNHAN;
                 khaosat.NGAY_HOANTHANH = model.NGAY_HOANTHANH;
                 khaosat.TRANGTHAI_GQ = model.TRANGTHAI_GQ;
                 khaosat.TONG_CONGSUAT_CD = model.TONG_CONGSUAT_CD;
-                khaosat.DGCD_TH_CHUONGTRINH = model.DGCD_TH_CHUONGTRINH;
-                khaosat.DGCD_TH_DANGKY = model.DGCD_TH_DANGKY;
+                khaosat.DGCD_TH_CHUONGTRINH = (khaosat.NGAY - canhbao.THOIGIANGUI).Hours;
+                khaosat.DGCD_TH_DANGKY = (khaosat.NGAY - congvanyeucau.NgayYeuCau).Hours;
                 khaosat.DGCD_KH_PHANHOI = model.DGCD_KH_PHANHOI;
                 khaosat.DGYC_DK_DEDANG = model.DGYC_DK_DEDANG;
                 khaosat.DGYC_XACNHAN_NCHONG_KTHOI = model.DGYC_XACNHAN_NCHONG_KTHOI;

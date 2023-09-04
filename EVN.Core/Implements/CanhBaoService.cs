@@ -366,6 +366,54 @@ namespace EVN.Core.Implements
                     baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình khảo sát khách hàng, đơn vị hãy xử lý yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                 }
 
+                if(canhbao.LOAI_CANHBAO_ID == 9)
+                {
+                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
+                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                }
+
+                if (canhbao.LOAI_CANHBAO_ID == 10)
+                {
+                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
+                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                }
+
+                if (canhbao.LOAI_CANHBAO_ID == 11)
+                {
+                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc hủy yêu cầu lập thỏa thuận đấu nối";
+                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối hoặc góp ý chỉnh sửa nội dung dự thảo thỏa thuận đấu nối, đơn vị hãy xử lý thông tin khách hàng từ chối ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                }
+
+                if (canhbao.LOAI_CANHBAO_ID == 12)
+                {
+                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
+                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                }
+
+                if (canhbao.LOAI_CANHBAO_ID == 13)
+                {
+                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
+                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                }
+
+                if (canhbao.LOAI_CANHBAO_ID == 14)
+                {
+                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối.";
+                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng đã từ chối hoặc góp ý chỉnh sửa nội dung dự thảo hợp đồng, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                }
+
+                if (canhbao.LOAI_CANHBAO_ID == 15)
+                {
+                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
+                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 48 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điều kiện điểm đấu nối và nghiệm thu 1 khoảng thời gian mà chưa nghiệm thu, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                }
+
+                if (canhbao.LOAI_CANHBAO_ID == 16)
+                {
+                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
+                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Thời gian ký thỏa thuận đấu nối vượt quá 02 năm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                }
+
                 if (canhbao.TRANGTHAI_CANHBAO == 1)
                 {
                     baoCaoChiTietGiamSatTienDo.TrangThai = "Mới tạo danh sách";
