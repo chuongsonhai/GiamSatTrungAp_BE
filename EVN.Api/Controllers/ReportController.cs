@@ -910,7 +910,7 @@ namespace EVN.Api.Controllers
         }
 
         //bieugiamsatbaocaotonghoptiendo
-        [JwtAuthentication]
+        //[JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaotonghoptiendo")]
         public IHttpActionResult ExportBaoCaoTongHopTienDo(BaocaoTHTienDo request)
@@ -1084,7 +1084,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-        [JwtAuthentication]
+        //[JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaochitietgiamsatiendo")]
         public IHttpActionResult exportbaocaochitietgiamsattiendo(BaoCaoChiTietGiamSatTienDoReq request)
@@ -1778,7 +1778,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-        [JwtAuthentication]
+        //[JwtAuthentication]
         [HttpPost]
         [Route("exportchitietmucdohailong")]
         public IHttpActionResult ExportBaoCaoChiTietMucDoHaiLong(BaoCaoChiTietMucDoHaiLongReq request)
