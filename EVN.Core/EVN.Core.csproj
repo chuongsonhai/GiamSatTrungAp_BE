@@ -135,7 +135,6 @@
     <Compile Include="Domain\BienBanKS.cs" />
     <Compile Include="Domain\LogKhaoSat.cs" />
     <Compile Include="Domain\UserNhanCanhBao.cs" />
-    <Compile Include="Domain\XacMinhTroNgaiNew.cs" />
     <Compile Include="Domain\Xacnhantrongaikhaosatfilter.cs" />
     <Compile Include="Domain\GiamSatCongVanCanhbaoid.cs" />
     <Compile Include="Domain\GiamsatCanhbaoCanhbaoid.cs" />
@@ -215,7 +214,6 @@
     <Compile Include="Implements\LogKhaoSatService.cs" />
     <Compile Include="Implements\UserNhanCanhBaoService.cs" />
     <Compile Include="Implements\EmailService.cs" />
-    <Compile Include="Implements\XacMinhTroNgaiNewService.cs" />
     <Compile Include="Implements\ZaloService.cs" />
     <Compile Include="Implements\GiamSatCanhBaoCanhbaoidService.cs" />
     <Compile Include="Implements\GiamSatCongVanCanhbaoidService.cs" />
@@ -247,7 +245,6 @@
     <Compile Include="Implements\TThaiYeuCauService.cs" />
     <Compile Include="IServices\ILogKhaoSatService.cs" />
     <Compile Include="IServices\IUserNhanCanhBaoService.cs" />
-    <Compile Include="IServices\IXacMinhTroNgaiNewService.cs" />
     <Compile Include="IServices\IZaloService.cs" />
     <Compile Include="IServices\IEmailService.cs" />
     <Compile Include="IServices\IGiamSatCongVanCanhbaoidService.cs" />
@@ -656,7 +653,6 @@
     <Content Include="bin\Release\PdfSharp.xml" />
     <Content Include="bin\Release\RestSharp.dll" />
     <Content Include="bin\Release\RestSharp.xml" />
-    <Content Include="Domain\XacMinhTroNgaiNew.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\de\" />

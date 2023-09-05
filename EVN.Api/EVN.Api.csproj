@@ -304,6 +304,7 @@
     <Compile Include="Controllers\CanhBaoController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EmailZaloController.cs" />
+    <Compile Include="Controllers\GiamSatCapDienController.cs" />
     <Compile Include="Controllers\PhanhoiTraodoiController.cs" />
     <Compile Include="Controllers\XacNhanTroNgaiController.cs" />
     <Compile Include="Controllers\DataLoggingController.cs" />
@@ -367,8 +368,12 @@
     <Compile Include="Model\BienBanNTModel.cs" />
     <Compile Include="Model\BienBanTTModel.cs" />
     <Compile Include="Model\BoPhanModel.cs" />
+    <Compile Include="Model\EmailModel.cs" />
     <Compile Include="Model\KetThucCanhbaoModel.cs" />
     <Compile Include="Model\FilterKhaoSatByCanhBaoRequest.cs" />
+    <Compile Include="Model\Request\BaoCaoChiTietGiamSatTienDoReq.cs" />
+    <Compile Include="Model\Request\BaoCaoChiTietMucDoHaiLongReq.cs" />
+    <Compile Include="Model\Request\BaoCaoTHDanhGiaMucDoHaiLong.cs" />
     <Compile Include="Model\Request\CanhBaoFilterRequestid.cs" />
     <Compile Include="Model\Request\CanhBaoFilterRequestdashboardcanhbao.cs" />
     <Compile Include="Model\Request\EmailModelFilter.cs" />
