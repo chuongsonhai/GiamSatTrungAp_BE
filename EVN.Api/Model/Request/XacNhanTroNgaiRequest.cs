@@ -95,7 +95,7 @@ namespace EVN.Api.Model.Request
         public DateTime NGAY_TIEPNHAN { get; set; } = DateTime.Now;
         public DateTime NGAY_HOANTHANH { get; set; } = DateTime.Now;
         public string SO_NGAY_CT { get; set; }
-        public string SO_NGAY_TH_ND { get; set; }
+        public int SO_NGAY_TH_ND { get; set; }
         public int TRANGTHAI_GQ { get; set; }
         public int TONG_CONGSUAT_CD { get; set; }
         public double DGCD_TH_CHUONGTRINH { get; set; }

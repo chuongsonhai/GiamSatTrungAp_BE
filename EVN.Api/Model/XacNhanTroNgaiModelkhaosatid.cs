@@ -60,7 +60,7 @@ namespace EVN.Api.Model
         public virtual DateTime NGAY_TIEPNHAN { get; set; } = DateTime.Now;
         public virtual DateTime NGAY_HOANTHANH { get; set; } = DateTime.Now;
         public virtual string SO_NGAY_CT { get; set; }
-        public virtual string SO_NGAY_TH_ND { get; set; }
+        public virtual int SO_NGAY_TH_ND { get; set; }
         public virtual int TRANGTHAI_GQ { get; set; }
         public virtual int TONG_CONGSUAT_CD { get; set; }
         public virtual double DGCD_TH_CHUONGTRINH { get; set; }

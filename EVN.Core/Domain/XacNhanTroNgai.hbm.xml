@@ -16,7 +16,7 @@
     <property name="NGAY_TIEPNHAN" column="NGAY_TIEPNHAN" type="DateTime"/>
     <property name="NGAY_HOANTHANH" column="NGAY_HOANTHANH" type="DateTime"/>
     <property name="SO_NGAY_CT" column="SO_NGAY_CT" type="string"/>
-    <property name="SO_NGAY_TH_ND" column="SO_NGAY_TH_ND" type="string"/>
+    <property name="SO_NGAY_TH_ND" column="SO_NGAY_TH_ND" type="int"/>
     <property name="TRANGTHAI_GQ" column="TRANGTHAI_GQ" type="int"/>
     <property name="TONG_CONGSUAT_CD" column="TONG_CONGSUAT_CD" type="int"/>
     <property name="DGCD_TH_CHUONGTRINH" column="DGCD_TH_CHUONGTRINH" type="double"/>
