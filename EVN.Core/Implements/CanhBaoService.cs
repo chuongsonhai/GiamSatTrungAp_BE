@@ -98,6 +98,7 @@ namespace EVN.Core.Implements
             var data1 = new List<BaocaoTienDoCanhBaoModel>();
             IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
             var listOrg = organizationService.GetAll();
+
             if(maDViQly == "-1")
                 {
          
