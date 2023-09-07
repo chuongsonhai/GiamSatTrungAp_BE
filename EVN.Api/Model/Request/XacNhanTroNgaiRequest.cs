@@ -96,37 +96,37 @@ namespace EVN.Api.Model.Request
         public DateTime NGAY_HOANTHANH { get; set; } = DateTime.Now;
         public string SO_NGAY_CT { get; set; }
         public string SO_NGAY_TH_ND { get; set; }
-        public int TRANGTHAI_GQ { get; set; }
-        public int TONG_CONGSUAT_CD { get; set; }
-        public double DGCD_TH_CHUONGTRINH { get; set; }
-        public double DGCD_TH_DANGKY { get; set; }
-        public int DGCD_KH_PHANHOI { get; set; }
-        public int DGYC_DK_DEDANG { get; set; }
-        public int DGYC_XACNHAN_NCHONG_KTHOI { get; set; }
-        public int DGYC_THAIDO_CNGHIEP { get; set; }
-        public int DGKS_TDO_KSAT { get; set; }
-        public int DGKS_MINH_BACH { get; set; }
-        public int DGKS_CHU_DAO { get; set; }
-        public int DGNT_THUAN_TIEN { get; set; }
-        public int DGNT_MINH_BACH { get; set; }
-        public int DGNT_CHU_DAO { get; set; }
-        public int KSAT_CHI_PHI { get; set; }
-        public int DGHL_CAPDIEN { get; set; }
-        public int TRANGTHAI_GOI { get; set; }
+        public int? TRANGTHAI_GQ { get; set; }
+        public int? TONG_CONGSUAT_CD { get; set; }
+        public int? DGCD_TH_CHUONGTRINH { get; set; }
+        public int? DGCD_TH_DANGKY { get; set; }
+        public int? DGCD_KH_PHANHOI { get; set; }
+        public int? DGYC_DK_DEDANG { get; set; }
+        public int? DGYC_XACNHAN_NCHONG_KTHOI { get; set; }
+        public int? DGYC_THAIDO_CNGHIEP { get; set; }
+        public int? DGKS_TDO_KSAT { get; set; }
+        public int? DGKS_MINH_BACH { get; set; }
+        public int? DGKS_CHU_DAO { get; set; }
+        public int? DGNT_THUAN_TIEN { get; set; }
+        public int? DGNT_MINH_BACH { get; set; }
+        public int? DGNT_CHU_DAO { get; set; }
+        public int? KSAT_CHI_PHI { get; set; }
+        public int? DGHL_CAPDIEN { get; set; }
+        public int? TRANGTHAI_GOI { get; set; }
         public DateTime NGAY { get; set; } = DateTime.Now;
         public string NGUOI_KSAT { get; set; }
         public string Y_KIEN_KH { get; set; }
         public string NOIDUNG { get; set; }
         public string PHAN_HOI { get; set; }
         public string GHI_CHU { get; set; }
-        public int CANHBAO_ID { get; set; }
+        public int? CANHBAO_ID { get; set; }
         public string PHANHOI_KH { get; set; }
         public string PHANHOI_DV { get; set; }
         public string KETQUA { get; set; }
         public string NGUOI_KS { get; set; }
         public string MA_YC { get; set; }
-        public int TRANGTHAI { get; set; }
-        public int HANGMUC_KHAOSAT { get; set; }
+        public int? TRANGTHAI { get; set; }
+        public int? HANGMUC_KHAOSAT { get; set; }
     }
 
     public class XacNhanTroNgakhaosatid
@@ -151,7 +151,7 @@ namespace EVN.Api.Model.Request
         public string khachHangPhanHoi { get; set; }
         public string nguoiKhaoSat { get; set; }
         public string ketQuaKhaoSat { get; set; }
-        public int trangThaiKhaoSat { get; set; }
+        public int? trangThaiKhaoSat { get; set; }
 
 
     }
