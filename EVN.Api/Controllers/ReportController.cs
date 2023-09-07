@@ -2,6 +2,7 @@
 using EVN.Api.Model;
 using EVN.Api.Model.Request;
 using EVN.Core;
+using EVN.Core.Domain;
 using EVN.Core.IServices;
 using EVN.Core.Models;
 using FX.Core;
@@ -909,7 +910,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-        //bieugiamsatbaocaotonghoptiendo
+        //Báo cáo tổng hợp tiến độ (excel)
         //[JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaotonghoptiendo")]
@@ -1023,8 +1024,8 @@ namespace EVN.Api.Controllers
             }
         }
 
-        //getbaocaotonghoptiendo
-        [JwtAuthentication]
+        //Báo cáo tổng hợp tiến độ (get)
+       // [JwtAuthentication]
         [HttpPost]
         [Route("getbaocaotonghoptiendo")]
         public IHttpActionResult GetBaoCaoTonghopTienDo(BaocaoTHTienDo request)
@@ -1057,7 +1058,9 @@ namespace EVN.Api.Controllers
             }
         }
 
-        [JwtAuthentication]
+
+        //Báo cáo chi tiết tiến độ (get)
+       // [JwtAuthentication]
         [HttpPost]
         [Route("getbaocaochitietgiamsattiendo")]
         public IHttpActionResult GetBaoCaoChiTietGiamSatTienDo(BaoCaoChiTietGiamSatTienDoReq request)
@@ -1084,6 +1087,7 @@ namespace EVN.Api.Controllers
             }
         }
 
+        //Báo cáo chi tiết tiến độ (excel)
         //[JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaochitietgiamsatiendo")]
@@ -1199,6 +1203,8 @@ namespace EVN.Api.Controllers
             }
         }
 
+
+        //Báo cáo tổng hợp đánh giá mức độ (get)
         //[JwtAuthentication]
         [HttpPost]
         [Route("getbaocaothdanhgiamucdo")]
@@ -1238,6 +1244,7 @@ namespace EVN.Api.Controllers
             }
         }
 
+        //Báo cáo tổng hợp đánh giá mức dộ (excel)
         //[JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaothdanhgiamucdo")]
@@ -1778,6 +1785,7 @@ namespace EVN.Api.Controllers
             }
         }
 
+        //Báo cáo chi tiết đánh giá mức độ (excel)
         //[JwtAuthentication]
         [HttpPost]
         [Route("exportchitietmucdohailong")]
@@ -1794,7 +1802,8 @@ namespace EVN.Api.Controllers
                 FileInfo fileTemp = new FileInfo(fileTemplate);
 
                 var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcmdhl.maDViQly, request.Filterbcmdhl.fromdate, request.Filterbcmdhl.todate, request.Filterbcmdhl.HangMucKhaoSat);
-
+                IDvuYcauService servicedvucmis = IoC.Resolve<IDvuYcauService>();
+               
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
@@ -1848,7 +1857,9 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         colval++;
 
+                       // var dvucmis = servicedvucmis.GetByMaYeuCau(item.MA_YCAU);
                         ws.Cells[row, colval].Value = item.SO_NGAY_TH_ND;
+                      //  ws.Cells[row, colval].Value = dvucmis.SNGAY_YCAU;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         colval++;
 
@@ -2116,6 +2127,7 @@ namespace EVN.Api.Controllers
             }
         }
 
+        //Báo cáo chi tiết đánh giá mức độ (get)
         //[JwtAuthentication]
         [HttpPost]
         [Route("getchitietmucdohailong")]
