@@ -1802,7 +1802,6 @@ namespace EVN.Api.Controllers
                 FileInfo fileTemp = new FileInfo(fileTemplate);
 
                 var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcmdhl.maDViQly, request.Filterbcmdhl.fromdate, request.Filterbcmdhl.todate, request.Filterbcmdhl.HangMucKhaoSat);
-                IDvuYcauService servicedvucmis = IoC.Resolve<IDvuYcauService>();
                
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
@@ -1857,9 +1856,7 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         colval++;
 
-                       // var dvucmis = servicedvucmis.GetByMaYeuCau(item.MA_YCAU);
                         ws.Cells[row, colval].Value = item.SO_NGAY_TH_ND;
-                      //  ws.Cells[row, colval].Value = dvucmis.SNGAY_YCAU;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         colval++;
 
