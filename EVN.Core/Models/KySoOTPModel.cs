@@ -115,6 +115,8 @@ namespace EVN.Core
 
         public const string ErrorCodePasswordExpired = "pwd_expired";
         public const string ErrorCodePasswordWeak = "pwd_weak";
+
+        public const string KeyNgayLe = "NGAY_LE";
     }
 
     public class InsertOtpAndTokenCommand

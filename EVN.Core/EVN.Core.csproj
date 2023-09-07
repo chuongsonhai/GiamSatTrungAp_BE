@@ -133,6 +133,7 @@
     <Compile Include="Domain\BienBanKT.cs" />
     <Compile Include="Domain\BienBanDN.cs" />
     <Compile Include="Domain\BienBanKS.cs" />
+    <Compile Include="Domain\NgayNghiLe.cs" />
     <Compile Include="Domain\LogKhaoSat.cs" />
     <Compile Include="Domain\UserNhanCanhBao.cs" />
     <Compile Include="Domain\Xacnhantrongaikhaosatfilter.cs" />
@@ -211,6 +212,7 @@
     <Compile Include="Domain\ThoaThuanDamBao.cs" />
     <Compile Include="Domain\TramBienAp.cs" />
     <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Implements\NgayNghiLeService.cs" />
     <Compile Include="Implements\LogKhaoSatService.cs" />
     <Compile Include="Implements\UserNhanCanhBaoService.cs" />
     <Compile Include="Implements\EmailService.cs" />
@@ -243,6 +245,7 @@
     <Compile Include="Implements\ReportService.cs" />
     <Compile Include="Implements\ThongBaoService.cs" />
     <Compile Include="Implements\TThaiYeuCauService.cs" />
+    <Compile Include="IServices\INgayNghiLeService.cs" />
     <Compile Include="IServices\ILogKhaoSatService.cs" />
     <Compile Include="IServices\IUserNhanCanhBaoService.cs" />
     <Compile Include="IServices\IZaloService.cs" />
@@ -417,6 +420,7 @@
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Utilities\AsposeUtils.cs" />
     <Compile Include="Utilities\CommonUtils.cs" />
+    <Compile Include="Utilities\DateExtensions.cs" />
     <Compile Include="Utilities\FileUtils.cs" />
     <Compile Include="Utilities\GeneratorPassword.cs" />
     <Compile Include="Utilities\ImageHelper.cs" />
@@ -653,6 +657,7 @@
     <Content Include="bin\Release\PdfSharp.xml" />
     <Content Include="bin\Release\RestSharp.dll" />
     <Content Include="bin\Release\RestSharp.xml" />
+    <EmbeddedResource Include="Domain\NgayNghiLe.hbm.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\de\" />

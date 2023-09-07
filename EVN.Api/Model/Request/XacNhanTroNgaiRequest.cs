@@ -113,6 +113,7 @@ namespace EVN.Api.Model.Request
         public int? KSAT_CHI_PHI { get; set; }
         public int? DGHL_CAPDIEN { get; set; }
         public int? TRANGTHAI_GOI { get; set; }
+
         public DateTime NGAY { get; set; } = DateTime.Now;
         public string NGUOI_KSAT { get; set; }
         public string Y_KIEN_KH { get; set; }
