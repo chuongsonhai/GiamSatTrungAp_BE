@@ -222,8 +222,7 @@ namespace EVN.Api.Controllers
                 item.NOIDUNG = model.NOIDUNG;
                 item.PHAN_HOI = model.PHAN_HOI;
                 item.GHI_CHU = model.GHI_CHU;
-                //item.DGCD_TH_CHUONGTRINH = (int)(item.NGAY - canhbao.THOIGIANGUI).TotalHours;
-                //item.DGCD_TH_DANGKY = (int)(DateTime.Now - canhbao.THOIGIANGUI).TotalHours;
+    
                 item.HANGMUC_KHAOSAT = model.HANGMUC_KHAOSAT;
                 item.TRANGTHAI = 1;
                 service.CreateNew(item);
@@ -296,7 +295,7 @@ namespace EVN.Api.Controllers
                 khaosat.NOIDUNG = model.NOIDUNG;
                 khaosat.PHAN_HOI = model.PHAN_HOI;
                 khaosat.GHI_CHU = model.GHI_CHU;
-                //khaosat.DGCD_TH_CHUONGTRINH = (khaosat.NGAY - canhbao.THOIGIANGUI).Hours;
+                khaosat.DGCD_TH_CHUONGTRINH = (khaosat.NGAY - canhbao.THOIGIANGUI).Hours;
                 //khaosat.DGCD_TH_DANGKY = (DateTime.Now - canhbao.THOIGIANGUI).Hours;
 
                 if (string.IsNullOrEmpty(model.PHAN_HOI)) 
@@ -441,6 +440,7 @@ namespace EVN.Api.Controllers
                 ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
                 ICongVanYeuCauService congVanYeuCauService = IoC.Resolve<ICongVanYeuCauService>();
                 IYCauNghiemThuService NTservice = IoC.Resolve<IYCauNghiemThuService>();
+
                 //lọc ra các thông tin liên quan đến khảo sát
                 YCauNghiemThu YCNT = NTservice.GetbyMaYCau(request.IdYeuCau);
                 var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai(request.IdYeuCau);
@@ -455,6 +455,47 @@ namespace EVN.Api.Controllers
                     DanhSachKhaoSat = listKhaoSat,
                     DONVI_DIENLUC = YCNT.MaDViQLy
                 };
+                result.data = obj;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.data = new List<XacNhanTroNgai>();
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        //(GET) /Filterngay
+        [HttpPost]
+        [Route("Filterngay")]
+        public IHttpActionResult Filterngay(FilterKhaoSatByCanhBaoRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                IXacNhanTroNgaiService xacMinhTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
+                ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
+                ICongVanYeuCauService congVanYeuCauService = IoC.Resolve<ICongVanYeuCauService>();
+                IYCauNghiemThuService NTservice = IoC.Resolve<IYCauNghiemThuService>();
+
+                //lọc ra các thông tin liên quan đến khảo sát
+                YCauNghiemThu YCNT = NTservice.GetbyMaYCau(request.IdYeuCau);
+                var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai(request.IdYeuCau);
+                //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
+
+                //lấy mã ycau
+                var khaosat = xacMinhTroNgaiService.FilterByMaYeuCau(YCNT.MaYeuCau);
+
+                //tạo ra response API
+                var obj = new
+                {
+                    DGCD_TH_CHUONGTRINH = (int)(khaosat.NGAY - YCNT.NgayLap).TotalHours,
+                    DGCD_TH_DANGKY = (int)(DateTime.Now - YCNT.NgayLap).TotalHours
+            };
                 result.data = obj;
                 result.success = true;
                 return Ok(result);

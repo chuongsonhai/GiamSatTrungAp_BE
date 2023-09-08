@@ -19,10 +19,10 @@
     <property name="SO_NGAY_TH_ND" column="SO_NGAY_TH_ND" type="int"/>
     <property name="TRANGTHAI_GQ" column="TRANGTHAI_GQ" type="int"/>
     <property name="TONG_CONGSUAT_CD" column="TONG_CONGSUAT_CD" type="int"/>
-    <property name="DGCD_TH_CHUONGTRINH" column="DGCD_TH_CHUONGTRINH" type="double"/>
-    <property name="DGCD_TH_DANGKY" column="DGCD_TH_DANGKY" type="double"/>
+    <property name="DGCD_TH_CHUONGTRINH" column="DGCD_TH_CHUONGTRINH" type="int"/>
+    <property name="DGCD_TH_DANGKY" column="DGCD_TH_DANGKY" type="int"/>
     <property name="DGCD_KH_PHANHOI" column="DGCD_KH_PHANHOI" type="int"/>
-    <property name="CHENH_LECH" column="CHENH_LECH" type="double"/>
+    <property name="CHENH_LECH" column="CHENH_LECH" type="int"/>
     <property name="DGYC_DK_DEDANG" column="DGYC_DK_DEDANG" type="int"/>
     <property name="DGYC_XACNHAN_NCHONG_KTHOI" column="DGYC_XACNHAN_NCHONG_KTHOI" type="int"/>
     <property name="DGYC_THAIDO_CNGHIEP" column="DGYC_THAIDO_CNGHIEP" type="int"/>
