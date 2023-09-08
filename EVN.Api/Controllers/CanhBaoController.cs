@@ -340,7 +340,7 @@ namespace EVN.Api.Controllers
 
         [HttpGet]
         [Route("updateStatus/{ID}/{Status}")]
-        public IHttpActionResult updateStatus([FromUri] int ID, [FromUri] int Status)
+        public IHttpActionResult updateStatus([FromUri] int ID, [FromUri] int Status, [FromUri] int NGUYENHHAN_CANHBAO)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
@@ -353,6 +353,9 @@ namespace EVN.Api.Controllers
                 service.Update(item);
                 service.CommitChanges();
 
+                item.NGUYENHHAN_CANHBAO = NGUYENHHAN_CANHBAO;
+                service.CreateNew(item);
+                service.CommitChanges();
 
                 LogCanhBao logCB = new LogCanhBao();
                 // cần ins cả vào đây
