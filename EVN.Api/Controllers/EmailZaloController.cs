@@ -88,7 +88,7 @@ namespace EVN.Api.Controllers
                         email.TINH_TRANG = 1;
                         email.EMAIL = user.email;
                         service.CreateNew(email);
-                     
+                        item.TRANGTHAI_CANHBAO = 2;
                     }
 
                    // item.TRANGTHAI_CANHBAO = 2;
@@ -99,7 +99,7 @@ namespace EVN.Api.Controllers
                     {
                       //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
                         ZaloClient za = new ZaloClient();
-                       
+               
                         var idzalo = za.get_idzalo(nguoiNhan1.phoneNumber); // Lay thong tin idzalo tu sdt
                         Zalo zalo = new Zalo(); ;
                         zalo.MA_DVIQLY = item.DONVI_DIENLUC;
@@ -110,6 +110,7 @@ namespace EVN.Api.Controllers
                         zalo.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
                         zalo.TINH_TRANG = 1;
                         zalo.ID_ZALO = idzalo;
+
                         if (idzalo == "-1")
                         {
 
@@ -118,9 +119,9 @@ namespace EVN.Api.Controllers
                         {
                             zaloservice.CreateNew(zalo);
                         }
-                       
-                    }
                         item.TRANGTHAI_CANHBAO = 2;
+                    }
+                       
                     CBservice.Update(item);
                 }
 
