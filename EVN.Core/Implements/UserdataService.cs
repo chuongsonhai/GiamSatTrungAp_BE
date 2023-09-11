@@ -21,7 +21,15 @@ namespace EVN.Core.Implements
         }
         public IList<Userdata> GetbyMaDviQly(string MaDviQly)
         {
-            return Query.Where(p => p.maDViQLy == MaDviQly ).ToList();
+          
+            if (MaDviQly != "-1")
+            {
+                return Query.Where(p => p.maDViQLy == MaDviQly).ToList();
+            }
+            else
+            {
+                return Query.ToList();
+            }
         }
 
         public Userdata Getbysdt(string sdt)

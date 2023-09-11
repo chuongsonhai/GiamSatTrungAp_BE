@@ -36,18 +36,11 @@ namespace EVN.Api.Controllers
 
                 IList<CanhbaoModel> data = new List<CanhbaoModel>();
                 var list = service.GetSoLuongGui(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
+
                 result.data = list;
                 result.success = true;
                 return Ok(result);
-                //foreach (var item in list)
-                //{
-                //    data.Add(new CanhbaoModel(item));
 
-                //}
-                //result.total = list.Count();
-                //result.data = data;
-                //result.success = true;
-                //return Ok(result);
             }
             catch (Exception ex)
             {

@@ -73,20 +73,31 @@ namespace EVN.Core.Implements
                 return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
             }
         }
-        public SoLuongGuiModel GetSoLuongGui(string tungay, string denngay)
+        public IList<SoLuongGuiModel> GetSoLuongGui(string tungay, string denngay)
         {
-   
+            ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+            ILoaiCanhBaoService servicelcanhbao = IoC.Resolve<ILoaiCanhBaoService>();
             DateTime tuNgayCast = DateTime.ParseExact(tungay, "d/M/yyyy", CultureInfo.InvariantCulture);
             DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture);
             var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast);
-            var result = new SoLuongGuiModel();
-            //Số lượng
+            var result1 = new List<SoLuongGuiModel>();
 
-            result.maLoaiCanhBao = query.Count(x => x.LOAI_CANHBAO_ID <= 16);
-            result.soLuongDaGui = query.Count(x => x.TRANGTHAI_CANHBAO >= 2 );
-            result.soLuongThanhCong = query.Count(x => x.TRANGTHAI_CANHBAO <= 6);
-            result.soLuongThatBai = query.Count(x => x.TRANGTHAI_CANHBAO > 6);
-            return result;
+            var listCanhBao = query.ToList();
+
+            IList<DanhMucLoaiCanhBao> listcb = servicelcanhbao.GetAll();
+            foreach (var loaicb in listcb)
+            {
+                var result = new SoLuongGuiModel();
+                var queryCB = query.Where(x => x.LOAI_CANHBAO_ID == loaicb.ID).ToList();
+                result.maLoaiCanhBao = loaicb.ID;
+                result.soLuongDaGui = queryCB.Count(x => x.TRANGTHAI_CANHBAO >= 2);
+                result.soLuongThanhCong = queryCB.Count(x => x.TRANGTHAI_CANHBAO <= 6);
+                result.soLuongThatBai = queryCB.Count(x => x.TRANGTHAI_CANHBAO > 6);
+                result1.Add(result);
+            }
+         
+
+            return result1;
         }
 
 

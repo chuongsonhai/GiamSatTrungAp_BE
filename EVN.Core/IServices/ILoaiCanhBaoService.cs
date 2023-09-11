@@ -12,6 +12,7 @@ namespace EVN.Core.IServices
         bool Save(DanhMucLoaiCanhBao loaiCanhBao, out string message);
 
         IList<DanhMucLoaiCanhBao> Filter( int maLoaiCanhBao, int chuky);
+        IList<DanhMucLoaiCanhBao> GetAll(int? idloai);
 
     }
 }

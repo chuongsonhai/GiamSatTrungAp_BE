@@ -23,6 +23,18 @@ namespace EVN.Core.Implements
             return Get(p => p.ID == idloai);
         }
 
+        public IList<DanhMucLoaiCanhBao> GetAll(int? id)
+        {
+            // return Query.Where(p => p.ID == id).ToList();
+            var query = Query;
+            if (id.HasValue)
+            {
+                query = query.Where(x => x.ID == id);
+            }
+            return query.ToList();
+
+        }
+
         public IList<DanhMucLoaiCanhBao> GetbyFilter(string TenLoaiCanhBao, int maLoaiCanhBao, int pageindex, int pagesize, out int total)
         {
             var query = Query.Where(p => p.TENLOAICANHBAO == TenLoaiCanhBao && p.ID == maLoaiCanhBao);
