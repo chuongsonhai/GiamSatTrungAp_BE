@@ -15,11 +15,11 @@ namespace EVN.Core.Models
         public virtual string DiaChi { get; set; }
         public virtual string SDT { get; set; }
         public virtual int? TongCongSuatDangKy { get; set; }
-        public virtual DateTime NgayTiepNhan { get; set; }
+        public virtual string NgayTiepNhan { get; set; }
         public virtual string HangMucCanhBao { get; set; }
         public virtual string NguongCanhBao{ get; set; }
         public virtual string TrangThai { get; set; }
-        public virtual DateTime NgayGioGiamSat { get; set; }
+        public virtual string NgayGioGiamSat { get; set; }
         public virtual string NguoiGiamSat { get; set; }
         public virtual string NoiDungKhaoSat { get; set; }
         public virtual string NoiDungXuLyYKienKH { get; set; }

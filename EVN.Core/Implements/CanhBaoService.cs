@@ -513,7 +513,7 @@ namespace EVN.Core.Implements
 
                 if (xacNhanTroNgai != null)
                 {
-                    baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = xacNhanTroNgai.NGAY;
+                    baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = xacNhanTroNgai.NGAY.ToString();
                     baoCaoChiTietGiamSatTienDo.NguoiGiamSat = xacNhanTroNgai.NGUOI_KSAT;
                     baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
                     baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = "";
@@ -526,7 +526,7 @@ namespace EVN.Core.Implements
                     baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
                     baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
                     baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
-                    baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN;
+                    baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
                 }
                 resultList.Add(baoCaoChiTietGiamSatTienDo);
             }

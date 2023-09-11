@@ -324,7 +324,7 @@ namespace EVN.Core.Implements
             {
                 if (HangMucKhaoSat != -1)
                 {
-                    query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == maDViQly && p.HANGMUC_KHAOSAT == HangMucKhaoSat);
+                    query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.HANGMUC_KHAOSAT == HangMucKhaoSat);
                 }
             }
             return query.ToList();
@@ -354,7 +354,7 @@ namespace EVN.Core.Implements
                 baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
                 baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
                 baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
-                baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN;
+                baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
 
                 var canhbao = canhBaoService.GetByMaYeuCau(baoCaoChiTietGiamSatTienDo.MaYeuCau);
                 if(canhbao.LOAI_CANHBAO_ID == 1)
@@ -434,7 +434,7 @@ namespace EVN.Core.Implements
                     baoCaoChiTietGiamSatTienDo.TrangThai = "Đã đóng cảnh báo";
                 }
 
-                baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = xacNhanTroNgai.NGAY;
+                baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = xacNhanTroNgai.NGAY.ToString();
                 baoCaoChiTietGiamSatTienDo.NguoiGiamSat = xacNhanTroNgai.NGUOI_KSAT;
                 baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
                 baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = "";
