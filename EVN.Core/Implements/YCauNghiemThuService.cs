@@ -541,7 +541,7 @@ namespace EVN.Core.Implements
                 canhbao.THOIGIANGUI = DateTime.Now;
                 canhbao.TRANGTHAI_CANHBAO = 1;
                 canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
-                canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>Khách hàng" + item.TenKhachHang + ", số điện thoại" + item.DienThoai + ", địa chỉ:" + item.DiaChiDungDien + ", mã yêu cầu" + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + "Đơn vị tiếp nhận hồ sơ:" + item.MaDViQLy + "Đã gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>KH " + item.TenKhachHang + ", SĐT " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + "ĐV: " + item.MaDViQLy + " Đã gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();
