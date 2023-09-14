@@ -73,7 +73,9 @@ namespace EVN.Api.Controllers
                 foreach (var item in listCB)
                 {
                     IList<UserNhanCanhBao> listNguoiNhan = userNhanCanhBaoService.GetbyMaDviQly(item.DONVI_DIENLUC);
+                    IList<UserNhanCanhBao> listNguoiNhanx3 = userNhanCanhBaoService.GetbyMaDviQly("X0206");
                     IList<Userdata> listNguoiNhanzalo = userdataService.GetbyMaDviQly(item.DONVI_DIENLUC);
+                    IList<Userdata> listNguoiNhanx3zalo = userdataService.GetbyMaDviQly("X0206");
                     //Email
                     foreach (var nguoiNhan in listNguoiNhan)
                     {
@@ -87,12 +89,15 @@ namespace EVN.Api.Controllers
                         email.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
                         email.TINH_TRANG = 1;
                         email.EMAIL = user.email;
+                        foreach (var nguoiNhan1 in listNguoiNhanx3)
+                        {
+                            var user1 = userdataService.Getbykey(nguoiNhan1.USER_ID);
+                            email.EMAIL = user1.email;
+                        }
+
                         service.CreateNew(email);
-                        item.TRANGTHAI_CANHBAO = 2;
+                        
                     }
-
-                   // item.TRANGTHAI_CANHBAO = 2;
-
 
                     //Zalo
                     foreach (var nguoiNhan1 in listNguoiNhanzalo)
@@ -110,18 +115,23 @@ namespace EVN.Api.Controllers
                         zalo.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
                         zalo.TINH_TRANG = 1;
                         zalo.ID_ZALO = idzalo;
-
-                        if (idzalo == "-1")
+                        foreach (var nguoiNhan2 in listNguoiNhanx3zalo)
                         {
+                            var idzalo1 = za.get_idzalo(nguoiNhan2.phoneNumber);
+                            zalo.ID_ZALO = idzalo1;
+                            if (idzalo == "-1")
+                            {
 
+                            }
+                            else
+                            {
+                                zaloservice.CreateNew(zalo);
+                            }
                         }
-                        else
-                        {
-                            zaloservice.CreateNew(zalo);
-                        }
-                        item.TRANGTHAI_CANHBAO = 2;
+                     
+                    
                     }
-                       
+                    item.TRANGTHAI_CANHBAO = 2;
                     CBservice.Update(item);
                 }
 
