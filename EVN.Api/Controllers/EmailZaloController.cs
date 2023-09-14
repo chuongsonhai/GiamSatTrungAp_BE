@@ -63,7 +63,9 @@ namespace EVN.Api.Controllers
             ResponseFileResult result = new ResponseFileResult();
             ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
             IEmailService service = IoC.Resolve<IEmailService>();
+            IEmailService service1 = IoC.Resolve<IEmailService>();
             IZaloService zaloservice = IoC.Resolve<IZaloService>();
+            IZaloService zaloservice1 = IoC.Resolve<IZaloService>();
             IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
             IUserdataService userdataService = IoC.Resolve<IUserdataService>();
             try
@@ -89,15 +91,29 @@ namespace EVN.Api.Controllers
                         email.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
                         email.TINH_TRANG = 1;
                         email.EMAIL = user.email;
-                        foreach (var nguoiNhan1 in listNguoiNhanx3)
-                        {
-                            var user1 = userdataService.Getbykey(nguoiNhan1.USER_ID);
-                            email.EMAIL = user1.email;
-                        }
-
                         service.CreateNew(email);
-                        
+                       
+
                     }
+              
+
+                //EMAIL_X3
+                    foreach (var nguoiNhan1 in listNguoiNhanx3)
+                    {
+                        Email email1 = new Email();
+                        email1.MA_DVIQLY = item.DONVI_DIENLUC;
+                        email1.MA_DVU = "TA";
+                        email1.NOI_DUNG = item.NOIDUNG;
+                        email1.NGAY_TAO = DateTime.Now;
+                        email1.NGUOI_TAO = "admin";
+                        email1.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                        email1.TINH_TRANG = 1;
+                        var user1 = userdataService.Getbykey(nguoiNhan1.USER_ID);
+                        email1.EMAIL = user1.email;
+                        service1.CreateNew(email1);
+
+                    }
+                
 
                     //Zalo
                     foreach (var nguoiNhan1 in listNguoiNhanzalo)
@@ -115,10 +131,6 @@ namespace EVN.Api.Controllers
                         zalo.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
                         zalo.TINH_TRANG = 1;
                         zalo.ID_ZALO = idzalo;
-                        foreach (var nguoiNhan2 in listNguoiNhanx3zalo)
-                        {
-                            var idzalo1 = za.get_idzalo(nguoiNhan2.phoneNumber);
-                            zalo.ID_ZALO = idzalo1;
                             if (idzalo == "-1")
                             {
 
@@ -127,9 +139,39 @@ namespace EVN.Api.Controllers
                             {
                                 zaloservice.CreateNew(zalo);
                             }
-                        }
+                        
                      
                     
+                    }
+
+                    //Zalo_X3
+                    foreach (var nguoiNhan2 in listNguoiNhanx3zalo)
+                    {
+                        //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
+                        ZaloClient za1 = new ZaloClient();
+
+                        var idzalo1 = za1.get_idzalo(nguoiNhan2.phoneNumber); // Lay thong tin idzalo tu sdt
+                        Zalo zalo1 = new Zalo(); ;
+                        zalo1.MA_DVIQLY = item.DONVI_DIENLUC;
+                        zalo1.MA_DVU = "TA";
+                        zalo1.NOI_DUNG = item.NOIDUNG;
+                        zalo1.NGAY_TAO = DateTime.Now;
+                        zalo1.NGUOI_TAO = "admin";
+                        zalo1.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                        zalo1.TINH_TRANG = 1;
+                        zalo1.ID_ZALO = idzalo1;
+
+                            if (idzalo1 == "-1")
+                            {
+
+                            }
+                            else
+                            {
+                                zaloservice1.CreateNew(zalo1);
+                            }
+                        
+
+
                     }
                     item.TRANGTHAI_CANHBAO = 2;
                     CBservice.Update(item);
