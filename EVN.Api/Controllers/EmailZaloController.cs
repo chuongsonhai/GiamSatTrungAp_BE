@@ -199,7 +199,7 @@ namespace EVN.Api.Controllers
                     }
 
 
-                    //Zalo_X3
+                    //Zalo_b09
                     foreach (var nguoiNhanzalob09 in listNguoiNhanB09zalo)
                     {
                         //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
