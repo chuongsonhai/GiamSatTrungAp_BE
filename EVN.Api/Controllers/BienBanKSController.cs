@@ -197,7 +197,7 @@ namespace EVN.Api.Controllers
                     canhbao.THOIGIANGUI = DateTime.Now;
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = item.MaDViQLy;
-                    canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap +  "ĐV: " + item.MaDViQLy + " Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                    canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap +  " ĐV: " + item.MaDViQLy + " Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                     ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                     string messageCB = "";
                     LogCanhBao logCB = new LogCanhBao();
