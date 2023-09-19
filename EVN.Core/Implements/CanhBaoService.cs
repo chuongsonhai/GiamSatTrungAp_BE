@@ -451,7 +451,7 @@ namespace EVN.Core.Implements
                 if (canhbao.LOAI_CANHBAO_ID == 10)
                 {
                     baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                 }
 
                 if (canhbao.LOAI_CANHBAO_ID == 11)
