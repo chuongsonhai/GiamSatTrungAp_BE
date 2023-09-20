@@ -24,15 +24,23 @@ namespace EVN.Core.Implements
         {
             return Get(p => p.ID == idloai);
         }
-        public async Task<bool> CheckExits(string maYeuCau)
+        public async Task<bool> CheckExits(string maYeuCau, int loaicanhbaoid)
         {
-            var result =  Query.Any(x => x.MA_YC == maYeuCau );
+            var result = Query.Any(x => x.MA_YC == maYeuCau && x.LOAI_CANHBAO_ID == loaicanhbaoid ) ;
             return result;
         }
 
         public CanhBao GetByMaYeuCau(string MaYeuCau)
         {
             return Get(p => p.MA_YC == MaYeuCau);
+        }
+
+        public CanhBao GetByMaYeuCautontai(string MaYeuCau)
+        {
+            var query = Query.Where(x=> x.MA_YC == MaYeuCau);
+            query = query.OrderByDescending(p => p.THOIGIANGUI);
+            var canhbao = query.First();
+            return canhbao;
         }
 
         public CanhBao Getbyid(int id)

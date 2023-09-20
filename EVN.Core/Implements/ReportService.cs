@@ -2121,6 +2121,7 @@ namespace EVN.Core.Implements
             foreach (var item in query)
             {
                 var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();
+                //var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == "GC9074316208").OrderByDescending(p => p.STT).ToList();
                 var ttrinhTN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TN");
                 var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                 var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
@@ -2140,13 +2141,13 @@ namespace EVN.Core.Implements
                 var ttrinhDHD = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "DHD");
                 var ttrinhNT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "HT");
 
-                // Nếu ngày hiện tại là ngay nghỉ thì xử lý đi
-                if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 || DateTime.Now.Hour >= 17)
-                {
+                // Nếu ngày hiện tại là ngay nghỉ
+                //if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 || DateTime.Now.Hour >= 17)
+                //{
 
-                }
-                else
-                {
+                //}
+                //else
+                //{
                     TimeSpan ts = DateTime.Now - item.NgayLap;
                     if (ts.TotalHours >= 2)
                     {
@@ -2163,6 +2164,7 @@ namespace EVN.Core.Implements
                     {
                         if (ttrinhKS != null)
                         {
+                            
                             tsthoathuanDN = DateTime.Now - ttrinhKS.NGAY_BDAU;
                         }
 
@@ -2174,7 +2176,9 @@ namespace EVN.Core.Implements
                             tsthoathuanDN = ttrinhBDN.NGAY_KTHUC.Value - ttrinhKS.NGAY_BDAU;
                         }
                     }
-                    if (tsthoathuanDN.TotalHours > 48)
+                    //if (tsthoathuanDN.TotalHours > 48) //code gốc
+                    //{
+                    if (tsthoathuanDN.TotalHours > 4) //Test UAT
                     {
                         if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
                         {
@@ -2217,8 +2221,11 @@ namespace EVN.Core.Implements
                             }
 
                         }
-                        if (tsKyHopDong.TotalHours > 48)
+
+                        if (tsKyHopDong.TotalHours > 48) // CODE GỐC
                         {
+                            //if (tsKyHopDong.TotalHours > 4) // TEST UAT
+                            //{
                             if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongTC && itemNT.TrangThai <= TrangThaiNghiemThu.NghiemThu)
                             {
                                 item.LoaiCanhBao = 4;
@@ -2244,8 +2251,10 @@ namespace EVN.Core.Implements
                             }
 
                         }
-                        if (tsKyNghiemThu.TotalHours > 48)
+                        if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
                         {
+                            //if (tsKyNghiemThu.TotalHours > 4)// TEST UAT
+                            //{
                             if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
                             {
                                 item.LoaiCanhBao = 5;
@@ -2268,8 +2277,10 @@ namespace EVN.Core.Implements
                             }
 
                         }
-                        if (tsKyNghiemThu.TotalHours > 48)
+                        if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
                         {
+                        //    if (tsKyNghiemThu.TotalHours > 4) //test UAT
+                        //{
                             if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
                             {
                                 item.LoaiCanhBao = 6;
@@ -2285,9 +2296,11 @@ namespace EVN.Core.Implements
                         tsCanhBaoHetHanTTDN = DateTime.Now - ttrinhDDN.NGAY_KTHUC.Value;
                     }
 
-                    if (tsCanhBaoHetHanTTDN.TotalDays > 730)
+                    if (tsCanhBaoHetHanTTDN.TotalDays > 730) // CODE GỐC
                     {
-                        if (item.TrangThai == TrangThaiCongVan.ChuyenTiep)
+                        //if (tsCanhBaoHetHanTTDN.TotalDays > 4) //TEST UAT
+                        //{
+                            if (item.TrangThai == TrangThaiCongVan.ChuyenTiep)
                         {
                             item.LoaiCanhBao = 7;
                             response.Add(item);
@@ -2367,7 +2380,7 @@ namespace EVN.Core.Implements
                         }
                     }
 
-                }
+                //}
             }
             return response;
         }
