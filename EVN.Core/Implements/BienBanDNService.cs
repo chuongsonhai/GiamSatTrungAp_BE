@@ -359,7 +359,7 @@ namespace EVN.Core.Implements
                 canhbao.THOIGIANGUI = DateTime.Now;
                 canhbao.TRANGTHAI_CANHBAO = 1;
                 canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                canhbao.NOIDUNG = "Cảnh báo lần…(" + canhbao.LOAI_SOLANGUI + ") <br>KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + " Đã gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                canhbao.NOIDUNG = "Loại cảnh báo 13 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + " Đã gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                 
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";

@@ -35,9 +35,9 @@ namespace EVN.Core.Implements
             return Get(p => p.MA_YC == MaYeuCau);
         }
 
-        public CanhBao GetByMaYeuCautontai(string MaYeuCau)
+        public CanhBao GetByMaYeuCautontai(string MaYeuCau, int loaicanhbaoid)
         {
-            var query = Query.Where(x=> x.MA_YC == MaYeuCau);
+            var query = Query.Where(x=> x.MA_YC == MaYeuCau && x.LOAI_CANHBAO_ID == loaicanhbaoid);
             query = query.OrderByDescending(p => p.THOIGIANGUI);
             var canhbao = query.First();
             return canhbao;

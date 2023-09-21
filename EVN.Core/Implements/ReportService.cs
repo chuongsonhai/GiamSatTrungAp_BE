@@ -2117,7 +2117,7 @@ namespace EVN.Core.Implements
             var response = new List<CongVanYeuCau>();
 
 
-            var query = Query.Where(p => p.TrangThai == TrangThaiCongVan.MoiTao).ToList();
+            var query = Query.Where(p => p.TrangThai <= TrangThaiCongVan.ChuyenTiep).ToList();
             foreach (var item in query)
             {
                 var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();
@@ -2141,13 +2141,13 @@ namespace EVN.Core.Implements
                 var ttrinhDHD = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "DHD");
                 var ttrinhNT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "HT");
 
-                // Nếu ngày hiện tại là ngay nghỉ
-                //if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 || DateTime.Now.Hour >= 17)
-                //{
+               // Nếu ngày hiện tại là ngay nghỉ
+                if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 || DateTime.Now.Hour >= 17)
+                {
 
-                //}
-                //else
-                //{
+                }
+                else
+                {
                     TimeSpan ts = DateTime.Now - item.NgayLap;
                     if (ts.TotalHours >= 2)
                     {
@@ -2380,7 +2380,7 @@ namespace EVN.Core.Implements
                         }
                     }
 
-                //}
+                }
             }
             return response;
         }
