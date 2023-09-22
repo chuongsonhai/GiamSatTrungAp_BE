@@ -2091,6 +2091,8 @@ namespace EVN.Core.Implements
             }
         }
 
+
+
         public IList<CongVanYeuCau> TinhThoiGian()
         {
             IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
@@ -2141,7 +2143,7 @@ namespace EVN.Core.Implements
                 var ttrinhDHD = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "DHD");
                 var ttrinhNT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "HT");
 
-               // Nếu ngày hiện tại là ngay nghỉ
+                //Nếu ngày hiện tại là ngay nghỉ
                 if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 || DateTime.Now.Hour >= 17)
                 {
 

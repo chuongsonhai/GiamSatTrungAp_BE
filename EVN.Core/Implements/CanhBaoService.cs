@@ -115,16 +115,18 @@ namespace EVN.Core.Implements
             DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
          
             var data1 = new List<BaocaoTienDoCanhBaoModel>();
+            ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
             IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
             var listOrg = organizationService.GetAll();
 
-            if(maDViQly == "-1")
+            IList<CanhBao> listcb = service.GetAll();
+            if (maDViQly == "-1")
                 {
                 if (maloaicanhbao == -1)
                 {
                     foreach (var org in listOrg)
                     {
-                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && "-1" == maDViQly && -1 == maloaicanhbao);
+                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == org.orgCode && -1 == maloaicanhbao);
                         var data = new BaocaoTienDoCanhBaoModel();
                         data.maDvi = org.orgName;
                         data.CB_TONG = query.Count();
@@ -156,7 +158,7 @@ namespace EVN.Core.Implements
                     foreach (var org in listOrg)
                     {
 
-                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && "-1" == maDViQly && p.LOAI_CANHBAO_ID == maloaicanhbao);
+                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == org.orgCode && p.LOAI_CANHBAO_ID == maloaicanhbao);
                         var data = new BaocaoTienDoCanhBaoModel();
                         data.maDvi = org.orgName;
                         data.CB_TONG = query.Count();

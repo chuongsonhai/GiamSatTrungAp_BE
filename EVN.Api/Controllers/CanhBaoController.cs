@@ -34,7 +34,23 @@ namespace EVN.Api.Controllers
 
                 IReportService service = IoC.Resolve<IReportService>();
                 IReportService service1 = IoC.Resolve<IReportService>();
+                IReportService service2 = IoC.Resolve<IReportService>();
+                IReportService service3 = IoC.Resolve<IReportService>();
+                IReportService service4 = IoC.Resolve<IReportService>();
+                IReportService service5 = IoC.Resolve<IReportService>();
+                IReportService service6 = IoC.Resolve<IReportService>();
+                IReportService service7 = IoC.Resolve<IReportService>();
+                IReportService service8 = IoC.Resolve<IReportService>();
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                ICanhBaoService CBservice2 = IoC.Resolve<ICanhBaoService>();
+                ICanhBaoService CBservice3 = IoC.Resolve<ICanhBaoService>();
+                ICanhBaoService CBservice4 = IoC.Resolve<ICanhBaoService>();
+                ICanhBaoService CBservice5 = IoC.Resolve<ICanhBaoService>();
+                ICanhBaoService CBservice6 = IoC.Resolve<ICanhBaoService>();
+                ICanhBaoService CBservice7 = IoC.Resolve<ICanhBaoService>();
+                ICanhBaoService CBservice8 = IoC.Resolve<ICanhBaoService>();
+         
+
                 ICanhBaoService CBservice1 = IoC.Resolve<ICanhBaoService>();
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 var list = service.TinhThoiGian();
@@ -58,7 +74,6 @@ namespace EVN.Api.Controllers
                         {
                             case 1:
                                 canhbao.NOIDUNG = "Loại cảnh báo 1 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + " Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-
                                 break;
                             case 2:
                                 canhbao.NOIDUNG = "Loại cảnh báo 2 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + " Đã quá 02 ngày kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
@@ -105,13 +120,14 @@ namespace EVN.Api.Controllers
                     }
                     service.CommitChanges();
                 }
+
                     var list1 = service1.TinhThoiGian();
                     //var listCanhBao = new List<CanhBao>();
                     foreach (var item1 in list1)
                     {
                         var checkTonTai11 = await CBservice1.CheckExits(item1.MaYeuCau, item1.LoaiCanhBao);
 
-                        if (!checkTonTai11)
+                        if (checkTonTai11)
                         {
 
                             string message1 = "";
@@ -121,43 +137,30 @@ namespace EVN.Api.Controllers
                             {
                                 continue;
                             }
+                        TimeSpan ts = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
+
+                        //cb1
+                        if (ts.TotalHours >= 2)
+                        {
+
                             var canhbao12 = new CanhBao();
 
-                            canhbao12.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
-                            canhbao12.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
-                            canhbao12.MA_YC = item1.MaYeuCau;
-                            canhbao12.THOIGIANGUI = DateTime.Now;
-                            canhbao12.TRANGTHAI_CANHBAO = 1;
-                            canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
+                           
                             switch (item1.LoaiCanhBao)
                             {
                                 case 1:
+                                    canhbao12.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
+                                    canhbao12.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                    canhbao12.MA_YC = item1.MaYeuCau;
+                                    canhbao12.THOIGIANGUI = DateTime.Now;
+                                    canhbao12.TRANGTHAI_CANHBAO = 1;
+                                    canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
                                     canhbao12.NOIDUNG = "Loại cảnh báo 1 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                    break;
-                                case 2:
-                                    canhbao12.NOIDUNG = "Loại cảnh báo 2 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 02 ngày kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                    break;
-                                case 3:
-                                    canhbao12.NOIDUNG = "Loại cảnh báo 3 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu nghiệm thu đóng điện, đơn vị chưa thực hiện tiếp nhận yêu cầu nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                    break;
-                                case 4:
-                                    canhbao12.NOIDUNG = "Loại cảnh báo 4 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu dự thảo và ký hợp đồng mua bán điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                    break;
-                                case 5:
-                                    canhbao12.NOIDUNG = "Loại cảnh báo 5 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 02 ngày kể từ khi tiếp nhận yêu kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                    break;
-                                case 6:
-                                    canhbao12.NOIDUNG = "Loại cảnh báo 6 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 04 ngày kể từ khi tiếp nhận yêu cầu cấp điện mới trung áp, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                    break;
-                                case 7:
-                                    canhbao12.NOIDUNG = "Loại cảnh báo 7 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã gặp trở ngại trong quá trình tiếp nhận yêu cầu của khách, đơn vị hãy xử lý yêu cầu cấp điện/thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                    break;
-                                case 8:
-                                    canhbao12.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã gặp trở ngại trong quá trình khảo sát khách hàng, đơn vị hãy xử lý yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                    CBservice1.CreateCanhBao(canhbao12, out message1);
                                     break;
                             }
 
-                            CBservice.CreateCanhBao(canhbao12, out message1);
+                          
                             if (string.IsNullOrEmpty(message1))
                             {
                                 LogCanhBao logCB = new LogCanhBao();
@@ -174,13 +177,319 @@ namespace EVN.Api.Controllers
                             {
                                 throw new Exception(message1);
                             }
+                            service1.CommitChanges();
                         }
-                        service1.CommitChanges();
-                    }
+                 
 
-                   
-                
-            
+                        //cb2
+                        if (ts.TotalHours > 48)
+                        {
+
+                            var canhbao12 = new CanhBao();
+
+                       
+                            switch (item1.LoaiCanhBao)
+                            {
+
+                                case 2:
+                                    canhbao12.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
+                                    canhbao12.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                    canhbao12.MA_YC = item1.MaYeuCau;
+                                    canhbao12.THOIGIANGUI = DateTime.Now;
+                                    canhbao12.TRANGTHAI_CANHBAO = 1;
+                                    canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
+                                    canhbao12.NOIDUNG = "Loại cảnh báo 2 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 02 ngày kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                    CBservice2.CreateCanhBao(canhbao12, out message1);
+                                    break;
+                                
+                                    if (string.IsNullOrEmpty(message1))
+                                    {
+                                        LogCanhBao logCB = new LogCanhBao();
+                                        // cần ins cả vào đây
+                                        logCB.CANHBAO_ID = item1.ID;
+                                        logCB.DATA_MOI = JsonConvert.SerializeObject(item1);
+                                        logCB.NGUOITHUCHIEN = "HeThong";
+                                        logCB.THOIGIAN = DateTime.Now;
+                                        logCB.TRANGTHAI = 1;
+                                        LogCBservice.CreateNew(logCB);
+                                        LogCBservice.CommitChanges();
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(message1);
+                                    }
+                                    service2.CommitChanges();
+                            }
+
+                          
+                        }
+
+
+                        //cb3
+                        if (ts.TotalHours > 48)
+                        {
+
+                            var canhbao12 = new CanhBao();
+
+                     
+                            switch (item1.LoaiCanhBao)
+                            {
+                                case 3:
+                                    canhbao12.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
+                                    canhbao12.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                    canhbao12.MA_YC = item1.MaYeuCau;
+                                    canhbao12.THOIGIANGUI = DateTime.Now;
+                                    canhbao12.TRANGTHAI_CANHBAO = 1;
+                                    canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
+                                    canhbao12.NOIDUNG = "Loại cảnh báo 3 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu nghiệm thu đóng điện, đơn vị chưa thực hiện tiếp nhận yêu cầu nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                    CBservice3.CreateCanhBao(canhbao12, out message1);
+                                    break;
+                                  
+                                    if (string.IsNullOrEmpty(message1))
+                                    {
+                                        LogCanhBao logCB = new LogCanhBao();
+                                        // cần ins cả vào đây
+                                        logCB.CANHBAO_ID = item1.ID;
+                                        logCB.DATA_MOI = JsonConvert.SerializeObject(item1);
+                                        logCB.NGUOITHUCHIEN = "HeThong";
+                                        logCB.THOIGIAN = DateTime.Now;
+                                        logCB.TRANGTHAI = 1;
+                                        LogCBservice.CreateNew(logCB);
+                                        LogCBservice.CommitChanges();
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(message1);
+                                    }
+                                    service3.CommitChanges();
+                            }
+    
+                        }
+
+
+                        //cb4
+                        if (ts.TotalHours > 48)
+                        {
+
+                            var canhbao12 = new CanhBao();
+
+                        
+                            switch (item1.LoaiCanhBao)
+                            {
+
+                                case 4:
+                                    canhbao12.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
+                                    canhbao12.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                    canhbao12.MA_YC = item1.MaYeuCau;
+                                    canhbao12.THOIGIANGUI = DateTime.Now;
+                                    canhbao12.TRANGTHAI_CANHBAO = 1;
+                                    canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
+                                    canhbao12.NOIDUNG = "Loại cảnh báo 4 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu dự thảo và ký hợp đồng mua bán điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                    CBservice4.CreateCanhBao(canhbao12, out message1);
+                                    break;
+                                  
+                                    if (string.IsNullOrEmpty(message1))
+                                    {
+                                        LogCanhBao logCB = new LogCanhBao();
+                                        // cần ins cả vào đây
+                                        logCB.CANHBAO_ID = item1.ID;
+                                        logCB.DATA_MOI = JsonConvert.SerializeObject(item1);
+                                        logCB.NGUOITHUCHIEN = "HeThong";
+                                        logCB.THOIGIAN = DateTime.Now;
+                                        logCB.TRANGTHAI = 1;
+                                        LogCBservice.CreateNew(logCB);
+                                        LogCBservice.CommitChanges();
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(message1);
+                                    }
+                                    service4.CommitChanges();
+                            }
+
+                           
+                        }
+
+
+                        //cb5
+                        if (ts.TotalHours > 48)
+                        {
+
+                            var canhbao12 = new CanhBao();
+
+                        
+                            switch (item1.LoaiCanhBao)
+                            {
+
+                                case 5:
+                                    canhbao12.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
+                                    canhbao12.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                    canhbao12.MA_YC = item1.MaYeuCau;
+                                    canhbao12.THOIGIANGUI = DateTime.Now;
+                                    canhbao12.TRANGTHAI_CANHBAO = 1;
+                                    canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
+                                    canhbao12.NOIDUNG = "Loại cảnh báo 5 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 02 ngày kể từ khi tiếp nhận yêu kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                    CBservice5.CreateCanhBao(canhbao12, out message1);
+                                    break;
+                                   
+                                    if (string.IsNullOrEmpty(message1))
+                                    {
+                                        LogCanhBao logCB = new LogCanhBao();
+                                        // cần ins cả vào đây
+                                        logCB.CANHBAO_ID = item1.ID;
+                                        logCB.DATA_MOI = JsonConvert.SerializeObject(item1);
+                                        logCB.NGUOITHUCHIEN = "HeThong";
+                                        logCB.THOIGIAN = DateTime.Now;
+                                        logCB.TRANGTHAI = 1;
+                                        LogCBservice.CreateNew(logCB);
+                                        LogCBservice.CommitChanges();
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(message1);
+                                    }
+                                    service5.CommitChanges();
+                            }
+                        }
+
+                        //cb6
+                        if (ts.TotalHours > 48)
+                        {
+
+                            var canhbao12 = new CanhBao();
+
+                    
+                            switch (item1.LoaiCanhBao)
+                            {
+
+                                case 6:
+                                    canhbao12.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
+                                    canhbao12.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                    canhbao12.MA_YC = item1.MaYeuCau;
+                                    canhbao12.THOIGIANGUI = DateTime.Now;
+                                    canhbao12.TRANGTHAI_CANHBAO = 1;
+                                    canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
+                                    canhbao12.NOIDUNG = "Loại cảnh báo 6 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã quá 04 ngày kể từ khi tiếp nhận yêu cầu cấp điện mới trung áp, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                    CBservice6.CreateCanhBao(canhbao12, out message1);
+                                    service6.CommitChanges();
+                                    break;
+                                    
+                                    if (string.IsNullOrEmpty(message1))
+                                    {
+                                        LogCanhBao logCB = new LogCanhBao();
+                                        // cần ins cả vào đây
+                                        logCB.CANHBAO_ID = item1.ID;
+                                        logCB.DATA_MOI = JsonConvert.SerializeObject(item1);
+                                        logCB.NGUOITHUCHIEN = "HeThong";
+                                        logCB.THOIGIAN = DateTime.Now;
+                                        logCB.TRANGTHAI = 1;
+                                        LogCBservice.CreateNew(logCB);
+                                        LogCBservice.CommitChanges();
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(message1);
+                                    }
+                              
+                            }
+
+                          
+                        }
+
+                        //cb7
+                        if (ts.TotalHours > 48)
+                        {
+
+                            var canhbao12 = new CanhBao();
+
+                       
+                            switch (item1.LoaiCanhBao)
+                            {
+
+                                case 7:
+                                    canhbao12.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
+                                    canhbao12.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                    canhbao12.MA_YC = item1.MaYeuCau;
+                                    canhbao12.THOIGIANGUI = DateTime.Now;
+                                    canhbao12.TRANGTHAI_CANHBAO = 1;
+                                    canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
+                                    canhbao12.NOIDUNG = "Loại cảnh báo 7 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã gặp trở ngại trong quá trình tiếp nhận yêu cầu của khách, đơn vị hãy xử lý yêu cầu cấp điện/thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                    break;
+                                    CBservice7.CreateCanhBao(canhbao12, out message1);
+                                    if (string.IsNullOrEmpty(message1))
+                                    {
+                                        LogCanhBao logCB = new LogCanhBao();
+                                        // cần ins cả vào đây
+                                        logCB.CANHBAO_ID = item1.ID;
+                                        logCB.DATA_MOI = JsonConvert.SerializeObject(item1);
+                                        logCB.NGUOITHUCHIEN = "HeThong";
+                                        logCB.THOIGIAN = DateTime.Now;
+                                        logCB.TRANGTHAI = 1;
+                                        LogCBservice.CreateNew(logCB);
+                                        LogCBservice.CommitChanges();
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(message1);
+                                    }
+                                    service7.CommitChanges();
+                            }
+
+                    
+                        }
+
+
+                        //cb8
+                        if (ts.TotalHours > 48)
+                        {
+
+                            var canhbao12 = new CanhBao();
+
+                           
+                            switch (item1.LoaiCanhBao)
+                            {
+                                case 8:
+                                    canhbao12.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
+                                    canhbao12.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                    canhbao12.MA_YC = item1.MaYeuCau;
+                                    canhbao12.THOIGIANGUI = DateTime.Now;
+                                    canhbao12.TRANGTHAI_CANHBAO = 1;
+                                    canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
+                                    canhbao12.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " Đơn vị: " + item1.MaDViQLy + " Đã gặp trở ngại trong quá trình khảo sát khách hàng, đơn vị hãy xử lý yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                    CBservice8.CreateCanhBao(canhbao12, out message1);
+                                    break;
+                                    
+                                    if (string.IsNullOrEmpty(message1))
+                                    {
+                                        LogCanhBao logCB = new LogCanhBao();
+                                        // cần ins cả vào đây
+                                        logCB.CANHBAO_ID = item1.ID;
+                                        logCB.DATA_MOI = JsonConvert.SerializeObject(item1);
+                                        logCB.NGUOITHUCHIEN = "HeThong";
+                                        logCB.THOIGIAN = DateTime.Now;
+                                        logCB.TRANGTHAI = 1;
+                                        LogCBservice.CreateNew(logCB);
+                                        LogCBservice.CommitChanges();
+                                    }
+                                    else
+                                    {
+                                        throw new Exception(message1);
+                                    }
+                                    service8.CommitChanges();
+                            }
+
+                            
+                        }
+
+                        //end
+                       
+                    }
+                  
+                }
+               
+
+
+
                 result.success = true;
                 return Ok(result);
             }
