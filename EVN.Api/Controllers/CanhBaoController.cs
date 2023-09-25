@@ -706,7 +706,7 @@ namespace EVN.Api.Controllers
         }
 
         [HttpGet]
-        [Route("updateStatus/{ID}/{Status}")]
+        [Route("updateStatus/{ID}/{Status}/{NGUYENHHAN_CANHBAO}")]
         public IHttpActionResult updateStatus([FromUri] int ID, [FromUri] int Status, [FromUri] int NGUYENHHAN_CANHBAO)
         {
             ResponseFileResult result = new ResponseFileResult();
@@ -717,14 +717,10 @@ namespace EVN.Api.Controllers
                 var item = new CanhBao();
                 item = service.Getbyid(ID);
                 item.TRANGTHAI_CANHBAO = Status;
+                item.NGUYENHHAN_CANHBAO = NGUYENHHAN_CANHBAO;
                 service.Update(item);
                 service.CommitChanges();
-
-                item.NGUYENHHAN_CANHBAO = NGUYENHHAN_CANHBAO;
-
-                service.CreateNew(item);
-                service.CommitChanges();
-
+                
                 LogCanhBao logCB = new LogCanhBao();
                 // cần ins cả vào đây
                 logCB.CANHBAO_ID = ID;
