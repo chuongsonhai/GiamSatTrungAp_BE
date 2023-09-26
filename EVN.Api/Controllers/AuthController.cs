@@ -8,6 +8,7 @@ using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
@@ -57,7 +58,7 @@ namespace EVN.Api.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
-        public IHttpActionResult Login(LoginModel model)
+        public async Task<IHttpActionResult> Login(LoginModel model)
         {
             ResponseResult result = new ResponseResult();
             try
