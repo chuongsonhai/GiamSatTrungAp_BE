@@ -1219,13 +1219,13 @@ namespace EVN.Api.Controllers
 
 
                 //danh sách khảo sát có trạng thái chuyẻn khai thác 
-                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.madvi, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
-                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.madvi, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách tổng số khảo sát có trạng thái = chuyển khai thác
-                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.madvi, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách tổng số khảo sát có trang thai = trở ngại hoặc hết hạn TTDN 
                 var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
@@ -1256,13 +1256,13 @@ namespace EVN.Api.Controllers
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
 
                 //danh sách khảo sát có trạng thái chuyẻn khai thác 
-                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.madvi, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
-                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.madvi, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách tổng số khảo sát có trạng thái = chuyển khai thác
-                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.madvi, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 //danh sách tổng số khảo sát có trang thai = trở ngại hoặc hết hạn TTDN 
                 var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
