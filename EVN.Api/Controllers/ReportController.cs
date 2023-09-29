@@ -928,10 +928,12 @@ namespace EVN.Api.Controllers
 
                 var list = service.GetBaoCaotonghoptiendo(request.Filterbctd.maDViQly, request.Filterbctd.TenLoaiCanhBao, request.Filterbctd.fromdate, request.Filterbctd.todate);
                 // var list = service.GetSoLuongGui(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
-
+                string title = $"BÁO CÁO TỔNG HỢP CÔNG TÁC GIÁM SÁT TIẾN ĐỘ GIẢI QUYẾT CẤP ĐIỆN TRUNG ÁP TỪ NGÀY {request.Filterbctd.fromdate} ĐẾN NGÀY {request.Filterbctd.todate}";
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
+
+                    ws.Cells[2, 1].Value = title;
 
                     int row = 10;
                     int stt = 0;
@@ -1101,13 +1103,16 @@ namespace EVN.Api.Controllers
                 var list = canhBaoService.GetBaoCaoChiTietGiamSatTienDo(request.Filterbcgstd.maDViQly, request.Filterbcgstd.fromdate, request.Filterbcgstd.todate, request.Filterbcgstd.MaLoaiCanhBao);
 
                 string filetemplate = AppDomain.CurrentDomain.BaseDirectory + "templates/baocaochitietgiamsattiendo.xlsx";
+                //  BÁO CÁO CHI TIẾT CÔNG TÁC GIÁM SÁT TIẾN ĐỘ GIẢI QUYẾT CẤP ĐIỆN TRUNG ÁP TỪ NGÀY … ĐẾN NGÀY  ... NĂM 202…
+                string title = $"BÁO CÁO CHI TIẾT CÔNG TÁC GIÁM SÁT TIẾN ĐỘ GIẢI QUYẾT CẤP ĐIỆN TRUNG ÁP TỪ NGÀY {request.Filterbcgstd.fromdate} ĐẾN NGÀY {request.Filterbcgstd.todate}";
 
+           
                 FileInfo filetemp = new FileInfo(filetemplate);
                 //mau file excel
                 using (ExcelPackage package = new ExcelPackage(filetemp, true))
                 {
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
-
+                    ws.Cells[2, 1].Value = title;
                     int row = 9;
                     int stt = 0;
                     foreach (var item in list)
@@ -1268,12 +1273,15 @@ namespace EVN.Api.Controllers
                 var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
                 string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoTongHopDanhGiaMucDo.xlsx";
 
+                string title = $"BÁO CÁO TỔNG HỢP ĐÁNH GIÁ MỨC ĐỘ HÀI LÒNG TRONG CÔNG TÁC CẤP ĐIỆN TRUNG ÁP TỪ NGÀY {request.FilterDGiaDoHaiLong.fromdate} ĐẾN NGÀY {request.FilterDGiaDoHaiLong.todate}";
+
                 FileInfo fileTemp = new FileInfo(fileTemplate);
                 //mau file excel
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
 
+                    ws.Cells[2, 1].Value = title;
                     int row = 8;
                     int row1 = 9;
                     int stt = 0;
@@ -1802,10 +1810,11 @@ namespace EVN.Api.Controllers
                 FileInfo fileTemp = new FileInfo(fileTemplate);
 
                 var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcmdhl.maDViQly, request.Filterbcmdhl.fromdate, request.Filterbcmdhl.todate, request.Filterbcmdhl.HangMucKhaoSat);
-               
+                string title = $"BÁO CÁO CHI TIẾT ĐÁNH GIÁ MỨC ĐỘ HÀI LÒNG TRONG CÔNG TÁC CẤP ĐIỆN TRUNG ÁP TỪ NGÀY {request.Filterbcmdhl.fromdate} ĐẾN NGÀY {request.Filterbcmdhl.todate}";
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
+                    ws.Cells[2, 1].Value = title;
 
                     int row = 8;
                     int stt = 0;
