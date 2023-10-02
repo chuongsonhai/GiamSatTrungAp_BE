@@ -142,7 +142,7 @@ namespace EVN.Api.Controllers
                             TimeSpan ts = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
 
                             //cb1
-                            if (ts.TotalHours >= 2)
+                            if (ts.TotalHours >= 30)
                             {
 
                                 var canhbao12 = new CanhBao();
@@ -184,7 +184,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb2
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 30)
                             {
 
                                 var canhbao12 = new CanhBao();
@@ -228,7 +228,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb3
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 30)
                             {
 
                                 var canhbao12 = new CanhBao();
@@ -270,7 +270,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb4
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 30)
                             {
 
                                 var canhbao12 = new CanhBao();
@@ -314,7 +314,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb5
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 30)
                             {
 
                                 var canhbao12 = new CanhBao();
@@ -355,7 +355,7 @@ namespace EVN.Api.Controllers
                             }
 
                             //cb6
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 30)
                             {
 
                                 var canhbao12 = new CanhBao();
@@ -399,7 +399,7 @@ namespace EVN.Api.Controllers
                             }
 
                             //cb7
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 30)
                             {
 
                                 var canhbao12 = new CanhBao();
@@ -442,7 +442,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb8
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 30)
                             {
 
                                 var canhbao12 = new CanhBao();

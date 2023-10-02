@@ -2098,6 +2098,9 @@ namespace EVN.Core.Implements
             IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
             IYCauNghiemThuService yCauNghiemThuService = IoC.Resolve<IYCauNghiemThuService>();
             INgayNghiLeService ngayNghiLeService = IoC.Resolve<INgayNghiLeService>();
+            ILoaiCanhBaoService dLoaicanhbao = IoC.Resolve<ILoaiCanhBaoService>();
+
+          
             var now = DateTime.Now;
 
             //setting ngày lễ value phải lưu dưới dạng ngày/tháng. Nhiều giá trị thì phải cách nhau dấu ,
@@ -2150,59 +2153,86 @@ namespace EVN.Core.Implements
                 }
                 else
                 {
+                    var lcanhbao = dLoaicanhbao.Query.Where(p => p.TRANGTHAI == 0);
+                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.ID == 1);
+                    var lcanhbao2 = lcanhbao.FirstOrDefault(p => p.ID == 2);
+                    var lcanhbao3 = lcanhbao.FirstOrDefault(p => p.ID == 3);
+                    var lcanhbao4 = lcanhbao.FirstOrDefault(p => p.ID == 4);
+                    var lcanhbao5 = lcanhbao.FirstOrDefault(p => p.ID == 5);
+                    var lcanhbao6 = lcanhbao.FirstOrDefault(p => p.ID == 6);
+                    var lcanhbao7 = lcanhbao.FirstOrDefault(p => p.ID == 7);
+                    var lcanhbao8 = lcanhbao.FirstOrDefault(p => p.ID == 8);
+
+                    if (lcanhbao1.ID == 1)
+                    {     
                     TimeSpan ts = DateTime.Now - item.NgayLap;
-                    if (ts.TotalHours >= 2)
+                    if (ts.TotalHours >= lcanhbao1.CHUKYCANHBAO)
                     {
-                        if (item.TrangThai == TrangThaiCongVan.MoiTao)
+                        //if (ts.TotalHours >= 2)
+                        //{
+                            if (item.TrangThai == TrangThaiCongVan.MoiTao)
                         {
                             item.LoaiCanhBao = 1;
                             response.Add(item);
                         }
                     }
-
-                    // lập thỏa thuận đấu nối quá 48h
-                    TimeSpan tsthoathuanDN = new TimeSpan();
-                    if (ttrinhBDN == null)
-                    {
-                        if (ttrinhKS != null)
-                        {
-                            
-                            tsthoathuanDN = DateTime.Now - ttrinhKS.NGAY_BDAU;
-                        }
-
-                    }
-                    else
-                    {
-                        if (ttrinhKS != null && ttrinhBDN.NGAY_KTHUC.HasValue)
-                        {
-                            tsthoathuanDN = ttrinhBDN.NGAY_KTHUC.Value - ttrinhKS.NGAY_BDAU;
-                        }
-                    }
-                    if (tsthoathuanDN.TotalHours > 48) //code gốc
-                    {
-                        //if (tsthoathuanDN.TotalHours > 4) //Test UAT
-                        //{
-                        if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
-                        {
-                            item.LoaiCanhBao = 2;
-                            response.Add(item);
-                        }
-
                     }
 
-                    // Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu quá 2h
-                    var itemNT = yCauNghiemThuService.GetbyMaYCau(item.MaYeuCau);
-                    if (itemNT != null)
-                    {
-                        TimeSpan tsNT = DateTime.Now - itemNT.NgayLap;
-                        if (tsNT.TotalHours >= 2)
+                  
+                        // lập thỏa thuận đấu nối quá 48h
+                        TimeSpan tsthoathuanDN = new TimeSpan();
+                        if (ttrinhBDN == null)
                         {
-                            if (itemNT.TrangThai == TrangThaiNghiemThu.MoiTao)
+                            if (ttrinhKS != null)
                             {
-                                item.LoaiCanhBao = 3;
-                                response.Add(item);
+
+                                tsthoathuanDN = DateTime.Now - ttrinhKS.NGAY_BDAU;
+                            }
+
+                        }
+                        else
+                        {
+                            if (ttrinhKS != null && ttrinhBDN.NGAY_KTHUC.HasValue)
+                            {
+                                tsthoathuanDN = ttrinhBDN.NGAY_KTHUC.Value - ttrinhKS.NGAY_BDAU;
                             }
                         }
+                    //if (tsthoathuanDN.TotalHours > 48) //code gốc
+                    //{
+                    if (lcanhbao1.ID == 2)
+                    {
+                        if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO) //Test UAT
+                        {
+                       
+                            if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
+                            {
+                                item.LoaiCanhBao = 2;
+                                response.Add(item);
+                            }
+
+                        }
+                    }
+
+                  
+                        // Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu quá 2h
+                        var itemNT = yCauNghiemThuService.GetbyMaYCau(item.MaYeuCau);
+                    if (itemNT != null)
+                    {
+                        if (lcanhbao1.ID == 3)
+                        {
+                            TimeSpan tsNT = DateTime.Now - itemNT.NgayLap;
+                            //if (tsNT.TotalHours >= 2)
+                            //{
+                            if (tsNT.TotalHours >= lcanhbao3.CHUKYCANHBAO)
+                            {
+                                if (itemNT.TrangThai == TrangThaiNghiemThu.MoiTao)
+                                {
+                                    item.LoaiCanhBao = 3;
+                                    response.Add(item);
+                                }
+                            }
+                        }
+
 
                         //Thời gian dự thảo và ký hợp đồng mua bán điện
                         //dự thảo và ký hợp đồng
@@ -2224,16 +2254,20 @@ namespace EVN.Core.Implements
 
                         }
 
-                        if (tsKyHopDong.TotalHours > 48) // CODE GỐC
+                        if (lcanhbao1.ID == 4)
                         {
-                            //if (tsKyHopDong.TotalHours > 4) // TEST UAT
+                            //if (tsKyHopDong.TotalHours > 48) // CODE GỐC
                             //{
-                            if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongTC && itemNT.TrangThai <= TrangThaiNghiemThu.NghiemThu)
+                            if (tsKyHopDong.TotalHours > lcanhbao4.CHUKYCANHBAO) // TEST UAT
                             {
-                                item.LoaiCanhBao = 4;
-                                response.Add(item);
+                                if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongTC && itemNT.TrangThai <= TrangThaiNghiemThu.NghiemThu)
+                                {
+                                    item.LoaiCanhBao = 4;
+                                    response.Add(item);
+                                }
                             }
                         }
+
                         // Thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu
 
                         TimeSpan tsKyNghiemThu = new TimeSpan();
@@ -2253,17 +2287,23 @@ namespace EVN.Core.Implements
                             }
 
                         }
-                        if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
+
+
+                        //if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
+                        //{
+                        if (lcanhbao1.ID == 5)
                         {
-                            //if (tsKyNghiemThu.TotalHours > 5)// TEST UAT
-                            //{
-                            if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+
+
+                            if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO)// TEST UAT
                             {
-                                item.LoaiCanhBao = 5;
-                                response.Add(item);
+                                if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                {
+                                    item.LoaiCanhBao = 5;
+                                    response.Add(item);
+                                }
                             }
                         }
-
                         //Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp
 
                         TimeSpan tsGSNghiemThu = new TimeSpan();
@@ -2279,14 +2319,18 @@ namespace EVN.Core.Implements
                             }
 
                         }
-                        if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
+
+                        if (lcanhbao1.ID == 6)
                         {
-                            //if (tsKyNghiemThu.TotalHours > 6000) //test UAT
+                            //if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
                             //{
-                            if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                            if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO) //test UAT
                             {
-                                item.LoaiCanhBao = 6;
-                                response.Add(item);
+                                if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                {
+                                    item.LoaiCanhBao = 6;
+                                    response.Add(item);
+                                }
                             }
                         }
                     }
@@ -2298,14 +2342,18 @@ namespace EVN.Core.Implements
                         tsCanhBaoHetHanTTDN = DateTime.Now - ttrinhDDN.NGAY_KTHUC.Value;
                     }
 
-                    if (tsCanhBaoHetHanTTDN.TotalDays > 730) // CODE GỐC
+
+                    if (lcanhbao1.ID == 7)
                     {
-                        //if (tsCanhBaoHetHanTTDN.TotalDays > 12) //TEST UAT
+                        //if (tsCanhBaoHetHanTTDN.TotalDays > 730) // CODE GỐC
                         //{
-                        if (item.TrangThai == TrangThaiCongVan.ChuyenTiep)
+                        if (tsCanhBaoHetHanTTDN.TotalDays > lcanhbao7.CHUKYCANHBAO) //TEST UAT
                         {
-                            item.LoaiCanhBao = 7;
-                            response.Add(item);
+                            if (item.TrangThai == TrangThaiCongVan.ChuyenTiep)
+                            {
+                                item.LoaiCanhBao = 7;
+                                response.Add(item);
+                            }
                         }
                     }
                     // Thời gian thực hiện cấp điện mới trung áp
@@ -2375,10 +2423,16 @@ namespace EVN.Core.Implements
                             }
 
                         }
-                        if (TongSoNgayTCDN > 4)
+
+                        if (lcanhbao1.ID == 8)
                         {
-                            item.LoaiCanhBao = 8;
-                            response.Add(item);
+                            //if (TongSoNgayTCDN > 4)
+                            //{
+                            if (TongSoNgayTCDN > lcanhbao8.CHUKYCANHBAO)
+                                {
+                                item.LoaiCanhBao = 8;
+                                response.Add(item);
+                            }
                         }
                     }
 
