@@ -19,6 +19,7 @@ namespace EVN.Core.IServices
         , int pageindex, int pagesize, out int total);
         SoLuongKhaoSatModel GetSoLuongKhaoSat(string tungay, string denngay );
         IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai(string MA_YCAU);
+        IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai2(string MA_YCAU, int trangthai_khaosat, int mucdo_hailong);
         XacNhanTroNgai FilterByMaYeuCau(string ID);
         XacNhanTroNgai UpdateKhaoid(int id);
 

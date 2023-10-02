@@ -106,11 +106,14 @@ namespace EVN.Core.Implements
 
         public IList<YCauNghiemThu> GetbyFilter(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate, int pageindex, int pagesize, out int total)
         {
+
             var query = Query;
             if (fromdate != DateTime.MinValue)
                 query = query.Where(p => p.NgayYeuCau >= fromdate && p.NgayYeuCau < todate.AddDays(1));
             if (todate != DateTime.MaxValue)
                 query = query.Where(p => p.NgayYeuCau < todate.AddDays(1));
+            if (!string.IsNullOrWhiteSpace(maDViQLy))
+                query = query.Where(p => p.MaDViQLy == maDViQLy);
             if (!string.IsNullOrWhiteSpace(maDViQLy))
                 query = query.Where(p => p.MaDViQLy == maDViQLy);
             if (status > -1)

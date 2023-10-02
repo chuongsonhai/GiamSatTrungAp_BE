@@ -83,12 +83,30 @@ namespace EVN.Core.Implements
             
             return query.ToList();
         }
+        public IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai2(string MA_YCAU, int trangthai_khaosat, int mucdo_hailong)
+        {
+            var query = Query;
+          //  var query = Query.Where(p => p.MA_YCAU == MA_YCAU && p.TRANGTHAI_GOI == trangthai_khaosat && p.DGHL_CAPDIEN == mucdo_hailong).OrderBy(p => p.NGAY);
+            //if (!string.IsNullOrWhiteSpace(MA_YCAU))
+            //    query = query.Where(p => p.MA_YCAU == MA_YCAU).OrderBy(p => p.NGAY);
+            //return query.ToList();
+            //if (!string.IsNullOrWhiteSpace(trangthai_khaosat.ToString()))
+            //    query = query.Where(p => p.TRANGTHAI_GOI == trangthai_khaosat &&  p.MA_YCAU == MA_YCAU && p.DGHL_CAPDIEN == mucdo_hailong).OrderBy(p => p.NGAY);
+
+            //if (!string.IsNullOrWhiteSpace(mucdo_hailong.ToString()))
+                query = query.Where(p => p.TRANGTHAI_GOI == trangthai_khaosat && p.MA_YCAU == MA_YCAU && p.DGHL_CAPDIEN == mucdo_hailong).OrderBy(p => p.NGAY);
+
+            return query.ToList();
+        }
+
 
         public XacNhanTroNgai FilterByMaYeuCau(string ID)
         {
            return Get(p => p.MA_YCAU == ID);
             
         }
+
+ 
         public bool Save(XacNhanTroNgai lkhaosat, out string message)
         {
             message = "";

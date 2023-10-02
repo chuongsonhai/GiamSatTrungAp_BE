@@ -31,10 +31,13 @@ namespace EVN.Api.Model.Request
     {
         public string tuNgay { get; set; }
         public string denNgay { get; set; }
-        public int TrangThaiKhaoSat { get; set; }
+       
         public int IdCanhBao { get; set; }
         public int IdKhaoSat { get; set; }
         public string IdYeuCau { get; set; }
+        public int TrangThaiKhaoSat { get; set; }
+        public int mucdo_hailong { get; set; }
+        
 
         //trang thai canh bao
         //public int trangThai { get; set; }
