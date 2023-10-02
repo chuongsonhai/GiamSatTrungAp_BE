@@ -454,9 +454,8 @@ namespace EVN.Api.Controllers
 
                 //lọc ra các thông tin liên quan đến khảo sát
                 YCauNghiemThu YCNT = NTservice.GetbyMaYCau(request.IdYeuCau);
-                var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai(request.IdYeuCau);
+                var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai2(request.IdYeuCau, request.TrangThaiKhaoSat, request.mucdo_hailong);
                 
-                var trangthai_KhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai2(request.IdYeuCau, request.TrangThaiKhaoSat, request.mucdo_hailong);
                 //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
 
                 //tạo ra response API
