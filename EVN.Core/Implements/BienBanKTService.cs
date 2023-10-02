@@ -242,7 +242,7 @@ namespace EVN.Core.Implements
                     canhbao.THOIGIANGUI = DateTime.Now;
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                    canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + hoSo.KHXacNhan + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + " Khách hàng đã từ chối hoặc góp ý chỉnh sửa nội dung dự thảo hợp đồng, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                    canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + hoSo.KHXacNhan + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + " Khách hàng từ chối ký HĐMBĐ với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
                     ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                     string message = "";
                     LogCanhBao logCB = new LogCanhBao();

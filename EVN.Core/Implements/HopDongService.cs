@@ -44,10 +44,10 @@ namespace EVN.Core.Implements
 
                 DvTienTrinh tientrinh = new DvTienTrinh();
                 tientrinh.MA_BPHAN_GIAO = item.MaDViQLy;
-                //tientrinh.MA_NVIEN_GIAO = userdata.maNVien;
+                tientrinh.MA_NVIEN_GIAO = userdata.maNVien;
 
                 tientrinh.MA_BPHAN_NHAN = item.MaDViQLy;
-                //tientrinh.MA_NVIEN_NHAN = userdata.maNVien;
+                tientrinh.MA_NVIEN_NHAN = userdata.maNVien;
 
                 if (ttrinhtruoc != null)
                 {
@@ -77,8 +77,8 @@ namespace EVN.Core.Implements
                 tientrinh.NGAY_TAO = DateTime.Now;
                 tientrinh.NGAY_SUA = DateTime.Now;
 
-                //tientrinh.NGUOI_TAO = userdata.maNVien;
-                //tientrinh.NGUOI_SUA = userdata.maNVien;
+                tientrinh.NGUOI_TAO = userdata.maNVien;
+                tientrinh.NGUOI_SUA = userdata.maNVien;
                 tientrinhsrv.CreateNew(tientrinh);
 
                 congvan.TrangThai = TrangThaiNghiemThu.Huy;
@@ -94,7 +94,7 @@ namespace EVN.Core.Implements
                 canhbao.THOIGIANGUI = DateTime.Now;
                 canhbao.TRANGTHAI_CANHBAO = 1;
                 canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
-                canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " +item.MaDViQLy + " Thời gian ký thỏa thuận đấu nối vượt quá 02 năm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " +item.MaDViQLy + " Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, khách hàng chưa ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định";
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();
