@@ -197,7 +197,7 @@ namespace EVN.Api.Controllers
                     canhbao.THOIGIANGUI = DateTime.Now;
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = item.MaDViQLy;
-                    canhbao.NOIDUNG = "Loại cảnh báo 10 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap +  " ĐV: " + item.MaDViQLy + " Yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận với lý do " + trongai.TEN_TNGAI + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                    canhbao.NOIDUNG = "Loại cảnh báo 10 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap +  " ĐV: " + item.MaDViQLy + "<br> Yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận với lý do " + trongai.TEN_TNGAI + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
                     ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                     string messageCB = "";
                     LogCanhBao logCB = new LogCanhBao();
