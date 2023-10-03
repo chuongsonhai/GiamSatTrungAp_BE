@@ -42,8 +42,8 @@ namespace EVN.Core.Utilities
                 // Do something with propValue
             }
 
-
-            string url = "http://10.9.125.71:6973/otp";
+            //string url = "http://10.9.125.71:6973/otp";
+            string url = "https://10.9.125.119:6821/otp";
             var client = new RestClient($"{url}/PushQueueService/vn/com/evn/otp/generate.wadl?" + stringInput);
             var restRequest = new RestRequest();
             restRequest.Method = Method.POST;
