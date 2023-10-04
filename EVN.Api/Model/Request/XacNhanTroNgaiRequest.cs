@@ -82,6 +82,7 @@ namespace EVN.Api.Model.Request
             PHAN_HOI = lKhaoSat.PHAN_HOI;
             GHI_CHU = lKhaoSat.GHI_CHU;
             TRANGTHAI = lKhaoSat.TRANGTHAI;
+            HANGMUC_KHAOSAT = lKhaoSat.HANGMUC_KHAOSAT;
 
         }
         public int ID { get; set; }
