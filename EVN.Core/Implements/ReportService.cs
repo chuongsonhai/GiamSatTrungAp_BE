@@ -2155,7 +2155,7 @@ namespace EVN.Core.Implements
 
               
                         TimeSpan ts = DateTime.Now - item.NgayLap;
-                        if (ts.TotalHours >= 30)
+                        if (ts.TotalHours >= 1)
                         {
                             //if (ts.TotalHours >= 2)
                             //{
@@ -2189,7 +2189,7 @@ namespace EVN.Core.Implements
                     //if (tsthoathuanDN.TotalHours > 48) //code gốc
                     //{
               
-                        if (tsthoathuanDN.TotalHours > 30) //Test UAT
+                        if (tsthoathuanDN.TotalHours >= 1) //Test UAT
                         {
 
                             if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
@@ -2210,7 +2210,7 @@ namespace EVN.Core.Implements
                             TimeSpan tsNT = DateTime.Now - itemNT.NgayLap;
                             //if (tsNT.TotalHours >= 2)
                             //{
-                            if (tsNT.TotalHours >= 30)
+                            if (tsNT.TotalHours >= 1)
                             {
                                 if (itemNT.TrangThai == TrangThaiNghiemThu.MoiTao)
                                 {
@@ -2244,7 +2244,7 @@ namespace EVN.Core.Implements
               
                             //if (tsKyHopDong.TotalHours > 48) // CODE GỐC
                             //{
-                            if (tsKyHopDong.TotalHours > 30) // TEST UAT
+                            if (tsKyHopDong.TotalHours >= 1) // TEST UAT
                             {
                                 if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongTC && itemNT.TrangThai <= TrangThaiNghiemThu.NghiemThu)
                                 {
@@ -2280,7 +2280,7 @@ namespace EVN.Core.Implements
                
 
 
-                            if (tsKyNghiemThu.TotalHours > 30)// TEST UAT
+                            if (tsKyNghiemThu.TotalHours >= 1)// TEST UAT
                             {
                                 if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
                                 {
@@ -2308,7 +2308,7 @@ namespace EVN.Core.Implements
                  
                             //if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
                             //{
-                            if (tsKyNghiemThu.TotalHours > 30) //test UAT
+                            if (tsKyNghiemThu.TotalHours >= 1) //test UAT
                             {
                                 if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
                                 {
@@ -2330,7 +2330,7 @@ namespace EVN.Core.Implements
                
                         //if (tsCanhBaoHetHanTTDN.TotalDays > 730) // CODE GỐC
                         //{
-                        if (tsCanhBaoHetHanTTDN.TotalDays > 30) //TEST UAT
+                        if (tsCanhBaoHetHanTTDN.TotalDays >= 1) //TEST UAT
                         {
                             if (item.TrangThai == TrangThaiCongVan.ChuyenTiep)
                             {
@@ -2410,7 +2410,7 @@ namespace EVN.Core.Implements
                    
                             //if (TongSoNgayTCDN > 4)
                             //{
-                            if (TongSoNgayTCDN > 30)
+                            if (TongSoNgayTCDN >= 1)
                             {
                                 item.LoaiCanhBao = 8;
                                 response.Add(item);
