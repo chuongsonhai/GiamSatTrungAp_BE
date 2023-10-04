@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -21,6 +22,11 @@ namespace EVN.Core.Utilities
         public static ApiResult LayMaOTP(CreateAndSendOtpCmisCommand request, CancellationToken cancellationToken)
         {
 
+            ServicePointManager.ServerCertificateValidationCallback +=
+        (sender, certificate, chain, sslPolicyErrors) =>
+        {
+            return true;
+        };
             string stringInput = "";
             //request.userId = "0917709015"; //0912312530
             //request.content =
@@ -30,6 +36,7 @@ namespace EVN.Core.Utilities
                 request.content =
                     "Ma OTP cua quy khach hang la %23OTP. Ma OTP nay se het hieu luc sau 03 phut.Hotline:19001288";
             }
+        
             Type myType = request.GetType();
             IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
             int i = 1;
@@ -64,7 +71,11 @@ namespace EVN.Core.Utilities
 
         public static ApiResult XacNhanOTP(VerifyOtpCmisCommand request, CancellationToken cancellationToken)
         {
-
+            ServicePointManager.ServerCertificateValidationCallback +=
+                (sender, certificate, chain, sslPolicyErrors) =>
+                {
+                return true;
+                };
             string stringInput = "";
             Type myType = request.GetType();
             IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
@@ -77,7 +88,8 @@ namespace EVN.Core.Utilities
                 i++;
                 // Do something with propValue
             }
-            string url = "http://10.9.125.71:6973/otp";
+            // string url = "http://10.9.125.71:6973/otp";
+            string url = "https://10.9.125.119:6821/otp";
             var client = new RestClient($"{url}/PushQueueService/vn/com/evn/otp/verify.wadl?" + stringInput);
             log.ErrorFormat("XacNhanOTP: {0}", JsonConvert.SerializeObject(client));
             var restRequest = new RestRequest();
@@ -116,7 +128,7 @@ namespace EVN.Core.Utilities
                 IsError = true,
                 Data = null,
             };
-            string url = "http://10.9.125.104:6064/";
+             string url = "http://10.9.125.104:6064/";
             var client = new RestClient($"{url}/KySo_OTP");
             var restRequest = new RestRequest();
             restRequest.Method = Method.POST;
