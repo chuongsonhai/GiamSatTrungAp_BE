@@ -514,7 +514,7 @@ namespace EVN.Core.Implements
                 canhbao.THOIGIANGUI = DateTime.Now;
                 canhbao.TRANGTHAI_CANHBAO = 1;
                 canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                canhbao.NOIDUNG = "Loại cảnh báo 15 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + tbao.KhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayLap + " ĐV: " + yeucau.MaDViQLy + " Khách hàng từ chối ký HĐMBĐ với lý do Yêu cầu thực hiện treo tháo: " + yeucau.MaYeuCau + ", ngày hẹn: "+ tbao.NgayHen.ToString("dd/MM/yyyy") + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                canhbao.NOIDUNG = "Loại cảnh báo 15 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + tbao.KhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayLap + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do Yêu cầu thực hiện treo tháo: " + yeucau.MaYeuCau + ", ngày hẹn: "+ tbao.NgayHen.ToString("dd/MM/yyyy") + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();

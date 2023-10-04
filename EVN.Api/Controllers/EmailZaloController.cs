@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace EVN.Api.Controllers
@@ -58,7 +59,7 @@ namespace EVN.Api.Controllers
 
         [HttpGet]
         [Route("sendnotification")]
-        public IHttpActionResult Send()
+        public async Task<IHttpActionResult> Send()
         {
             ResponseFileResult result = new ResponseFileResult();
             ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();

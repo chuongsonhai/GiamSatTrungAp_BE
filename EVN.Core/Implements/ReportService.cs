@@ -2091,7 +2091,337 @@ namespace EVN.Core.Implements
             }
         }
 
+        public IList<CongVanYeuCau> TinhThoiGian2()
+        {
+            IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
+            IYCauNghiemThuService yCauNghiemThuService = IoC.Resolve<IYCauNghiemThuService>();
+            INgayNghiLeService ngayNghiLeService = IoC.Resolve<INgayNghiLeService>();
+            ILoaiCanhBaoService dLoaicanhbao = IoC.Resolve<ILoaiCanhBaoService>();
 
+
+            var now = DateTime.Now;
+
+            //setting ngày lễ value phải lưu dưới dạng ngày/tháng. Nhiều giá trị thì phải cách nhau dấu ,
+            var data = ngayNghiLeService.GetNgayLe(Constants.KeyNgayLe);
+            var ngayle = data.VALUE.Split(',').ToList(); //lấy được list ngày dạng day/month
+            var ngayNghi = ConvertDate(ngayle);
+
+            //ngày đầu năm
+            var ngayDauNam = new DateTime(now.Year, 1, 1);
+            //ngày cuối năm
+            var ngayCuoiNam = new DateTime(now.Year, 12, 31);
+            //lấy ngày
+            var dayWeekends = DateExtensions.GetWeekendDates(ngayDauNam, ngayCuoiNam);
+            //danh sách ngày nghỉ
+
+            ngayNghi.AddRange(dayWeekends);
+
+
+            var response = new List<CongVanYeuCau>();
+
+
+            var query = Query.Where(p => p.TrangThai >= TrangThaiCongVan.MoiTao).ToList();
+            foreach (var item in query)
+            {
+                var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();
+                //var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == "GC9074316208").OrderByDescending(p => p.STT).ToList();
+                var ttrinhTN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TN");
+                var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
+                var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
+                var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
+                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                if (ttrinhBDN == null)
+                {
+                    ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
+                }
+                var ttrinhDDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "DDN");
+                var ttrinhTVB = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TVB");
+                var ttrinhKTR = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KTR");
+                var ttrinhMNT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "MNT");
+                var ttrinhPC = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PC");
+                var ttrinhTC = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TC");
+                var ttrinhBTT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BTT");
+                var ttrinhDHD = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "DHD");
+                var ttrinhNT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "HT");
+
+                //Nếu ngày hiện tại là ngay nghỉ
+                if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 || DateTime.Now.Hour >= 17)
+                {
+
+                }
+                else
+                {
+
+
+              
+                        TimeSpan ts = DateTime.Now - item.NgayLap;
+                        if (ts.TotalHours >= 30)
+                        {
+                            //if (ts.TotalHours >= 2)
+                            //{
+                            if (item.TrangThai == TrangThaiCongVan.MoiTao)
+                            {
+                                item.LoaiCanhBao = 1;
+                                response.Add(item);
+                            }
+                        }
+                    
+
+
+                    // lập thỏa thuận đấu nối quá 48h
+                    TimeSpan tsthoathuanDN = new TimeSpan();
+                    if (ttrinhBDN == null)
+                    {
+                        if (ttrinhKS != null)
+                        {
+
+                            tsthoathuanDN = DateTime.Now - ttrinhKS.NGAY_BDAU;
+                        }
+
+                    }
+                    else
+                    {
+                        if (ttrinhKS != null && ttrinhBDN.NGAY_KTHUC.HasValue)
+                        {
+                            tsthoathuanDN = ttrinhBDN.NGAY_KTHUC.Value - ttrinhKS.NGAY_BDAU;
+                        }
+                    }
+                    //if (tsthoathuanDN.TotalHours > 48) //code gốc
+                    //{
+              
+                        if (tsthoathuanDN.TotalHours > 30) //Test UAT
+                        {
+
+                            if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
+                            {
+                                item.LoaiCanhBao = 2;
+                                response.Add(item);
+                            }
+
+                        }
+                    
+
+
+                    // Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu quá 2h
+                    var itemNT = yCauNghiemThuService.GetbyMaYCau(item.MaYeuCau);
+                    if (itemNT != null)
+                    {
+                      
+                            TimeSpan tsNT = DateTime.Now - itemNT.NgayLap;
+                            //if (tsNT.TotalHours >= 2)
+                            //{
+                            if (tsNT.TotalHours >= 30)
+                            {
+                                if (itemNT.TrangThai == TrangThaiNghiemThu.MoiTao)
+                                {
+                                    item.LoaiCanhBao = 3;
+                                    response.Add(item);
+                                }
+                            }
+                        
+
+
+                        //Thời gian dự thảo và ký hợp đồng mua bán điện
+                        //dự thảo và ký hợp đồng
+                        TimeSpan tsKyHopDong = new TimeSpan();
+                        if (ttrinhDHD == null)
+                        {
+                            if (ttrinhPC != null)
+                            {
+                                tsKyHopDong = DateTime.Now - ttrinhPC.NGAY_BDAU;
+                            }
+
+                        }
+                        else
+                        {
+                            if (ttrinhPC != null && ttrinhDHD.NGAY_KTHUC.HasValue)
+                            {
+                                tsKyHopDong = ttrinhDHD.NGAY_KTHUC.Value - ttrinhPC.NGAY_BDAU;
+                            }
+
+                        }
+
+              
+                            //if (tsKyHopDong.TotalHours > 48) // CODE GỐC
+                            //{
+                            if (tsKyHopDong.TotalHours > 30) // TEST UAT
+                            {
+                                if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongTC && itemNT.TrangThai <= TrangThaiNghiemThu.NghiemThu)
+                                {
+                                    item.LoaiCanhBao = 4;
+                                    response.Add(item);
+                                }
+                            }
+                        
+
+                        // Thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu
+
+                        TimeSpan tsKyNghiemThu = new TimeSpan();
+                        if (ttrinhNT == null)
+                        {
+                            if (ttrinhTVB != null)
+                            {
+                                tsKyNghiemThu = DateTime.Now - ttrinhTVB.NGAY_BDAU;
+                            }
+
+                        }
+                        else
+                        {
+                            if (ttrinhTVB != null && ttrinhNT.NGAY_KTHUC.HasValue)
+                            {
+                                tsKyNghiemThu = ttrinhNT.NGAY_KTHUC.Value - ttrinhTVB.NGAY_BDAU;
+                            }
+
+                        }
+
+
+                        //if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
+                        //{
+               
+
+
+                            if (tsKyNghiemThu.TotalHours > 30)// TEST UAT
+                            {
+                                if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                {
+                                    item.LoaiCanhBao = 5;
+                                    response.Add(item);
+                                }
+                            }
+                        
+                        //Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp
+
+                        TimeSpan tsGSNghiemThu = new TimeSpan();
+                        if (ttrinhNT == null)
+                        {
+                            tsGSNghiemThu = DateTime.Now - itemNT.NgayLap;
+                        }
+                        else
+                        {
+                            if (ttrinhNT.NGAY_KTHUC.HasValue)
+                            {
+                                tsGSNghiemThu = ttrinhNT.NGAY_KTHUC.Value - itemNT.NgayLap;
+                            }
+
+                        }
+
+                 
+                            //if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
+                            //{
+                            if (tsKyNghiemThu.TotalHours > 30) //test UAT
+                            {
+                                if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                {
+                                    item.LoaiCanhBao = 6;
+                                    response.Add(item);
+                                }
+                            }
+                        
+                    }
+                    //thời gian cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối
+
+                    TimeSpan tsCanhBaoHetHanTTDN = new TimeSpan();
+                    if (ttrinhDDN != null && ttrinhDDN.NGAY_KTHUC.HasValue)
+                    {
+                        tsCanhBaoHetHanTTDN = DateTime.Now - ttrinhDDN.NGAY_KTHUC.Value;
+                    }
+
+
+               
+                        //if (tsCanhBaoHetHanTTDN.TotalDays > 730) // CODE GỐC
+                        //{
+                        if (tsCanhBaoHetHanTTDN.TotalDays > 30) //TEST UAT
+                        {
+                            if (item.TrangThai == TrangThaiCongVan.ChuyenTiep)
+                            {
+                                item.LoaiCanhBao = 7;
+                                response.Add(item);
+                            }
+                        
+                    }
+                    // Thời gian thực hiện cấp điện mới trung áp
+
+                    var TongSoNgayTCDN = 0;
+                    if (ttrinhTN != null && ttrinhTN.NGAY_KTHUC.HasValue)
+                    {
+                        int songayTN = CommonUtils.TotalDate(ttrinhTN.NGAY_BDAU.Date, ttrinhTN.NGAY_KTHUC.Value.Date);
+
+
+                        TongSoNgayTCDN += songayTN;
+
+                        log.Error($"songayTN: {songayTN}");
+                        //Thời gian khảo sát
+                        if (ttrinhKS != null && ttrinhKS.NGAY_KTHUC.HasValue)
+                        {
+                            if (ttrinhCH5 != null && ttrinhCH5.NGAY_KTHUC.HasValue)
+                            {
+                                int songayKS = CommonUtils.TotalDate(ttrinhKS.NGAY_BDAU.Date, ttrinhCH5.NGAY_BDAU.Date);
+
+                                if (ttrinhKS.NGAY_BDAU.Date == ttrinhTN.NGAY_KTHUC.Value.Date)
+                                    songayKS -= 1;
+
+
+                                TongSoNgayTCDN += songayKS;
+                            }
+                        }
+
+                        if (ttrinhDDN != null && ttrinhDDN.NGAY_KTHUC.HasValue)
+                        {
+                            int songayTTDN = CommonUtils.TotalDate(ttrinhDDN.NGAY_BDAU.Date, ttrinhDDN.NGAY_KTHUC.Value.Date);
+                            if (ttrinhCH5 != null && ttrinhDDN.NGAY_BDAU.Date == ttrinhCH5.NGAY_KTHUC.Value.Date)
+                                songayTTDN -= 1;
+
+                            TongSoNgayTCDN += songayTTDN;
+                        }
+
+                        if (itemNT != null)
+                        {
+                            //Thời gian khách hàng thi công
+                            if (ttrinhPC != null && ttrinhPC.NGAY_KTHUC.HasValue)
+                            {
+                                if (ttrinhBTT != null && ttrinhBTT.NGAY_KTHUC.HasValue)
+                                {
+                                    int songayPC = CommonUtils.TotalDate(ttrinhPC.NGAY_BDAU.Date, ttrinhBTT.NGAY_BDAU.Date);
+
+                                    TongSoNgayTCDN += songayPC;
+                                    log.Error($"songayPC: {songayPC}");
+                                }
+                            }
+
+                            //Thời gian ký hợp đồng, nghiệm thu
+                            if (ttrinhDHD != null && ttrinhDHD.NGAY_KTHUC.HasValue)
+                            {
+                                if (ttrinhNT != null && ttrinhNT.NGAY_KTHUC.HasValue)
+                                {
+                                    DateTime fromTime = ttrinhDHD.NGAY_BDAU.Date;
+                                    if (ttrinhBTT != null && fromTime < ttrinhBTT.NGAY_KTHUC.Value.Date)
+                                        fromTime = ttrinhBTT.NGAY_KTHUC.Value.Date;
+                                    int songayNT = CommonUtils.TotalDate(fromTime, ttrinhNT.NGAY_BDAU.Date);
+                                    if (ttrinhBTT != null && fromTime == ttrinhBTT.NGAY_KTHUC.Value.Date)
+                                        songayNT -= 1;
+
+                                    TongSoNgayTCDN += songayNT;
+                                    log.Error($"songayNT: {songayNT}");
+                                }
+                            }
+
+                        }
+
+                   
+                            //if (TongSoNgayTCDN > 4)
+                            //{
+                            if (TongSoNgayTCDN > 30)
+                            {
+                                item.LoaiCanhBao = 8;
+                                response.Add(item);
+                            }
+                        
+                    }
+
+                }
+            }
+            return response;
+        }
 
         public IList<CongVanYeuCau> TinhThoiGian()
         {
