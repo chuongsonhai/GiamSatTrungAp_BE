@@ -85,9 +85,18 @@ namespace EVN.Core.Implements
         }
         public IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai2(string MA_YCAU, int trangthai_khaosat, int mucdo_hailong)
         {
-            var query = Query.Where(p => p.TRANGTHAI_GOI == trangthai_khaosat && p.MA_YCAU == MA_YCAU && p.DGHL_CAPDIEN == mucdo_hailong).OrderBy(p => p.NGAY);
+            //var query = Query.Where(p => p.TRANGTHAI_GOI == trangthai_khaosat && p.MA_YCAU == MA_YCAU && p.DGHL_CAPDIEN == mucdo_hailong).OrderBy(p => p.NGAY);
+            var query = Query.Where(p => p.MA_YCAU == MA_YCAU );
+            if(trangthai_khaosat != -1)
+            {
+                query = query.Where(p => p.TRANGTHAI_GOI == trangthai_khaosat);
+            }
+            if (mucdo_hailong != -1)
+            {
+                query = query.Where(p => p.DGHL_CAPDIEN == mucdo_hailong);
+            }
 
-
+            query = query.OrderBy(p => p.NGAY);
             return query.ToList();
         }
 

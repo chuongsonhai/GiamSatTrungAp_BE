@@ -121,7 +121,7 @@ namespace EVN.Core.Implements
             if (!string.IsNullOrWhiteSpace(khachhang))
                 query = query.Where(p => p.CoQuanChuQuan.Contains(khachhang) || p.NguoiYeuCau.Contains(khachhang) || p.MaKHang.Contains(khachhang));
             if (!string.IsNullOrWhiteSpace(keyword))
-                query = query.Where(p => p.MaYeuCau.Contains(keyword) || p.DuAnDien.Contains(keyword));
+                query = query.Where(p => p.MaYeuCau.Contains(keyword) || p.DuAnDien.Contains(keyword) || p.CoQuanChuQuan.Contains(keyword) || p.NguoiYeuCau.Contains(keyword) || p.MaKHang.Contains(keyword));
             query = query.OrderByDescending(p => p.MaYeuCau);
             int maxtemp = pageindex <= 1 ? 4 - pageindex : 2;//load tối đa 2 trang tiếp theo, nếu page =1 hoặc 2 thì sẽ load 4 trang hoặc 3 trang
             var ret = query.Skip(pageindex * pagesize).Take(pagesize * maxtemp + 1).ToList();
