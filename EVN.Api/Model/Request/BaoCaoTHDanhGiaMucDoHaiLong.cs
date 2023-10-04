@@ -15,7 +15,7 @@ namespace EVN.Api.Model.Request
 
         public class FilterDanhGiaMucDoHaiLong
         {
-            public string madvi { get; set; }
+            public string maDViQLy { get; set; }
             public string fromdate { get; set; }
             public string todate { get; set; }
             public int HangMucKhaoSat { get; set; }
