@@ -117,7 +117,7 @@ namespace EVN.Core.Implements
             var data1 = new List<BaocaoTienDoCanhBaoModel>();
             ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
             IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
-            var listOrg = organizationService.GetAll();
+            var listOrg = organizationService.Getbymadvi();
 
             IList<CanhBao> listcb = service.GetAll();
             if (maDViQly == "-1")
@@ -130,22 +130,45 @@ namespace EVN.Core.Implements
                         var data = new BaocaoTienDoCanhBaoModel();
                         data.maDvi = org.orgName;
                         data.CB_TONG = query.Count();
-                        data.CB_SOCBLAN = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
-                        data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
-                        data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+                        data.CB_SOCBLAN = query.Count(x => x.LOAI_SOLANGUI > 1);
+                        data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 );
+                        data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8 );
 
-                        data.NN_DNN_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 1);
-                        data.NN_DNN_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 1);
+                        data.NN_DNN_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 1);
+                        if(data.NN_DNN_TONG  == 0)
+                        {
+                            data.NN_DNN_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_DNN_TYLE = (data.NN_DNN_TONG) / ((data.CB_TONG));
+                        }   
                         data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
                         data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
 
-                        data.NN_KH_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 2);
-                        data.NN_KH_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 2);
+                        data.NN_KH_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 2);
+                        if (data.NN_KH_TONG == 0)
+                        {
+                            data.NN_KH_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_KH_TYLE = (data.NN_KH_TONG) / ((data.CB_TONG));
+                        }
+                        
                         data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
                         data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
 
-                        data.NN_LOI_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 3);
-                        data.NN_LOI_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 3);
+                        data.NN_LOI_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 3);
+                       
+                        if (data.NN_LOI_TONG == 0)
+                        {
+                            data.NN_LOI_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_LOI_TYLE = (data.NN_LOI_TONG) / ((data.CB_TONG));
+                        }
                         data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
                         data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
 
@@ -162,22 +185,45 @@ namespace EVN.Core.Implements
                         var data = new BaocaoTienDoCanhBaoModel();
                         data.maDvi = org.orgName;
                         data.CB_TONG = query.Count();
-                        data.CB_SOCBLAN = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
+                        data.CB_SOCBLAN = query.Count(x => x.LOAI_SOLANGUI > 1);
                         data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
                         data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
 
-                        data.NN_DNN_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 1);
-                        data.NN_DNN_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 1);
+                        data.NN_DNN_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 1);
+                        if (data.NN_DNN_TONG == 0)
+                        {
+                            data.NN_DNN_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_DNN_TYLE = (data.NN_DNN_TONG) / ((data.CB_TONG));
+                        }
                         data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
                         data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
 
-                        data.NN_KH_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 2);
-                        data.NN_KH_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 2);
+                        data.NN_KH_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 2);
+                        if (data.NN_KH_TONG == 0)
+                        {
+                            data.NN_KH_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_KH_TYLE = (data.NN_KH_TONG) / ((data.CB_TONG));
+                        }
+
                         data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
                         data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
 
-                        data.NN_LOI_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 3);
-                        data.NN_LOI_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 3);
+                        data.NN_LOI_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 3);
+
+                        if (data.NN_LOI_TONG == 0)
+                        {
+                            data.NN_LOI_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_LOI_TYLE = (data.NN_LOI_TONG) / ((data.CB_TONG));
+                        }
                         data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
                         data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
 
@@ -194,22 +240,45 @@ namespace EVN.Core.Implements
                     var data = new BaocaoTienDoCanhBaoModel();
                     data.maDvi = maDViQly;
                     data.CB_TONG = query.Count();
-                    data.CB_SOCBLAN = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
+                    data.CB_SOCBLAN = query.Count(x => x.LOAI_SOLANGUI > 1);
                     data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
                     data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
 
-                    data.NN_DNN_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 1);
-                    data.NN_DNN_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 1);
+                    data.NN_DNN_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 1);
+                    if (data.NN_DNN_TONG == 0)
+                    {
+                        data.NN_DNN_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_DNN_TYLE = (data.NN_DNN_TONG) / ((data.CB_TONG));
+                    }
                     data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
                     data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
 
-                    data.NN_KH_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 2);
-                    data.NN_KH_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 2);
+                    data.NN_KH_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 2);
+                    if (data.NN_KH_TONG == 0)
+                    {
+                        data.NN_KH_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_KH_TYLE = (data.NN_KH_TONG) / ((data.CB_TONG));
+                    }
+
                     data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
                     data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
 
-                    data.NN_LOI_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 3);
-                    data.NN_LOI_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 3);
+                    data.NN_LOI_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 3);
+
+                    if (data.NN_LOI_TONG == 0)
+                    {
+                        data.NN_LOI_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_LOI_TYLE = (data.NN_LOI_TONG) / ((data.CB_TONG));
+                    }
                     data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
                     data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
                     data1.Add(data);
@@ -220,29 +289,278 @@ namespace EVN.Core.Implements
                     var data = new BaocaoTienDoCanhBaoModel();
                     data.maDvi = maDViQly;
                     data.CB_TONG = query.Count();
-                    data.CB_SOCBLAN = query.Count(x => x.TRANGTHAI_CANHBAO >= 3);
+                    data.CB_SOCBLAN = query.Count(x => x.LOAI_SOLANGUI > 1);
                     data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
                     data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
 
-                    data.NN_DNN_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 1);
-                    data.NN_DNN_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 1);
+                    data.NN_DNN_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 1);
+                    if (data.NN_DNN_TONG == 0)
+                    {
+                        data.NN_DNN_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_DNN_TYLE = (data.NN_DNN_TONG) / ((data.CB_TONG));
+                    }
                     data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
                     data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
 
-                    data.NN_KH_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 2);
-                    data.NN_KH_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 2);
+                    data.NN_KH_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 2);
+                    if (data.NN_KH_TONG == 0)
+                    {
+                        data.NN_KH_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_KH_TYLE = (data.NN_KH_TONG) / ((data.CB_TONG));
+                    }
+
                     data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
                     data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
 
-                    data.NN_LOI_TONG = query.Count(x => x.TRANGTHAI_CANHBAO <= 6 && x.NGUYENHHAN_CANHBAO == 3);
-                    data.NN_LOI_TYLE = query.Count(x => x.TRANGTHAI_CANHBAO >= 3 && x.NGUYENHHAN_CANHBAO == 3);
+                    data.NN_LOI_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 3);
+
+                    if (data.NN_LOI_TONG == 0)
+                    {
+                        data.NN_LOI_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_LOI_TYLE = (data.NN_LOI_TONG) / ((data.CB_TONG));
+                    }
                     data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
                     data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
-                    data1.Add(data);
                 }
             }
             return data1;
         }
+
+        public BaocaoTienDoCanhBaoModel GetBaoCaotonghoptiendoTong(string maDViQly, int maloaicanhbao, string fromdate, string todate)
+        {
+            DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
+
+            var data1 = new List<BaocaoTienDoCanhBaoModel>();
+            ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+            IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
+            var listOrg = organizationService.Getbymadvi();
+
+            IList<CanhBao> listcb = service.GetAll();
+            if (maDViQly == "-1")
+            {
+                if (maloaicanhbao == -1)
+                {
+                 
+                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && maDViQly == "-1"  && p.THOIGIANGUI <= denNgayCast  && -1 == maloaicanhbao);
+                        var data = new BaocaoTienDoCanhBaoModel();
+
+                        data.CB_TONG = query.Count();
+                        data.CB_SOCBLAN = query.Count(x => x.LOAI_SOLANGUI > 1);
+                        data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
+                        data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+
+                        data.NN_DNN_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 1);
+                        if (data.NN_DNN_TONG == 0)
+                        {
+                            data.NN_DNN_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_DNN_TYLE = (data.NN_DNN_TONG) / ((data.CB_TONG));
+                        }
+                        data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
+                        data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
+
+                        data.NN_KH_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 2);
+                        if (data.NN_KH_TONG == 0)
+                        {
+                            data.NN_KH_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_KH_TYLE = (data.NN_KH_TONG) / ((data.CB_TONG));
+                        }
+
+                        data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
+                        data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
+
+                        data.NN_LOI_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 3);
+
+                        if (data.NN_LOI_TONG == 0)
+                        {
+                            data.NN_LOI_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_LOI_TYLE = (data.NN_LOI_TONG) / ((data.CB_TONG));
+                        }
+                        data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
+                        data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
+
+                    return data;
+
+                }
+                else
+                {
+
+                  
+
+                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && maDViQly == "-1"  && p.THOIGIANGUI <= denNgayCast  && p.LOAI_CANHBAO_ID == maloaicanhbao);
+                        var data = new BaocaoTienDoCanhBaoModel();
+                   
+                        data.CB_TONG = query.Count();
+                        data.CB_SOCBLAN = query.Count(x => x.LOAI_SOLANGUI > 1);
+                        data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
+                        data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+
+                        data.NN_DNN_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 1);
+                        if (data.NN_DNN_TONG == 0)
+                        {
+                            data.NN_DNN_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_DNN_TYLE = (data.NN_DNN_TONG) / ((data.CB_TONG));
+                        }
+                        data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
+                        data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
+
+                        data.NN_KH_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 2);
+                        if (data.NN_KH_TONG == 0)
+                        {
+                            data.NN_KH_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_KH_TYLE = (data.NN_KH_TONG) / ((data.CB_TONG));
+                        }
+
+                        data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
+                        data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
+
+                        data.NN_LOI_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 3);
+
+                        if (data.NN_LOI_TONG == 0)
+                        {
+                            data.NN_LOI_TYLE = 0;
+                        }
+                        else
+                        {
+                            data.NN_LOI_TYLE = (data.NN_LOI_TONG) / ((data.CB_TONG));
+                        }
+                        data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
+                        data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
+
+                    return data;
+
+                }
+
+            }
+            else
+            {
+                if (maloaicanhbao == -1)
+                {
+                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDViQly && -1 == maloaicanhbao);
+                    var data = new BaocaoTienDoCanhBaoModel();
+                    data.maDvi = maDViQly;
+                    data.CB_TONG = query.Count();
+                    data.CB_SOCBLAN = query.Count(x => x.LOAI_SOLANGUI > 1);
+                    data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
+                    data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+
+                    data.NN_DNN_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 1);
+                    if (data.NN_DNN_TONG == 0)
+                    {
+                        data.NN_DNN_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_DNN_TYLE = (data.NN_DNN_TONG) / ((data.CB_TONG));
+                    }
+                    data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
+                    data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
+
+                    data.NN_KH_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 2);
+                    if (data.NN_KH_TONG == 0)
+                    {
+                        data.NN_KH_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_KH_TYLE = (data.NN_KH_TONG) / ((data.CB_TONG));
+                    }
+
+                    data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
+                    data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
+
+                    data.NN_LOI_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 3);
+
+                    if (data.NN_LOI_TONG == 0)
+                    {
+                        data.NN_LOI_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_LOI_TYLE = (data.NN_LOI_TONG) / ((data.CB_TONG));
+                    }
+                    data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
+                    data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
+                   
+                    return data;
+                }
+                else
+                {
+                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDViQly && p.LOAI_CANHBAO_ID == maloaicanhbao);
+                    var data = new BaocaoTienDoCanhBaoModel();
+
+                    data.CB_TONG = query.Count();
+                    data.CB_SOCBLAN = query.Count(x => x.LOAI_SOLANGUI > 1);
+                    data.CB_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9);
+                    data.CB_CBDVI = query.Count(x => x.LOAI_CANHBAO_ID <= 8);
+
+                    data.NN_DNN_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 1);
+                    if (data.NN_DNN_TONG == 0)
+                    {
+                        data.NN_DNN_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_DNN_TYLE = (data.NN_DNN_TONG) / ((data.CB_TONG));
+                    }
+                    data.NN_DNN_TRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 1);
+                    data.NN_DNN_CHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 1);
+
+                    data.NN_KH_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 2);
+                    if (data.NN_KH_TONG == 0)
+                    {
+                        data.NN_KH_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_KH_TYLE = (data.NN_KH_TONG) / ((data.CB_TONG));
+                    }
+
+                    data.NN_KH_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 2);
+                    data.NN_KH_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 2);
+
+                    data.NN_LOI_TONG = query.Count(x => x.LOAI_SOLANGUI >= 1 && x.NGUYENHHAN_CANHBAO == 3);
+
+                    if (data.NN_LOI_TONG == 0)
+                    {
+                        data.NN_LOI_TYLE = 0;
+                    }
+                    else
+                    {
+                        data.NN_LOI_TYLE = (data.NN_LOI_TONG) / ((data.CB_TONG));
+                    }
+                    data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
+                    data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
+                    return data;
+                }
+            }
+            
+        }
+
         public IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi, int solangui, string maYeuCau)
         {
             if (maDonVi == "-1")

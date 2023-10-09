@@ -59,7 +59,7 @@ namespace EVN.Api.Controllers
 
         [HttpGet]
         [Route("sendnotification")]
-        public async Task<IHttpActionResult> Send()
+        public IHttpActionResult Send()
         {
             ResponseFileResult result = new ResponseFileResult();
             ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();

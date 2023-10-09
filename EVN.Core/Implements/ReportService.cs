@@ -2098,7 +2098,6 @@ namespace EVN.Core.Implements
             INgayNghiLeService ngayNghiLeService = IoC.Resolve<INgayNghiLeService>();
             ILoaiCanhBaoService dLoaicanhbao = IoC.Resolve<ILoaiCanhBaoService>();
 
-
             var now = DateTime.Now;
 
             //setting ngày lễ value phải lưu dưới dạng ngày/tháng. Nhiều giá trị thì phải cách nhau dấu ,
@@ -2152,8 +2151,8 @@ namespace EVN.Core.Implements
                 else
                 {
 
+   
 
-              
                         TimeSpan ts = DateTime.Now - item.NgayLap;
                         if (ts.TotalHours >= 1)
                         {

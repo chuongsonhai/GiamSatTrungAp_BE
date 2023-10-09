@@ -18,6 +18,11 @@ namespace EVN.Core.Implements
             return Get(p => p.orgCode == code);
         }
 
+        public IList<Organization> Getbymadvi()
+        {
+            return Query.Where(p => p.orgId != 281 && p.orgId != 276).ToList();
+        }
+
         public IList<Organization> GetbyParent(string code)
         {
             return Query.Where(p => p.parentCode == code).ToList();

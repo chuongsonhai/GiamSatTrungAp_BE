@@ -9,5 +9,6 @@ namespace EVN.Core.IServices
         IList<Organization> GetbyParent(string code);
         Organization GetbyCode(string code);
         IList<Organization> Sync();
+        IList<Organization> Getbymadvi();
     }
 }

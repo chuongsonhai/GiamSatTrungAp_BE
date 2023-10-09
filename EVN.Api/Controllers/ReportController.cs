@@ -927,6 +927,9 @@ namespace EVN.Api.Controllers
                 FileInfo fileTemp = new FileInfo(fileTemplate);
 
                 var list = service.GetBaoCaotonghoptiendo(request.Filterbctd.maDViQly, request.Filterbctd.TenLoaiCanhBao, request.Filterbctd.fromdate, request.Filterbctd.todate);
+
+                var list1 = service.GetBaoCaotonghoptiendoTong(request.Filterbctd.maDViQly, request.Filterbctd.TenLoaiCanhBao, request.Filterbctd.fromdate, request.Filterbctd.todate);
+                
                 // var list = service.GetSoLuongGui(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
                 string title = $"BÁO CÁO TỔNG HỢP CÔNG TÁC GIÁM SÁT TIẾN ĐỘ GIẢI QUYẾT CẤP ĐIỆN TRUNG ÁP TỪ NGÀY {request.Filterbctd.fromdate} ĐẾN NGÀY {request.Filterbctd.todate}";
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
@@ -1012,8 +1015,79 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         colval++;
                         row++;
-
                     }
+                    int colvalT = 1;
+                    ws.Cells[row, colvalT].Value = "";
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = "Tổng Cộng";
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.CB_TONG;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.CB_SOCBLAN;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.CB_CBTRONGAI;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.CB_CBDVI;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_DNN_TONG;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_DNN_TYLE;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_DNN_TRONGAI;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_DNN_CHAM;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_KH_TONG;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_KH_TYLE;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_KH_CBTRONGAI;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_KH_CBCHAM;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_LOI_TONG;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_LOI_TYLE;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_LOI_CBTRONGAI;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+
+                    ws.Cells[row, colvalT].Value = list1.NN_LOI_CBCHAM;
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    colvalT++;
+                    row++;
+
                     return Ok(package.GetAsByteArray());
                 }
             }
