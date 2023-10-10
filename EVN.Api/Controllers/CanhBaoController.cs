@@ -159,6 +159,7 @@ namespace EVN.Api.Controllers
                                         canhbao12.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao12.NOIDUNG = "Loại cảnh báo 1 - lần " + canhbao12.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao12.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Đã quá thời gian 2 giờ kể từ khi tiếp nhận yêu cầu cấp điện của khách hàng, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                         CBservice1.CreateCanhBao(canhbao12, out message1);
+                                        service1.CommitChanges();
                                         break;
                                 }
 
@@ -179,7 +180,7 @@ namespace EVN.Api.Controllers
                                 {
                                     throw new Exception(message1);
                                 }
-                                service1.CommitChanges();
+                               
                             }
 
 
@@ -202,6 +203,7 @@ namespace EVN.Api.Controllers
                                         canhbao122.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao122.NOIDUNG = "Loại cảnh báo 2 - lần " + canhbao122.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao122.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Đã quá thời gian 02 ngày kể từ khi tiếp nhận đầy đủ hồ sơ thỏa thuận đấu nối của khách hàng, đơn vị chưa hoàn thành thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                         CBservice2.CreateCanhBao(canhbao122, out message1);
+                                        service2.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -220,7 +222,7 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        service2.CommitChanges();
+                                        
                                 }
 
 
@@ -228,7 +230,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb3
-                            if (ts.TotalHours >= 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao123 = new CanhBao();
@@ -245,6 +247,7 @@ namespace EVN.Api.Controllers
                                         canhbao123.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao123.NOIDUNG = "Loại cảnh báo 3 - lần " + canhbao123.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao123.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Đã quá thời gian 02 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu của khách hàng của khách hàng đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                         CBservice3.CreateCanhBao(canhbao123, out message1);
+                                        service3.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -263,14 +266,14 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        service3.CommitChanges();
+                                        
                                 }
 
                             }
 
 
                             //cb4
-                            if (ts.TotalHours >= 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao124 = new CanhBao();
@@ -288,6 +291,7 @@ namespace EVN.Api.Controllers
                                         canhbao124.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao124.NOIDUNG = "Loại cảnh báo 4 - lần " + canhbao124.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao124.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Đã quá thời gian 02 giờ kể từ khi có thông báo lập Hợp đồng mua bán điện đơn vị chưa xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                         CBservice4.CreateCanhBao(canhbao124, out message1);
+                                        service4.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -306,7 +310,7 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        service4.CommitChanges();
+                                      
                                 }
 
 
@@ -314,7 +318,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb5
-                            if (ts.TotalHours >= 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao125 = new CanhBao();
@@ -332,6 +336,7 @@ namespace EVN.Api.Controllers
                                         canhbao125.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao125.NOIDUNG = "Loại cảnh báo 5 - lần " + canhbao125.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao125.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " ,đơn vị: " + item1.MaDViQLy + "<br> Đã quá thời gian 01 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                         CBservice5.CreateCanhBao(canhbao125, out message1);
+                                        service5.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -350,12 +355,12 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        service5.CommitChanges();
+                                        
                                 }
                             }
 
                             //cb6
-                            if (ts.TotalHours >= 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao126 = new CanhBao();
@@ -399,7 +404,7 @@ namespace EVN.Api.Controllers
                             }
 
                             //cb7
-                            if (ts.TotalHours >= 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao127 = new CanhBao();
@@ -418,6 +423,7 @@ namespace EVN.Api.Controllers
                                         canhbao127.NOIDUNG = "Loại cảnh báo 7 - lần " + canhbao127.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao127.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
                                         break;
                                         CBservice7.CreateCanhBao(canhbao127, out message1);
+                                        service7.CommitChanges();
                                         if (string.IsNullOrEmpty(message1))
                                         {
                                             LogCanhBao logCB = new LogCanhBao();
@@ -434,7 +440,7 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        service7.CommitChanges();
+                                        
                                 }
 
 
@@ -442,7 +448,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb8
-                            if (ts.TotalHours >= 48)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao128 = new CanhBao();
@@ -459,6 +465,7 @@ namespace EVN.Api.Controllers
                                         canhbao128.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao128.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao128.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao128.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " ,đơn vị: " + item1.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
                                         CBservice8.CreateCanhBao(canhbao128, out message1);
+                                        service8.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -477,7 +484,7 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        service8.CommitChanges();
+                                       
                                 }
 
 
