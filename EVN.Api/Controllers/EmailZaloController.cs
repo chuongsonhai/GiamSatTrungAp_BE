@@ -59,7 +59,7 @@ namespace EVN.Api.Controllers
 
         [HttpGet]
         [Route("sendnotification")]
-        public IHttpActionResult Send()
+        public async Task<IHttpActionResult> Send()
         {
             ResponseFileResult result = new ResponseFileResult();
             ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
@@ -89,8 +89,8 @@ namespace EVN.Api.Controllers
                     foreach (var nguoiNhan in listNguoiNhan)
                     {
                       
-                        var existEmail = GetExits(listItemExistEmail, item.NOIDUNG);
-                        var point = GetPoint(existEmail);
+                        var existEmail = await GetExits(listItemExistEmail, item.NOIDUNG);
+                        var point = await GetPoint(existEmail);
                         var user = userdataService.Getbykey(nguoiNhan.USER_ID);
                         Email email = new Email();
                         email.MA_DVIQLY = item.DONVI_DIENLUC;
@@ -108,8 +108,8 @@ namespace EVN.Api.Controllers
                 //EMAIL_X3
                     foreach (var nguoiNhan1 in listNguoiNhanx3)
                     {
-                        var existEmailX3 = GetExits(listItemExistEmail, item.NOIDUNG);
-                        var pointX3 = GetPoint(existEmailX3);
+                        var existEmailX3 = await GetExits(listItemExistEmail, item.NOIDUNG);
+                        var pointX3 = await GetPoint(existEmailX3);
                         var user1 = userdataService.Getbykey(nguoiNhan1.USER_ID);
                         Email email1 = new Email();
                         email1.MA_DVIQLY = "X03";
@@ -128,8 +128,8 @@ namespace EVN.Api.Controllers
                     //EMAIL_B09
                     foreach (var nguoiNhanB09 in listNguoiNhanb09)
                     {
-                        var existEmailB09 = GetExits(listItemExistEmail, item.NOIDUNG);
-                        var pointB09 = GetPoint(existEmailB09);
+                        var existEmailB09 = await GetExits(listItemExistEmail, item.NOIDUNG);
+                        var pointB09 = await GetPoint(existEmailB09);
                         var userB09 = userdataService.Getbykey(nguoiNhanB09.USER_ID);
                         Email emailB09 = new Email();
                         emailB09.MA_DVIQLY = "B09";
@@ -151,8 +151,8 @@ namespace EVN.Api.Controllers
                     {
                       //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
                         ZaloClient za = new ZaloClient();
-                        var existZalo = GetExits(listItemExistZalo, item.NOIDUNG);
-                        var pointZalo = GetPoint(existZalo);
+                        var existZalo = await GetExits(listItemExistZalo, item.NOIDUNG);
+                        var pointZalo = await GetPoint(existZalo);
                         var idzalo = za.get_idzalo(nguoiNhan2.phoneNumber); // Lay thong tin idzalo tu sdt
                         Zalo zalo = new Zalo(); ;
                         zalo.MA_DVIQLY = item.DONVI_DIENLUC;
@@ -178,8 +178,8 @@ namespace EVN.Api.Controllers
                     {
                         //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
                         ZaloClient za1 = new ZaloClient();
-                        var existZaloX3 = GetExits(listItemExistZalo, item.NOIDUNG);
-                        var pointZaloX3 = GetPoint(existZaloX3);
+                        var existZaloX3 = await GetExits(listItemExistZalo, item.NOIDUNG);
+                        var pointZaloX3 = await GetPoint(existZaloX3);
                         var idzalo1 = za1.get_idzalo(nguoiNhan3.phoneNumber); // Lay thong tin idzalo tu sdt
                         Zalo zalo1 = new Zalo(); ;
                         zalo1.MA_DVIQLY = "X03";
@@ -207,8 +207,8 @@ namespace EVN.Api.Controllers
                     {
                         //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
                         ZaloClient za1 = new ZaloClient();
-                        var existZalob09 = GetExits(listItemExistZalo, item.NOIDUNG);
-                        var pointZalob09 = GetPoint(existZalob09);
+                        var existZalob09 = await GetExits(listItemExistZalo, item.NOIDUNG);
+                        var pointZalob09 = await GetPoint(existZalob09);
                         var idzalo1 = za1.get_idzalo(nguoiNhanzalob09.phoneNumber); // Lay thong tin idzalo tu sdt
                         Zalo zaloB09 = new Zalo(); ;
                         zaloB09.MA_DVIQLY = "B09";
@@ -278,7 +278,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-        private int GetExits(List<EmailZaloCountModel> list, string noi_dung)
+        private async Task<int> GetExits(List<EmailZaloCountModel> list, string noi_dung)
         {
             var exists = list.FirstOrDefault(x => x.NOI_DUNG == noi_dung);
             if(exists == null)
@@ -302,7 +302,7 @@ namespace EVN.Api.Controllers
                 return count + 1;
             }
         }
-        private string GetPoint(int so_lan)
+        private async Task<string> GetPoint(int so_lan)
         {
             string result = "";
             for (int i = 0; i < so_lan; i++)
