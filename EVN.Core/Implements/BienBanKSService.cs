@@ -666,6 +666,8 @@ namespace EVN.Core.Implements
                 return null;
             }
         }
+     
+
 
         public bool HuyHoSo(BienBanKS bienban, KetQuaKS ketqua)
         {

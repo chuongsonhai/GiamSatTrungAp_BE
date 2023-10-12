@@ -134,11 +134,8 @@ namespace EVN.Api.Controllers
 
                         var check_tontai_mycau1 = CBservice1.GetByMaYeuCautontai(item1.MaYeuCau, item1.LoaiCanhBao);
                         if (check_tontai_mycau1.TRANGTHAI_CANHBAO == 6)
-                        {
                             continue;
-                        }
-                        else
-                        {
+
                             TimeSpan ts = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
 
                             //cb1
@@ -496,8 +493,6 @@ namespace EVN.Api.Controllers
 
                     }
 
-
-                }
             
 
                 result.success = true;

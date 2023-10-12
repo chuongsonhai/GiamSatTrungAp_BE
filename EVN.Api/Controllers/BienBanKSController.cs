@@ -495,6 +495,8 @@ namespace EVN.Api.Controllers
             }
         }
 
+      
+
         [JwtAuthentication]
         [HttpGet]
         [Route("detail/{id}")]
