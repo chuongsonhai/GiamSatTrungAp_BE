@@ -741,14 +741,16 @@ namespace EVN.Core.Implements
                 }
 
                 ycausrv.Save(yeucau);
-               
+
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
+                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 11);
+                var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+
                 var canhbao = new CanhBao();
-                var checkTonTai1 = CBservice.CheckExits11(canhbao.MA_YC, canhbao.LOAI_CANHBAO_ID);
-                var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(canhbao.MA_YC, canhbao.LOAI_CANHBAO_ID);
                 if (!checkTonTai1)
                 {
-
                     canhbao.LOAI_CANHBAO_ID = 11;
                     canhbao.LOAI_SOLANGUI = 1;
                     canhbao.MA_YC = ketqua.MA_YCAU_KNAI;
@@ -756,7 +758,6 @@ namespace EVN.Core.Implements
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
                     canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
-
                 }
                 else
                 {
@@ -767,8 +768,8 @@ namespace EVN.Core.Implements
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
                     canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
-
                 }
+
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();
@@ -903,17 +904,37 @@ namespace EVN.Core.Implements
                 }
 
                 ycausrv.Save(yeucau);
-   
+
+                
+
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
+                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 11);
+                var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+
                 var canhbao = new CanhBao();
-                canhbao.LOAI_CANHBAO_ID = 11;
-                canhbao.LOAI_SOLANGUI = 1;
-                canhbao.MA_YC = ketqua.MA_YCAU_KNAI;
-                canhbao.THOIGIANGUI = DateTime.Now;
-                canhbao.TRANGTHAI_CANHBAO = 1;
-                canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
-                ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+                if (!checkTonTai1)
+                {
+                    canhbao.LOAI_CANHBAO_ID = 11;
+                    canhbao.LOAI_SOLANGUI = 1;
+                    canhbao.MA_YC = ketqua.MA_YCAU_KNAI;
+                    canhbao.THOIGIANGUI = DateTime.Now;
+                    canhbao.TRANGTHAI_CANHBAO = 1;
+                    canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                    canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                }
+                else
+                {
+                    canhbao.LOAI_CANHBAO_ID = 11;
+                    canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                    canhbao.MA_YC = ketqua.MA_YCAU_KNAI;
+                    canhbao.THOIGIANGUI = DateTime.Now;
+                    canhbao.TRANGTHAI_CANHBAO = 1;
+                    canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                    canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                }
+                    ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();
                 if (CBservice.CreateCanhBao(canhbao, out message))
