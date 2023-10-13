@@ -17,6 +17,7 @@ namespace EVN.Core.IServices
         IList<CanhBao> GetAllCanhBao( out int total);
         IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi, int solangui, string maYeuCau);
         Task<bool> CheckExits(string maYeuCau, int loaicanhbaoid);
+        bool CheckExits11(string maYeuCau, int loaicanhbaoid);
         // CanhBao CheckExitsid(int intl);
         CanhBao GetByMaYeuCautontai(string MaYeuCau, int loaicanhbaoid);
         bool CreateCanhBao(CanhBao canhbao, out string message);

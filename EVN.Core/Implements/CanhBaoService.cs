@@ -30,6 +30,12 @@ namespace EVN.Core.Implements
             return result;
         }
 
+        public bool CheckExits11(string maYeuCau, int loaicanhbaoid)
+        {
+            var result = Query.Any(x => x.MA_YC == maYeuCau && x.LOAI_CANHBAO_ID == loaicanhbaoid);
+            return result;
+        }
+
         public CanhBao GetByMaYeuCau(string MaYeuCau)
         {
             return Get(p => p.MA_YC == MaYeuCau);
