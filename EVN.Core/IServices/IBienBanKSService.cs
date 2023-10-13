@@ -23,6 +23,8 @@ namespace EVN.Core.IServices
 
         bool HuyHoSo(BienBanKS bienban, KetQuaKS ketqua);
 
+        bool HuyHoSo2(BienBanKS bienban, KetQuaKS ketqua);
+
         bool Cancel(CongVanYeuCau yeucau, BienBanKS item, string noiDung);
 
         bool Confirm(BienBanKS item, byte[] pdfdata);

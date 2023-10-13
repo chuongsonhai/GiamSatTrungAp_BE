@@ -666,8 +666,150 @@ namespace EVN.Core.Implements
                 return null;
             }
         }
-     
 
+        public bool HuyHoSo2(BienBanKS bienban, KetQuaKS ketqua)
+        {
+            try
+            {
+                IKetQuaKSService ketquasrv = IoC.Resolve<IKetQuaKSService>();
+                ICongVanYeuCauService ycausrv = IoC.Resolve<ICongVanYeuCauService>();
+                IDvTienTrinhService tientrinhsrv = IoC.Resolve<IDvTienTrinhService>();
+                IUserdataService userdatasrv = IoC.Resolve<IUserdataService>();
+                ITThaiYeuCauService ttycausrv = IoC.Resolve<ITThaiYeuCauService>();
+                IThongBaoService tbservice = IoC.Resolve<IThongBaoService>();
+
+                var userdata = userdatasrv.GetbyName(HttpContext.Current.User.Identity.Name);
+                var yeucau = ycausrv.GetbyMaYCau(ketqua.MA_YCAU_KNAI);
+                var tthaiycau = ttycausrv.GetbyStatus((int)TrangThaiCongVan.PhanCongKS, 0);
+
+                IList<DvTienTrinh> tientrinhs = tientrinhsrv.ListNew(bienban.MaDViQLy, bienban.MaYeuCau, new int[] { 0, 2 });
+                long nextstep = tientrinhsrv.LastbyMaYCau(yeucau.MaYeuCau);
+
+                BeginTran();
+                //Update lại trạng thái vế ghi nhận khảo sát
+                yeucau.TrangThai = TrangThaiCongVan.Huy;
+                var ttrinhtruoc = tientrinhs.FirstOrDefault(p => p.MA_CVIEC == tthaiycau.CVIEC_TRUOC && p.TRANG_THAI == 0);
+                if (ttrinhtruoc != null && ttrinhtruoc.TRANG_THAI != 1)
+                {
+                    ttrinhtruoc.NGAY_KTHUC = DateTime.Today;
+                    ttrinhtruoc.MA_CVIECTIEP = ketqua.MA_CVIEC_TRUOC;
+                    ttrinhtruoc.TRANG_THAI = 2;
+                    tientrinhsrv.Save(ttrinhtruoc);
+                    tientrinhs.Add(ttrinhtruoc);
+                }
+
+                DvTienTrinh tientrinh = new DvTienTrinh();
+                //tientrinh.MA_BPHAN_GIAO = userdata.maBPhan;
+                //tientrinh.MA_NVIEN_GIAO = userdata.maNVien;
+
+                tientrinh.MA_CVIEC = "HU";
+                tientrinh.MA_CVIECTIEP = "HU";
+                tientrinh.MA_DDO_DDIEN = yeucau.MaDDoDDien;
+                tientrinh.MA_DVIQLY = yeucau.MaDViQLy;
+
+                //tientrinh.MA_BPHAN_NHAN = ketqua.MA_BPHAN_GIAO;
+                //tientrinh.MA_NVIEN_NHAN = ketqua.MA_NVIEN_GIAO;
+                tientrinh.MA_YCAU_KNAI = yeucau.MaYeuCau;
+
+                tientrinh.MA_TNGAI = ketqua.MA_TNGAI;
+                tientrinh.NDUNG_XLY = ketqua.NDUNG_XLY;
+
+                tientrinh.NGAY_BDAU = DateTime.Today;
+                if (ttrinhtruoc != null)
+                    tientrinh.NGAY_BDAU = ttrinhtruoc.NGAY_KTHUC.Value;
+                tientrinh.NGAY_KTHUC = DateTime.Now;
+
+                tientrinh.NGAY_HEN = ketqua.NGAY_HEN;
+                tientrinh.SO_LAN = 1;
+
+                tientrinh.NGAY_TAO = DateTime.Now;
+                tientrinh.NGAY_SUA = DateTime.Now;
+
+                //tientrinh.NGUOI_TAO = userdata.maNVien;
+                //tientrinh.NGUOI_SUA = userdata.maNVien;
+                if (tientrinh.STT == 0)
+                    tientrinh.STT = nextstep;
+
+                tientrinhsrv.Save(tientrinh);
+
+                ketqua.TRANG_THAI = 0;
+                ketquasrv.Save(ketqua);
+                if (bienban != null)
+                {
+                    bienban.TrangThai = (int)TrangThaiBienBan.MoiTao;
+                    Save(bienban);
+                }
+
+                ycausrv.Save(yeucau);
+
+                ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                var canhbao = new CanhBao();
+                canhbao.LOAI_CANHBAO_ID = 11;
+                canhbao.LOAI_SOLANGUI = 1;
+                canhbao.MA_YC = ketqua.MA_YCAU_KNAI;
+                canhbao.THOIGIANGUI = DateTime.Now;
+                canhbao.TRANGTHAI_CANHBAO = 1;
+                canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+                string message = "";
+                LogCanhBao logCB = new LogCanhBao();
+                if (CBservice.CreateCanhBao(canhbao, out message))
+                {
+                    logCB.CANHBAO_ID = canhbao.ID;
+                    logCB.DATA_MOI = JsonConvert.SerializeObject(canhbao);
+                    logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                    logCB.THOIGIAN = DateTime.Now;
+                    logCB.TRANGTHAI = 1;
+                    LogCBservice.CreateNew(logCB);
+                    LogCBservice.CommitChanges();
+                }
+                else
+                {
+                    throw new Exception(message);
+                }
+
+
+
+                CommitTran();
+
+                IDeliverService deliver = new DeliverService();
+                deliver.PushTienTrinh(yeucau.MaDViQLy, yeucau.MaYeuCau);
+
+                ISendMailService sendmailsrv = IoC.Resolve<ISendMailService>();
+                try
+                {
+                    var sendmail = new SendMail();
+                    sendmail.EMAIL = yeucau.Email;
+                    sendmail.TIEUDE = "Trả lại yêu cầu đề nghị đấu nối vào lưới điện trung áp";
+                    sendmail.MA_DVIQLY = yeucau.MaDViQLy;
+                    sendmail.MA_YCAU_KNAI = yeucau.MaYeuCau;
+                    Dictionary<string, string> bodyParams = new Dictionary<string, string>();
+                    bodyParams.Add("$khachHang", yeucau.TenKhachHang ?? yeucau.NguoiYeuCau);
+                    bodyParams.Add("$maYCau", yeucau.MaYeuCau);
+                    bodyParams.Add("$ngayYCau", yeucau.NgayYeuCau.ToString("dd/MM/yyyy"));
+                    bodyParams.Add("$ngayTraLai", DateTime.Now.ToString("dd/MM/yyyy"));
+                    bodyParams.Add("$lyDo", yeucau.LyDoHuy);
+                    sendmailsrv.Process(sendmail, "TraLaiYeuCauDauNoi", bodyParams);
+                    deliver.Deliver(yeucau.MaYeuCau);
+                }
+
+                catch (Exception ex)
+                {
+                    log.Error(ex);
+                }
+
+                IDataLoggingService dataLoggingService = IoC.Resolve<IDataLoggingService>();
+              //  dataLoggingService.CreateLog(yeucau.MaDViQLy, yeucau.MaYeuCau, userdata.maNVien, userdata.fullName, yeucau.MaCViec, $"Yêu cầu thực hiện khảo sát lưới điện, mã yêu cầu: {yeucau.MaYeuCau}, ngày hẹn: {DateTime.Now.ToString("dd/MM/yyyy")}");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                RolbackTran();
+                log.Error(ex);
+                return false;
+            }
+        }
 
         public bool HuyHoSo(BienBanKS bienban, KetQuaKS ketqua)
         {

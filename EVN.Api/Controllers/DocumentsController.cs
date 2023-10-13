@@ -190,7 +190,9 @@ namespace EVN.Api.Controllers
         [Route("updatepdf")]
         public IHttpActionResult UpdatePdf([FromBody] PdfRequest request)
         {
+            MultipleResponseFileResult resultTotal = new MultipleResponseFileResult();
             ResponseFileResult result = new ResponseFileResult();
+            ResponseFileResult result1 = new ResponseFileResult();
             try
             {
                 log.Error($"ThuanLoi: {request.ThuanLoi}, NoiDungXuLy: {request.NoiDungXuLy}");
@@ -198,8 +200,21 @@ namespace EVN.Api.Controllers
                 if (!string.IsNullOrWhiteSpace(request.Base64Data))
                     pdfdata = Convert.FromBase64String(request.Base64Data);
 
-                result.success = DocumentUtils.UpdatePdf(request.maYCau, request.loaiHSo, pdfdata, request.NoiDungXuLy, request.ThuanLoi, request.Huy);
-                return Ok(result);
+                result1.success = DocumentUtils.UpdatePdf(request.maYCau, request.loaiHSo, pdfdata, request.NoiDungXuLy, request.ThuanLoi, request.Huy);
+                resultTotal.Result1 = result1;
+                if(request.Huy == true || request.Huy == false)
+                {
+                    IBienBanKSService service = IoC.Resolve<IBienBanKSService>();
+                    IKetQuaKSService ketquasrv = IoC.Resolve<IKetQuaKSService>();
+
+                    var bienbanks = service.GetbyYeuCau(request.maYCau);
+                    var ketquaks = ketquasrv.GetbyMaYCau(request.maYCau);
+                    ketquaks.NGUYEN_NHAN = ketquaks.NDUNG_XLY = request.NoiDungXuLy;
+                    bienbanks.TroNgai = request.NoiDungXuLy;
+                    result.success = service.HuyHoSo2(bienbanks, ketquaks);
+                    resultTotal.Result2 = result;
+                }
+                return Ok(resultTotal);
             }
             catch (Exception ex)
             {

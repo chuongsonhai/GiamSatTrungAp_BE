@@ -28,7 +28,11 @@ namespace EVN.Api.Model
         public string message { get; set; }        
         public FileDataResult data { get; set; }
     }
-
+    public class MultipleResponseFileResult
+    {
+        public ResponseFileResult Result1 { set; get; }
+        public ResponseFileResult Result2 { set; get; }
+    }
     public class FileDataResult
     {
         public string Type { get; set; }
