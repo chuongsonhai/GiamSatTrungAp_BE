@@ -15,7 +15,7 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    [JwtAuthentication]
+    //[JwtAuthentication]
     [RoutePrefix("api/documents")]
     public class DocumentsController : ApiController
     {
@@ -202,7 +202,7 @@ namespace EVN.Api.Controllers
 
                 result1.success = DocumentUtils.UpdatePdf(request.maYCau, request.loaiHSo, pdfdata, request.NoiDungXuLy, request.ThuanLoi, request.Huy);
                 resultTotal.Result1 = result1;
-                if(request.Huy == true || request.Huy == false)
+                if(request.loaiHSo == "56" && request.Huy == true)
                 {
                     IBienBanKSService service = IoC.Resolve<IBienBanKSService>();
                     IKetQuaKSService ketquasrv = IoC.Resolve<IKetQuaKSService>();
