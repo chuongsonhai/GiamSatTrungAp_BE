@@ -337,7 +337,11 @@ namespace EVN.Api.Controllers
                 if (item.TrangThai == TrangThaiCongVan.Huy)
                 {
                     ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                    var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
+                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 9);
                     var canhbao = new CanhBao();
+                    if (lcanhbao1 == null)
+                    {
                         canhbao.LOAI_CANHBAO_ID = 9;
                         canhbao.LOAI_SOLANGUI = 1;
                         canhbao.MA_YC = item.MaYeuCau;
@@ -345,8 +349,25 @@ namespace EVN.Api.Controllers
                         canhbao.TRANGTHAI_CANHBAO = 1;
                         canhbao.DONVI_DIENLUC = item.MaDViQLy;
                         canhbao.NOIDUNG = "Loại cảnh báo 9 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Yêu cầu thỏa thuận đấu nối của khách hàng bị từ chối tiếp nhận với lý do " + model.noiDung + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
-      
-                    ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+
+                    }
+                    else
+                    {
+                        var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                        var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                        if (checkTonTai1)
+                        {
+                            canhbao.LOAI_CANHBAO_ID = 9;
+                            canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                            canhbao.MA_YC = item.MaYeuCau;
+                            canhbao.THOIGIANGUI = DateTime.Now;
+                            canhbao.TRANGTHAI_CANHBAO = 1;
+                            canhbao.DONVI_DIENLUC = item.MaDViQLy;
+                            canhbao.NOIDUNG = "Loại cảnh báo 9 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Yêu cầu thỏa thuận đấu nối của khách hàng bị từ chối tiếp nhận với lý do " + model.noiDung + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+
+                        }
+                    }
+                        ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                     string message = "";
                     LogCanhBao logCB = new LogCanhBao();
                     if (CBservice.CreateCanhBao(canhbao, out message))
