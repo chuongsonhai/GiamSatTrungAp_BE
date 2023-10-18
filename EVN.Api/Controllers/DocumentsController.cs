@@ -15,7 +15,7 @@ using System.Web.Http;
 
 namespace EVN.Api.Controllers
 {
-    //[JwtAuthentication]
+    [JwtAuthentication]
     [RoutePrefix("api/documents")]
     public class DocumentsController : ApiController
     {
@@ -190,9 +190,9 @@ namespace EVN.Api.Controllers
         [Route("updatepdf")]
         public IHttpActionResult UpdatePdf([FromBody] PdfRequest request)
         {
-            MultipleResponseFileResult resultTotal = new MultipleResponseFileResult();
+           // MultipleResponseFileResult resultTotal = new MultipleResponseFileResult();
             ResponseFileResult result = new ResponseFileResult();
-            ResponseFileResult result1 = new ResponseFileResult();
+            //ResponseFileResult result1 = new ResponseFileResult();
             try
             {
                 log.Error($"ThuanLoi: {request.ThuanLoi}, NoiDungXuLy: {request.NoiDungXuLy}");
@@ -200,8 +200,8 @@ namespace EVN.Api.Controllers
                 if (!string.IsNullOrWhiteSpace(request.Base64Data))
                     pdfdata = Convert.FromBase64String(request.Base64Data);
 
-                result1.success = DocumentUtils.UpdatePdf(request.maYCau, request.loaiHSo, pdfdata, request.NoiDungXuLy, request.ThuanLoi, request.Huy);
-                resultTotal.Result1 = result1;
+                result.success = DocumentUtils.UpdatePdf(request.maYCau, request.loaiHSo, pdfdata, request.NoiDungXuLy, request.ThuanLoi, request.Huy);
+                //resultTotal.Result1 = result1;
                 if(request.loaiHSo == "56" && request.Huy == true)
                 {
                     IBienBanKSService service = IoC.Resolve<IBienBanKSService>();
@@ -212,9 +212,9 @@ namespace EVN.Api.Controllers
                     ketquaks.NGUYEN_NHAN = ketquaks.NDUNG_XLY = request.NoiDungXuLy;
                     bienbanks.TroNgai = request.NoiDungXuLy;
                     result.success = service.HuyHoSo2(bienbanks, ketquaks);
-                    resultTotal.Result2 = result;
+                    //resultTotal.Result2 = result;
                 }
-                return Ok(resultTotal);
+                return Ok(result);
             }
             catch (Exception ex)
             {

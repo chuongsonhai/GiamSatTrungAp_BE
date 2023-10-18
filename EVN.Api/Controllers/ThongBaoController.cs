@@ -67,14 +67,25 @@ namespace EVN.Api.Controllers
 
                 IUserdataService userservice = IoC.Resolve<IUserdataService>();
                 IThongBaoService service = IoC.Resolve<IThongBaoService>();
+                IXacNhanTroNgaiService xacMinhTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
                 var user = userservice.GetbyName(HttpContext.Current.User.Identity.Name);
 
                 string maNVien = user.maNVien;
                 if (user.Roles.Any(p => p.isSysadmin)) maNVien = string.Empty;
                 var list = service.GetbyFilter(user.maDViQLy, maNVien, filter.maYCau, filter.status, pageindex, 10, out total);
-                var data = new List<ThongBaoData>();
+                var listkhaosat = xacMinhTroNgaiService.Getnotikhaosat(user.maDViQLy, filter.maYCau);
+                var data1 = new List<ThongBaoData>();
+
                 foreach (var item in list)
-                    data.Add(new ThongBaoData(item));
+                    data1.Add(new ThongBaoData(item));
+
+                var data = new
+                {
+
+                    danhsachnoti = data1,
+                    danhsachdgkh = listkhaosat
+
+                };
                 result.total = total;
                 result.data = data;
                 result.success = true;

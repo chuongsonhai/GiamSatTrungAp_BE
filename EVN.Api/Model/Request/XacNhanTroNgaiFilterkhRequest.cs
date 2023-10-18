@@ -23,6 +23,7 @@ namespace EVN.Api.Model.Request
         public string maDViQLy { get; set; } = string.Empty;
         public string keyword { get; set; }
         public string trangthai_ycau { get; set; }
+        public string trangthai_khaosat { get; set; }
     }
 
 }

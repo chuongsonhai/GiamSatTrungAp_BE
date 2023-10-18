@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace EVN.Core.Implements
@@ -23,7 +24,12 @@ namespace EVN.Core.Implements
         {
             return Get(p => p.ID == idloai);
         }
-      
+
+        public async Task<bool> CheckExits(string maYeuCau)
+        {
+            var result = Query.Any(x => x.MA_YCAU == maYeuCau );
+            return result;
+        }
         public IList<XacNhanTroNgai> GetbyFilter(string tungay, string denngay, int trangThaiKhaoSat, string maYeuCau, string donViQuanLy
             , int pageindex, int pagesize, out int total)
         {
@@ -40,6 +46,12 @@ namespace EVN.Core.Implements
         public XacNhanTroNgai GetKhaoSat(int id)
         {
             return Get(p => p.ID == id);
+        }
+
+        public IList<XacNhanTroNgai> Getnotikhaosat(string maycau, string madvi)
+        {
+            var query = Query.Where(p => p.MA_YCAU == maycau && p.MA_DVI == madvi && p.DGHL_CAPDIEN == 1 || p.DGHL_CAPDIEN == 2);
+            return query.ToList();
         }
 
         public XacNhanTroNgai UpdateKhaoid(int id)
@@ -79,8 +91,6 @@ namespace EVN.Core.Implements
         {
 
             var query = Query.Where(p => p.MA_YCAU == MA_YCAU).OrderBy(p=>p.NGAY);
-            
-            
             return query.ToList();
         }
         public IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai2(string MA_YCAU, int trangthai_khaosat, int mucdo_hailong)

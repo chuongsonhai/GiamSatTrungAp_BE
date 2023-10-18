@@ -77,7 +77,7 @@ namespace EVN.Api.Utils
                             item.TrangThai = (int)TrangThaiBienBan.MoiTao;
                             item.TroNgai = noiDungXuLy;
                             var ketquaks = ketquasrv.GetbyMaYCau(yeucau.MaYeuCau);
-                            var hoso = hsoservice.Get(p => p.MaDViQLy == item.MaDViQLy && p.MaYeuCau == item.MaYeuCau && p.LoaiHoSo == maLoaiHSo);
+                            var hoso = hsoservice.Get(p => p.MaDViQLy == item.MaDViQLy && p.MaYeuCau == item.MaYeuCau && p.LoaiHoSo == maLoaiHSo );
                             bbksservice.BeginTran();
                             if (hoso != null)
                             {
