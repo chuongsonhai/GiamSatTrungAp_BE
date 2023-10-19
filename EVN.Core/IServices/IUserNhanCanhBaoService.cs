@@ -11,6 +11,5 @@ namespace EVN.Core.IServices
     public interface IUserNhanCanhBaoService : FX.Data.IBaseService<UserNhanCanhBao, int>
     {
         IList<UserNhanCanhBao> GetbyMaDviQly(string MaDviQly);
-        
     }
 }

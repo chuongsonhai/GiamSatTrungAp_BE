@@ -149,6 +149,7 @@ namespace EVN.Api.Utils
                         }
                     }
                     if (huy) return service.Cancel(item);
+                    if (!huy) return service.Cancel(item);
                     return service.Adjust(item, noiDungXuLy);
                 }
                 if (!thuanLoi)

@@ -19,19 +19,18 @@ namespace EVN.Core.Implements
         public UserNhanCanhBaoService(string sessionFactoryConfigPath, string connectionString = null) : base(sessionFactoryConfigPath, connectionString)
         {
         }
+
         public IList<UserNhanCanhBao> GetbyMaDviQly(string MaDviQly)
         {
             if(MaDviQly != "-1")
             {
-                return Query.Where(p => p.MA_DVIQLY == MaDviQly).ToList();
+                return Query.Where(p => p.MA_DVIQLY == MaDviQly || p.MA_DVIQLY == "X0206" || p.MA_DVIQLY == "PD").ToList();
             } else
             {
                 return Query.ToList();
             }
             
         }
-
-        
 
     }
 }

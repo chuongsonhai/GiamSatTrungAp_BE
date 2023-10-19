@@ -74,26 +74,29 @@ namespace EVN.Api.Controllers
             try
             {
                 
+
                 var listCB = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO == 1).ToList();
                 var listItemExistEmail = new List<EmailZaloCountModel>();
                 var listItemExistZalo = new List<EmailZaloCountModel>();
-                foreach (var item in listCB)
+                foreach (var item in listCB) 
                 {
+
                     IList<UserNhanCanhBao> listNguoiNhan = userNhanCanhBaoService.GetbyMaDviQly(item.DONVI_DIENLUC);
-                    IList<UserNhanCanhBao> listNguoiNhanx3 = userNhanCanhBaoService.GetbyMaDviQly("X0206");
-                    IList<UserNhanCanhBao> listNguoiNhanb09 = userNhanCanhBaoService.GetbyMaDviQly("PD");
+                    //IList<UserNhanCanhBao> listNguoiNhanx3 = userNhanCanhBaoService.GetbyMaDviQly("X0206");
+                    //IList<UserNhanCanhBao> listNguoiNhanb09 = userNhanCanhBaoService.GetbyMaDviQly("PD");
                     IList<Userdata> listNguoiNhanzalo = userdataService.GetbyMaDviQly(item.DONVI_DIENLUC);
-                    IList<Userdata> listNguoiNhanx3zalo = userdataService.GetbyMaDviQly("X0206");
-                    IList<Userdata> listNguoiNhanB09zalo = userdataService.GetbyMaDviQly("PD");
+                    //IList<Userdata> listNguoiNhanx3zalo = userdataService.GetbyMaDviQly("X0206");
+                    //IList<Userdata> listNguoiNhanB09zalo = userdataService.GetbyMaDviQly("PD");
+
                     //Email
                     foreach (var nguoiNhan in listNguoiNhan)
-                    {
+                    { 
                       
-                        var existEmail = await GetExits(listItemExistEmail, item.NOIDUNG);
+                        var existEmail = await GetExits(listItemExistEmail, item.NOIDUNG);// check nội udng trùng r
                         var point = await GetPoint(existEmail);
                         var user = userdataService.Getbykey(nguoiNhan.USER_ID);
                         Email email = new Email();
-                        email.MA_DVIQLY = item.DONVI_DIENLUC;
+                        email.MA_DVIQLY = nguoiNhan.MA_DVIQLY;
                         email.MA_DVU = "TA";
                         email.NOI_DUNG = item.NOIDUNG + point;
                         email.NGAY_TAO = DateTime.Now;
@@ -101,49 +104,49 @@ namespace EVN.Api.Controllers
                         email.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
                         email.TINH_TRANG = 1;
                         email.EMAIL = user.email;
-                        service.CreateNew(email);
+                        service.CreateNew(email);// có thể sẽ bị add 2 lần
                     }
               
 
-                //EMAIL_X3
-                    foreach (var nguoiNhan1 in listNguoiNhanx3)
-                    {
-                        var existEmailX3 = await GetExits(listItemExistEmail, item.NOIDUNG);
-                        var pointX3 = await GetPoint(existEmailX3);
-                        var user1 = userdataService.Getbykey(nguoiNhan1.USER_ID);
-                        Email email1 = new Email();
-                        email1.MA_DVIQLY = "X03";
-                        email1.MA_DVU = "TA";
-                        email1.NOI_DUNG = item.NOIDUNG + pointX3;
-                        email1.NGAY_TAO = DateTime.Now;
-                        email1.NGUOI_TAO = "admin";
-                        email1.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
-                        email1.TINH_TRANG = 1;
+                ////EMAIL_X3
+                //    foreach (var nguoiNhan1 in listNguoiNhanx3)
+                //    {
+                //        var existEmailX3 = await GetExits(listItemExistEmail, item.NOIDUNG);
+                //        var pointX3 = await GetPoint(existEmailX3);
+                //        var user1 = userdataService.Getbykey(nguoiNhan1.USER_ID);
+                //        Email email1 = new Email();
+                //        email1.MA_DVIQLY = "X03";
+                //        email1.MA_DVU = "TA";
+                //        email1.NOI_DUNG = item.NOIDUNG + pointX3;
+                //        email1.NGAY_TAO = DateTime.Now;
+                //        email1.NGUOI_TAO = "admin";
+                //        email1.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                //        email1.TINH_TRANG = 1;
                        
-                        email1.EMAIL = user1.email;
-                        service1.CreateNew(email1);
+                //        email1.EMAIL = user1.email;
+                //        service1.CreateNew(email1);
 
-                    }
+                //    }
 
-                    //EMAIL_B09
-                    foreach (var nguoiNhanB09 in listNguoiNhanb09)
-                    {
-                        var existEmailB09 = await GetExits(listItemExistEmail, item.NOIDUNG);
-                        var pointB09 = await GetPoint(existEmailB09);
-                        var userB09 = userdataService.Getbykey(nguoiNhanB09.USER_ID);
-                        Email emailB09 = new Email();
-                        emailB09.MA_DVIQLY = "B09";
-                        emailB09.MA_DVU = "TA";
-                        emailB09.NOI_DUNG = item.NOIDUNG + pointB09;
-                        emailB09.NGAY_TAO = DateTime.Now;
-                        emailB09.NGUOI_TAO = "admin";
-                        emailB09.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
-                        emailB09.TINH_TRANG = 1;
+                //    //EMAIL_B09
+                //    foreach (var nguoiNhanB09 in listNguoiNhanb09)
+                //    {
+                //        var existEmailB09 = await GetExits(listItemExistEmail, item.NOIDUNG);
+                //        var pointB09 = await GetPoint(existEmailB09);
+                //        var userB09 = userdataService.Getbykey(nguoiNhanB09.USER_ID);
+                //        Email emailB09 = new Email();
+                //        emailB09.MA_DVIQLY = "B09";
+                //        emailB09.MA_DVU = "TA";
+                //        emailB09.NOI_DUNG = item.NOIDUNG + pointB09;
+                //        emailB09.NGAY_TAO = DateTime.Now;
+                //        emailB09.NGUOI_TAO = "admin";
+                //        emailB09.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                //        emailB09.TINH_TRANG = 1;
 
-                        emailB09.EMAIL = userB09.email;
-                        service2.CreateNew(emailB09);
+                //        emailB09.EMAIL = userB09.email;
+                //        service2.CreateNew(emailB09);
 
-                    }
+                //    }
 
 
                     //Zalo
@@ -155,7 +158,7 @@ namespace EVN.Api.Controllers
                         var pointZalo = await GetPoint(existZalo);
                         var idzalo = za.get_idzalo(nguoiNhan2.phoneNumber); // Lay thong tin idzalo tu sdt
                         Zalo zalo = new Zalo(); ;
-                        zalo.MA_DVIQLY = item.DONVI_DIENLUC;
+                        zalo.MA_DVIQLY = nguoiNhan2.maDViQLy;
                         zalo.MA_DVU = "TA";
                         zalo.NOI_DUNG = item.NOIDUNG + pointZalo;
                         zalo.NGAY_TAO = DateTime.Now;
@@ -173,62 +176,62 @@ namespace EVN.Api.Controllers
                             }
                     }
 
-                    //Zalo_X3
-                    foreach (var nguoiNhan3 in listNguoiNhanx3zalo)
-                    {
-                        //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
-                        ZaloClient za1 = new ZaloClient();
-                        var existZaloX3 = await GetExits(listItemExistZalo, item.NOIDUNG);
-                        var pointZaloX3 = await GetPoint(existZaloX3);
-                        var idzalo1 = za1.get_idzalo(nguoiNhan3.phoneNumber); // Lay thong tin idzalo tu sdt
-                        Zalo zalo1 = new Zalo(); ;
-                        zalo1.MA_DVIQLY = "X03";
-                        zalo1.MA_DVU = "TA";
-                        zalo1.NOI_DUNG = item.NOIDUNG + pointZaloX3;
-                        zalo1.NGAY_TAO = DateTime.Now;
-                        zalo1.NGUOI_TAO = "admin";
-                        zalo1.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
-                        zalo1.TINH_TRANG = 1;
-                        zalo1.ID_ZALO = idzalo1;
+                    ////Zalo_X3
+                    //foreach (var nguoiNhan3 in listNguoiNhanx3zalo)
+                    //{
+                    //    //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
+                    //    ZaloClient za1 = new ZaloClient();
+                    //    var existZaloX3 = await GetExits(listItemExistZalo, item.NOIDUNG);
+                    //    var pointZaloX3 = await GetPoint(existZaloX3);
+                    //    var idzalo1 = za1.get_idzalo(nguoiNhan3.phoneNumber); // Lay thong tin idzalo tu sdt
+                    //    Zalo zalo1 = new Zalo(); ;
+                    //    zalo1.MA_DVIQLY = "X03";
+                    //    zalo1.MA_DVU = "TA";
+                    //    zalo1.NOI_DUNG = item.NOIDUNG + pointZaloX3;
+                    //    zalo1.NGAY_TAO = DateTime.Now;
+                    //    zalo1.NGUOI_TAO = "admin";
+                    //    zalo1.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                    //    zalo1.TINH_TRANG = 1;
+                    //    zalo1.ID_ZALO = idzalo1;
 
-                            if (idzalo1 == "-1")
-                            {
+                    //        if (idzalo1 == "-1")
+                    //        {
 
-                            }
-                            else
-                            {
-                                zaloservice1.CreateNew(zalo1);
-                            }
-                    }
+                    //        }
+                    //        else
+                    //        {
+                    //            zaloservice1.CreateNew(zalo1);
+                    //        }
+                    //}
 
 
-                    //Zalo_b09
-                    foreach (var nguoiNhanzalob09 in listNguoiNhanB09zalo)
-                    {
-                        //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
-                        ZaloClient za1 = new ZaloClient();
-                        var existZalob09 = await GetExits(listItemExistZalo, item.NOIDUNG);
-                        var pointZalob09 = await GetPoint(existZalob09);
-                        var idzalo1 = za1.get_idzalo(nguoiNhanzalob09.phoneNumber); // Lay thong tin idzalo tu sdt
-                        Zalo zaloB09 = new Zalo(); ;
-                        zaloB09.MA_DVIQLY = "B09";
-                        zaloB09.MA_DVU = "TA";
-                        zaloB09.NOI_DUNG = item.NOIDUNG + pointZalob09;
-                        zaloB09.NGAY_TAO = DateTime.Now;
-                        zaloB09.NGUOI_TAO = "admin";
-                        zaloB09.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
-                        zaloB09.TINH_TRANG = 1;
-                        zaloB09.ID_ZALO = idzalo1;
+                    ////Zalo_b09
+                    //foreach (var nguoiNhanzalob09 in listNguoiNhanB09zalo)
+                    //{
+                    //    //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
+                    //    ZaloClient za1 = new ZaloClient();
+                    //    var existZalob09 = await GetExits(listItemExistZalo, item.NOIDUNG);
+                    //    var pointZalob09 = await GetPoint(existZalob09);
+                    //    var idzalo1 = za1.get_idzalo(nguoiNhanzalob09.phoneNumber); // Lay thong tin idzalo tu sdt
+                    //    Zalo zaloB09 = new Zalo(); ;
+                    //    zaloB09.MA_DVIQLY = "B09";
+                    //    zaloB09.MA_DVU = "TA";
+                    //    zaloB09.NOI_DUNG = item.NOIDUNG + pointZalob09;
+                    //    zaloB09.NGAY_TAO = DateTime.Now;
+                    //    zaloB09.NGUOI_TAO = "admin";
+                    //    zaloB09.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                    //    zaloB09.TINH_TRANG = 1;
+                    //    zaloB09.ID_ZALO = idzalo1;
 
-                        if (idzalo1 == "-1")
-                        {
+                    //    if (idzalo1 == "-1")
+                    //    {
 
-                        }
-                        else
-                        {
-                            zaloservice2.CreateNew(zaloB09);
-                        }
-                    }
+                    //    }
+                    //    else
+                    //    {
+                    //        zaloservice2.CreateNew(zaloB09);
+                    //    }
+                    //}
                     item.TRANGTHAI_CANHBAO = 2;
                     CBservice.Update(item);
                 }

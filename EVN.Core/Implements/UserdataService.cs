@@ -19,12 +19,13 @@ namespace EVN.Core.Implements
         public UserdataService(string sessionFactoryConfigPath, string connectionString = null) : base(sessionFactoryConfigPath, connectionString)
         {
         }
+
         public IList<Userdata> GetbyMaDviQly(string MaDviQly)
         {
           
             if (MaDviQly != "-1")
             {
-                return Query.Where(p => p.maDViQLy == MaDviQly).ToList();
+                return Query.Where(p => p.maDViQLy == MaDviQly || p.maDViQLy == "X0206" || p.maDViQLy == "PD").ToList();
             }
             else
             {
