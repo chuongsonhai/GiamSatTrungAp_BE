@@ -64,11 +64,7 @@ namespace EVN.Api.Controllers
             ResponseFileResult result = new ResponseFileResult();
             ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
             IEmailService service = IoC.Resolve<IEmailService>();
-            IEmailService service1 = IoC.Resolve<IEmailService>();
-            IEmailService service2 = IoC.Resolve<IEmailService>();
             IZaloService zaloservice = IoC.Resolve<IZaloService>();
-            IZaloService zaloservice1 = IoC.Resolve<IZaloService>();
-            IZaloService zaloservice2 = IoC.Resolve<IZaloService>();
             IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
             IUserdataService userdataService = IoC.Resolve<IUserdataService>();
             try
