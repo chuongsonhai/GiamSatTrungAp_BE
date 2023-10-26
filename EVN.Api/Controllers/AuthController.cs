@@ -58,7 +58,7 @@ namespace EVN.Api.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("login")]
-        public async Task<IHttpActionResult> Login(LoginModel model)
+        public IHttpActionResult Login(LoginModel model)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -66,7 +66,7 @@ namespace EVN.Api.Controllers
                 IUserdataService service = IoC.Resolve<IUserdataService>();
                 IOrganizationService orgservice = IoC.Resolve<IOrganizationService>();
 
-                var userdata = service.Authenticate(model.Username, model.Password);
+                var userdata =  service.Authenticate(model.Username, model.Password);
                 if (userdata == null) throw new Exception("Sai tên đăng nhập hoặc mật khẩu");
 
                 if (!string.IsNullOrWhiteSpace(model.notifyid))
