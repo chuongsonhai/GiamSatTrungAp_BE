@@ -32,32 +32,32 @@ namespace EVN.Api.Controllers
             try
             {
 
-                IReportService service = IoC.Resolve<IReportService>();
+                //IReportService service = IoC.Resolve<IReportService>();
                 IReportService service1 = IoC.Resolve<IReportService>();
-                IReportService service2 = IoC.Resolve<IReportService>();
-                IReportService service3 = IoC.Resolve<IReportService>();
-                IReportService service4 = IoC.Resolve<IReportService>();
-                IReportService service5 = IoC.Resolve<IReportService>();
-                IReportService service6 = IoC.Resolve<IReportService>();
-                IReportService service7 = IoC.Resolve<IReportService>();
-                IReportService service8 = IoC.Resolve<IReportService>();
-                ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
-                ICanhBaoService CBservice2 = IoC.Resolve<ICanhBaoService>();
-                ICanhBaoService CBservice3 = IoC.Resolve<ICanhBaoService>();
-                ICanhBaoService CBservice4 = IoC.Resolve<ICanhBaoService>();
-                ICanhBaoService CBservice5 = IoC.Resolve<ICanhBaoService>();
-                ICanhBaoService CBservice6 = IoC.Resolve<ICanhBaoService>();
-                ICanhBaoService CBservice7 = IoC.Resolve<ICanhBaoService>();
-                ICanhBaoService CBservice8 = IoC.Resolve<ICanhBaoService>();
+                //IReportService service2 = IoC.Resolve<IReportService>();
+                //IReportService service3 = IoC.Resolve<IReportService>();
+                //IReportService service4 = IoC.Resolve<IReportService>();
+                //IReportService service5 = IoC.Resolve<IReportService>();
+                //IReportService service6 = IoC.Resolve<IReportService>();
+                //IReportService service7 = IoC.Resolve<IReportService>();
+                //IReportService service8 = IoC.Resolve<IReportService>();
+                //ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+                //ICanhBaoService CBservice2 = IoC.Resolve<ICanhBaoService>();
+                //ICanhBaoService CBservice3 = IoC.Resolve<ICanhBaoService>();
+                //ICanhBaoService CBservice4 = IoC.Resolve<ICanhBaoService>();
+                //ICanhBaoService CBservice5 = IoC.Resolve<ICanhBaoService>();
+                //ICanhBaoService CBservice6 = IoC.Resolve<ICanhBaoService>();
+                //ICanhBaoService CBservice7 = IoC.Resolve<ICanhBaoService>();
+                //ICanhBaoService CBservice8 = IoC.Resolve<ICanhBaoService>();
 
 
                 ICanhBaoService CBservice1 = IoC.Resolve<ICanhBaoService>();
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
-                var list = service.TinhThoiGian();
+                var list = service1.TinhThoiGian();
                 //var listCanhBao = new List<CanhBao>();
                 foreach (var item in list)
                 {
-                    var checkTonTai1 = await CBservice.CheckExits(item.MaYeuCau, item.LoaiCanhBao);
+                    var checkTonTai1 = await CBservice1.CheckExits(item.MaYeuCau, item.LoaiCanhBao);
 
                     if (!checkTonTai1)
                     {
@@ -100,7 +100,7 @@ namespace EVN.Api.Controllers
                         //listCanhBao.Add(canhbao);
 
                         string message1 = "";
-                        CBservice.CreateCanhBao(canhbao, out message1);
+                        CBservice1.CreateCanhBao(canhbao, out message1);
                         if (string.IsNullOrEmpty(message1))
                         {
                             LogCanhBao logCB = new LogCanhBao();
@@ -118,7 +118,7 @@ namespace EVN.Api.Controllers
                             throw new Exception(message1);
                         }
                     }
-                    service.CommitChanges();
+                    service1.CommitChanges();
                 }
 
                 var list1 = service1.TinhThoiGian2();
@@ -199,8 +199,8 @@ namespace EVN.Api.Controllers
                                         canhbao122.TRANGTHAI_CANHBAO = 1;
                                         canhbao122.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao122.NOIDUNG = "Loại cảnh báo 2 - lần " + canhbao122.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao122.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Đã quá 02 ngày kể từ khi tiếp nhận đầy đủ hồ sơ thỏa thuận đấu nối của khách hàng, đơn vị chưa hoàn thành thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                        CBservice2.CreateCanhBao(canhbao122, out message1);
-                                        service2.CommitChanges();
+                                        CBservice1.CreateCanhBao(canhbao122, out message1);
+                                        service1.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -243,8 +243,8 @@ namespace EVN.Api.Controllers
                                         canhbao123.TRANGTHAI_CANHBAO = 1;
                                         canhbao123.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao123.NOIDUNG = "Loại cảnh báo 3 - lần " + canhbao123.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao123.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu của khách hàng của khách hàng đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                        CBservice3.CreateCanhBao(canhbao123, out message1);
-                                        service3.CommitChanges();
+                                        CBservice1.CreateCanhBao(canhbao123, out message1);
+                                        service1.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -287,8 +287,8 @@ namespace EVN.Api.Controllers
                                         canhbao124.TRANGTHAI_CANHBAO = 1;
                                         canhbao124.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao124.NOIDUNG = "Loại cảnh báo 4 - lần " + canhbao124.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao124.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Đã quá thời gian 02 giờ kể từ khi có thông báo lập Hợp đồng mua bán điện đơn vị chưa xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                        CBservice4.CreateCanhBao(canhbao124, out message1);
-                                        service4.CommitChanges();
+                                        CBservice1.CreateCanhBao(canhbao124, out message1);
+                                        service1.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -332,8 +332,8 @@ namespace EVN.Api.Controllers
                                         canhbao125.TRANGTHAI_CANHBAO = 1;
                                         canhbao125.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao125.NOIDUNG = "Loại cảnh báo 5 - lần " + canhbao125.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao125.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " ,đơn vị: " + item1.MaDViQLy + "<br> Đã quá 01 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                        CBservice5.CreateCanhBao(canhbao125, out message1);
-                                        service5.CommitChanges();
+                                        CBservice1.CreateCanhBao(canhbao125, out message1);
+                                        service1.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -374,8 +374,8 @@ namespace EVN.Api.Controllers
                                         canhbao126.TRANGTHAI_CANHBAO = 1;
                                         canhbao126.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao126.NOIDUNG = "Loại cảnh báo 6 - lần " + canhbao126.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao126.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " đơn vị: " + item1.MaDViQLy + "<br> Đã quá 04 ngày kể từ khi tiếp nhận đầy đủ hồ sơ của khách hàng, đơn vị chưa hoàn thành cấp điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                                        CBservice6.CreateCanhBao(canhbao126, out message1);
-                                        service6.CommitChanges();
+                                        CBservice1.CreateCanhBao(canhbao126, out message1);
+                                        service1.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))
@@ -419,8 +419,8 @@ namespace EVN.Api.Controllers
                                         canhbao127.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao127.NOIDUNG = "Loại cảnh báo 7 - lần " + canhbao127.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao127.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
                                         break;
-                                        CBservice7.CreateCanhBao(canhbao127, out message1);
-                                        service7.CommitChanges();
+                                        CBservice1.CreateCanhBao(canhbao127, out message1);
+                                        service1.CommitChanges();
                                         if (string.IsNullOrEmpty(message1))
                                         {
                                             LogCanhBao logCB = new LogCanhBao();
@@ -461,8 +461,8 @@ namespace EVN.Api.Controllers
                                         canhbao128.TRANGTHAI_CANHBAO = 1;
                                         canhbao128.DONVI_DIENLUC = item1.MaDViQLy;
                                         canhbao128.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao128.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao128.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " ,đơn vị: " + item1.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
-                                        CBservice8.CreateCanhBao(canhbao128, out message1);
-                                        service8.CommitChanges();
+                                        CBservice1.CreateCanhBao(canhbao128, out message1);
+                                        service1.CommitChanges();
                                         break;
 
                                         if (string.IsNullOrEmpty(message1))

@@ -399,7 +399,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("duyethoso")]
         public IHttpActionResult DuyetHoSo([FromBody] ApproveModel model)

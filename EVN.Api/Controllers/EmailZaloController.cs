@@ -87,7 +87,12 @@ namespace EVN.Api.Controllers
                     //Email
                     foreach (var nguoiNhan in listNguoiNhan)
                     { 
-                      
+                      if (item.MA_YC == null)
+                        {
+                            continue;
+                        }
+                      else 
+                        { 
                         var existEmail = await GetExits(listItemExistEmail, item.NOIDUNG);// check nội udng trùng r
                         var point = await GetPoint(existEmail);
                         var user = userdataService.Getbykey(nguoiNhan.USER_ID);
@@ -101,6 +106,7 @@ namespace EVN.Api.Controllers
                         email.TINH_TRANG = 1;
                         email.EMAIL = user.email;
                         service.CreateNew(email);// có thể sẽ bị add 2 lần
+                        }
                     }
               
 
@@ -148,20 +154,26 @@ namespace EVN.Api.Controllers
                     //Zalo
                     foreach (var nguoiNhan2 in listNguoiNhanzalo)
                     {
-                      //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
-                        ZaloClient za = new ZaloClient();
-                        var existZalo = await GetExits(listItemExistZalo, item.NOIDUNG);
-                        var pointZalo = await GetPoint(existZalo);
-                        var idzalo = za.get_idzalo(nguoiNhan2.phoneNumber); // Lay thong tin idzalo tu sdt
-                        Zalo zalo = new Zalo(); ;
-                        zalo.MA_DVIQLY = nguoiNhan2.maDViQLy;
-                        zalo.MA_DVU = "TA";
-                        zalo.NOI_DUNG = item.NOIDUNG + pointZalo;
-                        zalo.NGAY_TAO = DateTime.Now;
-                        zalo.NGUOI_TAO = "admin";
-                        zalo.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
-                        zalo.TINH_TRANG = 1;
-                        zalo.ID_ZALO = idzalo;
+                        if (item.MA_YC == null)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            //  var user = userdataService.Getbysdt(nguoiNhan.phoneNumber);
+                            ZaloClient za = new ZaloClient();
+                            var existZalo = await GetExits(listItemExistZalo, item.NOIDUNG);
+                            var pointZalo = await GetPoint(existZalo);
+                            var idzalo = za.get_idzalo(nguoiNhan2.phoneNumber); // Lay thong tin idzalo tu sdt
+                            Zalo zalo = new Zalo(); ;
+                            zalo.MA_DVIQLY = nguoiNhan2.maDViQLy;
+                            zalo.MA_DVU = "TA";
+                            zalo.NOI_DUNG = item.NOIDUNG + pointZalo;
+                            zalo.NGAY_TAO = DateTime.Now;
+                            zalo.NGUOI_TAO = "admin";
+                            zalo.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                            zalo.TINH_TRANG = 1;
+                            zalo.ID_ZALO = idzalo;
                             if (idzalo == "-1")
                             {
 
@@ -170,6 +182,7 @@ namespace EVN.Api.Controllers
                             {
                                 zaloservice.CreateNew(zalo);
                             }
+                        }
                     }
 
                     ////Zalo_X3

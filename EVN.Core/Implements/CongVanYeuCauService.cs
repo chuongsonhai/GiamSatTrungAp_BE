@@ -231,7 +231,7 @@ namespace EVN.Core.Implements
 
                 congvan.NguoiLap = userdata.maNVien;
                 congvan.NguoiDuyet = userdata.maNVien;
-                
+
                 congvan.TrangThai = TrangThaiCongVan.TiepNhan;
                 congvan.MaCViec = cauhinh.MA_CVIEC_TRUOC;
 

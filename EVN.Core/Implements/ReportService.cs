@@ -2144,7 +2144,7 @@ namespace EVN.Core.Implements
                 var ttrinhNT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "HT");
 
                 //Nếu ngày hiện tại là ngay nghỉ
-                if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 || DateTime.Now.Hour >= 17)
+                if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 && DateTime.Now.Hour >= 17)
                 {
 
                 }
@@ -2451,7 +2451,7 @@ namespace EVN.Core.Implements
                 var ttrinhNT = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "HT");
 
                 //Nếu ngày hiện tại là ngay nghỉ
-                if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 || DateTime.Now.Hour >= 17)
+                if (ngayNghi.Contains(now.Date) || DateTime.Now.Hour <= 8 && DateTime.Now.Hour >= 17)
                 {
 
                 }

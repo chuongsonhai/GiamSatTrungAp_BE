@@ -1,6 +1,7 @@
 ﻿using EVN.Api.Jwt;
 using EVN.Api.Model;
 using EVN.Api.Model.Request;
+using EVN.Core.Domain;
 using EVN.Core.IServices;
 using FX.Core;
 using log4net;
@@ -74,18 +75,43 @@ namespace EVN.Api.Controllers
                 if (user.Roles.Any(p => p.isSysadmin)) maNVien = string.Empty;
                 var list = service.GetbyFilter(user.maDViQLy, maNVien, filter.maYCau, filter.status, pageindex, 10, out total);
                 var listkhaosat = xacMinhTroNgaiService.Getnotikhaosat(user.maDViQLy, filter.maYCau);
-                var data1 = new List<ThongBaoData>();
+                var data = new List<ThongBaoData>();
 
-                foreach (var item in list)
-                    data1.Add(new ThongBaoData(item));
 
-                var data = new
+                    data.AddRange(list.Select(x=> new ThongBaoData()
+                    {
+                        BPhanNhan = x.BPhanNhan,
+                        CongViec = x.CongViec,
+                        DuAnDien = x.DuAnDien,
+                        ID = x.ID,
+                        KhachHang = x.KhachHang,
+                        Loai = x.Loai.ToString(),
+                        MaCViec = x.MaCViec,
+                        MaDViQLy = x.MaDViQLy,
+                        MaYeuCau = x.MaYeuCau,
+                        NgayHen = x.NgayHen.ToString(),
+                        NgayTao = x.NgayTao.ToString(),
+                        NguoiNhan = x.NguoiNhan,
+                        NguoiTao = x.NguoiTao,
+                        NoiDung = x.NoiDung,
+                        TrangThai = x.TrangThai.GetHashCode(),
+                        IsKhaoSat = false
+
+                    }).ToList());
+
+                //Map từng trường của KhaoSat => ThongBaoData
+                data.AddRange(listkhaosat.Select(x => new ThongBaoData()
                 {
+                  TrangThai = x.TRANGTHAI.HasValue ? x.TRANGTHAI.Value : 0 ,
+                  NoiDung = x.NOIDUNG,
+                  MaDViQLy = x.MA_DVI,
+                  MaYeuCau = x.MA_YCAU,
+                  IsKhaoSat = true,
 
-                    danhsachnoti = data1,
-                    danhsachdgkh = listkhaosat
 
-                };
+                }).ToList());
+
+
                 result.total = total;
                 result.data = data;
                 result.success = true;

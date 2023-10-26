@@ -51,6 +51,10 @@ namespace EVN.Api.Model
         public string NgayHen { get; set; }
         public virtual string DuAnDien { get; set; }
         public virtual string KhachHang { get; set; }
+        /// <summary>
+        /// check xem bản ghi có phải từ khao sát hay không
+        /// </summary>
+        public bool IsKhaoSat { set; get; }
     }
 
     public class ThongBaoUpdateStatus
