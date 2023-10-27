@@ -21,5 +21,6 @@ namespace EVN.Core.IServices
         IList<DvTienTrinh> ListNew(string maDViQLy, string maYCau, int[] trangThais);
 
         long LastbyMaYCau(string maYCau);
+        DvTienTrinh FilterByMaYeuCau(string ID);
     }
 }

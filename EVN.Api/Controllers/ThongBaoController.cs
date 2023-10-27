@@ -102,8 +102,9 @@ namespace EVN.Api.Controllers
                 //Map từng trường của KhaoSat => ThongBaoData
                 data.AddRange(listkhaosat.Select(x => new ThongBaoData()
                 {
-                  TrangThai = x.TRANGTHAI.HasValue ? x.TRANGTHAI.Value : 0 ,
-                  NoiDung = x.NOIDUNG,
+                  //TrangThai = x.TRANGTHAI.HasValue ? x.TRANGTHAI.Value : 1 ,
+                  TrangThai = 0,
+                  NoiDung = "Khách hàng đã đánh giá 1*, 2*",
                   MaDViQLy = x.MA_DVI,
                   MaYeuCau = x.MA_YCAU,
                   IsKhaoSat = true,

@@ -18,7 +18,14 @@ namespace EVN.Core.Implements
         public DvTienTrinhService(string sessionFactoryConfigPath) : base(sessionFactoryConfigPath)
         {
         }
+        public DvTienTrinh FilterByMaYeuCau(string ID)
+        {
+            var query = Query.Where(p => p.MA_YCAU_KNAI == ID);
+            query = query.OrderByDescending(p => p.KQ_ID_BUOC);
+            var mayeu = query.First();
+            return mayeu;
 
+        }
         public bool PushToCmis(IList<DvTienTrinh> items, out string message)
         {
             try

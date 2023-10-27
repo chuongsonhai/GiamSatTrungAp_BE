@@ -60,7 +60,7 @@ namespace EVN.Api.Controllers
                             var model = new YeuCauNghiemThuData(item);
                             var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
                             var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI != 6 )
+                            if (bbkt != null && kskh == null  )
                             {
                                 model.TroNgai = bbkt.TroNgai;
                                 model.TrangThaiText = "Hoàn thành";
@@ -76,7 +76,7 @@ namespace EVN.Api.Controllers
                             var model = new YeuCauNghiemThuData(item);
                             var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
                             var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI != 6)
+                            if (bbkt != null && kskh == null )
                             {
                                 model.TroNgai = bbkt.TroNgai;
                                 model.TrangThaiText = "Hủy";
@@ -93,7 +93,7 @@ namespace EVN.Api.Controllers
                             var model = new YeuCauNghiemThuData(item);
                             var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
                             var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI != 6)
+                            if (bbkt != null && kskh == null )
                             {
                                 model.TroNgai = bbkt.TroNgai;
                                 model.TrangThaiText = "Hủy";
@@ -106,7 +106,7 @@ namespace EVN.Api.Controllers
                             var model = new YeuCauNghiemThuData(item);
                             var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
                             var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI != 6)
+                            if (bbkt != null && kskh == null )
                             {
                                 model.TroNgai = bbkt.TroNgai;
                                 model.TrangThaiText = "Hoàn thành";
@@ -118,7 +118,7 @@ namespace EVN.Api.Controllers
                 }
 
 
-                else   //đã khảo sát
+                else if(request.Filter.trangthai_khaosat == "Đã khảo sát")   //Đã khảo sát
 
                 {
                     if (request.Filter.trangthai_ycau == "Hoàn thành")
@@ -184,6 +184,75 @@ namespace EVN.Api.Controllers
                         }
                     }
                 }
+
+                else   //all
+
+                {
+                    if (request.Filter.trangthai_ycau == "Hoàn thành")
+                    {
+                        foreach (var item in HTlist)
+                        {
+                            var model = new YeuCauNghiemThuData(item);
+                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                    
+                            if (bbkt != null )
+                            {
+                                model.TroNgai = bbkt.TroNgai;
+                                model.TrangThaiText = "Hoàn thành";
+                                listModel.Add(model);
+                            }
+
+                        }
+                    }
+                    else if (request.Filter.trangthai_ycau == "Hủy")
+                    {
+                        foreach (var item in HUlist)
+                        {
+                            var model = new YeuCauNghiemThuData(item);
+                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                      
+                            if (bbkt != null )
+                            {
+                                model.TroNgai = bbkt.TroNgai;
+                                model.TrangThaiText = "Hủy";
+                                listModel.Add(model);
+                            }
+
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (var item in HUlist)
+                        {
+                            var model = new YeuCauNghiemThuData(item);
+                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+          
+                            if (bbkt != null )
+                            {
+                                model.TroNgai = bbkt.TroNgai;
+                                model.TrangThaiText = "Hủy";
+                                listModel.Add(model);
+                            }
+
+                        }
+                        foreach (var item in HTlist)
+                        {
+                            var model = new YeuCauNghiemThuData(item);
+                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                        
+                            if (bbkt != null )
+                            {
+                                model.TroNgai = bbkt.TroNgai;
+                                model.TrangThaiText = "Hoàn thành";
+                                listModel.Add(model);
+                            }
+
+                        }
+                    }
+                }
+
+
                 total = total1 + total2;
                     result.total = total;
                     result.data = listModel;
@@ -601,13 +670,14 @@ namespace EVN.Api.Controllers
                 ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
                 ICongVanYeuCauService congVanYeuCauService = IoC.Resolve<ICongVanYeuCauService>();
                 IYCauNghiemThuService NTservice = IoC.Resolve<IYCauNghiemThuService>();
-
+                IDvTienTrinhService DVTIENTRINH = IoC.Resolve<IDvTienTrinhService>();
                 //lọc ra các thông tin liên quan đến khảo sát
                 YCauNghiemThu YCNT = NTservice.GetbyMaYCau(request.IdYeuCau);
                 var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai(request.IdYeuCau);
                 //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
 
                 //lấy mã ycau
+                var dvtientrinh = DVTIENTRINH.FilterByMaYeuCau(YCNT.MaYeuCau);
                 var khaosat = xacMinhTroNgaiService.FilterByMaYeuCau(YCNT.MaYeuCau);
                 var checkTonTai1 = await xacMinhTroNgaiService.CheckExits(YCNT.MaYeuCau);
                 var item = new XacNhanTroNgai();
@@ -616,7 +686,7 @@ namespace EVN.Api.Controllers
                     //tạo ra response API
                     var obj = new
                     {
-                        DGCD_TH_CHUONGTRINH = (int)(khaosat.NGAY - YCNT.NgayLap).TotalHours,
+                        DGCD_TH_CHUONGTRINH = (int)(dvtientrinh.NGAY_TAO - YCNT.NgayLap).TotalHours,
                         DGCD_TH_DANGKY = (int)(DateTime.Now - YCNT.NgayLap).TotalHours
                     };
                     result.data = obj;
