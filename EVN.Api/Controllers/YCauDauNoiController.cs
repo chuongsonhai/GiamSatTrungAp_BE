@@ -338,7 +338,7 @@ namespace EVN.Api.Controllers
                 {
                     ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                     var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
-                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 9);
+                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 9 && p.MA_YC == model.maYCau);
                     var canhbao = new CanhBao();
                     if (lcanhbao1 == null)
                     {

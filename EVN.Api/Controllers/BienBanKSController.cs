@@ -192,7 +192,7 @@ namespace EVN.Api.Controllers
 
                     ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                     var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
-                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 10);
+                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 10 && p.MA_YC == yeucau.MaYeuCau);
                     var canhbao = new CanhBao();
                     if (lcanhbao1 == null)
                     {
