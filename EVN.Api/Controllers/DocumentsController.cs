@@ -202,18 +202,18 @@ namespace EVN.Api.Controllers
 
                 result.success = DocumentUtils.UpdatePdf(request.maYCau, request.loaiHSo, pdfdata, request.NoiDungXuLy, request.ThuanLoi, request.Huy);
                 //resultTotal.Result1 = result1;
-                if(request.loaiHSo == "56" && request.Huy == true)
-                {
-                    IBienBanKSService service = IoC.Resolve<IBienBanKSService>();
-                    IKetQuaKSService ketquasrv = IoC.Resolve<IKetQuaKSService>();
+                //if(request.loaiHSo == "56" && request.Huy == true)
+                //{
+                //    IBienBanKSService service = IoC.Resolve<IBienBanKSService>();
+                //    IKetQuaKSService ketquasrv = IoC.Resolve<IKetQuaKSService>();
 
-                    var bienbanks = service.GetbyYeuCau(request.maYCau);
-                    var ketquaks = ketquasrv.GetbyMaYCau(request.maYCau);
-                    ketquaks.NGUYEN_NHAN = ketquaks.NDUNG_XLY = request.NoiDungXuLy;
-                    bienbanks.TroNgai = request.NoiDungXuLy;
-                    result.success = service.HuyHoSo2(bienbanks, ketquaks);
-                    //resultTotal.Result2 = result;
-                }
+                //    var bienbanks = service.GetbyYeuCau(request.maYCau);
+                //    var ketquaks = ketquasrv.GetbyMaYCau(request.maYCau);
+                //    ketquaks.NGUYEN_NHAN = ketquaks.NDUNG_XLY = request.NoiDungXuLy;
+                //    bienbanks.TroNgai = request.NoiDungXuLy;
+                //    result.success = service.HuyHoSo2(bienbanks, ketquaks);
+                //    //resultTotal.Result2 = result;
+                //}
                 return Ok(result);
             }
             catch (Exception ex)
