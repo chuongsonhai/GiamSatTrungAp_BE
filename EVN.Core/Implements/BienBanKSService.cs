@@ -744,7 +744,7 @@ namespace EVN.Core.Implements
 
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                 var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
-                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 11);
+                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 11 && p.MA_YC == yeucau.MaYeuCau);
                 var canhbao = new CanhBao();
                 if (lcanhbao1 == null)
                 {
@@ -911,16 +911,11 @@ namespace EVN.Core.Implements
 
                 ycausrv.Save(yeucau);
 
-                
-
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                 var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
-                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 11);
-                var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-
+                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 11 && p.MA_YC == yeucau.MaYeuCau);
                 var canhbao = new CanhBao();
-                if (!checkTonTai1)
+                if (lcanhbao1 == null)
                 {
                     canhbao.LOAI_CANHBAO_ID = 11;
                     canhbao.LOAI_SOLANGUI = 1;
@@ -929,18 +924,26 @@ namespace EVN.Core.Implements
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
                     canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+
                 }
                 else
                 {
-                    canhbao.LOAI_CANHBAO_ID = 11;
-                    canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
-                    canhbao.MA_YC = ketqua.MA_YCAU_KNAI;
-                    canhbao.THOIGIANGUI = DateTime.Now;
-                    canhbao.TRANGTHAI_CANHBAO = 1;
-                    canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                    canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                    var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                    var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                    if (checkTonTai1)
+                    {
+                        canhbao.LOAI_CANHBAO_ID = 11;
+                        canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                        canhbao.MA_YC = ketqua.MA_YCAU_KNAI;
+                        canhbao.THOIGIANGUI = DateTime.Now;
+                        canhbao.TRANGTHAI_CANHBAO = 1;
+                        canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                        canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+
+                    }
                 }
-                    ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+
+                ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();
                 if (CBservice.CreateCanhBao(canhbao, out message))
@@ -1009,7 +1012,7 @@ namespace EVN.Core.Implements
                 IThongBaoService tbservice = IoC.Resolve<IThongBaoService>();
                 IDvTienTrinhService tienTrinhSrv = IoC.Resolve<IDvTienTrinhService>();
 
-                var userdata = userdatasrv.GetbyName(HttpContext.Current.User.Identity.Name);
+              //  var userdata = userdatasrv.GetbyName(HttpContext.Current.User.Identity.Name);
                 long nextstep = tienTrinhSrv.LastbyMaYCau(yeucau.MaYeuCau);
 
                 BeginTran();
@@ -1022,7 +1025,7 @@ namespace EVN.Core.Implements
                 tbao.TrangThai = TThaiThongBao.ThongBao;
                 tbao.NoiDung = $"Khách hàng hủy yêu cầu: {yeucau.MaYeuCau}, ngày hủy: {DateTime.Now}";
                 tbao.NguoiNhan = yeucau.NguoiLap;
-                tbao.BPhanNhan = userdata.maBPhan;
+                //tbao.BPhanNhan = userdata.maBPhan;
                 tbao.CongViec = noiDung;
                 tbservice.CreateNew(tbao);
 
@@ -1036,11 +1039,11 @@ namespace EVN.Core.Implements
                 tientrinh.MA_DVIQLY = yeucau.MaDViQLy;
                 tientrinh.MA_YCAU_KNAI = yeucau.MaYeuCau;
 
-                tientrinh.MA_BPHAN_GIAO = userdata.maBPhan;
-                tientrinh.MA_NVIEN_GIAO = userdata.maNVien;
+                //tientrinh.MA_BPHAN_GIAO = userdata.maBPhan;
+                //tientrinh.MA_NVIEN_GIAO = userdata.maNVien;
 
-                tientrinh.MA_BPHAN_NHAN = userdata.maBPhan;
-                tientrinh.MA_NVIEN_NHAN = userdata.maNVien;
+                //tientrinh.MA_BPHAN_NHAN = userdata.maBPhan;
+                //tientrinh.MA_NVIEN_NHAN = userdata.maNVien;
 
                 tientrinh.MA_CVIEC = "HU";
                 tientrinh.MA_CVIECTIEP = "HU";
@@ -1058,8 +1061,8 @@ namespace EVN.Core.Implements
                 tientrinh.NGAY_TAO = DateTime.Now;
                 tientrinh.NGAY_SUA = DateTime.Now;
 
-                tientrinh.NGUOI_TAO = userdata.maNVien;
-                tientrinh.NGUOI_SUA = userdata.maNVien;
+                //tientrinh.NGUOI_TAO = userdata.maNVien;
+                //tientrinh.NGUOI_SUA = userdata.maNVien;
                 if (tientrinh.STT == 0)
                     tientrinh.STT = nextstep;
 
