@@ -31,26 +31,7 @@ namespace EVN.Api.Controllers
             ResponseResult result = new ResponseResult();
             try
             {
-
-                //IReportService service = IoC.Resolve<IReportService>();
                 IReportService service1 = IoC.Resolve<IReportService>();
-                //IReportService service2 = IoC.Resolve<IReportService>();
-                //IReportService service3 = IoC.Resolve<IReportService>();
-                //IReportService service4 = IoC.Resolve<IReportService>();
-                //IReportService service5 = IoC.Resolve<IReportService>();
-                //IReportService service6 = IoC.Resolve<IReportService>();
-                //IReportService service7 = IoC.Resolve<IReportService>();
-                //IReportService service8 = IoC.Resolve<IReportService>();
-                //ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
-                //ICanhBaoService CBservice2 = IoC.Resolve<ICanhBaoService>();
-                //ICanhBaoService CBservice3 = IoC.Resolve<ICanhBaoService>();
-                //ICanhBaoService CBservice4 = IoC.Resolve<ICanhBaoService>();
-                //ICanhBaoService CBservice5 = IoC.Resolve<ICanhBaoService>();
-                //ICanhBaoService CBservice6 = IoC.Resolve<ICanhBaoService>();
-                //ICanhBaoService CBservice7 = IoC.Resolve<ICanhBaoService>();
-                //ICanhBaoService CBservice8 = IoC.Resolve<ICanhBaoService>();
-
-
                 ICanhBaoService CBservice1 = IoC.Resolve<ICanhBaoService>();
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 var list = service1.TinhThoiGian();
