@@ -12,6 +12,7 @@ using OfficeOpenXml.Style;
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web.Http;
 
 namespace EVN.Api.Controllers
@@ -1106,21 +1107,41 @@ namespace EVN.Api.Controllers
         [Route("getbaocaotonghoptiendo")]
         public IHttpActionResult GetBaoCaoTonghopTienDo(BaocaoTHTienDo request)
         {
+            MultipleResponseFileResult resultTotal = new MultipleResponseFileResult();
+            ResponseFileResult result1 = new ResponseFileResult();
             ResponseResult result = new ResponseResult();
             try
             {
 
                 DateTime synctime = DateTime.Today;
                 ICanhBaoService  service = IoC.Resolve<ICanhBaoService>();
-                //var fromDate = DateTime.MinValue;
-                //var toDate = DateTime.MaxValue;
-                //if (!string.IsNullOrWhiteSpace(request.Filterbctd.fromdate))
-                //    fromDate = DateTime.ParseExact(request.Filterbctd.fromdate, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                //if (!string.IsNullOrWhiteSpace(request.Filterbctd.todate))
-                //    toDate = DateTime.ParseExact(request.Filterbctd.todate, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
 
-                var list = service.GetBaoCaotonghoptiendo(request.Filterbctd.maDViQly, request.Filterbctd.TenLoaiCanhBao, request.Filterbctd.fromdate, request.Filterbctd.todate);
-   
+                var list = service.GetBaoCaotonghoptiendo(request.Filterbctd.maDViQly, request.Filterbctd.TenLoaiCanhBao, request.Filterbctd.fromdate, request.Filterbctd.todate).ToList();
+
+                var tong = new BaocaoTienDoCanhBaoModel()
+                {
+                    maDvi = "TỔNG",
+                    CB_CBDVI = list.Sum(d => d.CB_CBDVI),
+                    CB_CBTRONGAI = list.Sum(d => d.CB_CBTRONGAI),
+                    CB_SOCBLAN = list.Sum(d => d.CB_SOCBLAN),
+                    CB_TONG = list.Sum(d => d.CB_TONG),
+                    NN_DNN_CHAM = list.Sum(d => d.NN_DNN_CHAM),
+                    NN_DNN_TONG = list.Sum(d => d.NN_DNN_TONG),
+                    NN_DNN_TRONGAI = list.Sum(d => d.NN_DNN_TRONGAI),
+                    NN_DNN_TYLE = list.Sum(d => d.NN_DNN_TYLE),
+                    NN_KH_CBCHAM = list.Sum(d => d.NN_KH_CBCHAM),
+                    NN_KH_CBTRONGAI = list.Sum(d => d.NN_KH_CBTRONGAI),
+                    NN_KH_TONG = list.Sum(d => d.NN_KH_TONG),
+                    NN_KH_TYLE = list.Sum(d => d.NN_KH_TYLE),
+                    NN_LOI_CBCHAM = list.Sum(d => d.NN_LOI_CBCHAM),
+                    NN_LOI_CBTRONGAI = list.Sum(d => d.NN_LOI_CBTRONGAI),
+                    NN_LOI_TONG = list.Sum(d => d.NN_LOI_TONG),
+                    NN_LOI_TYLE = list.Sum(d => d.NN_LOI_TYLE)
+
+
+                };
+                list.Add(tong);
+                list = list.OrderBy(x => x.maDvi).ToList();
                 result.data = list;
                 result.success = true;
                 return Ok(result);
