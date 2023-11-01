@@ -685,9 +685,6 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Value = item.TongSoNgayTB;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                         colval++;
-
-
-
                         row++;
                     }
                     int colvalT = 1;
@@ -787,7 +784,7 @@ namespace EVN.Api.Controllers
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
-
+                 
                     int row = 5;
                     int stt = 0;
                     foreach (var item in listModel.ListItem)
@@ -897,6 +894,7 @@ namespace EVN.Api.Controllers
                     ws.Cells[row, colvalT].Value = listModel.TongSoCTDaHoanThanhNT;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                     colvalT++;
+                  
 
                     ws.Cells[row, colvalT].Value = listModel.TongSoCTChuaHoanThanhNT;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -946,146 +944,300 @@ namespace EVN.Api.Controllers
                         stt++;
                         int colval = 1;
                         ws.Cells[row, colval].Value = stt;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.maDvi;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.CB_TONG;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.CB_SOCBLAN;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.CB_CBTRONGAI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.CB_CBDVI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_DNN_TONG;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_DNN_TYLE;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
+
 
                         ws.Cells[row, colval].Value = item.NN_DNN_TRONGAI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_DNN_CHAM;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_KH_TONG;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_KH_TYLE;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_KH_CBTRONGAI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_KH_CBCHAM;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_LOI_TONG;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_LOI_TYLE;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_LOI_CBTRONGAI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NN_LOI_CBCHAM;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
+
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         row++;
                     }
                     int colvalT = 1;
                     ws.Cells[row, colvalT].Value = "";
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = "Tổng Cộng";
+                    ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.CB_TONG;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.CB_SOCBLAN;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.CB_CBTRONGAI;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.CB_CBDVI;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_DNN_TONG;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_DNN_TYLE;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_DNN_TRONGAI;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_DNN_CHAM;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_KH_TONG;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_KH_TYLE;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_KH_CBTRONGAI;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_KH_CBCHAM;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_LOI_TONG;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_LOI_TYLE;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_LOI_CBTRONGAI;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row, colvalT].Value = list1.NN_LOI_CBCHAM;
                     ws.Cells[row, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
                     row++;
 
@@ -1204,7 +1356,9 @@ namespace EVN.Api.Controllers
                 //mau file excel
                 using (ExcelPackage package = new ExcelPackage(filetemp, true))
                 {
+
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
+                    ws.Cells[ws.Dimension.Address].AutoFitColumns();
                     ws.Cells[2, 1].Value = title;
                     int row = 9;
                     int stt = 0;
@@ -1213,80 +1367,160 @@ namespace EVN.Api.Controllers
                         stt++;
                         int colval = 1;
                         ws.Cells[row, colval].Value = stt;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.MaDViQuanLy;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.MaYeuCau;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TenKhachHang;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.DiaChi;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.SDT;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TongCongSuatDangKy;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NgayTiepNhan;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.HangMucCanhBao;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NguongCanhBao;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TrangThai;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NgayGioGiamSat;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NguoiGiamSat;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NoiDungKhaoSat;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NoiDungXuLyYKienKH;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.PhanHoi;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.XacMinhNguyenNhanChamGiaiQuyet;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NDGhiNhanVaChuyenDonViXuLy;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.KetQua;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.GhiChu;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
                         row++;
                     }
@@ -1409,6 +1643,7 @@ namespace EVN.Api.Controllers
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
+                    ws.Cells[ws.Dimension.Address].AutoFitColumns();
 
                     ws.Cells[2, 1].Value = title;
                     int row = 8;
@@ -1419,119 +1654,238 @@ namespace EVN.Api.Controllers
                         stt++;
                         int colval = 1;
                         ws.Cells[row, colval].Value = stt;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.DonVi;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = "Chuyển khai thác";
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TongSoVuCoChenhLech;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.YCauCapDienDeDangThuanTienCo;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.YCauCapDienDeDangThuanTienKhong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.YCauCapDienNhanhChongKipThoiCo;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.YCauCapDienNhanhChongKipThoiKhong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.YCauCapDienThaiDoChuyenNghiepCo;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.YCauCapDienThaiDoChuyenNghiepKhong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TTDNTienDoKhaoSatCo;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TTDNTienDoKhaoSatKhong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TTDNMinhBachCo;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TTDNMinhBachKhong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TTDNChuDaoCo;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TTDNChuDaoKhong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NghiemThuThuanTienCo;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NghiemThuThuanTienKhong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NghiemThuMinhBachCo;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NghiemThuMinhBachKhong;
-                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NghiemThuChuDaoCo;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NghiemThuChuDaoKhong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.ChiPhiCo;
-                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
 
                         ws.Cells[row, colval].Value = item.ChiPhiKhong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.RatKhongHaiLong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.KhongHaiLong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.BinhThuong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.HaiLong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.RatHaiLong;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
                         colval++;
                         row +=2;
                     }
@@ -1544,227 +1898,450 @@ namespace EVN.Api.Controllers
 
                         ws.Cells[row1, colval].Value = "Có trở ngại hoặc hết hạn TTĐN";
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.TongSoVuCoChenhLech;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.YCauCapDienDeDangThuanTienCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.YCauCapDienDeDangThuanTienKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.YCauCapDienNhanhChongKipThoiCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.YCauCapDienNhanhChongKipThoiKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.YCauCapDienThaiDoChuyenNghiepCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.YCauCapDienThaiDoChuyenNghiepKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.TTDNTienDoKhaoSatCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.TTDNTienDoKhaoSatKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.TTDNMinhBachCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.TTDNMinhBachKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.TTDNChuDaoCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.TTDNChuDaoKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.NghiemThuThuanTienCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.NghiemThuThuanTienKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.NghiemThuMinhBachCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.NghiemThuMinhBachKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.NghiemThuChuDaoCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.NghiemThuChuDaoKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.ChiPhiCo;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
 
                         ws.Cells[row1, colval].Value = item.ChiPhiKhong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.RatKhongHaiLong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.KhongHaiLong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.BinhThuong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.HaiLong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row1, colval].Value = item.RatHaiLong;
                         ws.Cells[row1, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row1, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row1, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         row1 +=2;
+      
                     }
 
                     row1 -= 1;
                     int colvalT = 2;
+
                     ws.Cells[row1, colvalT].Value = "Tổng Cộng";
+                    ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = "Chuyển khai thác";
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoVuCoChenhLech;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienDeDangThuanTienCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienDeDangThuanTienKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienNhanhChongKipThoiCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienNhanhChongKipThoiKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienThaiDoChuyenNghiepCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoYCauCapDienThaiDoChuyenNghiepKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNTienDoKhaoSatCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNTienDoKhaoSatKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNMinhBachCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNMinhBachKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNChuDaoCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoTTDNChuDaoKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuThuanTienCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuThuanTienKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuMinhBachCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuMinhBachKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuChuDaoCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoNghiemThuChuDaoKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoChiPhiCo;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoChiPhiKhong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoRatKhongHaiLong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoKhongHaiLong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoBinhThuong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoHaiLong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     ws.Cells[row1, colvalT].Value = chuyenKhaiThac.TongSoRatHaiLong;
                     ws.Cells[row1, colvalT].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT++;
 
                     row1++;
@@ -1772,116 +2349,227 @@ namespace EVN.Api.Controllers
 
                     ws.Cells[row1, colvalT1].Value = "Có trở ngại hoặc hết hạn TTĐN";
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoVuCoChenhLech;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienDeDangThuanTienCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienDeDangThuanTienKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienNhanhChongKipThoiCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienNhanhChongKipThoiKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienThaiDoChuyenNghiepCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoYCauCapDienThaiDoChuyenNghiepKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNTienDoKhaoSatCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNTienDoKhaoSatKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNMinhBachCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNMinhBachKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNChuDaoCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoTTDNChuDaoKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuThuanTienCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuThuanTienKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuMinhBachCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuMinhBachKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuChuDaoCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoNghiemThuChuDaoKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoChiPhiCo;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoChiPhiKhong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoRatKhongHaiLong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoKhongHaiLong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoBinhThuong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoHaiLong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
 
                     ws.Cells[row1, colvalT1].Value = troNgai.TongSoRatHaiLong;
                     ws.Cells[row1, colvalT1].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    ws.Cells[row1, colvalT1].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                    ws.Cells[row1, colvalT1].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                     colvalT1++;
+
 
                     return Ok(package.GetAsByteArray());
                 }
+         
             }
+
             catch (Exception ex)
             {
                 log.Error(ex);
@@ -1952,96 +2640,181 @@ namespace EVN.Api.Controllers
                         stt++;
                         int colval = 1;
                         ws.Cells[row, colval].Value = stt;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.MA_DVI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.MA_YCAU;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.MA_KH;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.TEN_KH;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.DIA_CHI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.DIEN_THOAI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.MUCDICH_SD_DIEN;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NGAY_TIEPNHAN.ToString();
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NGAY_HOANTHANH.ToString();
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.SO_NGAY_CT;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.SO_NGAY_TH_ND;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         if (item.TRANGTHAI_GQ == 1) 
                         {
                             ws.Cells[row, colval].Value = "Kết thúc chuyển khai thác khách hàng";
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
                         else
                         {
                             ws.Cells[row, colval].Value = "Kết thúc do có trở ngại";
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
                         ws.Cells[row, colval].Value = item.TONG_CONGSUAT_CD;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.DGCD_TH_CHUONGTRINH;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.DGCD_TH_DANGKY;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.DGCD_KH_PHANHOI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.DGCD_KH_PHANHOI - item.DGCD_TH_CHUONGTRINH;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         if(item.DGYC_DK_DEDANG == 1)
                         {
                         ws.Cells[row, colval].Value = 1;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                        colval+=2;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                            colval +=2;
                         }
                         else
                         {
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2049,6 +2822,10 @@ namespace EVN.Api.Controllers
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
                         else
@@ -2056,6 +2833,10 @@ namespace EVN.Api.Controllers
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2063,13 +2844,21 @@ namespace EVN.Api.Controllers
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                            colval+=2;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                            colval +=2;
                         }
                         else
                         {
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2077,6 +2866,10 @@ namespace EVN.Api.Controllers
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
                         else
@@ -2084,6 +2877,10 @@ namespace EVN.Api.Controllers
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2091,6 +2888,10 @@ namespace EVN.Api.Controllers
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
                         else
@@ -2098,6 +2899,10 @@ namespace EVN.Api.Controllers
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2105,6 +2910,10 @@ namespace EVN.Api.Controllers
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
                         else
@@ -2112,6 +2921,10 @@ namespace EVN.Api.Controllers
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2119,6 +2932,10 @@ namespace EVN.Api.Controllers
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
                         else
@@ -2126,6 +2943,10 @@ namespace EVN.Api.Controllers
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2133,6 +2954,11 @@ namespace EVN.Api.Controllers
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+
                             colval += 2;
                         }
                         else
@@ -2140,6 +2966,10 @@ namespace EVN.Api.Controllers
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2147,6 +2977,10 @@ namespace EVN.Api.Controllers
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
                         else
@@ -2154,6 +2988,10 @@ namespace EVN.Api.Controllers
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2162,6 +3000,10 @@ namespace EVN.Api.Controllers
 
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
                         else
@@ -2169,6 +3011,10 @@ namespace EVN.Api.Controllers
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
 
@@ -2176,18 +3022,30 @@ namespace EVN.Api.Controllers
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 5;
                         }else if(item.DGHL_CAPDIEN == 2)
                         {
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 4;
                         }else if(item.DGHL_CAPDIEN == 3)
                         {
                             colval+=2;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 3;
                         }
                         else if (item.DGHL_CAPDIEN == 4)
@@ -2195,6 +3053,10 @@ namespace EVN.Api.Controllers
                             colval += 3;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
                         else if (item.DGHL_CAPDIEN == 5)
@@ -2202,18 +3064,30 @@ namespace EVN.Api.Controllers
                             colval += 4;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval ++;
                         }
                         if(item.TRANGTHAI_GOI == 1)
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 3;
                         }else if(item.TRANGTHAI_GOI == 2)
                         {
                             colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
                         else if (item.TRANGTHAI_GOI == 3)
@@ -2221,30 +3095,58 @@ namespace EVN.Api.Controllers
                             colval+=2;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval ++;
                         }
                         ws.Cells[row, colval].Value = item.NGAY.ToString();
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;                        
 
                         ws.Cells[row, colval].Value = item.NGUOI_KSAT;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.Y_KIEN_KH;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.NOIDUNG;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.PHAN_HOI;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         ws.Cells[row, colval].Value = item.GHI_CHU;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
                         row++;

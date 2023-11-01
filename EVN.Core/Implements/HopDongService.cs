@@ -115,7 +115,8 @@ namespace EVN.Core.Implements
                         canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, khách hàng chưa ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định";
                     
                     }
-                    }
+                }
+
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();
