@@ -236,18 +236,17 @@ namespace EVN.Core.Implements
 
                     ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                     var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
-                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 14 && p.MA_YC == item.MaYeuCau);
+                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 16 && p.MA_YC == item.MaYeuCau);
                     var canhbao = new CanhBao();
                     if (lcanhbao1 == null)
                     {
-                        canhbao.LOAI_CANHBAO_ID = 14;
+                        canhbao.LOAI_CANHBAO_ID = 16;
                         canhbao.LOAI_SOLANGUI = 1;
                         canhbao.MA_YC = yeucau.MaYeuCau;
                         canhbao.THOIGIANGUI = DateTime.Now;
                         canhbao.TRANGTHAI_CANHBAO = 1;
                         canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + hoSo.KHXacNhan + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
-                    
+                        canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, hồ sơ thỏa thuận đấu nối của khách hàng sắp hết hiệu lực. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định.";
                     }
                     else
                     {
@@ -255,13 +254,14 @@ namespace EVN.Core.Implements
                         var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
                         if (checkTonTai1)
                         {
-                            canhbao.LOAI_CANHBAO_ID = 14;
+                            canhbao.LOAI_CANHBAO_ID = 16;
                             canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
                             canhbao.MA_YC = yeucau.MaYeuCau;
                             canhbao.THOIGIANGUI = DateTime.Now;
                             canhbao.TRANGTHAI_CANHBAO = 1;
                             canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                            canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + hoSo.KHXacNhan + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                            canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, hồ sơ thỏa thuận đấu nối của khách hàng sắp hết hiệu lực. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định.";
+
 
                         }
                     }

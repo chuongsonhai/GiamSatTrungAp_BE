@@ -88,32 +88,34 @@ namespace EVN.Core.Implements
 
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                 var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
-                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 16 && p.MA_YC == item.MaYeuCau);
+                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 14 && p.MA_YC == item.MaYeuCau);
                 var canhbao = new CanhBao();
                 if (lcanhbao1 == null)
                 {
-                    canhbao.LOAI_CANHBAO_ID = 16;
+                    canhbao.LOAI_CANHBAO_ID = 14;
                     canhbao.LOAI_SOLANGUI = 1;
                     canhbao.MA_YC = congvan.MaYeuCau;
                     canhbao.THOIGIANGUI = DateTime.Now;
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
-                    canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, khách hàng chưa ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định";
+                    canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+
                 }
+
                 else
                 {
                     var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
                     var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
                     if (checkTonTai1)
                     {
-                        canhbao.LOAI_CANHBAO_ID = 16;
+                        canhbao.LOAI_CANHBAO_ID = 14;
                         canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
                         canhbao.MA_YC = congvan.MaYeuCau;
                         canhbao.THOIGIANGUI = DateTime.Now;
                         canhbao.TRANGTHAI_CANHBAO = 1;
                         canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, khách hàng chưa ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định";
-                    
+                        canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+
                     }
                 }
 
