@@ -253,7 +253,8 @@ namespace EVN.Core.Implements
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
             DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
             IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
-            var listOrg = organizationService.GetAll();
+            //var listOrg = organizationService.GetAll();
+            var listOrg = organizationService.Getbymadvi();
             var resultList = new List<BaoCaoTongHopDanhGiaMucDo>();
             if (madvi == "-1")
             {

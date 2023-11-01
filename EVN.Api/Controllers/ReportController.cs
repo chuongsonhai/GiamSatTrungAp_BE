@@ -1107,8 +1107,6 @@ namespace EVN.Api.Controllers
         [Route("getbaocaotonghoptiendo")]
         public IHttpActionResult GetBaoCaoTonghopTienDo(BaocaoTHTienDo request)
         {
-            MultipleResponseFileResult resultTotal = new MultipleResponseFileResult();
-            ResponseFileResult result1 = new ResponseFileResult();
             ResponseResult result = new ResponseResult();
             try
             {
@@ -1304,7 +1302,7 @@ namespace EVN.Api.Controllers
         }
 
 
-        //Báo cáo tổng hợp đánh giá mức độ (get)
+        //Báo cáo tổng hợp kháo sát khách hàng (get)
         //[JwtAuthentication]
         [HttpPost]
         [Route("getbaocaothdanhgiamucdo")]
@@ -1319,10 +1317,10 @@ namespace EVN.Api.Controllers
 
 
                 //danh sách khảo sát có trạng thái chuyẻn khai thác 
-                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat).ToList();
 
                 //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
-                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat).ToList();
 
                 //danh sách tổng số khảo sát có trạng thái = chuyển khai thác
                 var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
@@ -1331,6 +1329,42 @@ namespace EVN.Api.Controllers
                 var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
 
                 var finalList = new { listSoLuongKhaoSatTrangThaiChuyenKhaiThac = list, listSoLuongKhaoSatTrangThaiTroNgai = list1 , tongSoKhaoSatTrangThaiChuyenKhaiThac = chuyenKhaiThac, tongSoKhaoSatTrangThaiTroNgai = troNgai };
+
+                var tong = new BaoCaoTongHopDanhGiaMucDo()
+                {
+                    DonVi = "TỔNG",
+                    BinhThuong = list.Sum(d => d.BinhThuong),
+                    ChiPhiCo = list.Sum(d => d.ChiPhiCo),
+                    ChiPhiKhong = list.Sum(d => d.ChiPhiKhong),
+                    HaiLong = list.Sum(d => d.HaiLong),
+                    KhongHaiLong = list.Sum(d => d.KhongHaiLong),
+                    NghiemThuChuDaoCo = list.Sum(d => d.NghiemThuChuDaoCo),
+                    NghiemThuChuDaoKhong = list.Sum(d => d.NghiemThuChuDaoKhong),
+                    NghiemThuMinhBachCo = list.Sum(d => d.NghiemThuMinhBachCo),
+                    NghiemThuMinhBachKhong = list.Sum(d => d.NghiemThuMinhBachKhong),
+                    NghiemThuThuanTienCo = list.Sum(d => d.NghiemThuThuanTienCo),
+                    NghiemThuThuanTienKhong = list.Sum(d => d.NghiemThuThuanTienKhong),
+                    RatHaiLong = list.Sum(d => d.RatHaiLong),
+                    RatKhongHaiLong = list.Sum(d => d.RatKhongHaiLong),
+                    TongSoVuCoChenhLech = list.Sum(d => d.TongSoVuCoChenhLech),
+                    TTDNChuDaoCo = list.Sum(d => d.TTDNChuDaoCo),
+                    TTDNChuDaoKhong = list.Sum(d => d.TTDNChuDaoKhong),
+                    TTDNMinhBachCo = list.Sum(d => d.TTDNMinhBachCo),
+                    TTDNMinhBachKhong = list.Sum(d => d.TTDNMinhBachKhong),
+                    TTDNTienDoKhaoSatCo = list.Sum(d => d.TTDNTienDoKhaoSatCo),
+                    TTDNTienDoKhaoSatKhong = list.Sum(d => d.TTDNTienDoKhaoSatKhong),
+                    YCauCapDienDeDangThuanTienCo = list.Sum(d => d.YCauCapDienDeDangThuanTienCo),
+                    YCauCapDienDeDangThuanTienKhong = list.Sum(d => d.YCauCapDienDeDangThuanTienKhong),
+                    YCauCapDienNhanhChongKipThoiCo = list.Sum(d => d.YCauCapDienNhanhChongKipThoiCo),
+                    YCauCapDienNhanhChongKipThoiKhong = list.Sum(d => d.YCauCapDienNhanhChongKipThoiKhong),
+                    YCauCapDienThaiDoChuyenNghiepCo = list.Sum(d => d.YCauCapDienThaiDoChuyenNghiepCo),
+                    YCauCapDienThaiDoChuyenNghiepKhong = list.Sum(d => d.YCauCapDienThaiDoChuyenNghiepKhong),
+                    
+
+                };
+                list.Add(tong);
+                list = list.OrderBy(x => x.DonVi).ToList();
+
                 result.data = finalList;
                 result.success = true;
                 return Ok(result);
@@ -1344,7 +1378,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-        //Báo cáo tổng hợp đánh giá mức dộ (excel)
+        //Báo cáo tổng hợp kháo sát khách hàng (excel)
         //[JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaothdanhgiamucdo")]
