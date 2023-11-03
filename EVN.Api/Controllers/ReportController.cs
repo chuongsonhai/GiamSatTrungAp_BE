@@ -2765,7 +2765,7 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
-                        ws.Cells[row, colval].Value = item.DGCD_KH_PHANHOI = item.DGCD_KH_PHANHOI - item.DGCD_TH_CHUONGTRINH;
+                        ws.Cells[row, colval].Value = item.DGCD_TH_DANGKY;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
                         ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
@@ -2773,6 +2773,13 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
+                        ws.Cells[row, colval].Value = item.DGCD_KH_PHANHOI;
+                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        colval++;
 
                         ws.Cells[row, colval].Value = item.CHENH_LECH = item.DGCD_KH_PHANHOI - item.DGCD_TH_CHUONGTRINH;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
