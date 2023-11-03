@@ -192,35 +192,38 @@ namespace EVN.Api.Controllers
 
                     ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                     var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
-                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 10 && p.MA_YC == yeucau.MaYeuCau);
-                    var canhbao = new CanhBao();
-                    if (lcanhbao1 == null)
-                    {
-                        canhbao.LOAI_CANHBAO_ID = 10;
-                        canhbao.LOAI_SOLANGUI = 1;
-                        canhbao.MA_YC = item.MaYeuCau;
-                        canhbao.THOIGIANGUI = DateTime.Now;
-                        canhbao.TRANGTHAI_CANHBAO = 1;
-                        canhbao.DONVI_DIENLUC = item.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 10 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận với lý do " + trongai.TEN_TNGAI + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                  var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 12 && p.MA_YC == yeucau.MaYeuCau);
+                var canhbao = new CanhBao();
+                if (lcanhbao1 == null)
+                {
+                    canhbao.LOAI_CANHBAO_ID = 12;
+                    canhbao.LOAI_SOLANGUI = 1;
+                    canhbao.MA_YC = yeucau.MaYeuCau;
+                    canhbao.THOIGIANGUI = DateTime.Now;
+                    canhbao.TRANGTHAI_CANHBAO = 1;
+                    canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                    canhbao.NOIDUNG = "Loại cảnh báo 12 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối với lý do: " + trongai.TEN_TNGAI + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                }
 
-                    }
-                    else
+                else
+                {
+                    var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                    var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                    if (checkTonTai1)
                     {
-                        var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                        var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                        if (checkTonTai1)
-                        {
-                            canhbao.LOAI_CANHBAO_ID = 10;
-                            canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
-                            canhbao.MA_YC = item.MaYeuCau;
+                            canhbao.LOAI_CANHBAO_ID = 12;
+                            canhbao.LOAI_SOLANGUI = 1;
+                            canhbao.MA_YC = yeucau.MaYeuCau;
                             canhbao.THOIGIANGUI = DateTime.Now;
                             canhbao.TRANGTHAI_CANHBAO = 1;
-                            canhbao.DONVI_DIENLUC = item.MaDViQLy;
-                            canhbao.NOIDUNG = "Loại cảnh báo 10 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận với lý do " + trongai.TEN_TNGAI + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                            canhbao.NOIDUNG = "Loại cảnh báo 12 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối với lý do: " + trongai.TEN_TNGAI + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
 
                         }
                     }
+
+
+
                         ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                     string messageCB = "";
                     LogCanhBao logCB = new LogCanhBao();

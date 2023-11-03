@@ -2816,7 +2816,7 @@ namespace EVN.Api.Controllers
                         }
                         else
                         {
-                            colval++;
+                            
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                             ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -2838,7 +2838,6 @@ namespace EVN.Api.Controllers
                         }
                         else
                         {
-                            colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                             ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -2860,7 +2859,6 @@ namespace EVN.Api.Controllers
                         }
                         else
                         {
-                            colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                             ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -2869,7 +2867,6 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
-
                         if (item.DGKS_MINH_BACH == 1) 
                         {
                             ws.Cells[row, colval].Value = 1;
@@ -2880,9 +2877,9 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
-                        else if (item.DGKS_MINH_BACH == 0)
+
+                        else
                         {
-                            colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                             ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -2891,7 +2888,6 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
-
                         if (item.DGKS_CHU_DAO == 1)
                         {
                             ws.Cells[row, colval].Value = 1;
@@ -2904,7 +2900,6 @@ namespace EVN.Api.Controllers
                         }
                         else
                         {
-                            colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                             ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -2913,7 +2908,6 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
-
                         if(item.DGNT_THUAN_TIEN == 1)
                         {
                             ws.Cells[row, colval].Value = 1;
@@ -2926,7 +2920,6 @@ namespace EVN.Api.Controllers
                         }
                         else
                         {
-                            colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                             ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -2935,7 +2928,6 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
-
                         if(item.DGNT_MINH_BACH == 1)
                         {
                             ws.Cells[row, colval].Value = 1;
@@ -2949,7 +2941,6 @@ namespace EVN.Api.Controllers
                         }
                         else
                         {
-                            colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                             ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -2958,7 +2949,6 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
-
                         if (item.DGNT_CHU_DAO == 1)
                         {
                             ws.Cells[row, colval].Value = 1;
@@ -2971,7 +2961,6 @@ namespace EVN.Api.Controllers
                         }
                         else
                         {
-                            colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                             ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -2980,7 +2969,6 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
-
                         if (item.KSAT_CHI_PHI == 1)
                         {
 
@@ -2994,7 +2982,6 @@ namespace EVN.Api.Controllers
                         }
                         else
                         {
-                            colval++;
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                             ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
@@ -3003,7 +2990,6 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
-
                         if (item.DGHL_CAPDIEN == 1)
                         {
                             ws.Cells[row, colval].Value = 1;
@@ -3013,7 +2999,9 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 5;
-                        }else if(item.DGHL_CAPDIEN == 2)
+                        }
+
+                        if(item.DGHL_CAPDIEN == 2)
                         {
                             colval++;
                             ws.Cells[row, colval].Value = 1;
@@ -3023,7 +3011,8 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 4;
-                        }else if(item.DGHL_CAPDIEN == 3)
+                        }
+                        if(item.DGHL_CAPDIEN == 3)
                         {
                             colval+=2;
                             ws.Cells[row, colval].Value = 1;
@@ -3034,7 +3023,8 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 3;
                         }
-                        else if (item.DGHL_CAPDIEN == 4)
+
+                        if (item.DGHL_CAPDIEN == 4)
                         {
                             colval += 3;
                             ws.Cells[row, colval].Value = 1;
@@ -3045,7 +3035,8 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
-                        else if (item.DGHL_CAPDIEN == 5)
+
+                         if (item.DGHL_CAPDIEN == 5)
                         {
                             colval += 4;
                             ws.Cells[row, colval].Value = 1;
@@ -3065,7 +3056,9 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 3;
-                        }else if(item.TRANGTHAI_GOI == 2)
+                        }
+
+                        if(item.TRANGTHAI_GOI == 2)
                         {
                             colval++;
                             ws.Cells[row, colval].Value = 1;
@@ -3076,7 +3069,8 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
-                        else if (item.TRANGTHAI_GOI == 3)
+
+                        if (item.TRANGTHAI_GOI == 3)
                         {
                             colval+=2;
                             ws.Cells[row, colval].Value = 1;
@@ -3087,7 +3081,7 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval ++;
                         }
-
+                        
                         ws.Cells[row, colval].Value = item.NGAY.ToString();
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
                         ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
