@@ -27,16 +27,16 @@ namespace EVN.Core.IServices
         XacNhanTroNgai UpdateKhaoid(int id);
 
         // lấy báo cáo có trạng thái = kết thúc chuyển khai thác 
-        IList<BaoCaoTongHopDanhGiaMucDo> GetBaoCaoTongHopDanhGiaMucDo(string madvi, string fromdate, string todate, int HangMucCanhBao);
+        IList<BaoCaoTongHopDanhGiaMucDo> GetBaoCaoTongHopDanhGiaMucDo(string madvi, string fromdate, string todate);
 
         //lấy báo cáo có trạng thái = trở ngại hoặc hết hạn
-        IList<BaoCaoTongHopDanhGiaMucDo> GetBaoCaoTongHopDanhGiaMucDo1(string madvi, string fromdate, string todate, int HangMucCanhBao);
+        IList<BaoCaoTongHopDanhGiaMucDo> GetBaoCaoTongHopDanhGiaMucDo1(string madvi, string fromdate, string todate);
 
-        ChuyenKhaiThacTotal GetListChuyenKhaiThacTotal(string madvi, string fromdate, string todate, int HangMucCanhBao);
+        ChuyenKhaiThacTotal GetListChuyenKhaiThacTotal(string madvi, string fromdate, string todate);
 
-        ChuyenKhaiThacTotal GetListTroNgaiTotal(string fromdate, string todate, int HangMucCanhBao);
+        ChuyenKhaiThacTotal GetListTroNgaiTotal(string fromdate, string todate);
 
-        IList<XacNhanTroNgai> GetBaoCaoChiTietMucDoHaiLong(string maDViQly, string fromdate, string todate, int HangMucCanhBao);
+        IList<XacNhanTroNgai> GetBaoCaoChiTietMucDoHaiLong(string maDViQly, string fromdate, string todat);
 
         
     }

@@ -1545,16 +1545,16 @@ namespace EVN.Api.Controllers
 
 
                 //danh sách khảo sát có trạng thái chuyẻn khai thác 
-                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat).ToList();
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate).ToList();
 
                 //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
-                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat).ToList();
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate).ToList();
 
                 //danh sách tổng số khảo sát có trạng thái = chuyển khai thác
-                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
 
                 //danh sách tổng số khảo sát có trang thai = trở ngại hoặc hết hạn TTDN 
-                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
 
                 var finalList = new { listSoLuongKhaoSatTrangThaiChuyenKhaiThac = list, listSoLuongKhaoSatTrangThaiTroNgai = list1 , tongSoKhaoSatTrangThaiChuyenKhaiThac = chuyenKhaiThac, tongSoKhaoSatTrangThaiTroNgai = troNgai };
 
@@ -1618,16 +1618,16 @@ namespace EVN.Api.Controllers
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
 
                 //danh sách khảo sát có trạng thái chuyẻn khai thác 
-                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var list = service.GetBaoCaoTongHopDanhGiaMucDo(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
 
                 //danh sách khảo sát có trạng thái trở ngại hoặc hết hạn TTDN
-                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var list1 = service.GetBaoCaoTongHopDanhGiaMucDo1(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
 
                 //danh sách tổng số khảo sát có trạng thái = chuyển khai thác
-                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var chuyenKhaiThac = service.GetListChuyenKhaiThacTotal(request.FilterDGiaDoHaiLong.maDViQLy, request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
 
                 //danh sách tổng số khảo sát có trang thai = trở ngại hoặc hết hạn TTDN 
-                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate, request.FilterDGiaDoHaiLong.HangMucKhaoSat);
+                var troNgai = service.GetListTroNgaiTotal(request.FilterDGiaDoHaiLong.fromdate, request.FilterDGiaDoHaiLong.todate);
                 string fileTemplate = AppDomain.CurrentDomain.BaseDirectory + "Templates/BaoCaoTongHopDanhGiaMucDo.xlsx";
 
                 string title = $"BÁO CÁO TỔNG HỢP ĐÁNH GIÁ MỨC ĐỘ HÀI LÒNG TRONG CÔNG TÁC CẤP ĐIỆN TRUNG ÁP TỪ NGÀY {request.FilterDGiaDoHaiLong.fromdate} ĐẾN NGÀY {request.FilterDGiaDoHaiLong.todate}";
@@ -1637,7 +1637,6 @@ namespace EVN.Api.Controllers
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
-                    ws.Cells[ws.Dimension.Address].AutoFitColumns();
 
                     ws.Cells[2, 1].Value = title;
                     int row = 8;
@@ -2620,7 +2619,7 @@ namespace EVN.Api.Controllers
 
                 FileInfo fileTemp = new FileInfo(fileTemplate);
 
-                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcmdhl.maDViQly, request.Filterbcmdhl.fromdate, request.Filterbcmdhl.todate, request.Filterbcmdhl.HangMucKhaoSat);
+                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcmdhl.maDViQly, request.Filterbcmdhl.fromdate, request.Filterbcmdhl.todate);
                 string title = $"BÁO CÁO CHI TIẾT ĐÁNH GIÁ MỨC ĐỘ HÀI LÒNG TRONG CÔNG TÁC CẤP ĐIỆN TRUNG ÁP TỪ NGÀY {request.Filterbcmdhl.fromdate} ĐẾN NGÀY {request.Filterbcmdhl.todate}";
                 using (ExcelPackage package = new ExcelPackage(fileTemp, true))
                 {
@@ -3168,7 +3167,7 @@ namespace EVN.Api.Controllers
 
                 FileInfo fileTemp = new FileInfo(fileTemplate);
 
-                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcmdhl.maDViQly, request.Filterbcmdhl.fromdate, request.Filterbcmdhl.todate, request.Filterbcmdhl.HangMucKhaoSat);
+                var list = service.GetBaoCaoChiTietMucDoHaiLong(request.Filterbcmdhl.maDViQly, request.Filterbcmdhl.fromdate, request.Filterbcmdhl.todate);
 
                 result.data = list;
                 result.success = true;
