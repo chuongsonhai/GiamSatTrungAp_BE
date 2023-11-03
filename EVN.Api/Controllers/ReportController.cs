@@ -3004,7 +3004,7 @@ namespace EVN.Api.Controllers
                             colval++;
                         }
 
-                        if (item.DGHL_CAPDIEN == 0)
+                        if (item.DGHL_CAPDIEN == 1)
                         {
                             ws.Cells[row, colval].Value = 1;
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
@@ -3013,7 +3013,7 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 5;
-                        }else if(item.DGHL_CAPDIEN == 1)
+                        }else if(item.DGHL_CAPDIEN == 2)
                         {
                             colval++;
                             ws.Cells[row, colval].Value = 1;
@@ -3023,7 +3023,7 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 4;
-                        }else if(item.DGHL_CAPDIEN == 2)
+                        }else if(item.DGHL_CAPDIEN == 3)
                         {
                             colval+=2;
                             ws.Cells[row, colval].Value = 1;
@@ -3034,7 +3034,7 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 3;
                         }
-                        else if (item.DGHL_CAPDIEN == 3)
+                        else if (item.DGHL_CAPDIEN == 4)
                         {
                             colval += 3;
                             ws.Cells[row, colval].Value = 1;
@@ -3045,7 +3045,7 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval += 2;
                         }
-                        else if (item.DGHL_CAPDIEN == 4)
+                        else if (item.DGHL_CAPDIEN == 5)
                         {
                             colval += 4;
                             ws.Cells[row, colval].Value = 1;
