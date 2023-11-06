@@ -170,7 +170,7 @@ namespace EVN.Core.Implements
             {
                 foreach (var org in listOrg)
                 {
-                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == org.orgCode && p.TRANGTHAI_GQ == 0);
+                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == org.orgCode && p.TRANGTHAI == 6);
 
                     var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
                     baoCaoTongHopDanhGiaMucDo.DonVi = org.orgName;
@@ -206,7 +206,7 @@ namespace EVN.Core.Implements
             else
             {
       
-                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == madvi && p.TRANGTHAI_GQ == 0);
+                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == madvi && p.TRANGTHAI == 6);
 
                     var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
                     baoCaoTongHopDanhGiaMucDo.DonVi = madvi;
@@ -255,7 +255,7 @@ namespace EVN.Core.Implements
            
                     foreach (var org in listOrg)
                     {
-                        var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == org.orgCode && p.TRANGTHAI == 6);
+                        var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == org.orgCode && p.TRANGTHAI >= 0);
                  
                         var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
                         baoCaoTongHopDanhGiaMucDo.DonVi = org.orgName;
@@ -293,7 +293,7 @@ namespace EVN.Core.Implements
             else
             {
  
-                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == madvi && p.TRANGTHAI == 6);
+                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == madvi && p.TRANGTHAI >= 0);
             
                     var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
                     baoCaoTongHopDanhGiaMucDo.DonVi = madvi;
