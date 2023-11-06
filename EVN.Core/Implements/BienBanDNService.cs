@@ -353,18 +353,20 @@ namespace EVN.Core.Implements
 
                 ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                 var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
-                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 15 && p.MA_YC == item.MaYeuCau);
+               
+
+                var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 11 && p.MA_YC == yeucau.MaYeuCau);
                 var canhbao = new CanhBao();
                 if (lcanhbao1 == null)
                 {
-                    canhbao.LOAI_CANHBAO_ID = 15;
+                    canhbao.LOAI_CANHBAO_ID = 11;
                     canhbao.LOAI_SOLANGUI = 1;
                     canhbao.MA_YC = yeucau.MaYeuCau;
                     canhbao.THOIGIANGUI = DateTime.Now;
                     canhbao.TRANGTHAI_CANHBAO = 1;
-                    canhbao.DONVI_DIENLUC = yeucau.MaDViQLy; 
-                    canhbao.NOIDUNG = "Loại cảnh báo 15 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + tbao.KhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayLap + " ĐV: " + yeucau.MaDViQLy + "<br>  Đã quá thời gian 02 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành nghiệm thu và đóng điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-               
+                    canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                    canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+
                 }
                 else
                 {
@@ -372,17 +374,17 @@ namespace EVN.Core.Implements
                     var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
                     if (checkTonTai1)
                     {
-                        canhbao.LOAI_CANHBAO_ID = 15;
+                        canhbao.LOAI_CANHBAO_ID = 11;
                         canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
                         canhbao.MA_YC = yeucau.MaYeuCau;
                         canhbao.THOIGIANGUI = DateTime.Now;
                         canhbao.TRANGTHAI_CANHBAO = 1;
                         canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 15 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + tbao.KhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayLap + " ĐV: " + yeucau.MaDViQLy + "<br>  Đã quá thời gian 02 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành nghiệm thu và đóng điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        canhbao.NOIDUNG = "Loại cảnh báo 11 - lần " + canhbao.LOAI_SOLANGUI + " <br> KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayYeuCau + " ĐV: " + yeucau.MaDViQLy + "<br> Khách hàng từ chối ký thỏa thuận đấu nối với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
 
                     }
                 }
-               
+
                 ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                 string message = "";
                 LogCanhBao logCB = new LogCanhBao();
