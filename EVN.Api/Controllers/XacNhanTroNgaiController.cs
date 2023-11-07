@@ -457,6 +457,8 @@ namespace EVN.Api.Controllers
                     item.TRANGTHAI_GQ = model.TRANGTHAI_GQ;
                     item.TONG_CONGSUAT_CD = model.TONG_CONGSUAT_CD;
                     item.DGCD_KH_PHANHOI = model.DGCD_KH_PHANHOI;
+                    item.DGCD_TH_CHUONGTRINH = model.DGCD_TH_CHUONGTRINH;
+                    item.DGCD_TH_DANGKY = model.DGCD_TH_DANGKY;
                     item.CHENH_LECH = model.DGCD_TH_DANGKY - model.DGCD_KH_PHANHOI;
                     item.DGYC_DK_DEDANG = model.DGYC_DK_DEDANG;
                     item.DGYC_XACNHAN_NCHONG_KTHOI = model.DGYC_XACNHAN_NCHONG_KTHOI;

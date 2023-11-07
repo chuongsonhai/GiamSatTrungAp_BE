@@ -147,7 +147,7 @@ namespace EVN.Core.Implements
         public SoLuongKhaoSatModel GetSoLuongKhaoSat(string tungay, string denngay)
         {
             DateTime tuNgayCast = DateTime.ParseExact(tungay, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast);
             var result = new SoLuongKhaoSatModel();
 
@@ -162,7 +162,7 @@ namespace EVN.Core.Implements
         public IList<BaoCaoTongHopDanhGiaMucDo> GetBaoCaoTongHopDanhGiaMucDo1(string madvi, string fromdate, string todate)
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
             var listOrg = organizationService.Getbymadvi();
             var resultList = new List<BaoCaoTongHopDanhGiaMucDo>();
@@ -245,7 +245,7 @@ namespace EVN.Core.Implements
         public IList<BaoCaoTongHopDanhGiaMucDo> GetBaoCaoTongHopDanhGiaMucDo(string madvi, string fromdate, string todate)
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
             //var listOrg = organizationService.GetAll();
             var listOrg = organizationService.Getbymadvi();
@@ -332,7 +332,7 @@ namespace EVN.Core.Implements
         public ChuyenKhaiThacTotal GetListChuyenKhaiThacTotal(string madvi, string fromdate, string todate)
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             if (madvi == "-1")
             {
                 var chuyenKhaiThacList = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.TRANGTHAI == 6);
@@ -444,7 +444,7 @@ namespace EVN.Core.Implements
         public IList<XacNhanTroNgai> GetBaoCaoChiTietMucDoHaiLong(string maDViQly, string fromdate, string todate)
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast);
             if (maDViQly != "-1")
             {
@@ -460,7 +460,7 @@ namespace EVN.Core.Implements
         public IList<BaoCaoChiTietGiamSatTienDo> GetBaoCaoChiTietGiamSatTienDo(string fromdate, string todate, string maDViQly, int MaLoaiCanhBao)
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
 
             var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast.AddDays(1));

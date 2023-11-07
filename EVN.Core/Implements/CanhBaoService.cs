@@ -118,8 +118,8 @@ namespace EVN.Core.Implements
         public IList<BaocaoTienDoCanhBaoModel> GetBaoCaotonghoptiendo(string maDViQly, int maloaicanhbao, string fromdate, string todate)
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
-         
+            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
+
             var data1 = new List<BaocaoTienDoCanhBaoModel>();
             ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
             IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
@@ -344,7 +344,7 @@ namespace EVN.Core.Implements
         public BaocaoTienDoCanhBaoModel GetBaoCaotonghoptiendoTong(string maDViQly, int maloaicanhbao, string fromdate, string todate)
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
 
             var data1 = new List<BaocaoTienDoCanhBaoModel>();
             ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
@@ -695,7 +695,7 @@ namespace EVN.Core.Implements
        public IList<BaoCaoChiTietGiamSatTienDo> GetBaoCaoChiTietGiamSatTienDo(string maDViQly, string fromdate, string todate, int MaLoaiCanhBao)
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
+            DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
             IXacNhanTroNgaiService xacNhanTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
             var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast.AddDays(1));

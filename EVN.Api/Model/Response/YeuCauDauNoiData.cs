@@ -144,6 +144,7 @@ namespace EVN.Api.Model
         public bool GiaoB4 { get; set; } = false;
         public string TroNgai { get; set; }
         public string TrangThaiText { get; set; }
+        public string TrangThai_khaosat{ get; set; }
 
         public YCauNghiemThu ToEntity(YCauNghiemThu entity)
         {
