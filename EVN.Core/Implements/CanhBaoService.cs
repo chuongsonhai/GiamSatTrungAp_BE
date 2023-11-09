@@ -336,6 +336,7 @@ namespace EVN.Core.Implements
                     }
                     data.NN_LOI_CBTRONGAI = query.Count(x => x.LOAI_CANHBAO_ID >= 9 && x.NGUYENHHAN_CANHBAO == 3);
                     data.NN_LOI_CBCHAM = query.Count(x => x.LOAI_CANHBAO_ID <= 8 && x.NGUYENHHAN_CANHBAO == 3);
+                    data1.Add(data);
                 }
             }
             return data1;
@@ -462,6 +463,7 @@ namespace EVN.Core.Implements
                 }
 
             }
+
             else
             {
                 if (maloaicanhbao == -1)
@@ -698,182 +700,1081 @@ namespace EVN.Core.Implements
             DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
             IXacNhanTroNgaiService xacNhanTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
-            var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast.AddDays(1));
-            if (maDViQly != "-1")
-            {
-                if (MaLoaiCanhBao != -1)
+            var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast);
+          
+            var resultList = new List<BaoCaoChiTietGiamSatTienDo>();
+                if (maDViQly == "-1")
                 {
-                    query = query.Where(p => p.DONVI_DIENLUC == maDViQly && p.LOAI_CANHBAO_ID == MaLoaiCanhBao);
+                    if (MaLoaiCanhBao == -1)
+                    {
+
+                        query = Query.Where(p =>  maDViQly == "-1" &&  -1 == MaLoaiCanhBao);
+                        var listCanhBao = query.ToList();
+                    foreach (var canhbao in listCanhBao)
+                    {
+                        var baoCaoChiTietGiamSatTienDo = new BaoCaoChiTietGiamSatTienDo();
+
+
+                        if (canhbao.LOAI_CANHBAO_ID == 1)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 2)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 3)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu nghiệm thu đóng điện, đơn vị chưa thực hiện tiếp nhận yêu cầu nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 4)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian dự thảo và ký hợp đồng mua bán điện";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu dự thảo và ký hợp đồng mua bán điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 5)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 ngày kể từ khi tiếp nhận yêu kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 6)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 04 ngày kể từ khi tiếp nhận yêu cầu cấp điện mới trung áp, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 7)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình tiếp nhận yêu cầu của khách, đơn vị hãy xử lý yêu cầu cấp điện/thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 8)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện cấp điện mới trung áp";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình khảo sát khách hàng, đơn vị hãy xử lý yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 9)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 10)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 11)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc hủy yêu cầu lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối hoặc góp ý chỉnh sửa nội dung dự thảo thỏa thuận đấu nối, đơn vị hãy xử lý thông tin khách hàng từ chối ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 12)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 13)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 14)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng đã từ chối hoặc góp ý chỉnh sửa nội dung dự thảo hợp đồng, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 15)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 48 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điều kiện điểm đấu nối và nghiệm thu 1 khoảng thời gian mà chưa nghiệm thu, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 16)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Thời gian ký thỏa thuận đấu nối vượt quá 02 năm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 1)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Mới tạo danh sách";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 2)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã gửi thông báo";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 3)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã tiếp nhận theo dõi";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 4)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Chuyển đơn vị xử lý";
+                        }
+                        if (canhbao.TRANGTHAI_CANHBAO == 5)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Gửi lại cảnh báo";
+                        }
+                        if (canhbao.TRANGTHAI_CANHBAO == 6)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã đóng cảnh báo";
+                        }
+                        baoCaoChiTietGiamSatTienDo.MaYeuCau = canhbao.MA_YC;
+                        baoCaoChiTietGiamSatTienDo.MaDViQuanLy = canhbao.DONVI_DIENLUC;
+
+                        var xacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
+
+                        IPhanhoiTraodoiService phanhoiService = IoC.Resolve<IPhanhoiTraodoiService>();
+
+                        var id_canhbao = canhBaoService.Getbyid(canhbao.ID);
+                        var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
+
+                        if (baoCaoChiTietGiamSatTienDo.NgayGioGiamSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NguoiGiamSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
+                        }
+
+
+
+                        if (baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.NOIDUNG;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.PhanHoi != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.PhanHoi = id_phanhoi.NOIDUNG_PHANHOI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.PhanHoi = null;
+                        }
+
+
+
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "1")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Ngành điện";
+                        }
+
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "2")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Khách quan";
+                        }
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "3")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Chương trình";
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
+                        }
+
+                        baoCaoChiTietGiamSatTienDo.KetQua = "";
+                        if (baoCaoChiTietGiamSatTienDo.TenKhachHang != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = xacNhanTroNgai.TEN_KH;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.DiaChi != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.DiaChi = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.SDT != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.SDT = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NgayTiepNhan != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = null;
+                        }
+
+
+                        resultList.Add(baoCaoChiTietGiamSatTienDo);
+                    }
+
+                }
+                    else
+                    {
+                        query = Query.Where(p =>  maDViQly == "-1" &&  p.LOAI_CANHBAO_ID == MaLoaiCanhBao);
+                    var listCanhBao1 = query.ToList();
+                    foreach (var canhbao in listCanhBao1)
+                    {
+                        var baoCaoChiTietGiamSatTienDo = new BaoCaoChiTietGiamSatTienDo();
+
+
+                        if (canhbao.LOAI_CANHBAO_ID == 1)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 2)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 3)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu nghiệm thu đóng điện, đơn vị chưa thực hiện tiếp nhận yêu cầu nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 4)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian dự thảo và ký hợp đồng mua bán điện";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu dự thảo và ký hợp đồng mua bán điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 5)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 ngày kể từ khi tiếp nhận yêu kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 6)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 04 ngày kể từ khi tiếp nhận yêu cầu cấp điện mới trung áp, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 7)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình tiếp nhận yêu cầu của khách, đơn vị hãy xử lý yêu cầu cấp điện/thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 8)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện cấp điện mới trung áp";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình khảo sát khách hàng, đơn vị hãy xử lý yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 9)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 10)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 11)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc hủy yêu cầu lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối hoặc góp ý chỉnh sửa nội dung dự thảo thỏa thuận đấu nối, đơn vị hãy xử lý thông tin khách hàng từ chối ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 12)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 13)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 14)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng đã từ chối hoặc góp ý chỉnh sửa nội dung dự thảo hợp đồng, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 15)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 48 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điều kiện điểm đấu nối và nghiệm thu 1 khoảng thời gian mà chưa nghiệm thu, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 16)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Thời gian ký thỏa thuận đấu nối vượt quá 02 năm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 1)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Mới tạo danh sách";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 2)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã gửi thông báo";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 3)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã tiếp nhận theo dõi";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 4)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Chuyển đơn vị xử lý";
+                        }
+                        if (canhbao.TRANGTHAI_CANHBAO == 5)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Gửi lại cảnh báo";
+                        }
+                        if (canhbao.TRANGTHAI_CANHBAO == 6)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã đóng cảnh báo";
+                        }
+                        baoCaoChiTietGiamSatTienDo.MaYeuCau = canhbao.MA_YC;
+                        baoCaoChiTietGiamSatTienDo.MaDViQuanLy = canhbao.DONVI_DIENLUC;
+
+                        var xacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
+
+                        IPhanhoiTraodoiService phanhoiService = IoC.Resolve<IPhanhoiTraodoiService>();
+
+                        var id_canhbao = canhBaoService.Getbyid(canhbao.ID);
+                        var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
+
+                        if (baoCaoChiTietGiamSatTienDo.NgayGioGiamSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NguoiGiamSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
+                        }
+
+
+
+                        if (baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.NOIDUNG;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.PhanHoi != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.PhanHoi = id_phanhoi.NOIDUNG_PHANHOI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.PhanHoi = null;
+                        }
+
+
+
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "1")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Ngành điện";
+                        }
+
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "2")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Khách quan";
+                        }
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "3")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Chương trình";
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
+                        }
+
+                        baoCaoChiTietGiamSatTienDo.KetQua = "";
+                        if (baoCaoChiTietGiamSatTienDo.TenKhachHang != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = xacNhanTroNgai.TEN_KH;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.DiaChi != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.DiaChi = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.SDT != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.SDT = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NgayTiepNhan != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = null;
+                        }
+
+
+                        resultList.Add(baoCaoChiTietGiamSatTienDo);
+                    }
+                }
+                }
+
+
+                else
+                {
+
+                if (MaLoaiCanhBao == -1)
+                {
+                query = Query.Where(p => p.DONVI_DIENLUC == maDViQly && -1 == MaLoaiCanhBao);
+                    var listCanhBao2 = query.ToList();
+                    foreach (var canhbao in listCanhBao2)
+                    {
+                        var baoCaoChiTietGiamSatTienDo = new BaoCaoChiTietGiamSatTienDo();
+
+
+                        if (canhbao.LOAI_CANHBAO_ID == 1)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 2)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 3)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu nghiệm thu đóng điện, đơn vị chưa thực hiện tiếp nhận yêu cầu nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 4)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian dự thảo và ký hợp đồng mua bán điện";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu dự thảo và ký hợp đồng mua bán điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 5)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 ngày kể từ khi tiếp nhận yêu kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 6)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 04 ngày kể từ khi tiếp nhận yêu cầu cấp điện mới trung áp, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 7)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình tiếp nhận yêu cầu của khách, đơn vị hãy xử lý yêu cầu cấp điện/thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 8)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện cấp điện mới trung áp";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình khảo sát khách hàng, đơn vị hãy xử lý yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 9)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 10)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 11)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc hủy yêu cầu lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối hoặc góp ý chỉnh sửa nội dung dự thảo thỏa thuận đấu nối, đơn vị hãy xử lý thông tin khách hàng từ chối ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 12)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 13)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 14)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng đã từ chối hoặc góp ý chỉnh sửa nội dung dự thảo hợp đồng, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 15)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 48 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điều kiện điểm đấu nối và nghiệm thu 1 khoảng thời gian mà chưa nghiệm thu, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 16)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Thời gian ký thỏa thuận đấu nối vượt quá 02 năm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 1)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Mới tạo danh sách";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 2)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã gửi thông báo";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 3)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã tiếp nhận theo dõi";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 4)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Chuyển đơn vị xử lý";
+                        }
+                        if (canhbao.TRANGTHAI_CANHBAO == 5)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Gửi lại cảnh báo";
+                        }
+                        if (canhbao.TRANGTHAI_CANHBAO == 6)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã đóng cảnh báo";
+                        }
+                        baoCaoChiTietGiamSatTienDo.MaYeuCau = canhbao.MA_YC;
+                        baoCaoChiTietGiamSatTienDo.MaDViQuanLy = canhbao.DONVI_DIENLUC;
+
+                        var xacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
+
+                        IPhanhoiTraodoiService phanhoiService = IoC.Resolve<IPhanhoiTraodoiService>();
+
+                        var id_canhbao = canhBaoService.Getbyid(canhbao.ID);
+                        var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
+
+                        if (baoCaoChiTietGiamSatTienDo.NgayGioGiamSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NguoiGiamSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
+                        }
+
+
+
+                        if (baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.NOIDUNG;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.PhanHoi != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.PhanHoi = id_phanhoi.NOIDUNG_PHANHOI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.PhanHoi = null;
+                        }
+
+
+
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "1")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Ngành điện";
+                        }
+
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "2")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Khách quan";
+                        }
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "3")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Chương trình";
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
+                        }
+
+                        baoCaoChiTietGiamSatTienDo.KetQua = "";
+                        if (baoCaoChiTietGiamSatTienDo.TenKhachHang != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = xacNhanTroNgai.TEN_KH;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.DiaChi != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.DiaChi = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.SDT != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.SDT = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NgayTiepNhan != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = null;
+                        }
+
+
+                        resultList.Add(baoCaoChiTietGiamSatTienDo);
+                    }
                 }
                 else
                 {
-                    query = query.Where(p => p.DONVI_DIENLUC == maDViQly);
-                }
-            }
-            else
-            {
-                if (MaLoaiCanhBao != -1)
-                {
-                    query = query.Where(p => p.LOAI_CANHBAO_ID == MaLoaiCanhBao);
-                }
-            }
+                    query = query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.LOAI_CANHBAO_ID == MaLoaiCanhBao && p.DONVI_DIENLUC == maDViQly);
+                    var listCanhBao3 = query.ToList();
+                    foreach (var canhbao in listCanhBao3)
+                    {
+                        var baoCaoChiTietGiamSatTienDo = new BaoCaoChiTietGiamSatTienDo();
 
 
-            var listCanhBao = query.ToList();
-            var resultList = new List<BaoCaoChiTietGiamSatTienDo>();
+                        if (canhbao.LOAI_CANHBAO_ID == 1)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
 
-            foreach (var canhbao in listCanhBao)
-            {
-                var baoCaoChiTietGiamSatTienDo = new BaoCaoChiTietGiamSatTienDo();
-                
-              
-                if (canhbao.LOAI_CANHBAO_ID == 1)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
+                        if (canhbao.LOAI_CANHBAO_ID == 2)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
 
-                if (canhbao.LOAI_CANHBAO_ID == 2)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện lập thỏa thuận đấu nối";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện đơn vị chưa thực hiện lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
+                        if (canhbao.LOAI_CANHBAO_ID == 3)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu nghiệm thu đóng điện, đơn vị chưa thực hiện tiếp nhận yêu cầu nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
 
-                if (canhbao.LOAI_CANHBAO_ID == 3)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu nghiệm thu đóng điện, đơn vị chưa thực hiện tiếp nhận yêu cầu nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
+                        if (canhbao.LOAI_CANHBAO_ID == 4)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian dự thảo và ký hợp đồng mua bán điện";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu dự thảo và ký hợp đồng mua bán điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
 
-                if (canhbao.LOAI_CANHBAO_ID == 4)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian dự thảo và ký hợp đồng mua bán điện";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu dự thảo và ký hợp đồng mua bán điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
+                        if (canhbao.LOAI_CANHBAO_ID == 5)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 ngày kể từ khi tiếp nhận yêu kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
 
-                if (canhbao.LOAI_CANHBAO_ID == 5)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 ngày kể từ khi tiếp nhận yêu kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
+                        if (canhbao.LOAI_CANHBAO_ID == 6)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 04 ngày kể từ khi tiếp nhận yêu cầu cấp điện mới trung áp, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
 
-                if (canhbao.LOAI_CANHBAO_ID == 6)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 04 ngày kể từ khi tiếp nhận yêu cầu cấp điện mới trung áp, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 7)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình tiếp nhận yêu cầu của khách, đơn vị hãy xử lý yêu cầu cấp điện/thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 8)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện cấp điện mới trung áp";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình khảo sát khách hàng, đơn vị hãy xử lý yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 9)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 10)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 11)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc hủy yêu cầu lập thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối hoặc góp ý chỉnh sửa nội dung dự thảo thỏa thuận đấu nối, đơn vị hãy xử lý thông tin khách hàng từ chối ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 12)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 13)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 14)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng đã từ chối hoặc góp ý chỉnh sửa nội dung dự thảo hợp đồng, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 15)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 48 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điều kiện điểm đấu nối và nghiệm thu 1 khoảng thời gian mà chưa nghiệm thu, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.LOAI_CANHBAO_ID == 16)
+                        {
+                            baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Thời gian ký thỏa thuận đấu nối vượt quá 02 năm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 1)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Mới tạo danh sách";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 2)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã gửi thông báo";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 3)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã tiếp nhận theo dõi";
+                        }
+
+                        if (canhbao.TRANGTHAI_CANHBAO == 4)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Chuyển đơn vị xử lý";
+                        }
+                        if (canhbao.TRANGTHAI_CANHBAO == 5)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Gửi lại cảnh báo";
+                        }
+                        if (canhbao.TRANGTHAI_CANHBAO == 6)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TrangThai = "Đã đóng cảnh báo";
+                        }
+                        baoCaoChiTietGiamSatTienDo.MaYeuCau = canhbao.MA_YC;
+                        baoCaoChiTietGiamSatTienDo.MaDViQuanLy = canhbao.DONVI_DIENLUC;
+
+                        var xacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
+
+                        IPhanhoiTraodoiService phanhoiService = IoC.Resolve<IPhanhoiTraodoiService>();
+
+                        var id_canhbao = canhBaoService.Getbyid(canhbao.ID);
+                        var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
+
+                        if (baoCaoChiTietGiamSatTienDo.NgayGioGiamSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NguoiGiamSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
+                        }
+
+
+
+                        if (baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.NOIDUNG;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.PhanHoi != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.PhanHoi = id_phanhoi.NOIDUNG_PHANHOI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.PhanHoi = null;
+                        }
+
+
+
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "1")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Ngành điện";
+                        }
+
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "2")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Khách quan";
+                        }
+                        if (id_canhbao.NGUYENHHAN_CANHBAO.ToString() == "3")
+                        {
+                            baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Chương trình";
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
+                        }
+
+                        baoCaoChiTietGiamSatTienDo.KetQua = "";
+                        if (baoCaoChiTietGiamSatTienDo.TenKhachHang != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = xacNhanTroNgai.TEN_KH;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.DiaChi != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.DiaChi = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.SDT != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.SDT = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = null;
+                        }
+
+                        if (baoCaoChiTietGiamSatTienDo.NgayTiepNhan != null)
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
+                        }
+                        else
+                        {
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = null;
+                        }
+
+
+                        resultList.Add(baoCaoChiTietGiamSatTienDo);
+                    }
 
                 }
-
-                if (canhbao.LOAI_CANHBAO_ID == 7)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình tiếp nhận yêu cầu của khách, đơn vị hãy xử lý yêu cầu cấp điện/thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if (canhbao.LOAI_CANHBAO_ID == 8)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian thực hiện cấp điện mới trung áp";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình khảo sát khách hàng, đơn vị hãy xử lý yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if(canhbao.LOAI_CANHBAO_ID == 9)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu lập thỏa thuận đấu nối bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if (canhbao.LOAI_CANHBAO_ID == 10)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận, đơn vị hãy tiếp nhận yêu cầu lập thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if (canhbao.LOAI_CANHBAO_ID == 11)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc hủy yêu cầu lập thỏa thuận đấu nối";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối hoặc góp ý chỉnh sửa nội dung dự thảo thỏa thuận đấu nối, đơn vị hãy xử lý thông tin khách hàng từ chối ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if (canhbao.LOAI_CANHBAO_ID == 12)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if (canhbao.LOAI_CANHBAO_ID == 13)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if (canhbao.LOAI_CANHBAO_ID == 14)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối.";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng đã từ chối hoặc góp ý chỉnh sửa nội dung dự thảo hợp đồng, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if (canhbao.LOAI_CANHBAO_ID == 15)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 48 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điều kiện điểm đấu nối và nghiệm thu 1 khoảng thời gian mà chưa nghiệm thu, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if (canhbao.LOAI_CANHBAO_ID == 16)
-                {
-                    baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
-                    baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Thời gian ký thỏa thuận đấu nối vượt quá 02 năm, đơn vị hãy xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
-                }
-
-                if (canhbao.TRANGTHAI_CANHBAO == 1)
-                {
-                    baoCaoChiTietGiamSatTienDo.TrangThai = "Mới tạo danh sách";
-                }
-
-                if (canhbao.TRANGTHAI_CANHBAO == 2)
-                {
-                    baoCaoChiTietGiamSatTienDo.TrangThai = "Đã gửi thông báo";
-                }
-
-                if (canhbao.TRANGTHAI_CANHBAO == 3)
-                {
-                    baoCaoChiTietGiamSatTienDo.TrangThai = "Đã tiếp nhận theo dõi";
-                }
-
-                if (canhbao.TRANGTHAI_CANHBAO == 4)
-                {
-                    baoCaoChiTietGiamSatTienDo.TrangThai = "Chuyển đơn vị xử lý";
-                }
-                if (canhbao.TRANGTHAI_CANHBAO == 5)
-                {
-                    baoCaoChiTietGiamSatTienDo.TrangThai = "Gửi lại cảnh báo";
-                }
-                if (canhbao.TRANGTHAI_CANHBAO == 6)
-                {
-                    baoCaoChiTietGiamSatTienDo.TrangThai = "Đã đóng cảnh báo";
-                }
-                baoCaoChiTietGiamSatTienDo.MaYeuCau = canhbao.MA_YC;
-                baoCaoChiTietGiamSatTienDo.MaDViQuanLy = canhbao.DONVI_DIENLUC;
-
-                var xacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
-
-                if (xacNhanTroNgai != null)
-                {
-                    baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = xacNhanTroNgai.NGAY.ToString();
-                    baoCaoChiTietGiamSatTienDo.NguoiGiamSat = xacNhanTroNgai.NGUOI_KSAT;
-                    baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
-                    baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = "";
-                    baoCaoChiTietGiamSatTienDo.PhanHoi = xacNhanTroNgai.PHAN_HOI;
-                    baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "";
-                    baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = xacNhanTroNgai.NOIDUNG;
-                    baoCaoChiTietGiamSatTienDo.KetQua = "";
-                    baoCaoChiTietGiamSatTienDo.GhiChu = xacNhanTroNgai.GHI_CHU;
-                    baoCaoChiTietGiamSatTienDo.TenKhachHang = xacNhanTroNgai.TEN_KH;
-                    baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
-                    baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
-                    baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
-                    baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
-                }
-                resultList.Add(baoCaoChiTietGiamSatTienDo);
+            
             }
             return resultList;
         }

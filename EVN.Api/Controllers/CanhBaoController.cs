@@ -572,12 +572,14 @@ namespace EVN.Api.Controllers
                 IGiamSatPhanhoiCanhbaoidService servicephanhoi = IoC.Resolve<IGiamSatPhanhoiCanhbaoidService>();
                 IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
                 ILogCanhBaoService LogCanhBaoservice = IoC.Resolve<ILogCanhBaoService>();
+                ICanhBaoService CBservice1 = IoC.Resolve<ICanhBaoService>();
                 var ThongTinCanhBao = servicecanhbao.Getbyid(id);
+                var viewnguyennhan_canhbao = CBservice1.Getbyid(id);
                 // mới chỉ lấy dc trạng thái của TTDN, chưa lấy dc của nghiệm thu
                 var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(ThongTinCanhBao.MA_YC);
                 var DanhSachPhanHoi = servicephanhoi.Getbyid(id);
                 var DanhSachTuongTac = LogCanhBaoservice.Filter(id);
-                var oj = new { ThongTinCanhBao, ThongTinYeuCau, DanhSachPhanHoi, DanhSachTuongTac };
+                var oj = new { viewnguyennhan_canhbao, ThongTinCanhBao, ThongTinYeuCau, DanhSachPhanHoi, DanhSachTuongTac };
                 result.data = oj;
                 result.success = true;
                 return Ok(result);

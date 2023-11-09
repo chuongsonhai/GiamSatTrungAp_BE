@@ -20,7 +20,7 @@ namespace EVN.Core.Implements
 
         public IList<Organization> Getbymadvi()
         {
-            return Query.Where(p => p.orgId != 281 && p.orgId != 276).ToList();
+            return Query.Where(p => p.orgId != 281 && p.orgId != 276 && p.orgId != 488).ToList();
         }
 
         public IList<Organization> GetbyParent(string code)

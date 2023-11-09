@@ -24,6 +24,8 @@ namespace EVN.Core.Implements
             return Get(p => p.MaYeuCau == maYCau);
         }
 
+
+
         public IList<GiamSatCongVanCanhbaoid> Filterkhaosat(string maycau)
         {
             var query = Query.Where(p => p.MaYeuCau == maycau);
