@@ -1352,7 +1352,6 @@ namespace EVN.Api.Controllers
                 {
 
                     ExcelWorksheet ws = package.Workbook.Worksheets[1];
-                    ws.Cells[ws.Dimension.Address].AutoFitColumns();
                     ws.Cells[2, 1].Value = title;
                     int row = 9;
                     int stt = 0;
