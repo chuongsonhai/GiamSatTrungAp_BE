@@ -1686,14 +1686,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
                         }
 
-                        if (id_phanhoi == null)
+                        if (xacNhanTroNgai == null)
                         {
 
                             baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = xacNhanTroNgai.NGUOI_KSAT;
                         }
 
 
