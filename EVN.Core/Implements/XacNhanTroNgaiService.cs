@@ -469,7 +469,7 @@ namespace EVN.Core.Implements
                     query = query.Where(p => p.MA_DVI == maDViQly);                
             }
 
-
+            IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
             var listXacNhanTroNgai = query.ToList();
             var resultList = new List<BaoCaoChiTietGiamSatTienDo>();
 
@@ -484,7 +484,8 @@ namespace EVN.Core.Implements
                 baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
 
                 var canhbao = canhBaoService.GetByMaYeuCau(baoCaoChiTietGiamSatTienDo.MaYeuCau);
-                if(canhbao.LOAI_CANHBAO_ID == 1)
+                var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(baoCaoChiTietGiamSatTienDo.MaYeuCau);
+                if (canhbao.LOAI_CANHBAO_ID == 1)
                 {
                     baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
                     baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá 02 giờ kể từ khi tiếp nhận yêu cầu cấp điện, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";

@@ -700,6 +700,8 @@ namespace EVN.Core.Implements
             DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
             IXacNhanTroNgaiService xacNhanTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
+            IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
+            IYCauNghiemThuService NTservice = IoC.Resolve<IYCauNghiemThuService>();
             var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast);
           
             var resultList = new List<BaoCaoChiTietGiamSatTienDo>();
@@ -843,6 +845,8 @@ namespace EVN.Core.Implements
                         baoCaoChiTietGiamSatTienDo.MaDViQuanLy = canhbao.DONVI_DIENLUC;
 
                         var xacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
+                        var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(canhbao.MA_YC);
+                        var YCNT = NTservice.GetbyMaYCau(canhbao.MA_YC);
 
                         IPhanhoiTraodoiService phanhoiService = IoC.Resolve<IPhanhoiTraodoiService>();
 
@@ -927,32 +931,32 @@ namespace EVN.Core.Implements
                         }
 
                         baoCaoChiTietGiamSatTienDo.KetQua = "";
-                        if (xacNhanTroNgai == null)
+                        if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.TenKhachHang = xacNhanTroNgai.TEN_KH;
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = ThongTinYeuCau.TenKhachHang;
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (YCNT == null)
                         {
                             baoCaoChiTietGiamSatTienDo.DiaChi = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
+                            baoCaoChiTietGiamSatTienDo.DiaChi = YCNT.DiaChi;
 
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.SDT = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
+                            baoCaoChiTietGiamSatTienDo.SDT = ThongTinYeuCau.DienThoai;
 
                         }
 
@@ -1118,6 +1122,8 @@ namespace EVN.Core.Implements
                         baoCaoChiTietGiamSatTienDo.MaDViQuanLy = canhbao.DONVI_DIENLUC;
 
                         var xacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
+                        var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(canhbao.MA_YC);
+                        var YCNT = NTservice.GetbyMaYCau(canhbao.MA_YC);
 
                         IPhanhoiTraodoiService phanhoiService = IoC.Resolve<IPhanhoiTraodoiService>();
 
@@ -1202,32 +1208,32 @@ namespace EVN.Core.Implements
                         }
 
                         baoCaoChiTietGiamSatTienDo.KetQua = "";
-                        if (xacNhanTroNgai == null)
+                        if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.TenKhachHang = xacNhanTroNgai.TEN_KH;
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = ThongTinYeuCau.TenKhachHang;
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (YCNT == null)
                         {
                             baoCaoChiTietGiamSatTienDo.DiaChi = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
+                            baoCaoChiTietGiamSatTienDo.DiaChi = YCNT.DiaChi;
 
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.SDT = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
+                            baoCaoChiTietGiamSatTienDo.SDT = ThongTinYeuCau.DienThoai;
 
                         }
 
@@ -1398,6 +1404,8 @@ namespace EVN.Core.Implements
                         baoCaoChiTietGiamSatTienDo.MaDViQuanLy = canhbao.DONVI_DIENLUC;
 
                         var xacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
+                        var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(canhbao.MA_YC);
+                        var YCNT = NTservice.GetbyMaYCau(canhbao.MA_YC);
 
                         IPhanhoiTraodoiService phanhoiService = IoC.Resolve<IPhanhoiTraodoiService>();
 
@@ -1482,32 +1490,32 @@ namespace EVN.Core.Implements
                         }
 
                         baoCaoChiTietGiamSatTienDo.KetQua = "";
-                        if (xacNhanTroNgai == null)
+                        if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.TenKhachHang = xacNhanTroNgai.TEN_KH;
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = ThongTinYeuCau.TenKhachHang;
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (YCNT == null)
                         {
                             baoCaoChiTietGiamSatTienDo.DiaChi = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
+                            baoCaoChiTietGiamSatTienDo.DiaChi = YCNT.DiaChi;
 
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.SDT = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
+                            baoCaoChiTietGiamSatTienDo.SDT = ThongTinYeuCau.DienThoai;
 
                         }
 
@@ -1671,6 +1679,8 @@ namespace EVN.Core.Implements
                         baoCaoChiTietGiamSatTienDo.MaDViQuanLy = canhbao.DONVI_DIENLUC;
 
                         var xacNhanTroNgai = xacNhanTroNgaiService.FilterByMaYeuCau(canhbao.MA_YC);
+                        var ThongTinYeuCau = serviceyeucau.GetbyMaYCau(canhbao.MA_YC);
+                        var YCNT = NTservice.GetbyMaYCau(canhbao.MA_YC);
 
                         IPhanhoiTraodoiService phanhoiService = IoC.Resolve<IPhanhoiTraodoiService>();
 
@@ -1686,14 +1696,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (id_phanhoi == null)
                         {
 
                             baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = xacNhanTroNgai.NGUOI_KSAT;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
                         }
 
 
@@ -1755,32 +1765,32 @@ namespace EVN.Core.Implements
                         }
 
                         baoCaoChiTietGiamSatTienDo.KetQua = "";
-                        if (xacNhanTroNgai == null)
+                        if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.TenKhachHang = xacNhanTroNgai.TEN_KH;
+                            baoCaoChiTietGiamSatTienDo.TenKhachHang = ThongTinYeuCau.TenKhachHang;
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (YCNT == null)
                         {
                             baoCaoChiTietGiamSatTienDo.DiaChi = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.DiaChi = xacNhanTroNgai.DIA_CHI;
+                            baoCaoChiTietGiamSatTienDo.DiaChi = YCNT.DiaChi;
 
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.SDT = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.SDT = xacNhanTroNgai.DIEN_THOAI;
+                            baoCaoChiTietGiamSatTienDo.SDT = ThongTinYeuCau.DienThoai;
 
                         }
 
