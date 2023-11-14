@@ -593,7 +593,7 @@ namespace EVN.Api.Controllers
                 }
 
                 //end
-                else if (request.Filter.trangthai_khaosat == "Kết thúc khảo sát")   //Kết thúc khảo sát
+                if (request.Filter.trangthai_khaosat == "Kết thúc khảo sát")   //Kết thúc khảo sát
                 {
 
                     if (request.Filter.trangthai_ycau == "Hoàn thành")
@@ -1301,7 +1301,7 @@ namespace EVN.Api.Controllers
                         }
 
                     }
-                    else
+                    else if (request.Filter.trangthai_ycau == "")
                     {
                         foreach (var item in HUlist)
                         {
