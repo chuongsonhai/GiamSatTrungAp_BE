@@ -140,6 +140,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Rất không hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -157,6 +158,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Rất không hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -175,6 +177,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Rất không hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -189,6 +192,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Rất không hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -215,6 +219,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Không hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -232,6 +237,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Không hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -250,6 +256,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Không hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -264,6 +271,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Không hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -290,6 +298,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Bình thường";
                                     listModel.Add(model);
                                 }
 
@@ -307,6 +316,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Bình thường";
                                     listModel.Add(model);
                                 }
 
@@ -325,6 +335,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Bình thường";
                                     listModel.Add(model);
                                 }
 
@@ -339,6 +350,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Bình thường";
                                     listModel.Add(model);
                                 }
 
@@ -366,6 +378,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -383,6 +396,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -401,6 +415,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -415,6 +430,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -442,6 +458,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.mucdo_hailong = "Hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -458,7 +475,7 @@ namespace EVN.Api.Controllers
                                 {
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.TrangThai_khaosat = "Rất hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -477,6 +494,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hủy";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.TrangThai_khaosat = "Rất hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -491,6 +509,7 @@ namespace EVN.Api.Controllers
                                     model.TroNgai = bbkt.TroNgai;
                                     model.TrangThaiText = "Hoàn thành";
                                     model.TrangThai_khaosat = "Đang khảo sát";
+                                    model.TrangThai_khaosat = "Rất hài lòng";
                                     listModel.Add(model);
                                 }
 
@@ -576,6 +595,7 @@ namespace EVN.Api.Controllers
                 //end
                 else if (request.Filter.trangthai_khaosat == "Kết thúc khảo sát")   //Kết thúc khảo sát
                 {
+
                     if (request.Filter.trangthai_ycau == "Hoàn thành")
                     {
                         foreach (var item in HTlist)
@@ -645,77 +665,359 @@ namespace EVN.Api.Controllers
                 }
                 //end
 
-                else if (request.Filter.trangthai_khaosat == "Dừng ngang cuộc gọi")   //Dừng ngang cuộc gọi
+                if (request.Filter.trangthai_khaosat == "Dừng ngang cuộc gọi")   //Dừng ngang cuộc gọi
                 {
-
-                    if (request.Filter.trangthai_ycau == "Hoàn thành")
+                    if (request.Filter.mucdo_hailong == "1") //rất không hài lòng
                     {
-                        foreach (var item in HTlist)
+                        if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2)
+                            foreach (var item in HTlist)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                listModel.Add(model);
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                        }
+                        else if (request.Filter.trangthai_ycau == "Hủy")
+                        {
+                            foreach (var item in HUlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
                             }
 
+                        }
+                        else
+                        {
+                            foreach (var item in HUlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                            foreach (var item in HTlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
                         }
                     }
-                    else if (request.Filter.trangthai_ycau == "Hủy")
+
+                    if (request.Filter.mucdo_hailong == "2") // không hài lòng
                     {
-                        foreach (var item in HUlist)
+                        if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2)
+                            foreach (var item in HTlist)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                listModel.Add(model);
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                        }
+                        else if (request.Filter.trangthai_ycau == "Hủy")
+                        {
+                            foreach (var item in HUlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
                             }
 
                         }
+                        else
+                        {
+                            foreach (var item in HUlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
 
+                            }
+                            foreach (var item in HTlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                        }
                     }
-                    else
+
+                    if (request.Filter.mucdo_hailong == "3") //bình thường
                     {
-                        foreach (var item in HUlist)
+                        if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2)
+                            foreach (var item in HTlist)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                listModel.Add(model);
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                        }
+                        else if (request.Filter.trangthai_ycau == "Hủy")
+                        {
+                            foreach (var item in HUlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
                             }
 
                         }
-                        foreach (var item in HTlist)
+                        else
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2)
+                            foreach (var item in HUlist)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                listModel.Add(model);
-                            }
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
 
+                            }
+                            foreach (var item in HTlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
                         }
                     }
+
+                    if (request.Filter.mucdo_hailong == "4") //hài lòng
+                    {
+                        if (request.Filter.trangthai_ycau == "Hoàn thành")
+                        {
+                            foreach (var item in HTlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                        }
+                        else if (request.Filter.trangthai_ycau == "Hủy")
+                        {
+                            foreach (var item in HUlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in HUlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                            foreach (var item in HTlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                        }
+                    }
+
+                    if (request.Filter.mucdo_hailong == "5") //rất hài lòng
+                    {
+                        if (request.Filter.trangthai_ycau == "Hoàn thành")
+                        {
+                            foreach (var item in HTlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                        }
+                        else if (request.Filter.trangthai_ycau == "Hủy")
+                        {
+                            foreach (var item in HUlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in HUlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                            foreach (var item in HTlist)
+                            {
+                                var model = new YeuCauNghiemThuData(item);
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
+                                {
+                                    model.TroNgai = bbkt.TroNgai;
+                                    model.TrangThaiText = "Hoàn thành";
+                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
+                                    listModel.Add(model);
+                                }
+
+                            }
+                        }
+                    }
+
                 }
-
                 //end
 
                 else if (request.Filter.trangthai_khaosat == "Chưa gọi được")   //Chưa gọi được

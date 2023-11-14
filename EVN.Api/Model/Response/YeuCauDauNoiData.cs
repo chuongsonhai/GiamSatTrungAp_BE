@@ -145,6 +145,7 @@ namespace EVN.Api.Model
         public string TroNgai { get; set; }
         public string TrangThaiText { get; set; }
         public string TrangThai_khaosat{ get; set; }
+        public string mucdo_hailong { get; set; }
 
         public YCauNghiemThu ToEntity(YCauNghiemThu entity)
         {
