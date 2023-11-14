@@ -24,6 +24,7 @@ namespace EVN.Api.Model.Request
         public string keyword { get; set; }
         public string trangthai_ycau { get; set; }
         public string trangthai_khaosat { get; set; }
+        public string mucdo_hailong { get; set; }
     }
 
 }
