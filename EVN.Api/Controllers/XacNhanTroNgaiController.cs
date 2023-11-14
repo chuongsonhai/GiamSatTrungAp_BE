@@ -939,7 +939,7 @@ namespace EVN.Api.Controllers
                 if (request.Filter.trangthai_khaosat == "Kết thúc khảo sát")   //Kết thúc khảo sát
                 {
 
-                    if (request.Filter.mucdo_hailong == "1") //all
+                    if (request.Filter.mucdo_hailong == "1") //rất không hài lòng
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
