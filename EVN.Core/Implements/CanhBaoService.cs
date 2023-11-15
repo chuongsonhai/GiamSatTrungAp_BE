@@ -132,7 +132,8 @@ namespace EVN.Core.Implements
                 {
                     foreach (var org in listOrg)
                     {
-                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == org.orgCode && -1 == maloaicanhbao);
+                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast 
+                        && p.DONVI_DIENLUC == org.orgCode && -1 == maloaicanhbao && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                         var data = new BaocaoTienDoCanhBaoModel();
                         data.maDvi = org.orgName;
                         data.CB_TONG = query.Count();
@@ -187,7 +188,8 @@ namespace EVN.Core.Implements
                     foreach (var org in listOrg)
                     {
 
-                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == org.orgCode && p.LOAI_CANHBAO_ID == maloaicanhbao);
+                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == org.orgCode 
+                        && p.LOAI_CANHBAO_ID == maloaicanhbao && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                         var data = new BaocaoTienDoCanhBaoModel();
                         data.maDvi = org.orgName;
                         data.CB_TONG = query.Count();
@@ -242,7 +244,8 @@ namespace EVN.Core.Implements
             {
                 if (maloaicanhbao == -1)
                 {
-                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDViQly && -1 == maloaicanhbao);
+                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast 
+                    && p.DONVI_DIENLUC == maDViQly && -1 == maloaicanhbao && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                     var data = new BaocaoTienDoCanhBaoModel();
                     data.maDvi = maDViQly;
                     data.CB_TONG = query.Count();
@@ -291,7 +294,8 @@ namespace EVN.Core.Implements
                 }
                 else
                 {
-                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDViQly && p.LOAI_CANHBAO_ID == maloaicanhbao);
+                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast 
+                    && p.DONVI_DIENLUC == maDViQly && p.LOAI_CANHBAO_ID == maloaicanhbao && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                     var data = new BaocaoTienDoCanhBaoModel();
                     data.maDvi = maDViQly;
                     data.CB_TONG = query.Count();
@@ -358,7 +362,8 @@ namespace EVN.Core.Implements
                 if (maloaicanhbao == -1)
                 {
                  
-                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && maDViQly == "-1"  && p.THOIGIANGUI <= denNgayCast  && -1 == maloaicanhbao);
+                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && maDViQly == "-1"  
+                        && p.THOIGIANGUI <= denNgayCast  && -1 == maloaicanhbao && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                         var data = new BaocaoTienDoCanhBaoModel();
 
                         data.CB_TONG = query.Count();
@@ -412,7 +417,8 @@ namespace EVN.Core.Implements
 
                   
 
-                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && maDViQly == "-1"  && p.THOIGIANGUI <= denNgayCast  && p.LOAI_CANHBAO_ID == maloaicanhbao);
+                        var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && maDViQly == "-1"  
+                        && p.THOIGIANGUI <= denNgayCast  && p.LOAI_CANHBAO_ID == maloaicanhbao && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                         var data = new BaocaoTienDoCanhBaoModel();
                    
                         data.CB_TONG = query.Count();
@@ -468,7 +474,9 @@ namespace EVN.Core.Implements
             {
                 if (maloaicanhbao == -1)
                 {
-                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDViQly && -1 == maloaicanhbao);
+                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast 
+                    && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDViQly && -1 == maloaicanhbao 
+                    && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                     var data = new BaocaoTienDoCanhBaoModel();
                     data.maDvi = maDViQly;
                     data.CB_TONG = query.Count();
@@ -518,7 +526,8 @@ namespace EVN.Core.Implements
                 }
                 else
                 {
-                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDViQly && p.LOAI_CANHBAO_ID == maloaicanhbao);
+                    var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDViQly 
+                    && p.LOAI_CANHBAO_ID == maloaicanhbao && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                     var data = new BaocaoTienDoCanhBaoModel();
 
                     data.CB_TONG = query.Count();
@@ -702,7 +711,7 @@ namespace EVN.Core.Implements
             IXacNhanTroNgaiService xacNhanTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
             IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
             IYCauNghiemThuService NTservice = IoC.Resolve<IYCauNghiemThuService>();
-            var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast);
+           // var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
           
             var resultList = new List<BaoCaoChiTietGiamSatTienDo>();
                 if (maDViQly == "-1")
@@ -710,7 +719,7 @@ namespace EVN.Core.Implements
                     if (MaLoaiCanhBao == -1)
                     {
 
-                        query = Query.Where(p =>  maDViQly == "-1" &&  -1 == MaLoaiCanhBao);
+                      var  query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && maDViQly == "-1" &&  -1 == MaLoaiCanhBao && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                         var listCanhBao = query.ToList();
                     foreach (var canhbao in listCanhBao)
                     {
@@ -881,18 +890,18 @@ namespace EVN.Core.Implements
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.NOIDUNG;
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
                         }
 
-                        if (xacNhanTroNgai == null)
-                        {
-                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
-                        }
-                        else
-                        {
-                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
+                        //if (xacNhanTroNgai == null)
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
+                        //}
+                        //else
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
 
-                        }
+                        //}
 
                         if (id_phanhoi == null)
                         {
@@ -920,17 +929,17 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Chương trình";
                         }
 
-                        if (id_phanhoi == null)
-                        {
+                        //if (id_phanhoi == null)
+                        //{
 
-                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
-                        }
-                        else
-                        {
-                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
-                        }
+                        //    baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
+                        //}
+                        //else
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
+                        //}
 
-                        baoCaoChiTietGiamSatTienDo.KetQua = "";
+                        baoCaoChiTietGiamSatTienDo.KetQua = id_canhbao.KETQUA_GIAMSAT;
                         if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
@@ -987,7 +996,8 @@ namespace EVN.Core.Implements
                 }
                     else
                     {
-                        query = Query.Where(p =>  maDViQly == "-1" &&  p.LOAI_CANHBAO_ID == MaLoaiCanhBao);
+                       var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && maDViQly == "-1" &&  p.LOAI_CANHBAO_ID == MaLoaiCanhBao 
+                        && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                     var listCanhBao1 = query.ToList();
                     foreach (var canhbao in listCanhBao1)
                     {
@@ -1158,18 +1168,18 @@ namespace EVN.Core.Implements
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.NOIDUNG;
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
                         }
 
-                        if (xacNhanTroNgai == null)
-                        {
-                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
-                        }
-                        else
-                        {
-                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
+                        //if (xacNhanTroNgai == null)
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
+                        //}
+                        //else
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
 
-                        }
+                        //}
 
                         if (id_phanhoi == null)
                         {
@@ -1197,17 +1207,17 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Chương trình";
                         }
 
-                        if (id_phanhoi == null)
-                        {
+                        //if (id_phanhoi == null)
+                        //{
 
-                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
-                        }
-                        else
-                        {
-                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
-                        }
+                        //    baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
+                        //}
+                        //else
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
+                        //}
 
-                        baoCaoChiTietGiamSatTienDo.KetQua = "";
+                        baoCaoChiTietGiamSatTienDo.KetQua = id_canhbao.KETQUA_GIAMSAT;
                         if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
@@ -1269,7 +1279,8 @@ namespace EVN.Core.Implements
 
                 if (MaLoaiCanhBao == -1)
                 {
-                query = Query.Where(p => p.DONVI_DIENLUC == maDViQly && -1 == MaLoaiCanhBao);
+               var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast &&  p.DONVI_DIENLUC == maDViQly && -1 == MaLoaiCanhBao
+                && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                     var listCanhBao2 = query.ToList();
                     foreach (var canhbao in listCanhBao2)
                     {
@@ -1440,18 +1451,18 @@ namespace EVN.Core.Implements
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.NOIDUNG;
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
                         }
 
-                        if (xacNhanTroNgai == null)
-                        {
-                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
-                        }
-                        else
-                        {
-                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
+                        //if (xacNhanTroNgai == null)
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
+                        //}
+                        //else
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
 
-                        }
+                        //}
 
                         if (id_phanhoi == null)
                         {
@@ -1479,17 +1490,17 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Chương trình";
                         }
 
-                        if (id_phanhoi == null)
-                        {
+                        //if (id_phanhoi == null)
+                        //{
 
-                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
-                        }
-                        else
-                        {
-                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
-                        }
+                        //    baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
+                        //}
+                        //else
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
+                        //}
 
-                        baoCaoChiTietGiamSatTienDo.KetQua = "";
+                        baoCaoChiTietGiamSatTienDo.KetQua = id_canhbao.KETQUA_GIAMSAT;
                         if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
@@ -1544,7 +1555,8 @@ namespace EVN.Core.Implements
                 }
                 else
                 {
-                    query = query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.LOAI_CANHBAO_ID == MaLoaiCanhBao && p.DONVI_DIENLUC == maDViQly);
+                   var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.LOAI_CANHBAO_ID == MaLoaiCanhBao 
+                    && p.DONVI_DIENLUC == maDViQly && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
                     var listCanhBao3 = query.ToList();
                     foreach (var canhbao in listCanhBao3)
                     {
@@ -1693,7 +1705,7 @@ namespace EVN.Core.Implements
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
                         }
 
                         if (id_phanhoi == null)
@@ -1715,18 +1727,18 @@ namespace EVN.Core.Implements
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.NOIDUNG;
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
                         }
 
-                        if (xacNhanTroNgai == null)
-                        {
-                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
-                        }
-                        else
-                        {
-                            baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
+                        //if (xacNhanTroNgai == null)
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = null;
+                        //}
+                        //else
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NoiDungXuLyYKienKH = xacNhanTroNgai.Y_KIEN_KH;
 
-                        }
+                        //}
 
                         if (id_phanhoi == null)
                         {
@@ -1754,17 +1766,17 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.XacMinhNguyenNhanChamGiaiQuyet = "Do Chương trình";
                         }
 
-                        if (id_phanhoi == null)
-                        {
+                        //if (id_phanhoi == null)
+                        //{
 
-                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
-                        }
-                        else
-                        {
-                            baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
-                        }
+                        //    baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = null;
+                        //}
+                        //else
+                        //{
+                        //    baoCaoChiTietGiamSatTienDo.NDGhiNhanVaChuyenDonViXuLy = id_phanhoi.NOIDUNG_PHANHOI;
+                        //}
 
-                        baoCaoChiTietGiamSatTienDo.KetQua = "";
+                        baoCaoChiTietGiamSatTienDo.KetQua = id_canhbao.KETQUA_GIAMSAT;
                         if (ThongTinYeuCau == null)
                         {
                             baoCaoChiTietGiamSatTienDo.TenKhachHang = null;
@@ -1811,7 +1823,7 @@ namespace EVN.Core.Implements
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = id_phanhoi.THOIGIAN_GUI.ToString(); 
                         }
 
 

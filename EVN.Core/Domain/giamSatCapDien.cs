@@ -17,5 +17,6 @@ namespace EVN.Core.Domain
         public virtual int TRANGTHAI_XOA { get; set; }
         public virtual int PHANHOI_TRAODOI_ID { get; set; }
         public virtual string FILE_DINHKEM { get; set; }
+        
     }
 }

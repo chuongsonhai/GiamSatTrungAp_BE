@@ -694,8 +694,8 @@ namespace EVN.Api.Controllers
         }
 
         [HttpGet]
-        [Route("updateStatus/{ID}/{Status}/{NGUYENHHAN_CANHBAO}")]
-        public IHttpActionResult updateStatus([FromUri] int ID, [FromUri] int Status, [FromUri] int NGUYENHHAN_CANHBAO)
+        [Route("updateStatus/{ID}/{Status}/{NGUYENHHAN_CANHBAO}/{KETQUA_GIAMSAT}")]
+        public IHttpActionResult updateStatus([FromUri] int ID, [FromUri] int Status, [FromUri] int NGUYENHHAN_CANHBAO, [FromUri] string KETQUA_GIAMSAT)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
@@ -706,6 +706,7 @@ namespace EVN.Api.Controllers
                 item = service.Getbyid(ID);
                 item.TRANGTHAI_CANHBAO = Status;
                 item.NGUYENHHAN_CANHBAO = NGUYENHHAN_CANHBAO;
+                item.KETQUA_GIAMSAT = KETQUA_GIAMSAT;
                 service.Update(item);
                 service.CommitChanges();
                 

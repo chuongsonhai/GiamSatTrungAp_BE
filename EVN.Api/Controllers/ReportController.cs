@@ -1468,13 +1468,13 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
-                        ws.Cells[row, colval].Value = item.NoiDungXuLyYKienKH;
-                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        colval++;
+                        //ws.Cells[row, colval].Value = item.NoiDungXuLyYKienKH;
+                        //ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        //ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        //ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        //ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        //ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        //colval++;
 
                         ws.Cells[row, colval].Value = item.PhanHoi;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -1492,13 +1492,13 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                         colval++;
 
-                        ws.Cells[row, colval].Value = item.NDGhiNhanVaChuyenDonViXuLy;
-                        ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                        ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                        ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                        ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                        ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                        colval++;
+                        //ws.Cells[row, colval].Value = item.NDGhiNhanVaChuyenDonViXuLy;
+                        //ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        //ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                        //ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                        //ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                        //ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                        //colval++;
 
                         ws.Cells[row, colval].Value = item.KetQua;
                         ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
@@ -2779,7 +2779,7 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
                             ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                            colval += 2;
+                            colval ++ ;
                         }
                         else if (item.TRANGTHAI != 6)
                         {

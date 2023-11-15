@@ -170,7 +170,7 @@ namespace EVN.Core.Implements
             {
                 foreach (var org in listOrg)
                 {
-                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == org.orgCode && p.TRANGTHAI == 6);
+                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == org.orgCode && p.TRANGTHAI != 6);
 
                     var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
                     baoCaoTongHopDanhGiaMucDo.DonVi = org.orgName;
@@ -206,7 +206,7 @@ namespace EVN.Core.Implements
             else
             {
       
-                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == madvi && p.TRANGTHAI == 6);
+                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == madvi && p.TRANGTHAI != 6);
 
                     var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
                     baoCaoTongHopDanhGiaMucDo.DonVi = madvi;
@@ -255,9 +255,8 @@ namespace EVN.Core.Implements
            
                     foreach (var org in listOrg)
                     {
-                        var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == org.orgCode && p.TRANGTHAI >= 0);
-                 
-                        var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
+                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == org.orgCode && p.TRANGTHAI == 6);
+                    var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
                         baoCaoTongHopDanhGiaMucDo.DonVi = org.orgName;
                         baoCaoTongHopDanhGiaMucDo.TongSoVuCoChenhLech = query.Count(p => p.CHENH_LECH != 0);
                         baoCaoTongHopDanhGiaMucDo.YCauCapDienDeDangThuanTienCo = query.Count(p => p.DGYC_DK_DEDANG == 1);
@@ -292,10 +291,11 @@ namespace EVN.Core.Implements
             }
             else
             {
- 
-                    var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == madvi && p.TRANGTHAI >= 0);
-            
-                    var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
+
+                var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == madvi && p.TRANGTHAI >= 0);
+
+
+                var baoCaoTongHopDanhGiaMucDo = new BaoCaoTongHopDanhGiaMucDo();
                     baoCaoTongHopDanhGiaMucDo.DonVi = madvi;
                     baoCaoTongHopDanhGiaMucDo.TongSoVuCoChenhLech = query.Count(p => p.CHENH_LECH != 0);
                     baoCaoTongHopDanhGiaMucDo.YCauCapDienDeDangThuanTienCo = query.Count(p => p.DGYC_DK_DEDANG == 1);
@@ -336,7 +336,7 @@ namespace EVN.Core.Implements
             if (madvi == "-1")
             {
                 var chuyenKhaiThacList = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.TRANGTHAI == 6);
-       
+
                 var test = chuyenKhaiThacList.ToList();
                 var chuyenKhaiThacTotal = new ChuyenKhaiThacTotal();
                 chuyenKhaiThacTotal.TongSoVuCoChenhLech = chuyenKhaiThacList.Count(x => x.CHENH_LECH != 0);
@@ -371,7 +371,8 @@ namespace EVN.Core.Implements
             else
             {
                 var chuyenKhaiThacList = Query.Where(p =>p.MA_DVI == madvi && p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.TRANGTHAI == 6);
-    
+
+
                 var test = chuyenKhaiThacList.ToList();
                 var chuyenKhaiThacTotal = new ChuyenKhaiThacTotal();
                 chuyenKhaiThacTotal.TongSoVuCoChenhLech = chuyenKhaiThacList.Count(x => x.CHENH_LECH != 0);
@@ -410,7 +411,8 @@ namespace EVN.Core.Implements
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
             DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture);
             var chuyenKhaiThacList = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.TRANGTHAI != 6);
-    
+
+
             var chuyenKhaiThacTotal = new ChuyenKhaiThacTotal();
             chuyenKhaiThacTotal.TongSoVuCoChenhLech = chuyenKhaiThacList.Count(x => x.CHENH_LECH != 0);
             chuyenKhaiThacTotal.TongSoYCauCapDienDeDangThuanTienCo = chuyenKhaiThacList.Count(x => x.DGYC_DK_DEDANG == 1);
@@ -448,11 +450,11 @@ namespace EVN.Core.Implements
             var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast);
             if (maDViQly != "-1")
             {
-                    query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == maDViQly);
+                    query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == maDViQly && p.TRANGTHAI == 6);
             }
             else
             {
-                    query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast );
+                    query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.TRANGTHAI == 6);
             }
             return query.ToList();
         }
