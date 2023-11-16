@@ -8,7 +8,8 @@ namespace EVN.Core.Models
 {
    public class BaoCaoChiTietGiamSatTienDo
     {
-        
+
+        public virtual int id { get; set; }
         public virtual string MaDViQuanLy { get; set; }
         public virtual string MaYeuCau { get; set; }
         public virtual string TenKhachHang { get; set; }

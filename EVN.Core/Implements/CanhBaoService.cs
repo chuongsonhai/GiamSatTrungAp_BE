@@ -862,6 +862,7 @@ namespace EVN.Core.Implements
                         var id_canhbao = canhBaoService.Getbyid(canhbao.ID);
                         var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
 
+                        baoCaoChiTietGiamSatTienDo.id = canhbao.ID;
                         if (id_phanhoi == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
@@ -1139,6 +1140,7 @@ namespace EVN.Core.Implements
 
                         var id_canhbao = canhBaoService.Getbyid(canhbao.ID);
                         var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
+                        baoCaoChiTietGiamSatTienDo.id = canhbao.ID;
 
                         if (id_phanhoi == null)
                         {
@@ -1423,6 +1425,7 @@ namespace EVN.Core.Implements
                         var id_canhbao = canhBaoService.Getbyid(canhbao.ID);
                         var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
 
+                        baoCaoChiTietGiamSatTienDo.id = canhbao.ID;
                         if (id_phanhoi == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
@@ -1699,6 +1702,7 @@ namespace EVN.Core.Implements
                         var id_canhbao = canhBaoService.Getbyid(canhbao.ID);
                         var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
 
+                        baoCaoChiTietGiamSatTienDo.id = canhbao.ID;
                         if (id_phanhoi == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
