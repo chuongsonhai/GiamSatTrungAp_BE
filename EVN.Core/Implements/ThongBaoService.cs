@@ -14,18 +14,54 @@ namespace EVN.Core.Implements
 
         public IList<ThongBao> GetbyFilter(string maDVi, string maNVien, string maYCau, int status, int pageindex, int pagesize, out int total)
         {
-            var query = Query.Where(p => p.MaDViQLy == maDVi);
-            if (!string.IsNullOrWhiteSpace(maYCau))
-                query = query.Where(p => p.MaYeuCau == maYCau);
+            if (maDVi == "PD")
+            {
+                var query = Query.Where(p => p.MaDViQLy == maDVi);
+                if (!string.IsNullOrWhiteSpace(maYCau))
+                    query = query.Where(p => p.MaYeuCau == maYCau);
 
-            if (!string.IsNullOrWhiteSpace(maNVien))
-                query = query.Where(p => p.NguoiNhan == maNVien);
+                if (!string.IsNullOrWhiteSpace(maNVien))
+                    query = query.Where(p => p.NguoiNhan == maNVien);
 
-            if (status > -1)
-                query = query.Where(p => p.TrangThai == (TThaiThongBao)status);
-            total = query.Count();
-            query = query.OrderByDescending(p => p.NgayTao).ThenBy(p => p.TrangThai);
-            return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
+                if (status > -1)
+                    query = query.Where(p => p.TrangThai == (TThaiThongBao)status);
+                total = query.Count();
+                query = query.OrderByDescending(p => p.NgayTao).ThenBy(p => p.TrangThai);
+                return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
+            }
+
+            if (maDVi == "X0206")
+            {
+                var query = Query.Where(p => p.MaDViQLy == "PD");
+                if (!string.IsNullOrWhiteSpace(maYCau))
+                    query = query.Where(p => p.MaYeuCau == maYCau);
+
+                if (!string.IsNullOrWhiteSpace(maNVien))
+                    query = query.Where(p => p.NguoiNhan == maNVien);
+
+                if (status > -1)
+                    query = query.Where(p => p.TrangThai == (TThaiThongBao)status);
+                total = query.Count();
+                query = query.OrderByDescending(p => p.NgayTao).ThenBy(p => p.TrangThai);
+                return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
+            }
+            else
+            {
+        
+                    var query = Query.Where(p => p.MaDViQLy == maDVi);
+                    if (!string.IsNullOrWhiteSpace(maYCau))
+                        query = query.Where(p => p.MaYeuCau == maYCau);
+
+                    if (!string.IsNullOrWhiteSpace(maNVien))
+                        query = query.Where(p => p.NguoiNhan == maNVien);
+
+                    if (status > -1)
+                        query = query.Where(p => p.TrangThai == (TThaiThongBao)status);
+                    total = query.Count();
+                    query = query.OrderByDescending(p => p.NgayTao).ThenBy(p => p.TrangThai);
+                    return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
+             
+            }
         }
 
         public IList<ThongBao> GetbyNVien(string maDViQLy, string maNVien, DateTime fromdate, DateTime todate, int limit = 10)

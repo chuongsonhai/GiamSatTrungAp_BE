@@ -151,7 +151,8 @@ namespace EVN.Api.Controllers
                 PhanhoiTraodoiRequest model = JsonConvert.DeserializeObject<PhanhoiTraodoiRequest>(data);
                 var item = new PhanhoiTraodoi();
                 item = service.GetbyPhanHoiId(model.ID);
-                item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
+                item.NOIDUNG_PHANHOI_X3 = model.NOIDUNG_PHANHOI_X3;
+                item.NGUOI_PHANHOI_X3 = model.NGUOI_PHANHOI_X3;
                 item.THOIGIAN_GUI = DateTime.Now;
                 item.TRANGTHAI_XOA = 0;
                 var postedFile = httpRequest.Files["File"];

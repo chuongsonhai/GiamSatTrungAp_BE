@@ -22,6 +22,8 @@ namespace EVN.Api.Model.Request
             THOIGIAN_GUI = lPhanhoiTraodoi.THOIGIAN_GUI;
             TRANGTHAI_XOA = lPhanhoiTraodoi.TRANGTHAI_XOA;
             MA_YC = lPhanhoiTraodoi.MA_YC;
+            NOIDUNG_PHANHOI_X3 = lPhanhoiTraodoi.NOIDUNG_PHANHOI_X3;
+            NGUOI_PHANHOI_X3 = lPhanhoiTraodoi.NGUOI_PHANHOI_X3;
         }
         public int ID { get; set; }
         public int CANHBAO_ID { get; set; }
@@ -32,6 +34,8 @@ namespace EVN.Api.Model.Request
         public DateTime THOIGIAN_GUI { get; set; } = DateTime.Now;
         public int TRANGTHAI_XOA { get; set; }
         public string FILE_DINHKEM { get; set; }
+        public string NOIDUNG_PHANHOI_X3 { get; set; }
+        public string NGUOI_PHANHOI_X3 { get; set; }
 
     }
 }

@@ -48,10 +48,24 @@ namespace EVN.Core.Implements
             return Get(p => p.ID == id);
         }
 
-        public IList<XacNhanTroNgai> Getnotikhaosat(string maycau, string madvi)
+        public IList<XacNhanTroNgai> Getnotikhaosat( string madvi, string maycau)
         {
-            var query = Query.Where(p => p.MA_YCAU == maycau && p.MA_DVI == madvi && p.DGHL_CAPDIEN == 1 || p.DGHL_CAPDIEN == 2);
-            return query.ToList();
+            if (madvi == "PD")
+            {
+                var query = Query.Where(p => "PD" == madvi && (p.DGHL_CAPDIEN == 1 || p.DGHL_CAPDIEN == 2));
+                return query.ToList();
+            }
+            if (madvi == "X0206")
+            {
+                var query = Query.Where(p => (p.DGHL_CAPDIEN == 1 || p.DGHL_CAPDIEN == 2));
+                return query.ToList();
+            }
+            else
+            {
+                var query = Query.Where(p => p.MA_DVI == madvi && (p.DGHL_CAPDIEN == 1 || p.DGHL_CAPDIEN == 2));
+                return query.ToList();
+            }
+          
         }
 
         public XacNhanTroNgai UpdateKhaoid(int id)

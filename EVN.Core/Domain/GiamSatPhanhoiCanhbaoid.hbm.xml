@@ -13,8 +13,9 @@
 		<property name="DONVI_QLY" column="DONVI_QLY" type="string"/>
 		<property name="thoiGianGui" column="THOIGIAN_GUI" type="DateTime"/>
 		<property name="TRANGTHAI_XOA" column="TRANGTHAI_XOA" type="int"/>
-		
 		<property name="FILE_DINHKEM" column="FILE_DINHKEM" type="string"/>
+		<property name="NOIDUNG_PHANHOI_X3" column="NOIDUNG_PHANHOI_X3" type="string"/>
+		<property name="NGUOI_PHANHOI_X3" column="NGUOI_PHANHOI_X3" type="string"/>
 	</class>
 </hibernate-mapping>
 

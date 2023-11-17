@@ -19,5 +19,7 @@ namespace EVN.Core.Domain
         public virtual string DONVI_QLY { get; set; }
         public virtual int TRANGTHAI_XOA { get; set; }
         public virtual string FILE_DINHKEM { get; set; }
+        public virtual string NOIDUNG_PHANHOI_X3 { get; set; }
+        public virtual string NGUOI_PHANHOI_X3 { get; set; }
     }
 }
