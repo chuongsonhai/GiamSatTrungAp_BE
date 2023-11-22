@@ -22,5 +22,7 @@ namespace EVN.Core.IServices
 
         long LastbyMaYCau(string maYCau);
         DvTienTrinh FilterByMaYeuCau(string ID);
+        DvTienTrinh myeutop1(string ID);
+        DvTienTrinh myeutopend(string ID);
     }
 }

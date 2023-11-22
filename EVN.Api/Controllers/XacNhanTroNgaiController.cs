@@ -3868,16 +3868,18 @@ namespace EVN.Api.Controllers
 
                 //lấy mã ycau
                 var dvtientrinh = DVTIENTRINH.FilterByMaYeuCau(YCNT.MaYeuCau);
+                var tientrinh = DVTIENTRINH.myeutop1(YCNT.MaYeuCau);
                 var khaosat = xacMinhTroNgaiService.FilterByMaYeuCau(YCNT.MaYeuCau);
                 var checkTonTai1 = await xacMinhTroNgaiService.CheckExits(YCNT.MaYeuCau);
+                var tientrinhend = DVTIENTRINH.myeutopend(YCNT.MaYeuCau);
                 var item = new XacNhanTroNgai();
                 if (!checkTonTai1)
                 {
                     //tạo ra response API
                     var obj = new
                     {
-                        DGCD_TH_CHUONGTRINH = (int)(dvtientrinh.NGAY_TAO - YCNT.NgayLap).TotalHours,
-                        DGCD_TH_DANGKY = (int)(DateTime.Now - YCNT.NgayLap).TotalHours,
+                        DGCD_TH_CHUONGTRINH = (int)(tientrinhend.NGAY_TAO - tientrinh.NGAY_TAO).TotalHours,
+                        DGCD_TH_DANGKY = (int)(DateTime.Now - tientrinh.NGAY_TAO).TotalHours,
                         TEN_KH = YCNT.CoQuanChuQuan,
                         DIA_CHI = YCNT.DiaChi,
                         SDT = YCNT.DienThoai

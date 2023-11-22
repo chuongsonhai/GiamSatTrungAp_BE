@@ -461,22 +461,119 @@ namespace EVN.Core.Implements
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
             DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
-            var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast);
+    
             var resultList = new List<XacNhanTroNgai>();
-            var xacnhantrongai = new XacNhanTroNgai();
-            IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
+    
+            IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
+            IXacNhanTroNgaiService servicetn = IoC.Resolve<IXacNhanTroNgaiService>();
+
+
             if (maDViQly != "-1")
             {
-                    query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == maDViQly && p.TRANGTHAI == 6);
+                var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == maDViQly && p.TRANGTHAI == 6);
+                var listCanhBao = query.ToList();
+                foreach (var xacnhan in listCanhBao)
+                {
+                    var xacnhantrongai = new XacNhanTroNgai();
+                    var tientrinh = ttrinhsrv.myeutop1(xacnhan.MA_YCAU);
+                    var tientrinhend = ttrinhsrv.myeutopend(xacnhan.MA_YCAU);
+                    xacnhantrongai.MA_DVI = xacnhan.MA_DVI;
+                    xacnhantrongai.MA_YCAU = xacnhan.MA_YCAU;
+                    xacnhantrongai.MA_KH = xacnhan.MA_KH;
+                    xacnhantrongai.TEN_KH = xacnhan.TEN_KH;
+                    xacnhantrongai.DIA_CHI = xacnhan.DIA_CHI;
+                    xacnhantrongai.DIEN_THOAI = xacnhan.DIEN_THOAI;
+                    xacnhantrongai.MUCDICH_SD_DIEN = xacnhan.MUCDICH_SD_DIEN;
+                    xacnhantrongai.NGAY_TIEPNHAN = tientrinh.NGAY_TAO;
+                    xacnhantrongai.NGAY_HOANTHANH = tientrinhend.NGAY_TAO;
+                    xacnhantrongai.SO_NGAY_CT = xacnhan.SO_NGAY_CT;
+                    xacnhantrongai.SO_NGAY_TH_ND = xacnhan.SO_NGAY_TH_ND;
+                    xacnhantrongai.TRANGTHAI_GQ = xacnhan.TRANGTHAI_GQ;
+                    xacnhantrongai.TONG_CONGSUAT_CD = xacnhan.TONG_CONGSUAT_CD;
+                    xacnhantrongai.DGCD_TH_CHUONGTRINH = xacnhan.DGCD_TH_CHUONGTRINH;
+                    xacnhantrongai.DGCD_TH_DANGKY = xacnhan.DGCD_TH_DANGKY;
+                    xacnhantrongai.DGCD_KH_PHANHOI = xacnhan.DGCD_KH_PHANHOI;
+                    xacnhantrongai.CHENH_LECH = xacnhan.CHENH_LECH;
+                    xacnhantrongai.DGYC_DK_DEDANG = xacnhan.DGYC_DK_DEDANG;
+                    xacnhantrongai.DGYC_XACNHAN_NCHONG_KTHOI = xacnhan.DGYC_XACNHAN_NCHONG_KTHOI;
+                    xacnhantrongai.DGYC_THAIDO_CNGHIEP = xacnhan.DGYC_THAIDO_CNGHIEP;
+                    xacnhantrongai.DGKS_TDO_KSAT = xacnhan.DGKS_TDO_KSAT;
+                    xacnhantrongai.DGKS_MINH_BACH = xacnhan.DGKS_MINH_BACH;
+                    xacnhantrongai.DGKS_CHU_DAO = xacnhan.DGKS_CHU_DAO;
+                    xacnhantrongai.DGNT_THUAN_TIEN = xacnhan.DGNT_THUAN_TIEN;
+                    xacnhantrongai.DGNT_MINH_BACH = xacnhan.DGNT_MINH_BACH;
+                    xacnhantrongai.DGNT_CHU_DAO = xacnhan.DGNT_CHU_DAO;
+                    xacnhantrongai.KSAT_CHI_PHI = xacnhan.KSAT_CHI_PHI;
+                    xacnhantrongai.DGHL_CAPDIEN = xacnhan.DGHL_CAPDIEN;
+                    xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
+                    xacnhantrongai.NGAY = xacnhan.NGAY;
+                    xacnhantrongai.NGUOI_KSAT = xacnhan.NGUOI_KSAT;
+                    xacnhantrongai.Y_KIEN_KH = xacnhan.Y_KIEN_KH;
+                    xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
+                    xacnhantrongai.PHAN_HOI = xacnhan.PHAN_HOI;
+                    xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
+                    xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
 
+
+                    resultList.Add(xacnhantrongai);
+                } 
             }
             else
             {
-                    query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.TRANGTHAI == 6);
-            }
-            return query.ToList();
-        }
 
+                var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.TRANGTHAI == 6);
+                var listCanhBao2 = query.ToList();
+
+                foreach (var xacnhan in listCanhBao2)
+                {
+                  
+                    var xacnhantrongai = new XacNhanTroNgai();
+            
+                    var tientrinh = ttrinhsrv.myeutop1(xacnhan.MA_YCAU);
+                    var tientrinhend = ttrinhsrv.myeutopend(xacnhan.MA_YCAU);
+                    xacnhantrongai.MA_DVI = xacnhan.MA_DVI;
+                    xacnhantrongai.MA_YCAU = xacnhan.MA_YCAU;
+                    xacnhantrongai.MA_KH = xacnhan.MA_KH;
+                    xacnhantrongai.TEN_KH = xacnhan.TEN_KH;
+                    xacnhantrongai.DIA_CHI = xacnhan.DIA_CHI;
+                    xacnhantrongai.DIEN_THOAI = xacnhan.DIEN_THOAI;
+                    xacnhantrongai.MUCDICH_SD_DIEN = xacnhan.MUCDICH_SD_DIEN;
+                    xacnhantrongai.NGAY_TIEPNHAN = tientrinh.NGAY_TAO;
+                    xacnhantrongai.NGAY_HOANTHANH = tientrinhend.NGAY_TAO;
+                    xacnhantrongai.SO_NGAY_CT = xacnhan.SO_NGAY_CT;
+                    xacnhantrongai.SO_NGAY_TH_ND = xacnhan.SO_NGAY_TH_ND;
+                    xacnhantrongai.TRANGTHAI_GQ = xacnhan.TRANGTHAI_GQ;
+                    xacnhantrongai.TONG_CONGSUAT_CD = xacnhan.TONG_CONGSUAT_CD;
+                    xacnhantrongai.DGCD_TH_CHUONGTRINH = xacnhan.DGCD_TH_CHUONGTRINH;
+                    xacnhantrongai.DGCD_TH_DANGKY = xacnhan.DGCD_TH_DANGKY;
+                    xacnhantrongai.DGCD_KH_PHANHOI = xacnhan.DGCD_KH_PHANHOI;
+                    xacnhantrongai.CHENH_LECH = xacnhan.CHENH_LECH;
+                    xacnhantrongai.DGYC_DK_DEDANG = xacnhan.DGYC_DK_DEDANG;
+                    xacnhantrongai.DGYC_XACNHAN_NCHONG_KTHOI = xacnhan.DGYC_XACNHAN_NCHONG_KTHOI;
+                    xacnhantrongai.DGYC_THAIDO_CNGHIEP = xacnhan.DGYC_THAIDO_CNGHIEP;
+                    xacnhantrongai.DGKS_TDO_KSAT = xacnhan.DGKS_TDO_KSAT;
+                    xacnhantrongai.DGKS_MINH_BACH = xacnhan.DGKS_MINH_BACH;
+                    xacnhantrongai.DGKS_CHU_DAO = xacnhan.DGKS_CHU_DAO;
+                    xacnhantrongai.DGNT_THUAN_TIEN = xacnhan.DGNT_THUAN_TIEN;
+                    xacnhantrongai.DGNT_MINH_BACH = xacnhan.DGNT_MINH_BACH;
+                    xacnhantrongai.DGNT_CHU_DAO = xacnhan.DGNT_CHU_DAO;
+                    xacnhantrongai.KSAT_CHI_PHI = xacnhan.KSAT_CHI_PHI;
+                    xacnhantrongai.DGHL_CAPDIEN = xacnhan.DGHL_CAPDIEN;
+                    xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
+                    xacnhantrongai.NGAY = xacnhan.NGAY;
+                    xacnhantrongai.NGUOI_KSAT = xacnhan.NGUOI_KSAT;
+                    xacnhantrongai.Y_KIEN_KH = xacnhan.Y_KIEN_KH;
+                    xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
+                    xacnhantrongai.PHAN_HOI = xacnhan.PHAN_HOI;
+                    xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
+                    xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
+                    resultList.Add(xacnhantrongai);
+                }
+              
+            }
+            return resultList;
+        }
+    
         public IList<BaoCaoChiTietGiamSatTienDo> GetBaoCaoChiTietGiamSatTienDo(string fromdate, string todate, string maDViQly, int MaLoaiCanhBao)
         {
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);

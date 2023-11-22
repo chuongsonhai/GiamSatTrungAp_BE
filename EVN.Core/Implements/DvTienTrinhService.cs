@@ -26,6 +26,24 @@ namespace EVN.Core.Implements
             return mayeu;
 
         }
+
+        public DvTienTrinh myeutop1(string ID)
+        {
+            var query = Query.Where(p => p.MA_YCAU_KNAI == ID);
+            query = query.OrderBy(p => p.KQ_ID_BUOC);
+            var mayeu = query.First();
+            return mayeu;
+
+        }
+
+        public DvTienTrinh myeutopend(string ID)
+        {
+            var query = Query.Where(p => p.MA_YCAU_KNAI == ID);
+            query = query.OrderByDescending(p => p.KQ_ID_BUOC);
+            var mayeu = query.First();
+            return mayeu;
+
+        }
         public bool PushToCmis(IList<DvTienTrinh> items, out string message)
         {
             try
