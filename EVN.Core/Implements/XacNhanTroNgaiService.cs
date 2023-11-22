@@ -462,9 +462,13 @@ namespace EVN.Core.Implements
             DateTime tuNgayCast = DateTime.ParseExact(fromdate, "d/M/yyyy", CultureInfo.InvariantCulture);
             DateTime denNgayCast = DateTime.ParseExact(todate, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
             var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast);
+            var resultList = new List<XacNhanTroNgai>();
+            var xacnhantrongai = new XacNhanTroNgai();
+            IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
             if (maDViQly != "-1")
             {
                     query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == maDViQly && p.TRANGTHAI == 6);
+
             }
             else
             {

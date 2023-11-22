@@ -719,7 +719,8 @@ namespace EVN.Core.Implements
                     if (MaLoaiCanhBao == -1)
                     {
 
-                      var  query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && maDViQly == "-1" &&  -1 == MaLoaiCanhBao && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
+                      var  query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && maDViQly == "-1" &&  -1 == MaLoaiCanhBao 
+                      && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0 );
                         var listCanhBao = query.ToList();
                     foreach (var canhbao in listCanhBao)
                     {
@@ -879,19 +880,19 @@ namespace EVN.Core.Implements
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_PHANHOI_X3;
                         }
 
 
 
-                        if (xacNhanTroNgai == null)
+                        if (id_phanhoi == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = null;
                         }
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = id_phanhoi.NOIDUNG_PHANHOI_X3;
                         }
 
                         //if (xacNhanTroNgai == null)
@@ -1158,19 +1159,19 @@ namespace EVN.Core.Implements
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_PHANHOI_X3;
                         }
 
 
 
-                        if (xacNhanTroNgai == null)
+                        if (id_phanhoi == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = null;
                         }
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = id_phanhoi.NOIDUNG_PHANHOI_X3;
                         }
 
                         //if (xacNhanTroNgai == null)
@@ -1442,19 +1443,19 @@ namespace EVN.Core.Implements
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_PHANHOI_X3;
                         }
 
 
 
-                        if (xacNhanTroNgai == null)
+                        if (id_phanhoi == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = null;
                         }
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = id_phanhoi.NOIDUNG_PHANHOI_X3;
                         }
 
                         //if (xacNhanTroNgai == null)
@@ -1719,19 +1720,19 @@ namespace EVN.Core.Implements
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_GUI;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_PHANHOI_X3;
                         }
 
 
 
-                        if (xacNhanTroNgai == null)
+                        if (id_phanhoi == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = null;
                         }
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = xacNhanTroNgai.Y_KIEN_KH;
+                            baoCaoChiTietGiamSatTienDo.NoiDungKhaoSat = id_phanhoi.NOIDUNG_PHANHOI_X3;
                         }
 
                         //if (xacNhanTroNgai == null)

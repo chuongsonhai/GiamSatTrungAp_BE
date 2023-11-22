@@ -71,8 +71,8 @@ namespace EVN.Api.Controllers
             {
                 var item = new PhanhoiTraodoi();
                 item.CANHBAO_ID = model.CANHBAO_ID;
-                item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
-                item.NGUOI_GUI = model.NGUOI_GUI;
+                item.NOIDUNG_PHANHOI_X3 = model.NOIDUNG_PHANHOI_X3;
+                item.NGUOI_PHANHOI_X3 = model.NGUOI_PHANHOI_X3;
                 item.DONVI_QLY = model.DONVI_QLY;
                 item.THOIGIAN_GUI = DateTime.Now;
                 item.TRANGTHAI_XOA = 0;
@@ -151,8 +151,9 @@ namespace EVN.Api.Controllers
                 PhanhoiTraodoiRequest model = JsonConvert.DeserializeObject<PhanhoiTraodoiRequest>(data);
                 var item = new PhanhoiTraodoi();
                 item = service.GetbyPhanHoiId(model.ID);
-                item.NOIDUNG_PHANHOI_X3 = model.NOIDUNG_PHANHOI_X3;
-                item.NGUOI_PHANHOI_X3 = model.NGUOI_PHANHOI_X3;
+     
+                item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
+                item.NGUOI_GUI = model.NGUOI_GUI;
                 item.THOIGIAN_GUI = DateTime.Now;
                 item.TRANGTHAI_XOA = 0;
                 var postedFile = httpRequest.Files["File"];
