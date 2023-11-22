@@ -3878,8 +3878,8 @@ namespace EVN.Api.Controllers
                     //tạo ra response API
                     var obj = new
                     {
-                        DGCD_TH_CHUONGTRINH = (int)(tientrinhend.NGAY_TAO - tientrinh.NGAY_TAO).TotalHours,
-                        DGCD_TH_DANGKY = (int)(DateTime.Now - tientrinh.NGAY_TAO).TotalHours,
+                        DGCD_TH_CHUONGTRINH = (int)(tientrinhend.NGAY_TAO - tientrinh.NGAY_TAO).Days,
+                        DGCD_TH_DANGKY = (int)(DateTime.Now - tientrinh.NGAY_TAO).Days,
                         TEN_KH = YCNT.CoQuanChuQuan,
                         DIA_CHI = YCNT.DiaChi,
                         SDT = YCNT.DienThoai
