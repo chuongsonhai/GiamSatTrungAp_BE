@@ -34,7 +34,7 @@ namespace EVN.Api.Controllers
             ICanhBaoService canhBaoService = IoC.Resolve<ICanhBaoService>();
             List<object> resultList = new List<object>();
             try {
-                if (string.IsNullOrEmpty(request.Filter.canhBaoId.ToString())) {
+                if (request.Filter.canhBaoId == -1) {
                     int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
                     int total = 0;
                     

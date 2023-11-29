@@ -3672,7 +3672,7 @@ namespace EVN.Api.Controllers
                 khaosat.NOIDUNG = model.NOIDUNG;
                 khaosat.PHAN_HOI = model.PHAN_HOI;
                 khaosat.GHI_CHU = model.GHI_CHU;
-                khaosat.DGCD_TH_CHUONGTRINH = (khaosat.NGAY - canhbao.THOIGIANGUI).Hours;
+                //khaosat.DGCD_TH_CHUONGTRINH = (khaosat.NGAY - canhbao.THOIGIANGUI).Hours;
                 //khaosat.DGCD_TH_DANGKY = (DateTime.Now - canhbao.THOIGIANGUI).Hours;
 
                 if (string.IsNullOrEmpty(model.PHAN_HOI)) 

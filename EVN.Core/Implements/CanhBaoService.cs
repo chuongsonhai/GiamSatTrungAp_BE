@@ -51,7 +51,8 @@ namespace EVN.Core.Implements
 
         public CanhBao Getbyid(int id)
         {
-            return Get(p => p.ID == id);
+            //return Get(p => p.ID == id);
+            return Get(p => -1 == id);
         }
         public IList<CanhBao> GetbyCanhbao(string  tungay, string denngay)
         {
@@ -583,7 +584,7 @@ namespace EVN.Core.Implements
             if (maDonVi == "-1")
             {
                 DateTime tuNgayCast = DateTime.ParseExact(tungay, "d/M/yyyy", CultureInfo.InvariantCulture);
-                DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture);
+                DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
                 //var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO == trangThai
                 //&& p.LOAI_CANHBAO_ID == maLoaiCanhBao && p.DONVI_DIENLUC == maDonVi);
                 
@@ -609,10 +610,10 @@ namespace EVN.Core.Implements
             else
             {
                 DateTime tuNgayCast = DateTime.ParseExact(tungay, "d/M/yyyy", CultureInfo.InvariantCulture);
-                DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture);
+                DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
                 //var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO == trangThai
                 //&& p.LOAI_CANHBAO_ID == maLoaiCanhBao && p.DONVI_DIENLUC == maDonVi);
-                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDonVi );
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast.AddDays(1) && p.DONVI_DIENLUC == maDonVi );
                 if (trangThai != -1)
                 {
                     query = query.Where(p => p.TRANGTHAI_CANHBAO == trangThai);

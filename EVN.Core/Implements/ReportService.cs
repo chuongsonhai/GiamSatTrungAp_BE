@@ -2425,8 +2425,7 @@ namespace EVN.Core.Implements
 
             var response = new List<CongVanYeuCau>();
 
-
-            var query = Query.Where(p => p.TrangThai >= TrangThaiCongVan.MoiTao).ToList();
+            var query = Query.Where(p => p.TrangThai >= TrangThaiCongVan.MoiTao && p.NgayLap >= DateTime.Now.AddDays(-60)).ToList();
             foreach (var item in query)
             {
                 var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();

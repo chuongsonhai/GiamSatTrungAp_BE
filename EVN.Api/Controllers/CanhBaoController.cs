@@ -117,10 +117,17 @@ namespace EVN.Api.Controllers
                         if (check_tontai_mycau1.TRANGTHAI_CANHBAO == 6)
                             continue;
 
-                            TimeSpan ts = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
+                        if (check_tontai_mycau1.LOAI_SOLANGUI > 2)
+                        {
+                            continue;
+                        }
+                        else
+                        {
 
+
+                            TimeSpan ts = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
                             //cb1
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 1)
                             {
 
                                 var canhbao12 = new CanhBao();
@@ -158,12 +165,12 @@ namespace EVN.Api.Controllers
                                 {
                                     throw new Exception(message1);
                                 }
-                               
+
                             }
 
 
                             //cb2
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 1)
                             {
 
                                 var canhbao122 = new CanhBao();
@@ -200,7 +207,7 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        
+
                                 }
 
 
@@ -208,7 +215,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb3
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 1)
                             {
 
                                 var canhbao123 = new CanhBao();
@@ -244,14 +251,14 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        
+
                                 }
 
                             }
 
 
                             //cb4
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 1)
                             {
 
                                 var canhbao124 = new CanhBao();
@@ -288,7 +295,7 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                      
+
                                 }
 
 
@@ -296,7 +303,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb5
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 1)
                             {
 
                                 var canhbao125 = new CanhBao();
@@ -333,12 +340,12 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        
+
                                 }
                             }
 
                             //cb6
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 1)
                             {
 
                                 var canhbao126 = new CanhBao();
@@ -382,7 +389,7 @@ namespace EVN.Api.Controllers
                             }
 
                             //cb7
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 1)
                             {
 
                                 var canhbao127 = new CanhBao();
@@ -418,7 +425,7 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                        
+
                                 }
 
 
@@ -426,7 +433,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb8
-                            if (ts.TotalHours > 48)
+                            if (ts.TotalHours > 1)
                             {
 
                                 var canhbao128 = new CanhBao();
@@ -462,12 +469,12 @@ namespace EVN.Api.Controllers
                                         {
                                             throw new Exception(message1);
                                         }
-                                       
+
                                 }
 
 
                             }
-
+                        }
                             //end
 
                         }

@@ -40,7 +40,8 @@ namespace EVN.Core.Implements
 
         public IList<LogCanhBao> Filter(int id)
         {
-            var query = Query.Where(p => p.CANHBAO_ID == id);
+            //var query = Query.Where(p => p.CANHBAO_ID == id);
+            var query = Query.Where(p => -1 == id);
             return query.ToList();
 
         }
