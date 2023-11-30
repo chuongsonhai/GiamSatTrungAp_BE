@@ -39,10 +39,12 @@ namespace EVN.Core.Implements
         //}
 
         public IList<LogCanhBao> Filter(int id)
-        {
+        { 
             //var query = Query.Where(p => p.CANHBAO_ID == id);
-            var query = Query.Where(p => -1 == id);
+        DateTime a = DateTime.Now.AddDays(-20);
+            var query = Query.Where(p => p.CANHBAO_ID == id && p.THOIGIAN >= a);
             return query.ToList();
+
 
         }
 

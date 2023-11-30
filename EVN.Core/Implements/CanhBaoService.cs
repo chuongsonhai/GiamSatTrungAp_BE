@@ -635,10 +635,12 @@ namespace EVN.Core.Implements
         }
         public IList<CanhBao> GetAllCanhBao(out int total)
         {
-            
-                total = Query.Count();
-                return Query.ToList();
-            
+            DateTime a = DateTime.Now.AddDays(-30);
+            var query = Query;
+            query = query.Where(p => p.THOIGIANGUI >= a);
+            total = query.Count();
+            return query.ToList();
+
         }
 
         public IList<CanhBao> FilterBytrangThaiAndDViQuanLy(string fromDate, string toDate, int trangThai, string DonViDienLuc)

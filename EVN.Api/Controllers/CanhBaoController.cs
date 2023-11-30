@@ -47,7 +47,6 @@ namespace EVN.Api.Controllers
                         canhbao.LOAI_CANHBAO_ID = item.LoaiCanhBao;
                         canhbao.LOAI_SOLANGUI = 1;
                         canhbao.MA_YC = item.MaYeuCau;
-
                         canhbao.THOIGIANGUI = DateTime.Now;
                         canhbao.TRANGTHAI_CANHBAO = 1;
                         canhbao.DONVI_DIENLUC = item.MaDViQLy;

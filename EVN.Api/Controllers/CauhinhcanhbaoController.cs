@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 
@@ -27,7 +28,7 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("log/filter")]
-        public IHttpActionResult FilterLog([FromBody] CauHinhCanhBaoLogFilterRequest request)
+        public async Task<IHttpActionResult> FilterLog([FromBody] CauHinhCanhBaoLogFilterRequest request)
         {
             ResponseResult result = new ResponseResult();
             ILogCanhBaoService service = IoC.Resolve<ILogCanhBaoService>();
@@ -70,7 +71,7 @@ namespace EVN.Api.Controllers
 
                         foreach (var log in listLog)
                         {
-                            resultList.Add(new { log.ID, CANHBAO_ID = canhbao.ID, canhbao.LOAI_CANHBAO_ID, canhbao.NOIDUNG, log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, TRANGTHAI_CANHBAO = textTrangThai });
+                            resultList.Add(new { log.ID, CANHBAO_ID = canhbao.ID, canhbao.LOAI_CANHBAO_ID, log.DATA_MOI, log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, TRANGTHAI_CANHBAO = textTrangThai });
                         }
                     }
                 } else
@@ -105,7 +106,7 @@ namespace EVN.Api.Controllers
 
                     foreach (var log in listLog)
                     {
-                        resultList.Add(new { log.ID, CANHBAO_ID = canhbao.ID, canhbao.LOAI_CANHBAO_ID, canhbao.NOIDUNG, log.DATA_CU, log.DATA_MOI, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, TRANGTHAI_CANHBAO = textTrangThai });
+                        resultList.Add(new { log.ID, CANHBAO_ID = canhbao.ID, canhbao.LOAI_CANHBAO_ID, log.DATA_MOI, log.DATA_CU, log.NGUOITHUCHIEN, log.THOIGIAN, canhbao.DONVI_DIENLUC, TRANGTHAI_CANHBAO = textTrangThai });
                     }
                 }
                 //result.total = total;
