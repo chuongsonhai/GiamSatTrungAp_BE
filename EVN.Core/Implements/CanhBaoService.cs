@@ -51,8 +51,7 @@ namespace EVN.Core.Implements
 
         public CanhBao Getbyid(int id)
         {
-            //return Get(p => p.ID == id);
-            return Get(p => -1 == id);
+            return Get(p => p.ID == id);
         }
         public IList<CanhBao> GetbyCanhbao(string  tungay, string denngay)
         {

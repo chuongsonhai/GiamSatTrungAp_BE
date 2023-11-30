@@ -28,7 +28,7 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpPost]
         [Route("log/filter")]
-        public async Task<IHttpActionResult> FilterLog([FromBody] CauHinhCanhBaoLogFilterRequest request)
+        public IHttpActionResult FilterLog([FromBody] CauHinhCanhBaoLogFilterRequest request)
         {
             ResponseResult result = new ResponseResult();
             ILogCanhBaoService service = IoC.Resolve<ILogCanhBaoService>();
