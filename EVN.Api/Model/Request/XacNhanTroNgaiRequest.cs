@@ -83,6 +83,7 @@ namespace EVN.Api.Model.Request
             GHI_CHU = lKhaoSat.GHI_CHU;
             TRANGTHAI = lKhaoSat.TRANGTHAI;
             HANGMUC_KHAOSAT = lKhaoSat.HANGMUC_KHAOSAT;
+            FILE_DINHKEM = lKhaoSat.FILE_DINHKEM;
 
         }
         public int ID { get; set; }
@@ -129,6 +130,7 @@ namespace EVN.Api.Model.Request
         public string MA_YC { get; set; }
         public int? TRANGTHAI { get; set; }
         public int? HANGMUC_KHAOSAT { get; set; }
+        public virtual string FILE_DINHKEM { get; set; }
     }
 
     public class XacNhanTroNgakhaosatid

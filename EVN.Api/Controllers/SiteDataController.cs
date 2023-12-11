@@ -74,7 +74,18 @@ namespace EVN.Api.Controllers
         [Route("GetByteArray")]
         public IHttpActionResult GetByteArray(string path)
         {
-            string fullPath = $"{ConfigurationManager.AppSettings["PhysicalSiteDataDirectory"]}/{path}";
+            string type = "";
+            if (path.Contains("xlsx"))
+            {
+                type = "xlsx";
+            }if (path.Contains("pdf"))
+            {
+                type = "pdf";
+            }if (path.Contains("doc"))
+            {
+                type = "doc";
+            }
+            string fullPath = $"{ConfigurationManager.AppSettings["PhysicalSiteDataDirectory"]}{path.Replace($@"///", $@"\")}";
 
             //Check whether File exists.
             if (!System.IO.File.Exists(fullPath))
@@ -87,8 +98,15 @@ namespace EVN.Api.Controllers
                 int length = Convert.ToInt32(fs.Length);
                 byte[] buff = new byte[length];
                 fs.Read(buff, 0, length);
-                return Ok(buff);
+
+                return Ok(new viewFile { BaseType = buff , Type = type });
             }
+        }
+
+        public class viewFile
+        {
+            public string Type { get; set; }
+            public byte[] BaseType { get; set; }
         }
     }
 }

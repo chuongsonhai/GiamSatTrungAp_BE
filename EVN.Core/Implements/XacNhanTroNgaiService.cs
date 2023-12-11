@@ -509,8 +509,8 @@ namespace EVN.Core.Implements
                     xacnhantrongai.NGAY = xacnhan.NGAY;
                     xacnhantrongai.NGUOI_KSAT = xacnhan.NGUOI_KSAT;
                     xacnhantrongai.Y_KIEN_KH = xacnhan.Y_KIEN_KH;
-                    xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
                     xacnhantrongai.PHAN_HOI = xacnhan.PHAN_HOI;
+                    xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
                     xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
                     xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
 
@@ -563,8 +563,9 @@ namespace EVN.Core.Implements
                     xacnhantrongai.NGAY = xacnhan.NGAY;
                     xacnhantrongai.NGUOI_KSAT = xacnhan.NGUOI_KSAT;
                     xacnhantrongai.Y_KIEN_KH = xacnhan.Y_KIEN_KH;
-                    xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
                     xacnhantrongai.PHAN_HOI = xacnhan.PHAN_HOI;
+                    xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
+                 
                     xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
                     xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
                     resultList.Add(xacnhantrongai);

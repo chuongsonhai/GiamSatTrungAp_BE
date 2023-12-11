@@ -5,6 +5,7 @@ using EVN.Core;
 using EVN.Core.Domain;
 using EVN.Core.IServices;
 using EVN.Core.Repository;
+using EVN.Core.Utilities;
 using FX.Core;
 using log4net;
 using Newtonsoft.Json;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.IO;
 
 namespace EVN.Api.Controllers
 {
@@ -3564,7 +3566,7 @@ namespace EVN.Api.Controllers
                         mucdichsd = "Sinh hoạt";
                     }
                     else { mucdichsd = "Ngoài sinh hoạt"; }
-                    item.MA_DVI = YCNT.MaDViQLy;
+                item.MA_DVI = YCNT.MaDViQLy;
                     item.MA_YCAU = model.MA_YCAU;
                     item.MA_KH = YCNT.MaKHang;
                     item.TEN_KH = YCNT.CoQuanChuQuan;
@@ -3597,8 +3599,20 @@ namespace EVN.Api.Controllers
                     item.NOIDUNG = model.NOIDUNG;
                     item.PHAN_HOI = model.PHAN_HOI;
                     item.GHI_CHU = model.GHI_CHU;
+                var postedFile = httpRequest.Files["File"];
+                if (postedFile != null && postedFile.ContentLength > 0)
+                {
+                    string fileFolder = $"//GSCD//";
+                    string fileName = $"{model.CANHBAO_ID}-{Guid.NewGuid().ToString("N")}{Path.GetExtension(postedFile.FileName)}";
+                    string imagePath = FileUtils.SaveFile(postedFile, fileFolder, fileName);
+                    if (string.IsNullOrEmpty(imagePath))
+                    {
+                        return BadRequest();
+                    }
+                    item.FILE_DINHKEM = $"/{fileFolder}/{fileName}";
+                }
 
-                    item.HANGMUC_KHAOSAT = model.HANGMUC_KHAOSAT;
+                item.HANGMUC_KHAOSAT = model.HANGMUC_KHAOSAT;
                     item.TRANGTHAI = 1;
                     service.CreateNew(item);
                     service.CommitChanges();

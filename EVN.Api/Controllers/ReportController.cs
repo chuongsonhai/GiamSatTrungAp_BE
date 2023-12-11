@@ -3269,6 +3269,28 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval++;
                         }
+
+                        if (item.PHAN_HOI != null)
+                        {
+                            ws.Cells[row, colval].Value = item.PHAN_HOI;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                            colval++;
+                        }
+                        else if (item.PHAN_HOI == null)
+                        {
+                            ws.Cells[row, colval].Value = null;
+                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
+                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
+                            colval++;
+                        }
+
                         if (item.NOIDUNG != null)
                         {
                             ws.Cells[row, colval].Value = item.NOIDUNG;
@@ -3290,26 +3312,7 @@ namespace EVN.Api.Controllers
                             colval++;
                         }
 
-                        if (item.PHAN_HOI != null)
-                        {
-                            ws.Cells[row, colval].Value = item.PHAN_HOI;
-                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                            colval++;
-                        }
-                       else if (item.PHAN_HOI == null)
-                        {
-                            ws.Cells[row, colval].Value = null;
-                            ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
-                            ws.Cells[row, colval].Style.Border.Left.Style = ExcelBorderStyle.Thin;
-                            ws.Cells[row, colval].Style.Border.Right.Style = ExcelBorderStyle.Thin;
-                            ws.Cells[row, colval].Style.Border.Top.Style = ExcelBorderStyle.Thin;
-                            ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
-                            colval++;
-                        }
+                   
                         if (item.GHI_CHU != null)
                         {
                             ws.Cells[row, colval].Value = item.GHI_CHU;
