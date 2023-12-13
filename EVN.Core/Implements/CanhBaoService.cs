@@ -578,7 +578,7 @@ namespace EVN.Core.Implements
             
         }
 
-        public IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi, int solangui, string maYeuCau)
+        public IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi, int solangui, string maYeuCau, int pageindex, int pagesize, out int total)
         {
             if (maDonVi == "-1")
             {
@@ -604,7 +604,10 @@ namespace EVN.Core.Implements
                 {
                     query = query.Where(p => p.MA_YC == maYeuCau);
                 }
-                return query.ToList();
+                int maxtemp = pageindex <= 1 ? 4 - pageindex : 2;//load tối đa 2 trang tiếp theo, nếu page =1 hoặc 2 thì sẽ load 4 trang hoặc 3 trang
+                var ret = query.Skip(pageindex * pagesize).Take(pagesize * maxtemp + 1).ToList();
+                total = pageindex * pagesize + ret.Count;
+                return ret.Take(pagesize).ToList();
             }
             else
             {
@@ -629,7 +632,10 @@ namespace EVN.Core.Implements
                 {
                     query = query.Where(p => p.MA_YC == maYeuCau);
                 }
-                return query.ToList();
+                int maxtemp = pageindex <= 1 ? 4 - pageindex : 2;//load tối đa 2 trang tiếp theo, nếu page =1 hoặc 2 thì sẽ load 4 trang hoặc 3 trang
+                var ret = query.Skip(pageindex * pagesize).Take(pagesize * maxtemp + 1).ToList();
+                total = pageindex * pagesize + ret.Count;
+                return ret.Take(pagesize).ToList();
             }
         }
         public IList<CanhBao> GetAllCanhBao(out int total)

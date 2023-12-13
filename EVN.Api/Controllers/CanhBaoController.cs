@@ -513,18 +513,18 @@ namespace EVN.Api.Controllers
             ResponseResult result = new ResponseResult();
             try
             {
-                // int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
-                // int total = 0;
+                int pageindex = filter.Paginator.page > 0 ? filter.Paginator.page - 1 : 0;
+                int total = 0;
                 DateTime synctime = DateTime.Today;
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
-                var list = service.Filter(filter.Filter.fromdate, filter.Filter.todate, filter.Filter.maLoaiCanhBao, filter.Filter.trangThai, filter.Filter.maDViQLy, filter.Filter.SoLanGui, filter.Filter.keyword);
+                var list = service.Filter(filter.Filter.fromdate, filter.Filter.todate, filter.Filter.maLoaiCanhBao, filter.Filter.trangThai, filter.Filter.maDViQLy, filter.Filter.SoLanGui, filter.Filter.keyword, pageindex, filter.Paginator.pageSize, out total);
                 IList<CanhBaoRequest> data = new List<CanhBaoRequest>();
 
                 foreach (var item in list)
                 {
                     data.Add(new CanhBaoRequest(item));
                 }
-                // result.total = list.Count();
+                result.total = total;
                 result.data = data;
                 result.success = true;
                 return Ok(result);
