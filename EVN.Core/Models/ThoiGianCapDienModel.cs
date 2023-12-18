@@ -13,6 +13,8 @@ namespace EVN.Core.Models
         public virtual string TenDV { get; set; }
         public virtual int TongSoCTTiepNhanTTDN { get; set; }
         public virtual decimal TongSoNgayTB { get; set; } = 0;
+        public virtual int loaicb { get; set; }
+        public virtual int socb { get; set; }
         //public virtual decimal SoNgayQuaHan { get; set; } = 0;
         //public virtual decimal SoNgayThucHienTBTTDN { get; set; } = 0;
     }

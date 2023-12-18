@@ -87,32 +87,55 @@ namespace EVN.Core.Implements
                 return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
             }
         }
-        public IList<SoLuongGuiModel> GetSoLuongGui(string tungay, string denngay)
+        public IList<SoLuongGuiModel> GetSoLuongGui(string madvi)
         {
             ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
             ILoaiCanhBaoService servicelcanhbao = IoC.Resolve<ILoaiCanhBaoService>();
-            DateTime tuNgayCast = DateTime.ParseExact(tungay, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture);
-            var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast);
             var result1 = new List<SoLuongGuiModel>();
 
-            var listCanhBao = query.ToList();
+            IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
+            var listOrg = organizationService.Getbymadvi();
 
-            IList<DanhMucLoaiCanhBao> listcb = servicelcanhbao.GetAll();
-            foreach (var loaicb in listcb)
+            if (madvi == "-1")
             {
-                var result = new SoLuongGuiModel();
-                var queryCB = query.Where(x => x.LOAI_CANHBAO_ID == loaicb.ID).ToList();
-                result.maLoaiCanhBao = loaicb.ID;
-                result.soLuongDaGui = queryCB.Count(x => x.TRANGTHAI_CANHBAO >= 2);
-                result.soLuongThanhCong = queryCB.Count(x => x.TRANGTHAI_CANHBAO <= 6);
-                result.soLuongThatBai = queryCB.Count(x => x.TRANGTHAI_CANHBAO > 6);
-                result1.Add(result);
+
+                foreach (var org in listOrg)
+                {
+                    var query = Query.Where(p => p.DONVI_DIENLUC == org.orgCode);
+                    var result = new SoLuongGuiModel();
+
+                    result.madvi = org.orgCode;
+                    result.soLuongDaGui = query.Count(x => x.TRANGTHAI_CANHBAO >= 2);
+
+                    result1.Add(result);
+                }
             }
-         
 
             return result1;
         }
+
+        public IList<ThoiGianCapDienModel> Getbieudo3()
+        {
+            ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+            ILoaiCanhBaoService servicelcanhbao = IoC.Resolve<ILoaiCanhBaoService>();
+            var result1 = new List<ThoiGianCapDienModel>();
+
+            IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
+            //var query = Query.Where(p => p.LOAI_CANHBAO_ID == org.orgCode);
+            //var listOrg = organizationService.Getbymadvi();
+            IList<DanhMucLoaiCanhBao> listcb = servicelcanhbao.GetAll();
+            foreach (var loaicb in listcb)
+            {
+                var result = new ThoiGianCapDienModel();
+                var queryCB = Query.Where(x => x.LOAI_CANHBAO_ID == loaicb.ID).ToList();
+                result.loaicb = loaicb.ID;
+                result.socb = queryCB.Count(x => x.LOAI_CANHBAO_ID >= 1);
+
+                result1.Add(result);
+            }
+                return result1;
+        }
+
 
 
         public IList<BaocaoTienDoCanhBaoModel> GetBaoCaotonghoptiendo(string maDViQly, int maloaicanhbao, string fromdate, string todate)

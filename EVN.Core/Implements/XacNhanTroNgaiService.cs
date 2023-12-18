@@ -167,9 +167,9 @@ namespace EVN.Core.Implements
 
             //Số lượng
             result.SoLuongKhaoSat = query.Count();
-            result.SoLuongKhaoSatThanhCong = query.Count(x => x.TRANGTHAI == 1);
-            result.SoLuongKhaoSatThatBai = query.Count(x => x.TRANGTHAI == 0);
-            result.soLuongKhaoSatDungNgang = query.Count(x => x.TRANGTHAI == 2);
+            result.SoLuongKhaoSatThanhCong = (query.Count(x => x.TRANGTHAI_GOI == 0) / query.Count())*100;
+            result.SoLuongKhaoSatThatBai = (query.Count(x => x.TRANGTHAI_GOI == 1) / query.Count()) * 100;
+            result.soLuongKhaoSatDungNgang = (query.Count(x => x.TRANGTHAI_GOI == 2) / query.Count()) * 100;
             return result;
         }
 

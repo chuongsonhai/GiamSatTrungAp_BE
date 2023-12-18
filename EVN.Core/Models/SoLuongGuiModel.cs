@@ -8,9 +8,8 @@ namespace EVN.Core.Models
 {
     public class SoLuongGuiModel
     {
-        public int maLoaiCanhBao { get; set; }
+        public string madvi { get; set; }
         public int soLuongDaGui { get; set; }
-        public int soLuongThanhCong { get; set; }
-        public int soLuongThatBai { get; set; }
+
     }
 }

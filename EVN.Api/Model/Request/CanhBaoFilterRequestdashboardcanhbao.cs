@@ -17,8 +17,8 @@ namespace EVN.Api.Model.Request
     public class dashboardcanhbao
     {
 
-        public string fromdate { get; set; } = string.Empty;
-        public string todate { get; set; } = string.Empty;
+        public string madvi { get; set; } = string.Empty;
+        //public string todate { get; set; } = string.Empty;
     }
 
 }

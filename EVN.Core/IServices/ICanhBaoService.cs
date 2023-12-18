@@ -10,9 +10,11 @@ namespace EVN.Core.IServices
 {
     public interface ICanhBaoService : FX.Data.IBaseService<CanhBao, int>
     {
+
+        IList<ThoiGianCapDienModel> Getbieudo3();
         CanhBao GetbyNo(int idloai);
         CanhBao Getbyid(int id);
-        IList<SoLuongGuiModel> GetSoLuongGui(string tungay, string denngay);
+        IList<SoLuongGuiModel> GetSoLuongGui(string madvi);
         IList<CanhBao> GetbyCanhbao(string tungay, string denngay);
         IList<CanhBao> GetAllCanhBao(out int total);
         IList<CanhBao> Filter(string tungay, string denngay, int maLoaiCanhBao, int trangThai, string maDonVi, int solangui, string maYeuCau, int pageindex, int pagesize, out int total);

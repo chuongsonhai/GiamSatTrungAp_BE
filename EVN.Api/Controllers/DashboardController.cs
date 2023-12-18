@@ -35,7 +35,7 @@ namespace EVN.Api.Controllers
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
 
                 IList<CanhbaoModel> data = new List<CanhbaoModel>();
-                var list = service.GetSoLuongGui(model.Filterdashboardcanhbao.fromdate, model.Filterdashboardcanhbao.todate);
+                var list = service.GetSoLuongGui("-1");
 
                 result.data = list;
                 result.success = true;
@@ -88,23 +88,9 @@ namespace EVN.Api.Controllers
             ResponseResult result = new ResponseResult();
             try
             {
-
-    
-                IReportService service = IoC.Resolve<IReportService>();
-                var fromDate = DateTime.MinValue;
-                var toDate = DateTime.MaxValue;
-                if (!string.IsNullOrWhiteSpace(Request.Filtertgcd.tuNgay))
-                    fromDate = DateTime.ParseExact(Request.Filtertgcd.tuNgay, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
-                if (!string.IsNullOrWhiteSpace(Request.Filtertgcd.denNgay))
-                    toDate = DateTime.ParseExact(Request.Filtertgcd.denNgay, "d/M/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None);
-
-
-                var list = service.GetThoigiancapdien(Request.Filtertgcd.donViQuanLy, fromDate, toDate);
-
-                var listModel = new Thoigiancapdien(list);
-
-
-                result.data = listModel;
+                ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
+                var list = service.Getbieudo3();
+                result.data = list;
                 result.success = true;
                 return Ok(result);
             }
