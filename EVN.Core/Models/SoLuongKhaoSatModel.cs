@@ -8,9 +8,9 @@ namespace EVN.Core.Models
 {
     public class SoLuongKhaoSatModel
     {
-        public int SoLuongKhaoSat { set; get; }
-        public int SoLuongKhaoSatThanhCong { set; get; }
-        public int SoLuongKhaoSatThatBai { set; get; }
-        public int soLuongKhaoSatDungNgang { set; get; }
+        public double SoLuongKhaoSat { set; get; }
+        public double SoLuongKhaoSatThanhCong { set; get; }
+        public double SoLuongKhaoSatThatBai { set; get; }
+        public double soLuongKhaoSatDungNgang { set; get; }
     }
 }

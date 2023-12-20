@@ -110,11 +110,25 @@ namespace EVN.Core.Implements
                     result1.Add(result);
                 }
             }
+            else
+            {
+
+                        var query = Query.Where(p => p.DONVI_DIENLUC == madvi);
+                     
+                         var result = new SoLuongGuiModel();
+
+                        result.madvi = madvi;
+                        result.soLuongDaGui = query.Count(x => x.TRANGTHAI_CANHBAO >= 2);
+
+                        result1.Add(result);
+                   
+            }
+            
 
             return result1;
         }
 
-        public IList<ThoiGianCapDienModel> Getbieudo3()
+        public IList<ThoiGianCapDienModel> Getbieudo3(string madvi)
         {
             ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
             ILoaiCanhBaoService servicelcanhbao = IoC.Resolve<ILoaiCanhBaoService>();
@@ -123,17 +137,41 @@ namespace EVN.Core.Implements
             IOrganizationService organizationService = IoC.Resolve<IOrganizationService>();
             //var query = Query.Where(p => p.LOAI_CANHBAO_ID == org.orgCode);
             //var listOrg = organizationService.Getbymadvi();
-            IList<DanhMucLoaiCanhBao> listcb = servicelcanhbao.GetAll();
-            foreach (var loaicb in listcb)
-            {
-                var result = new ThoiGianCapDienModel();
-                var queryCB = Query.Where(x => x.LOAI_CANHBAO_ID == loaicb.ID).ToList();
-                result.loaicb = loaicb.ID;
-                result.socb = queryCB.Count(x => x.LOAI_CANHBAO_ID >= 1);
+            IList<DanhMucLoaiCanhBao> listcb = servicelcanhbao.GetAll().OrderBy(p => p.ID).ToList(); // Order by ID in ascending order
 
-                result1.Add(result);
+            if (madvi == "-1")
+            {
+
+                foreach (var loaicb in listcb)
+                {
+                    var result = new ThoiGianCapDienModel();
+                    var queryCB = Query.Where(x => x.LOAI_CANHBAO_ID == loaicb.ID);
+                    result.loaicb = loaicb.ID;
+                    result.socb = queryCB.Count();
+
+                    result1.Add(result);
+                }
+
             }
-                return result1;
+            else
+            {
+                foreach (var loaicb in listcb)
+                {
+                    var result = new ThoiGianCapDienModel();
+                    result.loaicb = loaicb.ID;
+
+                    // Assuming Query is a data source where you are querying data
+                    var queryCB = Query.Where(x => x.LOAI_CANHBAO_ID == loaicb.ID && x.DONVI_DIENLUC == madvi);
+
+                    // Counting the items based on the query conditions
+                    result.socb = queryCB.Count();
+
+                    // Adding the result to a list or collection
+                    result1.Add(result);
+
+                }
+            }
+            return result1;
         }
 
 

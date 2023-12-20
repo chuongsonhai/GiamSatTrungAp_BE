@@ -11,7 +11,7 @@ namespace EVN.Core.IServices
     public interface ICanhBaoService : FX.Data.IBaseService<CanhBao, int>
     {
 
-        IList<ThoiGianCapDienModel> Getbieudo3();
+        IList<ThoiGianCapDienModel> Getbieudo3(string madvi);
         CanhBao GetbyNo(int idloai);
         CanhBao Getbyid(int id);
         IList<SoLuongGuiModel> GetSoLuongGui(string madvi);

@@ -158,19 +158,60 @@ namespace EVN.Core.Implements
             throw new NotImplementedException();
         }
 
-        public SoLuongKhaoSatModel GetSoLuongKhaoSat(string tungay, string denngay)
+        public SoLuongKhaoSatModel GetSoLuongKhaoSat(string madvi)
         {
-            DateTime tuNgayCast = DateTime.ParseExact(tungay, "d/M/yyyy", CultureInfo.InvariantCulture);
-            DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
-            var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast);
+            if (madvi == "-1")
+            {
+            var query = Query.Where(p => "-1" == madvi);
             var result = new SoLuongKhaoSatModel();
+            int totalSurveys = query.Count();
+            int successSurveys = query.Count(x => x.TRANGTHAI_GOI == 0);
+            int failedSurveys = query.Count(x => x.TRANGTHAI_GOI == 1);
+            int neutralSurveys = query.Count(x => x.TRANGTHAI_GOI == 2);
 
-            //Số lượng
-            result.SoLuongKhaoSat = query.Count();
-            result.SoLuongKhaoSatThanhCong = (query.Count(x => x.TRANGTHAI_GOI == 0) / query.Count())*100;
-            result.SoLuongKhaoSatThatBai = (query.Count(x => x.TRANGTHAI_GOI == 1) / query.Count()) * 100;
-            result.soLuongKhaoSatDungNgang = (query.Count(x => x.TRANGTHAI_GOI == 2) / query.Count()) * 100;
+            // Tính phần trăm cho mỗi điều kiện
+            double percentSuccess = (double)successSurveys / totalSurveys * 100;
+            double percentFailed = (double)failedSurveys / totalSurveys * 100;
+            double percentNeutral = (double)neutralSurveys / totalSurveys * 100;
+
+            // Làm tròn phần trăm để tổng của chúng là 100
+            double roundingFactor = 100.0 / (percentSuccess + percentFailed + percentNeutral);
+            percentSuccess *= roundingFactor;
+            percentFailed *= roundingFactor;
+            percentNeutral *= roundingFactor;
+
+            // Gán giá trị làm tròn vào model kết quả
+            result.SoLuongKhaoSatThanhCong = Math.Round(percentSuccess);
+            result.SoLuongKhaoSatThatBai = Math.Round(percentFailed);
+            result.soLuongKhaoSatDungNgang = Math.Round(percentNeutral);
             return result;
+            }
+            else
+            {
+                var query = Query.Where(p => p.MA_DVI == madvi);
+                var result = new SoLuongKhaoSatModel();
+                int totalSurveys = query.Count();
+                int successSurveys = query.Count(x => x.TRANGTHAI_GOI == 0);
+                int failedSurveys = query.Count(x => x.TRANGTHAI_GOI == 1);
+                int neutralSurveys = query.Count(x => x.TRANGTHAI_GOI == 2);
+
+                // Tính phần trăm cho mỗi điều kiện
+                double percentSuccess = (double)successSurveys / totalSurveys * 100;
+                double percentFailed = (double)failedSurveys / totalSurveys * 100;
+                double percentNeutral = (double)neutralSurveys / totalSurveys * 100;
+
+                // Làm tròn phần trăm để tổng của chúng là 100
+                double roundingFactor = 100.0 / (percentSuccess + percentFailed + percentNeutral);
+                percentSuccess *= roundingFactor;
+                percentFailed *= roundingFactor;
+                percentNeutral *= roundingFactor;
+
+                // Gán giá trị làm tròn vào model kết quả
+                result.SoLuongKhaoSatThanhCong = Math.Round(percentSuccess);
+                result.SoLuongKhaoSatThatBai = Math.Round(percentFailed);
+                result.soLuongKhaoSatDungNgang = Math.Round(percentNeutral);
+                return result;
+            }
         }
 
         public IList<BaoCaoTongHopDanhGiaMucDo> GetBaoCaoTongHopDanhGiaMucDo1(string madvi, string fromdate, string todate)

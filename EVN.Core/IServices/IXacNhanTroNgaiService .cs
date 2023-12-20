@@ -20,7 +20,7 @@ namespace EVN.Core.IServices
         bool Save(XacNhanTroNgai loaiCanhBao, out string message);
         IList<XacNhanTroNgai> khaosatfilter(string tungay, string denngay, int trangThaiKhaoSat, string donViQuanLy
         , int pageindex, int pagesize, out int total);
-        SoLuongKhaoSatModel GetSoLuongKhaoSat(string tungay, string denngay );
+        SoLuongKhaoSatModel GetSoLuongKhaoSat(string madvi);
         IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai(string MA_YCAU);
         IList<XacNhanTroNgai> FilterByCanhBaoIDAndTrangThai2(string MA_YCAU, int trangthai_khaosat, int mucdo_hailong);
         XacNhanTroNgai FilterByMaYeuCau(string ID);

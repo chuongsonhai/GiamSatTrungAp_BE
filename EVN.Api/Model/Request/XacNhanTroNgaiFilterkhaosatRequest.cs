@@ -18,8 +18,8 @@ namespace EVN.Api.Model.Request
     public class dashboadkhaosat
     {
 
-        public string tuNgay { get; set; }
-        public string denNgay { get; set; }
+        public string madvi { get; set; }
+        //public string denNgay { get; set; }
 
 
     }

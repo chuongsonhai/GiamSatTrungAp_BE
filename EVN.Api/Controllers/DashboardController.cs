@@ -35,7 +35,7 @@ namespace EVN.Api.Controllers
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
 
                 IList<CanhbaoModel> data = new List<CanhbaoModel>();
-                var list = service.GetSoLuongGui("-1");
+                var list = service.GetSoLuongGui(model.Filterdashboardcanhbao.madvi);
 
                 result.data = list;
                 result.success = true;
@@ -62,7 +62,7 @@ namespace EVN.Api.Controllers
             try
             {
                 IXacNhanTroNgaiService service = IoC.Resolve<IXacNhanTroNgaiService>();
-                var list = service.GetSoLuongKhaoSat(Request.Filterdashboadkhaosat.tuNgay, Request.Filterdashboadkhaosat.denNgay);
+                var list = service.GetSoLuongKhaoSat(Request.Filterdashboadkhaosat.madvi);
 
                 //  result.total = list.Count();
                 result.data = list;
@@ -89,7 +89,7 @@ namespace EVN.Api.Controllers
             try
             {
                 ICanhBaoService service = IoC.Resolve<ICanhBaoService>();
-                var list = service.Getbieudo3();
+                var list = service.Getbieudo3(Request.Filtertgcd.donViQuanLy);
                 result.data = list;
                 result.success = true;
                 return Ok(result);
