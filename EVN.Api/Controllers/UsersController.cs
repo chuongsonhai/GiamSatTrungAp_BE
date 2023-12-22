@@ -44,6 +44,31 @@ namespace EVN.Api.Controllers
             }
         }
 
+    //usernhan
+        [HttpPost]
+        [Route("filterusernhan")]
+        public IHttpActionResult Filterusernhan(UserFilterRequest request)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                IUserdatanhanService service = IoC.Resolve<IUserdatanhanService>();
+                IList<Userdatanhan> list = service.Getbyusernhan("-1");
+
+
+                result.data = list;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
         [JwtAuthentication]
         [HttpGet]
         public IHttpActionResult Get(int id)

@@ -88,6 +88,15 @@ namespace EVN.Core.Implements
             return query.Skip(pageindex * pagesize).Take(pagesize).ToList();
         }
 
+        public IList<Userdata> Getbyusernhan(string maDViQLy)
+        {
+            var query = Query;
+ 
+                query = query.Where(p => "-1" == maDViQLy);
+    
+            return query.ToList();
+        }
+
         public IList<Userdata> GetByMaCV(string maDViQLy, string maCV)
         {
             var query = Query;

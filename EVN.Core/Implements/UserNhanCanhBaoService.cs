@@ -32,5 +32,10 @@ namespace EVN.Core.Implements
             
         }
 
+        public UserNhanCanhBao GetbyNo(int idloai)
+        {
+            return Get(p => p.ID == idloai);
+        }
+
     }
 }

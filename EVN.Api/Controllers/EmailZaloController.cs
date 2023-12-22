@@ -6,12 +6,14 @@ using EVN.Core.IServices;
 using EVN.Core.Models;
 using FX.Core;
 using log4net;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 
 namespace EVN.Api.Controllers
@@ -56,6 +58,65 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
+
+        //user_nhan_canhbao
+        [HttpPost]
+        [Route("user_nhan_canhbao/add")]
+        public IHttpActionResult usernhancanhbao([FromBody] UserNhanCanhBaoid request)
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            try
+            {
+                IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
+                UserNhanCanhBao user = new UserNhanCanhBao();
+                user.MA_DVIQLY = request.MA_DVIQLY;
+                user.USER_ID = request.USER_ID;
+                userNhanCanhBaoService.CreateNew(user);
+                userNhanCanhBaoService.CommitChanges();
+                result.success = true;
+                result.message = "Thêm mới thành công";
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+        [HttpPost]
+        [Route("edit")]
+        public IHttpActionResult usernhancanhbaoedit()
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            var httpRequest = HttpContext.Current.Request;
+            try
+            {
+                string data = httpRequest.Form["data"];
+                UserNhanCanhBaoid model = JsonConvert.DeserializeObject<UserNhanCanhBaoid>(data);
+                IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
+                var item = new UserNhanCanhBao();
+                item = userNhanCanhBaoService.GetbyNo(model.ID);
+                item.MA_DVIQLY = model.MA_DVIQLY;
+                item.USER_ID = model.USER_ID;
+                userNhanCanhBaoService.Update(item);
+                userNhanCanhBaoService.CommitChanges();
+                result.success = true;
+                return Ok(result);
+
+
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
 
         [HttpGet]
         [Route("sendnotification")]
@@ -194,6 +255,60 @@ namespace EVN.Api.Controllers
                 result.data = new List<UserNhanCanhBao>();
                 result.success = false;
                 result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public IHttpActionResult cauhinhcanhbaoedit([FromUri] int ID)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                IUserNhanCanhBaoService service = IoC.Resolve<IUserNhanCanhBaoService>();
+                var item = new UserNhanCanhBao();
+                item = service.GetbyNo(ID);
+                UserNhanCanhBaoid obj = new UserNhanCanhBaoid(item);
+                // item.ID = model.MALOAICANHBAO;
+                result.data = obj;
+                result.success = true;
+                return Ok(result);
+
+
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+
+
+        //[JwtAuthentication]
+        [HttpGet]
+        [Route("delete/{ID}")]
+        public IHttpActionResult Delete([FromUri] int ID)
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            try
+            {
+                IUserNhanCanhBaoService service = IoC.Resolve<IUserNhanCanhBaoService>();
+                var item = new UserNhanCanhBao();
+                item = service.GetbyNo(ID);
+                service.Delete(item);
+                service.CommitChanges();
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
                 return Ok(result);
             }
         }
