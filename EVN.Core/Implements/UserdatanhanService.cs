@@ -29,6 +29,47 @@ namespace EVN.Core.Implements
             return query.ToList();
         }
 
+        public Userdatanhan GetMaDviQly(string MaDviQly)
+        {
+            return Get(p => p.maDViQLy == MaDviQly);
+        }
+
+        public IList<Userdatanhan> Getid(string MaDviQly)
+        {
+            IUserdataService serviceuser = IoC.Resolve<IUserdataService>();
+            var resultList = new List<Userdatanhan>();
+            if (MaDviQly != "-1")
+            {
+                var query = Query.Where(p => p.maDViQLy == MaDviQly && p.maDViQLy != null);
+                var listCanhBao = query.ToList();
+                foreach (var item in listCanhBao)
+                {
+                    var userNhancb = new Userdatanhan();
+                    var userdata = serviceuser.Getid(item.userId);
+                    userNhancb.userId = userdata.userId;
+                    userNhancb.username = userdata.username;
+                    userNhancb.maDViQLy = userdata.maDViQLy;
+                    resultList.Add(userNhancb);
+                }
+
+            }
+            else
+            {
+                var query = Query.Where(p => "-1" == MaDviQly && p.maDViQLy != null);
+                var listCanhBao = query.ToList();
+                foreach (var item in listCanhBao)
+                {
+                    var userNhancb = new Userdatanhan();
+                    var userdata = serviceuser.Getid(item.userId);
+                    userNhancb.userId = userdata.userId;
+                    userNhancb.username = userdata.username;
+                    userNhancb.maDViQLy = userdata.maDViQLy;
+                    //userNhancb.fullName = userdata.fullName;
+                    resultList.Add(userNhancb);
+                }
+            }
+            return resultList;
+        }
 
     }
 }

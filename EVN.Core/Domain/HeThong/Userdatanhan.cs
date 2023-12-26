@@ -8,6 +8,7 @@ namespace EVN.Core.Domain
 {
     public class Userdatanhan
     {
+        public virtual int id { get; set; }
         public virtual int userId { get; set; }
         public virtual string username { get; set; }
         public virtual string fullName { get; set; }

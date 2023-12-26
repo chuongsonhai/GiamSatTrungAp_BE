@@ -10,6 +10,8 @@ namespace EVN.Core.IServices
     public interface IUserdatanhanService : FX.Data.IBaseService<Userdatanhan, int>
     {
         IList<Userdatanhan> Getbyusernhan(string maDViQLy);
+        Userdatanhan GetMaDviQly(string MaDviQly);
+        IList<Userdatanhan> Getid(string MaDviQly);
     }
    
 }

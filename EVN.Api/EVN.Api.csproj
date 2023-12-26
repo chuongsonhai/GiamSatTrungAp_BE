@@ -389,6 +389,7 @@
     <Compile Include="Model\Request\XacNhanTroNgaiFilterkhaosatRequest.cs" />
     <Compile Include="Model\Request\XacNhanTroNgaiFilterkhRequest.cs" />
     <Compile Include="Model\Request\XacNhanTroNgakhaosatkhfilter.cs" />
+    <Compile Include="Model\Response\UserDataNHANdata.cs" />
     <Compile Include="Model\SoLuongCanhbaoModel.cs" />
     <Compile Include="Model\SoLuongKhaoSatModel.cs" />
     <Compile Include="Model\CanhbaoModel.cs" />

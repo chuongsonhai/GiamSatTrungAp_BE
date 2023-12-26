@@ -240,12 +240,62 @@ namespace EVN.Api.Controllers
                 // int total = 0;
                 DateTime synctime = DateTime.Today;
                 IUserNhanCanhBaoService service = IoC.Resolve<IUserNhanCanhBaoService>();
-                var list = service.GetbyMaDviQly(filter.Filter.maDViQLy);
+                var list = service.Getid(filter.Filter.maDViQLy);
                 IList<UserNhanCanhBao> data = new List<UserNhanCanhBao>();
 
                 
                 // result.total = list.Count();
                 result.data = list;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.data = new List<UserNhanCanhBao>();
+                result.success = false;
+                result.message = "Có lỗi xảy ra, vui lòng thực hiện lại.";
+                return Ok(result);
+            }
+        }
+
+        [HttpPost]
+        [Route("filternguoinhan")]
+        public IHttpActionResult Filternguoinhan(UserNhanCanhBaoFilterRequest filter)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                // int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
+                // int total = 0;
+                DateTime synctime = DateTime.Today;
+                IUserNhanCanhBaoService service = IoC.Resolve<IUserNhanCanhBaoService>();
+                IUserdataService serviceuser = IoC.Resolve<IUserdataService>();
+
+                var listModel = new List<UserDataNHANdata>();
+                var ht = serviceuser.GetMadvi(filter.Filter.maDViQLy);
+
+
+                foreach (var item in ht)
+                {
+
+        
+                    var model = new UserDataNHANdata(item);
+                    var usernhan = service.GetMaDviQly(item.maDViQLy);
+                    var userdata = serviceuser.GetMaDviQly(item.maDViQLy);
+                    if (usernhan != null && userdata != null && usernhan.USER_ID == userdata.userId)
+                    {
+                
+                        listModel.Add(model);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                }
+                // result.total = list.Count();
+                result.data = listModel;
                 result.success = true;
                 return Ok(result);
             }

@@ -9,6 +9,7 @@ namespace EVN.Core.Domain
         public virtual int USER_ID { get; set; }
         //  public virtual int TRANGTHAI_GUI { get; set; }
         public virtual string MA_DVIQLY { get; set; }
+        public virtual string USERNAME { get; set; }
         public virtual int TRANGTHAI { get; set; } = 0;
     }
 

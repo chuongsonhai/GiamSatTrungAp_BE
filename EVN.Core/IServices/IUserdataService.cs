@@ -9,7 +9,9 @@ namespace EVN.Core.IServices
 {
     public interface IUserdataService : FX.Data.IBaseService<Userdata, int>
     {
-
+        Userdata Getid(int userid);
+        IList<Userdata> GetMadvi(string MaDviQly);
+        Userdata GetMaDviQly(string MaDviQly);
         IList<Userdata> Getbyusernhan(string maDViQLy);
 
         Userdata GetbyTicket(string ticket);

@@ -19,7 +19,7 @@ namespace EVN.Core.Implements
         public UserdataService(string sessionFactoryConfigPath, string connectionString = null) : base(sessionFactoryConfigPath, connectionString)
         {
         }
-
+    
         public IList<Userdata> GetbyMaDviQly(string MaDviQly)
         {
           
@@ -31,6 +31,29 @@ namespace EVN.Core.Implements
             {
                 return Query.ToList();
             }
+        }
+
+        public IList<Userdata> GetMadvi(string MaDviQly)
+        {
+
+            if (MaDviQly != "-1")
+            {
+                return Query.Where(p => p.maDViQLy == MaDviQly && p.maDViQLy != null).ToList();
+            }
+            else
+            {
+                return Query.ToList();
+            }
+        }
+
+        public Userdata GetMaDviQly(string MaDviQly)
+        {
+            return Get(p => p.maDViQLy == MaDviQly);
+        }
+
+        public Userdata Getid(int userid)
+        {
+            return Get(p => p.userId == userid);
         }
 
         public Userdata Getbysdt(string sdt)

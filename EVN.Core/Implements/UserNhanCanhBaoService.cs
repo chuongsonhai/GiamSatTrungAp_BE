@@ -32,9 +32,63 @@ namespace EVN.Core.Implements
             
         }
 
+
+        
+
+        public UserNhanCanhBao GetMaDviQly(string MaDviQly)
+        {
+                return Get(p => p.MA_DVIQLY == MaDviQly);
+        }
+
         public UserNhanCanhBao GetbyNo(int idloai)
         {
             return Get(p => p.ID == idloai);
+        }
+
+        public IList<UserNhanCanhBao> Getid(string MaDviQly)
+        {
+            IUserdataService serviceuser = IoC.Resolve<IUserdataService>();
+            var resultList = new List<UserNhanCanhBao>();
+            if (MaDviQly != "-1")
+            {
+                var query = Query.Where(p => p.MA_DVIQLY == MaDviQly && p.MA_DVIQLY != null);
+                var listCanhBao = query.ToList();
+                foreach (var item in listCanhBao)
+                {
+                    var userNhancb = new UserNhanCanhBao();
+                    var userdata = serviceuser.GetMaDviQly(item.MA_DVIQLY);
+                    var userdataNHAN = serviceuser.Getid(item.USER_ID);
+                    var userdataCB = item.USER_ID;
+                    if (userdataNHAN.userId == userdataCB)
+                    {
+                        userNhancb.USER_ID = userdata.userId;
+                        userNhancb.USERNAME = userdata.username;
+                        userNhancb.MA_DVIQLY = userdata.maDViQLy;
+                        resultList.Add(userNhancb);
+                    }
+                }
+
+            }
+            else
+            {
+                var query = Query.Where(p => "-1" == MaDviQly && p.MA_DVIQLY != null);
+                var listCanhBao = query.ToList();
+                foreach (var item in listCanhBao)
+                {
+                    var userNhancb = new UserNhanCanhBao();
+                    var userdata = serviceuser.GetMaDviQly(item.MA_DVIQLY);
+                    var userdataNHAN = serviceuser.Getid(item.USER_ID);
+                    var userdataCB = item.USER_ID;
+                    if (userdataNHAN.userId == userdataCB)
+                    {
+                        userNhancb.USER_ID = userdata.userId;
+                        userNhancb.USERNAME = userdata.username;
+                        userNhancb.MA_DVIQLY = userdata.maDViQLy;
+                        resultList.Add(userNhancb);
+                    }
+                }
+            }
+            return resultList;
         }
 
     }
