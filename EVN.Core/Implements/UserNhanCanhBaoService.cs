@@ -61,6 +61,7 @@ namespace EVN.Core.Implements
                     var userdataCB = item.USER_ID;
                     if (userdataNHAN.userId == userdataCB)
                     {
+                        userNhancb.ID = item.ID;
                         userNhancb.USER_ID = userdata.userId;
                         userNhancb.USERNAME = userdata.username;
                         userNhancb.MA_DVIQLY = userdata.maDViQLy;
@@ -81,6 +82,7 @@ namespace EVN.Core.Implements
                     var userdataCB = item.USER_ID;
                     if (userdataNHAN.userId == userdataCB)
                     {
+                        userNhancb.ID = item.ID;
                         userNhancb.USER_ID = userdata.userId;
                         userNhancb.USERNAME = userdata.username;
                         userNhancb.MA_DVIQLY = userdata.maDViQLy;

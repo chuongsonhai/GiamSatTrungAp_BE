@@ -22,7 +22,7 @@ namespace EVN.Api.Controllers
         [AllowAnonymous]
         [HttpPost]
         [Route("authen")]
-        public IHttpActionResult Authen(AuthModel model)
+        public async Task<IHttpActionResult> Authen(AuthModel model)
         {
             ResponseResult result = new ResponseResult();
             try
@@ -31,17 +31,19 @@ namespace EVN.Api.Controllers
                 IUserdataService service = IoC.Resolve<IUserdataService>();
                 IOrganizationService orgservice = IoC.Resolve<IOrganizationService>();
 
-                var userdata = service.GetbyTicket(model.ticket);
+                var userdata = await service.GetbyTicket(model.ticket);
                 if (userdata == null)
                     throw new Exception("Sai tên đăng nhập hoặc mật khẩu");
 
-                userdata = service.Getbykey(userdata.userId);
-                var org = orgservice.Getbykey(int.Parse(userdata.orgId));
-                var roles = userdata.Roles.Select(p => p.groupName).ToArray();
-                var token = JwtManager.GenerateToken(userdata.username, roles);
-                var data = new UserModel() { userId = userdata.userId, username = userdata.username, fullName = userdata.fullName, email = userdata.email, maDViQLy = org.orgCode, JwtToken = token.Token, RefreshToken = token.RefreshToken };
+                var userTask = Task.Run(() => service.Getbykey(userdata.userId));
+                var user = userTask.Result;
+                var orgTask = Task.Run(() => orgservice.Getbykey(int.Parse(user.orgId)));
+                var org = orgTask.Result;
+                var roles = user.Roles.Select(p => p.groupName).ToArray();
+                var token = JwtManager.GenerateToken(user.username, roles);
+                var data = new UserModel() { userId = user.userId, username = user.username, fullName = user.fullName, email = user.email, maDViQLy = org.orgCode, JwtToken = token.Token, RefreshToken = token.RefreshToken };
                 data.Roles = new List<RoleModel>();
-                foreach (var role in userdata.Roles)
+                foreach (var role in user.Roles)
                     data.Roles.Add(new RoleModel(role));
                 result.data = data;
                 result.success = true;
@@ -66,7 +68,7 @@ namespace EVN.Api.Controllers
                 IUserdataService service = IoC.Resolve<IUserdataService>();
                 IOrganizationService orgservice = IoC.Resolve<IOrganizationService>();
 
-                var userdata =  service.Authenticate(model.Username, model.Password);
+                var userdata = service.Authenticate(model.Username, model.Password);
                 if (userdata == null) throw new Exception("Sai tên đăng nhập hoặc mật khẩu");
 
                 if (!string.IsNullOrWhiteSpace(model.notifyid))

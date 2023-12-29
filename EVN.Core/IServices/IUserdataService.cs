@@ -14,7 +14,7 @@ namespace EVN.Core.IServices
         Userdata GetMaDviQly(string MaDviQly);
         IList<Userdata> Getbyusernhan(string maDViQLy);
 
-        Userdata GetbyTicket(string ticket);
+        Task<Userdata> GetbyTicket(string ticket);
         Userdata Authenticate(string username, string password);
 
         bool SaveRolesToUser(Userdata userdata, string[] roles);

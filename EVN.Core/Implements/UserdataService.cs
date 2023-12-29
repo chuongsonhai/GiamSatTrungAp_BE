@@ -15,14 +15,14 @@ namespace EVN.Core.Implements
 {
     public class UserdataService : FX.Data.BaseService<Userdata, int>, IUserdataService
     {
-        private ILog log = LogManager.GetLogger(typeof(UserdataService)); 
+        private ILog log = LogManager.GetLogger(typeof(UserdataService));
         public UserdataService(string sessionFactoryConfigPath, string connectionString = null) : base(sessionFactoryConfigPath, connectionString)
         {
         }
-    
+
         public IList<Userdata> GetbyMaDviQly(string MaDviQly)
         {
-          
+
             if (MaDviQly != "-1")
             {
                 return Query.Where(p => p.maDViQLy == MaDviQly || p.maDViQLy == "X0206" || p.maDViQLy == "PD").ToList();
@@ -114,9 +114,9 @@ namespace EVN.Core.Implements
         public IList<Userdata> Getbyusernhan(string maDViQLy)
         {
             var query = Query;
- 
-                query = query.Where(p => "-1" == maDViQLy);
-    
+
+            query = query.Where(p => "-1" == maDViQLy);
+
             return query.ToList();
         }
 
@@ -134,27 +134,81 @@ namespace EVN.Core.Implements
 
         }
 
-        public Userdata GetbyTicket(string ticket)
+        public async Task<Userdata> GetbyTicket(string ticket)
         {
+            //try
+            //{
+            //    var result = GetInfo(ticket);
+            //    if (result == null) return null;
+            //    var userdata = result.data.identity;
+            //    if (!Query.Any(p => p.orgId == userdata.orgId && p.username == userdata.username))
+            //    {
+            //        userdata.userId = 0;
+            //        //userdata.isactive = true;
+            //        userdata. = GeneratorPassword.GenerateSalt();
+            //        userdata.password = GeneratorPassword.EncodePassword("098765@a", userdata.passwordsalt);
+            //        CreateNew(userdata);                    
+            //        CommitChanges();
+            //        string[] roles = new string[] { "NhanVien" };
+            //        if (userdata.orgId == "281")
+            //            roles = new string[] { "Admin" };
+            //        SaveRolesToUser(userdata, roles);                    
+            //    }
+            //    return userdata;
+            //}
+            //catch (Exception ex)
+            //{
+            //    log.Error(ex);
+            //    return null;
+            //}
+
+            var newUser = new Userdata();
             try
             {
-                var result = GetInfo(ticket);
+                var result = await GetInfo(ticket);
                 if (result == null) return null;
                 var userdata = result.data.identity;
-                if (!Query.Any(p => p.orgId == userdata.orgId && p.maBPhan == userdata.maBPhan && p.username == userdata.username))
+                var query = Query.Where(p => p.username == userdata.usernameLocal).FirstOrDefault();
+                if (query == null)
                 {
-                    userdata.userId = 0;
-                    userdata.isactive = true;
-                    userdata.passwordsalt = GeneratorPassword.GenerateSalt();
-                    userdata.password = GeneratorPassword.EncodePassword("098765@a", userdata.passwordsalt);
-                    CreateNew(userdata);                    
+                    //newUser.userId = userdata.userId;
+                    newUser.isactive = true;
+                    newUser.staffCode = userdata.staffCode;
+                    newUser.orgId = userdata.orgId;
+                    newUser.username = userdata.username;
+                    newUser.fullName = userdata.fullName;
+                    newUser.maDViQLy = userdata.orgEVNHES;
+                    //newUser.phoneNumber = userdata.phone;
+                    newUser.passwordsalt = GeneratorPassword.GenerateSalt();
+                    newUser.password = GeneratorPassword.EncodePassword("098765@a", GeneratorPassword.GenerateSalt());
+                    //userdata.userId = 0;
+                    //userdata.isactive = true;
+                    //userdata.passwordsalt = GeneratorPassword.GenerateSalt();
+                    //userdata.password = GeneratorPassword.EncodePassword("098765@a", userdata.passwordsalt);
+                    CreateNew(newUser);
                     CommitChanges();
                     string[] roles = new string[] { "NhanVien" };
                     if (userdata.orgId == "281")
                         roles = new string[] { "Admin" };
-                    SaveRolesToUser(userdata, roles);                    
+                    if (userdata.orgId == "276")
+                        roles = new string[] { "Admin" };
+                    SaveRolesToUser(newUser, roles);
+                    return newUser;
                 }
-                return userdata;
+
+                else
+                {
+                    newUser.userId = query.userId;
+                    newUser.fullName = query.fullName;
+                    newUser.username = query.username;
+                    newUser.email = query.email;
+                    newUser.phoneNumber = query.phoneNumber;
+                    newUser.orgId = query.orgId;
+                    newUser.staffCode = query.staffCode;
+                    newUser.maDViQLy = query.maDViQLy;
+                    return newUser;
+                }
+               
             }
             catch (Exception ex)
             {
@@ -163,25 +217,29 @@ namespace EVN.Core.Implements
             }
         }
 
-        SSOResponse GetInfo(string ticket)
+        async Task<SSOResponse> GetInfo(string ticket)
         {
             try
             {
                 ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
-                var ssoConfigs = cfgservice.GetDictionary("SSO_URL_GETINFO");
+                var ssoConfigs = cfgservice.GetDictionary("SSO_URL_NEW");
 
-                string syncUrl = ssoConfigs["SSO_URL_GETINFO"];
+                string syncUrl = ssoConfigs["SSO_URL_NEW"];
                 var client = new RestClient($"{syncUrl}?ticket={ticket}&appCode=DAUNOI_TRUNGAP");
                 var request = new RestRequest();
                 request.Method = Method.GET;
                 request.AddHeader("Content-Type", "application/json");
 
-                IRestResponse response = client.Execute(request);
+                IRestResponse response = await client.ExecuteTaskAsync(request);
                 log.Error(response.Content);
+
                 if (response.StatusCode != System.Net.HttpStatusCode.OK)
                     return null;
+
                 SSOResponse result = JsonConvert.DeserializeObject<SSOResponse>(response.Content);
-                if (result.status != "SUCCESS") return null;
+                if (result.status != "SUCCESS")
+                    return null;
+
                 return result;
             }
             catch (Exception ex)
@@ -190,5 +248,6 @@ namespace EVN.Core.Implements
                 return null;
             }
         }
+
     }
 }

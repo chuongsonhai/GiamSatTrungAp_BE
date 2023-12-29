@@ -16,16 +16,13 @@ namespace EVN.Core.Domain
         public virtual int deptId { get; set; }
         public virtual string orgId { get; set; }
         public virtual string staffCode { get; set; }
-
         public virtual string maDViQLy { get; set; }
         public virtual string maBPhan { get; set; }
         public virtual string maNVien { get; set; }
-
         public virtual string NotifyId { get; set; }
         public virtual string password { get; set; }
         public virtual string passwordsalt { get; set; }
         public virtual bool isactive { get; set; } = true;
-
         public virtual IList<Role> Roles { get; set; } = new List<Role>();        
     }
 }

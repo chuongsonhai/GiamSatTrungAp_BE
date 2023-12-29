@@ -70,6 +70,41 @@ namespace EVN.Api.Controllers
         }
 
         //[JwtAuthentication]
+        //[HttpGet]
+        //[Route("GetByteArray")]
+        //public IHttpActionResult GetByteArray(string path)
+        //{
+        //    string type = "";
+        //    if (path.Contains("xlsx"))
+        //    {
+        //        type = "xlsx";
+        //    }if (path.Contains("pdf"))
+        //    {
+        //        type = "pdf";
+        //    }if (path.Contains("doc"))
+        //    {
+        //        type = "doc";
+        //    }
+        //    //string fullPath = $"{ConfigurationManager.AppSettings["PhysicalSiteDataDirectory"]}{path.Replace($@"///", $@"\")}";
+        //    string fullPath = $"{ConfigurationManager.AppSettings["PhysicalSiteDataDirectory"]}/{path}";
+
+        //    //Check whether File exists.
+        //    if (!System.IO.File.Exists(fullPath))
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    using (FileStream fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+        //    {
+        //        int length = Convert.ToInt32(fs.Length);
+        //        byte[] buff = new byte[length];
+        //        fs.Read(buff, 0, length);
+
+        //        return Ok(new viewFile { BaseType = buff , Type = type });
+        //    }
+        //}
+
+        //[JwtAuthentication]
         [HttpGet]
         [Route("GetByteArray")]
         public IHttpActionResult GetByteArray(string path)
@@ -78,14 +113,18 @@ namespace EVN.Api.Controllers
             if (path.Contains("xlsx"))
             {
                 type = "xlsx";
-            }if (path.Contains("pdf"))
+            }
+            if (path.Contains("pdf"))
             {
                 type = "pdf";
-            }if (path.Contains("doc"))
+            }
+            if (path.Contains("doc"))
             {
                 type = "doc";
             }
             string fullPath = $"{ConfigurationManager.AppSettings["PhysicalSiteDataDirectory"]}{path.Replace($@"///", $@"\")}";
+            fullPath = fullPath.Replace("/", "\\");
+            //string fullPath = $"{ConfigurationManager.AppSettings["PhysicalSiteDataDirectory"]}/{path}";
 
             //Check whether File exists.
             if (!System.IO.File.Exists(fullPath))
@@ -99,7 +138,30 @@ namespace EVN.Api.Controllers
                 byte[] buff = new byte[length];
                 fs.Read(buff, 0, length);
 
-                return Ok(new viewFile { BaseType = buff , Type = type });
+                return Ok(new viewFile { BaseType = buff, Type = type });
+            }
+
+    }
+
+        //[JwtAuthentication]
+        [HttpGet]
+        [Route("GetByteArray1")]
+        public IHttpActionResult GetByteArray1(string path)
+        {
+            string fullPath = $"{ConfigurationManager.AppSettings["PhysicalSiteDataDirectory"]}/{path}";
+
+            //Check whether File exists.
+            if (!System.IO.File.Exists(fullPath))
+            {
+                return NotFound();
+            }
+
+            using (FileStream fs = new FileStream(fullPath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                int length = Convert.ToInt32(fs.Length);
+                byte[] buff = new byte[length];
+                fs.Read(buff, 0, length);
+                return Ok(buff);
             }
         }
 
