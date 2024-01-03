@@ -29,6 +29,8 @@ namespace EVN.Core.Implements
             return query.ToList();
         }
 
+     
+
         public Userdatanhan GetMaDviQly(string MaDviQly)
         {
             return Get(p => p.maDViQLy == MaDviQly);

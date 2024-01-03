@@ -25,7 +25,9 @@ namespace EVN.Core.Implements
 
             if (MaDviQly != "-1")
             {
-                return Query.Where(p => p.maDViQLy == MaDviQly || p.maDViQLy == "X0206" || p.maDViQLy == "PD").ToList();
+                //return Query.Where(p => p.maDViQLy == MaDviQly || p.maDViQLy == "X0206" || p.maDViQLy == "PD" ).ToList();
+                var madviqlies = new List<string> { MaDviQly, "X0206", "PD" };
+                return Query.Where(u => u.phoneNumber != null && madviqlies.Contains(u.maDViQLy)).ToList();
             }
             else
             {
@@ -178,7 +180,7 @@ namespace EVN.Core.Implements
                     newUser.username = userdata.username;
                     newUser.fullName = userdata.fullName;
                     newUser.maDViQLy = userdata.orgEVNHES;
-                    //newUser.phoneNumber = userdata.phone;
+                    newUser.nsid = userdata.ns_id;
                     newUser.passwordsalt = GeneratorPassword.GenerateSalt();
                     newUser.password = GeneratorPassword.EncodePassword("098765@a", GeneratorPassword.GenerateSalt());
                     //userdata.userId = 0;
@@ -188,10 +190,14 @@ namespace EVN.Core.Implements
                     CreateNew(newUser);
                     CommitChanges();
                     string[] roles = new string[] { "NhanVien" };
-                    if (userdata.orgId == "281")
+                    if (userdata.orgId == "281") 
+                    { 
                         roles = new string[] { "Admin" };
+                    }
                     if (userdata.orgId == "276")
+                    {
                         roles = new string[] { "Admin" };
+                    }
                     SaveRolesToUser(newUser, roles);
                     return newUser;
                 }
@@ -201,10 +207,7 @@ namespace EVN.Core.Implements
                     newUser.userId = query.userId;
                     newUser.fullName = query.fullName;
                     newUser.username = query.username;
-                    newUser.email = query.email;
-                    newUser.phoneNumber = query.phoneNumber;
                     newUser.orgId = query.orgId;
-                    newUser.staffCode = query.staffCode;
                     newUser.maDViQLy = query.maDViQLy;
                     return newUser;
                 }

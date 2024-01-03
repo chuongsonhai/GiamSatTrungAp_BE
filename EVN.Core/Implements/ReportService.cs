@@ -2119,7 +2119,8 @@ namespace EVN.Core.Implements
             var response = new List<CongVanYeuCau>();
 
 
-            var query = Query.Where(p => p.TrangThai >= TrangThaiCongVan.MoiTao).ToList();
+            DateTime ngay = DateTime.ParseExact("01/04/2024", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var query = Query.Where(p => p.TrangThai >= TrangThaiCongVan.MoiTao && p.NgayLap >= ngay).ToList();
             foreach (var item in query)
             {
                 var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();
@@ -2424,8 +2425,8 @@ namespace EVN.Core.Implements
 
 
             var response = new List<CongVanYeuCau>();
-
-            var query = Query.Where(p => p.TrangThai >= TrangThaiCongVan.MoiTao && p.NgayLap >= DateTime.Now.AddDays(-60)).ToList();
+            DateTime ngay = DateTime.ParseExact("01/04/2024", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            var query = Query.Where(p => p.TrangThai >= TrangThaiCongVan.MoiTao && p.NgayLap >= ngay).ToList();
             foreach (var item in query)
             {
                 var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();

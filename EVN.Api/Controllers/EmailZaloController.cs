@@ -241,6 +241,7 @@ namespace EVN.Api.Controllers
                 DateTime synctime = DateTime.Today;
                 IUserNhanCanhBaoService service = IoC.Resolve<IUserNhanCanhBaoService>();
                 var list = service.Getid(filter.Filter.maDViQLy);
+
                 IList<UserNhanCanhBao> data = new List<UserNhanCanhBao>();
 
                 
