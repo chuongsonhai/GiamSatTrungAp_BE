@@ -170,7 +170,7 @@ namespace EVN.Core.Implements
                 var result = await GetInfo(ticket);
                 if (result == null) return null;
                 var userdata = result.data.identity;
-                var query = Query.Where(p => p.username == userdata.usernameLocal).FirstOrDefault();
+                var query = Query.Where(p => p.username == userdata.usernameLocal || p.username == userdata.username).FirstOrDefault();
                 if (query == null)
                 {
                     //newUser.userId = userdata.userId;
@@ -180,7 +180,6 @@ namespace EVN.Core.Implements
                     newUser.username = userdata.username;
                     newUser.fullName = userdata.fullName;
                     newUser.maDViQLy = userdata.orgEVNHES;
-                    newUser.nsid = userdata.ns_id;
                     newUser.passwordsalt = GeneratorPassword.GenerateSalt();
                     newUser.password = GeneratorPassword.EncodePassword("098765@a", GeneratorPassword.GenerateSalt());
                     //userdata.userId = 0;
@@ -207,7 +206,10 @@ namespace EVN.Core.Implements
                     newUser.userId = query.userId;
                     newUser.fullName = query.fullName;
                     newUser.username = query.username;
+                    newUser.email = query.email;
+                    newUser.phoneNumber = query.phoneNumber;
                     newUser.orgId = query.orgId;
+                    newUser.staffCode = query.staffCode;
                     newUser.maDViQLy = query.maDViQLy;
                     return newUser;
                 }

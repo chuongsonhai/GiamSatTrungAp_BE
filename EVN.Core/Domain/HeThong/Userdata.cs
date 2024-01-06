@@ -22,7 +22,6 @@ namespace EVN.Core.Domain
         public virtual string NotifyId { get; set; }
         public virtual string password { get; set; }
         public virtual string passwordsalt { get; set; }
-        public virtual string nsid { get; set; }
         public virtual bool isactive { get; set; } = true;
         public virtual IList<Role> Roles { get; set; } = new List<Role>();        
     }

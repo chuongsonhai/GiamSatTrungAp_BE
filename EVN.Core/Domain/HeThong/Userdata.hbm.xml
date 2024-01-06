@@ -22,7 +22,6 @@
 		<property name="passwordsalt" column="passwordsalt" type="string" />
     <property name="isactive" column="isactive" type="Boolean" />
     <property name="phoneNumber" column="PHONENUMBER" type="string" />
-		<property name="nsid" column="nsid" type="string" />
 		
 		<bag name="Roles" table="User_Role" lazy="true">
 			<key column="userid" />

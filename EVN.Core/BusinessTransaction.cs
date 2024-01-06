@@ -61,6 +61,7 @@ namespace EVN.Core
                 log.ErrorFormat("url:{0}", url);
                 log.ErrorFormat("action:{0}", action);
                 log.ErrorFormat("jsondata:{0}", jsondata);
+
                 if (apicontent == null) return null;
                 var response = JsonConvert.DeserializeObject<YeuCauCmisResult>(apicontent);
                 if (response.isError)
@@ -71,6 +72,7 @@ namespace EVN.Core
                 var data = response.data;
                 string maYCauKNai = data["maYeuCauKhieuNai"].ToString();
                 var yeucau = service.GetbyMaYCau(maYCauKNai);
+                
                 if (yeucau == null)
                 {
                     message = $"Không tìm thấy yêu cầu tương ứng mã: {maYCauKNai}";
@@ -355,7 +357,6 @@ namespace EVN.Core
             }
         }
 
-        private string apiMuaDienTrungApNgoaiSinhHoat = "/api/Dvht/DangKyMuaDienTrungApNgoaiSinhHoat";
-        private string apiMuaDienTrungApSinhHoat = "/api/Dvht/DangKyMuaDienTrungApSinhHoat";
+        private string apiMuaDienTrungApNgoaiSinhHoat = "/api/DvhtAuthorized/DangKyMuaDienTrungApNgoaiSinhHoat";
     }
 }
