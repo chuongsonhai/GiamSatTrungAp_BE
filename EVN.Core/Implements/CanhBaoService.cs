@@ -648,7 +648,7 @@ namespace EVN.Core.Implements
                 //var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO == trangThai
                 //&& p.LOAI_CANHBAO_ID == maLoaiCanhBao && p.DONVI_DIENLUC == maDonVi);
                 
-                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast.AddDays(1) && "-1" == maDonVi);
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && "-1" == maDonVi);
                 if (trangThai != -1)
                 {
                     query = query.Where(p => p.TRANGTHAI_CANHBAO == trangThai);
@@ -676,7 +676,7 @@ namespace EVN.Core.Implements
                 DateTime denNgayCast = DateTime.ParseExact(denngay, "d/M/yyyy", CultureInfo.InvariantCulture).AddDays(1);
                 //var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO == trangThai
                 //&& p.LOAI_CANHBAO_ID == maLoaiCanhBao && p.DONVI_DIENLUC == maDonVi);
-                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast.AddDays(1) && p.DONVI_DIENLUC == maDonVi );
+                var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.DONVI_DIENLUC == maDonVi );
                 if (trangThai != -1)
                 {
                     query = query.Where(p => p.TRANGTHAI_CANHBAO == trangThai);
