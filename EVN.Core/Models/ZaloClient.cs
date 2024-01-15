@@ -30,11 +30,11 @@ namespace EVN.Core.Models
 
         public string Url { get; set; }
 
-        //string Api_Guitinnhan = "https://openapi.zalo.me/v2.0/oa/message";
-        string Api_Guitinnhan = "http://192.168.199.5:85/v2.0/oa/message";
+        string Api_Guitinnhan = "https://openapi.zalo.me/v2.0/oa/message";
+        //string Api_Guitinnhan = "http://192.168.199.5:85/v2.0/oa/message";
 
-        //string Api_Getthongtin = "https://openapi.zalo.me/v2.0/oa/getprofile";
-        string Api_Getthongtin = "http://192.168.199.5:85/v2.0/oa/getprofile";
+        string Api_Getthongtin = "https://openapi.zalo.me/v2.0/oa/getprofile";
+        //string Api_Getthongtin = "http://192.168.199.5:85/v2.0/oa/getprofile";
 
         public string Access_token
         {
