@@ -58,13 +58,13 @@ namespace EVN.Core.Implements
                     var userNhancb = new UserNhanCanhBao();
                     var userdata = serviceuser.GetMaDviQly(item.MA_DVIQLY);
                     var userdataNHAN = serviceuser.Getid(item.USER_ID);
-                    var userdataCB = item.USER_ID;
-                    if (userdataNHAN.userId == userdataCB)
+                    userdata.userId = userdataNHAN.userId;
+                    if (userdata.userId == userdataNHAN.userId && userdataNHAN.maDViQLy == MaDviQly)
                     {
                         userNhancb.ID = item.ID;
-                        userNhancb.USER_ID = userdata.userId;
-                        userNhancb.USERNAME = userdata.username;
-                        userNhancb.MA_DVIQLY = userdata.maDViQLy;
+                        userNhancb.USER_ID = userdataNHAN.userId;
+                        userNhancb.USERNAME = userdataNHAN.username;
+                        userNhancb.MA_DVIQLY = userdataNHAN.maDViQLy;
                         resultList.Add(userNhancb);
                     }
                 }
@@ -79,13 +79,13 @@ namespace EVN.Core.Implements
                     var userNhancb = new UserNhanCanhBao();
                     var userdata = serviceuser.GetMaDviQly(item.MA_DVIQLY);
                     var userdataNHAN = serviceuser.Getid(item.USER_ID);
-                    var userdataCB = item.USER_ID;
-                    if (userdataNHAN.userId == userdataCB)
+                    userdata.userId = userdataNHAN.userId;
+                    if (userdata.userId == userdataNHAN.userId)
                     {
-                        userNhancb.ID = item.ID;
-                        userNhancb.USER_ID = userdata.userId;
-                        userNhancb.USERNAME = userdata.username;
-                        userNhancb.MA_DVIQLY = userdata.maDViQLy;
+                    userNhancb.ID = item.ID;
+                        userNhancb.USER_ID = userdataNHAN.userId;
+                        userNhancb.USERNAME = userdataNHAN.username;
+                        userNhancb.MA_DVIQLY = userdataNHAN.maDViQLy;
                         resultList.Add(userNhancb);
                     }
                 }

@@ -26,7 +26,11 @@ namespace EVN.Core.Implements
 
         public IList<HoSoGiayTo> GetbyYeuCau(string maDonVi, string maYeuCau)
         {
-            var list = Query.Where(p => p.MaDViQLy == maDonVi && p.MaYeuCau == maYeuCau).OrderBy(p => p.ID).ToList();
+            //var list = Query.Where(p => p.MaDViQLy == maDonVi && p.MaYeuCau == maYeuCau).OrderBy(p => p.ID).ToList();
+            var list = Query
+           .Where(p => p.MaDViQLy == maDonVi && p.MaYeuCau == maYeuCau && p.LoaiHoSo.CompareTo("57") <= 0)
+           .OrderBy(p => p.ID)
+           .ToList();
             return list;
         }
 
