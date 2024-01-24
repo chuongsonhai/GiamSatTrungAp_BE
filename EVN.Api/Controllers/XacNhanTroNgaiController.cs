@@ -3617,6 +3617,8 @@ namespace EVN.Api.Controllers
 
                 item.HANGMUC_KHAOSAT = model.HANGMUC_KHAOSAT;
                     item.TRANGTHAI = 1;
+                if (model.TRANGTHAI_GOI == 0 && model.DGHL_CAPDIEN != null)
+                {
                     service.CreateNew(item);
                     service.CommitChanges();
 
@@ -3628,10 +3630,38 @@ namespace EVN.Api.Controllers
                     logKS.NGUOITHUCHIEN = model.NGUOI_KSAT;
                     LogKhaoSatservice.CreateNew(logKS);
                     LogKhaoSatservice.CommitChanges();
-
                     result.success = true;
-                
-              
+                }
+                if (model.TRANGTHAI_GOI == 1 && model.DGHL_CAPDIEN == null)
+                {
+                    service.CreateNew(item);
+                    service.CommitChanges();
+
+                    var logKS = new LogKhaoSat();
+                    logKS.KHAOSAT_ID = item.ID;
+                    logKS.DATA_MOI = JsonConvert.SerializeObject(item);
+                    logKS.TRANGTHAI = 1;
+                    logKS.THOIGIAN = DateTime.Now;
+                    logKS.NGUOITHUCHIEN = model.NGUOI_KSAT;
+                    LogKhaoSatservice.CreateNew(logKS);
+                    LogKhaoSatservice.CommitChanges();
+                    result.success = true;
+                }
+                if(model.TRANGTHAI_GOI == 2 && model.DGHL_CAPDIEN == null)
+                {
+                    service.CreateNew(item);
+                    service.CommitChanges();
+
+                    var logKS = new LogKhaoSat();
+                    logKS.KHAOSAT_ID = item.ID;
+                    logKS.DATA_MOI = JsonConvert.SerializeObject(item);
+                    logKS.TRANGTHAI = 1;
+                    logKS.THOIGIAN = DateTime.Now;
+                    logKS.NGUOITHUCHIEN = model.NGUOI_KSAT;
+                    LogKhaoSatservice.CreateNew(logKS);
+                    LogKhaoSatservice.CommitChanges();
+                    result.success = true;
+                }
                 return Ok(result);
             }
             catch (Exception ex)

@@ -799,98 +799,98 @@ namespace EVN.Core.Implements
                         if (canhbao.LOAI_CANHBAO_ID == 1)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi tiếp nhận yêu cầu cấp điện của khách hàng, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 2)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 ngày kể từ khi tiếp nhận đầy đủ hồ sơ thỏa thuận đấu nối của khách hàng, đơn vị chưa hoàn thành thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 3)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu của khách hàng của khách hàng đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 4)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian dự thảo và ký hợp đồng mua bán điện";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi có thông báo lập Hợp đồng mua bán điện đơn vị chưa xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 5)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 1 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 6)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện cấp điện mới trung áp";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 4 ngày kể từ khi tiếp nhận đầy đủ hồ sơ của khách hàng, đơn vị chưa hoàn thành cấp điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
 
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 7)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng có trở ngại khi từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 8)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng có trở ngại khảo sát lập thỏa thuận đấu nối trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 9)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu thỏa thuận đấu nối của khách hàng bị từ chối tiếp nhận với lý do từ chối tiếp nhận yêu cầu lập thỏa thuận đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 10)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận với lý do từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 11)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối ký thỏa thuận đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 12)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 13)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Ngành điện gặp trở ngại gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 14)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối ký HĐMBĐ, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 15)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành nghiệm thu và đóng điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 16)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, khách hàng chưa ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.TRANGTHAI_CANHBAO == 1)
@@ -1078,98 +1078,98 @@ namespace EVN.Core.Implements
                         if (canhbao.LOAI_CANHBAO_ID == 1)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi tiếp nhận yêu cầu cấp điện của khách hàng, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 2)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 ngày kể từ khi tiếp nhận đầy đủ hồ sơ thỏa thuận đấu nối của khách hàng, đơn vị chưa hoàn thành thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 3)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu của khách hàng của khách hàng đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 4)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian dự thảo và ký hợp đồng mua bán điện";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi có thông báo lập Hợp đồng mua bán điện đơn vị chưa xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 5)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 1 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 6)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện cấp điện mới trung áp";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 4 ngày kể từ khi tiếp nhận đầy đủ hồ sơ của khách hàng, đơn vị chưa hoàn thành cấp điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
 
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 7)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng có trở ngại khi từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 8)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng có trở ngại khảo sát lập thỏa thuận đấu nối trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 9)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu thỏa thuận đấu nối của khách hàng bị từ chối tiếp nhận với lý do từ chối tiếp nhận yêu cầu lập thỏa thuận đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 10)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận với lý do từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 11)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối ký thỏa thuận đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 12)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 13)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Ngành điện gặp trở ngại gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 14)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối ký HĐMBĐ, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 15)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành nghiệm thu và đóng điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 16)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, khách hàng chưa ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.TRANGTHAI_CANHBAO == 1)
@@ -1362,98 +1362,98 @@ namespace EVN.Core.Implements
                         if (canhbao.LOAI_CANHBAO_ID == 1)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi tiếp nhận yêu cầu cấp điện của khách hàng, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 2)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 ngày kể từ khi tiếp nhận đầy đủ hồ sơ thỏa thuận đấu nối của khách hàng, đơn vị chưa hoàn thành thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 3)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu của khách hàng của khách hàng đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 4)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian dự thảo và ký hợp đồng mua bán điện";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi có thông báo lập Hợp đồng mua bán điện đơn vị chưa xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 5)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 1 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 6)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện cấp điện mới trung áp";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 4 ngày kể từ khi tiếp nhận đầy đủ hồ sơ của khách hàng, đơn vị chưa hoàn thành cấp điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
 
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 7)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng có trở ngại khi từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 8)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng có trở ngại khảo sát lập thỏa thuận đấu nối trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 9)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu thỏa thuận đấu nối của khách hàng bị từ chối tiếp nhận với lý do từ chối tiếp nhận yêu cầu lập thỏa thuận đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 10)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận với lý do từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 11)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối ký thỏa thuận đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 12)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 13)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Ngành điện gặp trở ngại gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 14)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối ký HĐMBĐ, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 15)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành nghiệm thu và đóng điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 16)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, khách hàng chưa ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.TRANGTHAI_CANHBAO == 1)
@@ -1639,98 +1639,98 @@ namespace EVN.Core.Implements
                         if (canhbao.LOAI_CANHBAO_ID == 1)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian tiếp nhận yêu cầu cấp điện lập thỏa thuận đấu nối của khách hàng";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi tiếp nhận yêu cầu cấp điện của khách hàng, đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 2)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 ngày kể từ khi tiếp nhận đầy đủ hồ sơ thỏa thuận đấu nối của khách hàng, đơn vị chưa hoàn thành thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 3)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi tiếp nhận yêu cầu kiểm tra điểm đóng điện và nghiệm thu của khách hàng của khách hàng đơn vị chưa thực hiện xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 4)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian dự thảo và ký hợp đồng mua bán điện";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 giờ kể từ khi có thông báo lập Hợp đồng mua bán điện đơn vị chưa xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 5)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 1 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 6)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian thực hiện cấp điện mới trung áp";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 4 ngày kể từ khi tiếp nhận đầy đủ hồ sơ của khách hàng, đơn vị chưa hoàn thành cấp điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
 
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 7)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng có trở ngại khi từ chối tiếp nhận yêu cầu cấp điện/thỏa thuận đấu nối trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 8)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trờ ngại khảo sát lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng có trở ngại khảo sát lập thỏa thuận đấu nối trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 9)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu lập thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu thỏa thuận đấu nối của khách hàng bị từ chối tiếp nhận với lý do từ chối tiếp nhận yêu cầu lập thỏa thuận đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 10)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát việc từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu bị từ chối tiếp nhận với lý do từ chối tiếp nhận yêu cầu kiểm tra điều kiện đóng điện điểm đấu nối và nghiệm thu, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 11)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối ký thỏa thuận đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 12)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi kiểm tra điều kiện đóng điện điểm đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 13)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát trở ngại khi thi công treo tháo";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Ngành điện gặp trở ngại gặp trở ngại trong quá trình treo tháo thiết bị đo đếm, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 14)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát nguyên nhân khách hàng từ chối ký hợp đồng mua bán điện";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Khách hàng từ chối ký HĐMBĐ, đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 15)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành nghiệm thu và đóng điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.LOAI_CANHBAO_ID == 16)
                         {
                             baoCaoChiTietGiamSatTienDo.HangMucCanhBao = "Cảnh báo các bộ hồ sơ sắp hết hạn hiệu lực thỏa thuận đấu nối";
-                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = "Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, khách hàng chưa ký thỏa thuận đấu nối trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định";
+                            baoCaoChiTietGiamSatTienDo.NguongCanhBao = canhbao.NOIDUNG;
                         }
 
                         if (canhbao.TRANGTHAI_CANHBAO == 1)
