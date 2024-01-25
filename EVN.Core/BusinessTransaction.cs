@@ -43,7 +43,7 @@ namespace EVN.Core
                     message = $"Không tìm thấy yêu cầu tương ứng mã yêu cầu: {maYCau}";
                     return null;
                 }
-                IList<HoSoGiayTo> listhso = hsosrv.GetbyYeuCau(congvan.MaDViQLy, congvan.MaYeuCau);
+                IList<HoSoGiayTo> listhso = hsosrv.GetbyYeuCaudup(congvan.MaDViQLy, congvan.MaYeuCau);
                 ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
                 var cskhcfg = cfgservice.GetbyCode("EVN_CSKH");
                 if (cskhcfg == null)

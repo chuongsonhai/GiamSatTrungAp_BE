@@ -337,7 +337,7 @@ namespace EVN.Core.Implements
                         baoCaoTongHopDanhGiaMucDo.RatKhongHaiLong = query.Count(p => p.DGHL_CAPDIEN == 1);
                         baoCaoTongHopDanhGiaMucDo.KhongHaiLong = query.Count(p => p.DGHL_CAPDIEN == 2);
                         baoCaoTongHopDanhGiaMucDo.BinhThuong = query.Count(p => p.DGHL_CAPDIEN == 3);
-                        baoCaoTongHopDanhGiaMucDo.BinhThuong = query.Count(p => p.DGHL_CAPDIEN == 4);
+                        baoCaoTongHopDanhGiaMucDo.HaiLong = query.Count(p => p.DGHL_CAPDIEN == 4);
                         baoCaoTongHopDanhGiaMucDo.RatHaiLong = query.Count(p => p.DGHL_CAPDIEN == 5);
                         resultList.Add(baoCaoTongHopDanhGiaMucDo);
                     }
@@ -376,7 +376,7 @@ namespace EVN.Core.Implements
                     baoCaoTongHopDanhGiaMucDo.RatKhongHaiLong = query.Count(p => p.DGHL_CAPDIEN == 1);
                     baoCaoTongHopDanhGiaMucDo.KhongHaiLong = query.Count(p => p.DGHL_CAPDIEN == 2);
                     baoCaoTongHopDanhGiaMucDo.BinhThuong = query.Count(p => p.DGHL_CAPDIEN == 3);
-                    baoCaoTongHopDanhGiaMucDo.BinhThuong = query.Count(p => p.DGHL_CAPDIEN == 4);
+                    baoCaoTongHopDanhGiaMucDo.HaiLong = query.Count(p => p.DGHL_CAPDIEN == 4);
                     baoCaoTongHopDanhGiaMucDo.RatHaiLong = query.Count(p => p.DGHL_CAPDIEN == 5);
                     resultList.Add(baoCaoTongHopDanhGiaMucDo);
                 
