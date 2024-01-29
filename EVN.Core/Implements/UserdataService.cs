@@ -64,12 +64,54 @@ namespace EVN.Core.Implements
         }
         public Userdata Authenticate(string username, string password)
         {
+            //code cũ
             var user = Get(p => p.username.ToUpper() == username.ToUpper());
             //if (user == null || !user.isactive) return null;
             //string passHash = GeneratorPassword.EncodePassword(password, user.passwordsalt);
             //if (user.password != passHash)
             //    return null;
             return user;
+
+            ////code check mk iso
+            //var user = Get(p => p.username.ToUpper() == username.ToUpper());
+            //if (user == null || !user.isactive) return null;
+
+            //// Kiểm tra mật khẩu theo yêu cầu mới
+            //if (!IsPasswordValid(password)) return null;
+
+            //string passHash = GeneratorPassword.EncodePassword(password, user.passwordsalt);
+            //if (user.password != passHash)
+            //    return null;
+
+            //return user;
+
+
+        }
+        private bool IsPasswordValid(string password)
+        {
+            // Kiểm tra độ dài tối thiểu
+            if (password.Length < 10)
+                return false;
+
+            // Kiểm tra đủ 4 loại ký tự
+            bool hasUpperCase = false;
+            bool hasLowerCase = false;
+            bool hasDigit = false;
+            bool hasSpecialChar = false;
+
+            foreach (char c in password)
+            {
+                if (char.IsUpper(c))
+                    hasUpperCase = true;
+                else if (char.IsLower(c))
+                    hasLowerCase = true;
+                else if (char.IsDigit(c))
+                    hasDigit = true;
+                else if (!char.IsLetterOrDigit(c))
+                    hasSpecialChar = true;
+            }
+
+            return hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar;
         }
 
         public bool SaveRolesToUser(Userdata userdata, string[] roles)
