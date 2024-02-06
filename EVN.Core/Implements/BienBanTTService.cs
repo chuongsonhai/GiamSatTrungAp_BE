@@ -518,7 +518,7 @@ namespace EVN.Core.Implements
                     canhbao.THOIGIANGUI = DateTime.Now;
                     canhbao.TRANGTHAI_CANHBAO = 1;
                     canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                    canhbao.NOIDUNG = "Loại cảnh báo 13 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + tbao.KhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayLap + " ĐV: " + yeucau.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình treo tháo thiết bị đo đếm với lý do Khách hàng hủy yêu cầu: " + yeucau.MaYeuCau + ", ngày hủy:" + DateTime.Now.ToString("dd/MM/yyyy") + " , đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                    canhbao.NOIDUNG = "Loại cảnh báo 13 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + tbao.KhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayLap + " ĐV: " + yeucau.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình treo tháo thiết bị đo đếm với lý do " + ketqua.NGUYEN_NHAN + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
                 }
                 else
                 {
@@ -532,7 +532,7 @@ namespace EVN.Core.Implements
                         canhbao.THOIGIANGUI = DateTime.Now;
                         canhbao.TRANGTHAI_CANHBAO = 1;
                         canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 13 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + tbao.KhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayLap + " ĐV: " + yeucau.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình treo tháo thiết bị đo đếm với lý do Khách hàng hủy yêu cầu: " + yeucau.MaYeuCau + ", ngày hủy:" + DateTime.Now.ToString("dd/MM/yyyy") + " , đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                        canhbao.NOIDUNG = "Loại cảnh báo 13 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + tbao.KhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + yeucau.NgayLap + " ĐV: " + yeucau.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình treo tháo thiết bị đo đếm với lý do " + ketqua.NGUYEN_NHAN + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
                     }
                 }
                         ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();

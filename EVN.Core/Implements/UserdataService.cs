@@ -64,26 +64,26 @@ namespace EVN.Core.Implements
         }
         public Userdata Authenticate(string username, string password)
         {
-            //code cũ
-            var user = Get(p => p.username.ToUpper() == username.ToUpper());
-            //if (user == null || !user.isactive) return null;
-            //string passHash = GeneratorPassword.EncodePassword(password, user.passwordsalt);
-            //if (user.password != passHash)
-            //    return null;
-            return user;
-
-            ////code check mk iso
+            ////code cũ
             //var user = Get(p => p.username.ToUpper() == username.ToUpper());
-            //if (user == null || !user.isactive) return null;
-
-            //// Kiểm tra mật khẩu theo yêu cầu mới
-            //if (!IsPasswordValid(password)) return null;
-
-            //string passHash = GeneratorPassword.EncodePassword(password, user.passwordsalt);
-            //if (user.password != passHash)
-            //    return null;
-
+            ////if (user == null || !user.isactive) return null;
+            ////string passHash = GeneratorPassword.EncodePassword(password, user.passwordsalt);
+            ////if (user.password != passHash)
+            ////    return null;
             //return user;
+
+            //code check mk iso
+            var user = Get(p => p.username.ToUpper() == username.ToUpper());
+            if (user == null || !user.isactive) return null;
+
+            // Kiểm tra mật khẩu theo yêu cầu mới
+            if (!IsPasswordValid(password)) return null;
+
+            string passHash = GeneratorPassword.EncodePassword(password, user.passwordsalt);
+            if (user.password != passHash)
+                return null;
+
+            return user;
 
 
         }

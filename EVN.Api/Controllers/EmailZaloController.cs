@@ -397,6 +397,43 @@ namespace EVN.Api.Controllers
             }
             return result;
         }
+
+        //[JwtAuthentication]
+        [HttpGet]
+        [Route("download/apk")]
+        public IHttpActionResult DownloadApk()
+            {
+                try
+                {
+
+                var filePath = AppDomain.CurrentDomain.BaseDirectory + @"Templates\app-release.apk";
+                var fileName = "app-release.apk";
+                    var fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+                    var content = new ByteArrayContent(fileBytes);
+                    content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.android.package-archive");
+
+                    var response = new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = content
+                    };
+
+                    response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment")
+                    {
+                        FileName = fileName
+                    };
+
+                    return ResponseMessage(response);
+                }
+                catch (Exception ex)
+                {
+                    // Log or handle the exception appropriately
+                    return InternalServerError(ex);
+                }
+            }
+        
+
+
     }
-    
+
 }
