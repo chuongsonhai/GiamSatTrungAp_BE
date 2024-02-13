@@ -9,6 +9,7 @@ namespace EVN.Core.IServices
 {
     public interface IUserdataService : FX.Data.IBaseService<Userdata, int>
     {
+        Userdata AuthenticateTrungap(string username, string password);
         Userdata Getid(int userid);
         IList<Userdata> GetMadvi(string MaDviQly);
         Userdata GetMaDviQly(string MaDviQly);

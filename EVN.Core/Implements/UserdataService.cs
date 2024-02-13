@@ -62,16 +62,9 @@ namespace EVN.Core.Implements
         {
             return Get(p => p.phoneNumber == sdt);
         }
-        public Userdata Authenticate(string username, string password)
-        {
-            ////code cũ
-            //var user = Get(p => p.username.ToUpper() == username.ToUpper());
-            ////if (user == null || !user.isactive) return null;
-            ////string passHash = GeneratorPassword.EncodePassword(password, user.passwordsalt);
-            ////if (user.password != passHash)
-            ////    return null;
-            //return user;
 
+        public Userdata AuthenticateTrungap(string username, string password)
+        {
             //code check mk iso
             var user = Get(p => p.username.ToUpper() == username.ToUpper());
             if (user == null || !user.isactive) return null;
@@ -84,8 +77,17 @@ namespace EVN.Core.Implements
                 return null;
 
             return user;
+        }
 
-
+        public Userdata Authenticate(string username, string password)
+        {
+            //code cũ
+            var user = Get(p => p.username.ToUpper() == username.ToUpper());
+            //if (user == null || !user.isactive) return null;
+            //string passHash = GeneratorPassword.EncodePassword(password, user.passwordsalt);
+            //if (user.password != passHash)
+            //    return null;
+            return user;
         }
         private bool IsPasswordValid(string password)
         {

@@ -99,6 +99,47 @@ namespace EVN.Api.Controllers
         }
 
         [AllowAnonymous]
+        [HttpPost]
+        [Route("loginTrungap")]
+        public IHttpActionResult LoginTrungap(LoginModel model)
+        {
+            ResponseResult result = new ResponseResult();
+            try
+            {
+                IUserdataService service = IoC.Resolve<IUserdataService>();
+                IOrganizationService orgservice = IoC.Resolve<IOrganizationService>();
+
+                var userdata = service.AuthenticateTrungap(model.Username, model.Password);
+                if (userdata == null) throw new Exception("Sai tên đăng nhập hoặc mật khẩu");
+
+                if (!string.IsNullOrWhiteSpace(model.notifyid))
+                {
+                    userdata.NotifyId = model.notifyid;
+                    service.Save(userdata);
+                    service.CommitChanges();
+                }
+
+                var org = orgservice.Getbykey(int.Parse(userdata.orgId));
+
+                var token = JwtManager.GenerateToken(userdata.username, userdata.Roles.Select(p => p.groupName).ToArray());
+                var data = new UserModel() { userId = userdata.userId, username = userdata.username, fullName = userdata.fullName, email = userdata.email, maDViQLy = org.orgCode, JwtToken = token.Token, RefreshToken = token.RefreshToken };
+                data.Roles = new List<RoleModel>();
+                foreach (var item in userdata.Roles)
+                    data.Roles.Add(new RoleModel(item));
+                result.data = data;
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
+
+        [AllowAnonymous]
         [HttpGet]
         public IHttpActionResult Get()
         {
