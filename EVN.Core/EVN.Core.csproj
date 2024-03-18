@@ -133,6 +133,7 @@
     <Compile Include="Domain\BienBanKT.cs" />
     <Compile Include="Domain\BienBanDN.cs" />
     <Compile Include="Domain\BienBanKS.cs" />
+    <Compile Include="Domain\cbUpdateStatusModel.cs" />
     <Compile Include="Domain\HeThong\Userdatanhan.cs" />
     <Compile Include="Domain\NgayNghiLe.cs" />
     <Compile Include="Domain\LogKhaoSat.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Domain\ThoaThuanDamBao.cs" />
     <Compile Include="Domain\TramBienAp.cs" />
     <Compile Include="Enum\Enum.cs" />
+    <Compile Include="Implements\CanhbaoUpdateStatusService.cs" />
     <Compile Include="Implements\NgayNghiLeService.cs" />
     <Compile Include="Implements\LogKhaoSatService.cs" />
     <Compile Include="Implements\UserdatanhanService.cs" />
@@ -247,6 +249,7 @@
     <Compile Include="Implements\ReportService.cs" />
     <Compile Include="Implements\ThongBaoService.cs" />
     <Compile Include="Implements\TThaiYeuCauService.cs" />
+    <Compile Include="IServices\ICanhbaoUpdateStatusService.cs" />
     <Compile Include="IServices\INgayNghiLeService.cs" />
     <Compile Include="IServices\ILogKhaoSatService.cs" />
     <Compile Include="IServices\IUserdatanhanService.cs" />
@@ -660,6 +663,7 @@
     <Content Include="bin\Release\PdfSharp.xml" />
     <Content Include="bin\Release\RestSharp.dll" />
     <Content Include="bin\Release\RestSharp.xml" />
+    <EmbeddedResource Include="Domain\cbUpdateStatusModel.hbm.xml" />
     <EmbeddedResource Include="Domain\HeThong\Userdatanhan.hbm.xml" />
     <EmbeddedResource Include="Domain\NgayNghiLe.hbm.xml" />
   </ItemGroup>

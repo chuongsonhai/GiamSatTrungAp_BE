@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping   xmlns="urn:nhibernate-mapping-2.2">
+	<class name="EVN.Core.Domain.cbUpdateStatusModel, EVN.Core" table="GSCD_CANH_BAO" lazy="true" >
+		<id name="ID" column="ID">
+			<generator class="native">
+				<param name="sequence">CANH_BAO_ID_SEQ</param>
+			</generator>
+		</id>
+		<property name="TRANGTHAI_CANHBAO" column="TRANGTHAI_CANHBAO" type="int"/>
+		<property name="KETQUA_GIAMSAT" column="KETQUA_GIAMSAT" type="string"/>
+		<property name="NGUYENHHAN_CANHBAO" column="NGUYENHHAN_CANHBAO" type="int"/>
+
+	</class>
+</hibernate-mapping>
+

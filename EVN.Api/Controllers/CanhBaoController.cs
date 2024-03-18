@@ -738,7 +738,45 @@ namespace EVN.Api.Controllers
             }
         }
 
-        
+
+        [HttpPost]
+        [Route("UpdateStatusModel")]
+        public IHttpActionResult UpdateStatusModel([FromBody] UpdateStatusModel model)
+        {
+            ResponseFileResult result = new ResponseFileResult();
+            try
+            {
+
+                ICanhbaoUpdateStatusService service = IoC.Resolve<ICanhbaoUpdateStatusService>();
+                ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+                var item = new cbUpdateStatusModel();
+                item.ID = model.ID;
+                item.TRANGTHAI_CANHBAO = 6;
+                item.NGUYENHHAN_CANHBAO = model.NGUYENHHAN_CANHBAO;
+                item.KETQUA_GIAMSAT = model.KETQUA_GIAMSAT;
+                service.Update(item);
+                service.CommitChanges();
+
+                LogCanhBao logCB = new LogCanhBao();
+                logCB.CANHBAO_ID = model.ID;
+                logCB.DATA_MOI = JsonConvert.SerializeObject(item);
+                logCB.NGUOITHUCHIEN = HttpContext.Current.User.Identity.Name;
+                logCB.THOIGIAN = DateTime.Now;
+                logCB.TRANGTHAI = 1;
+                LogCBservice.CreateNew(logCB);
+                LogCBservice.CommitChanges();
+
+                result.success = true;
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
 
 
 

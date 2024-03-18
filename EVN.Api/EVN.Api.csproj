@@ -398,6 +398,8 @@
     <Compile Include="Model\ChuyenTiepModel.cs" />
     <Compile Include="Model\GiaNhomData.cs" />
     <Compile Include="Model\HoSoKemTheoModel.cs" />
+    <Compile Include="Model\CanhbaoUpdateStatusModel.cs" />
+    <Compile Include="Model\UpdateStatusModel.cs" />
     <Compile Include="Model\XacNhanTroNgaiModelkhaosatid.cs" />
     <Compile Include="Model\XacNhanTroNgaiModel.cs" />
     <Compile Include="Model\KySoOTPRequest.cs" />
