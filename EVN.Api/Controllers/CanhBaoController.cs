@@ -70,11 +70,11 @@ namespace EVN.Api.Controllers
                             case 6:
                                 canhbao.NOIDUNG = "Loại cảnh báo 6 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Đã quá 04 ngày kể từ khi tiếp nhận đầy đủ hồ sơ của khách hàng, đơn vị chưa hoàn thành cấp điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                 break;
-                            case 7:
-                                canhbao.NOIDUNG = "Loại cảnh báo 7 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
+                            case 16:
+                                canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, hồ sơ thỏa thuận đấu nối của khách hàng sắp hết hiệu lực. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định.";
                                 break;
-                            case 8:
-                                canhbao.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            case 15:
+                                canhbao.NOIDUNG = "Loại cảnh báo 15 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br>  Đã quá thời gian 02 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành nghiệm thu và đóng điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                 break;
                         }
                         //listCanhBao.Add(canhbao);
@@ -387,7 +387,7 @@ namespace EVN.Api.Controllers
 
                             }
 
-                            //cb7
+                            //cb16
                             if (ts.TotalHours > 1)
                             {
 
@@ -397,14 +397,15 @@ namespace EVN.Api.Controllers
                                 switch (item1.LoaiCanhBao)
                                 {
 
-                                    case 7:
+                                    case 16:
                                         canhbao127.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
                                         canhbao127.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
                                         canhbao127.MA_YC = item1.MaYeuCau;
                                         canhbao127.THOIGIANGUI = DateTime.Now;
                                         canhbao127.TRANGTHAI_CANHBAO = 1;
                                         canhbao127.DONVI_DIENLUC = item1.MaDViQLy;
-                                        canhbao127.NOIDUNG = "Loại cảnh báo 7 - lần " + canhbao127.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao127.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + ", đơn vị: " + item1.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
+                                        
+                                        canhbao127.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao127.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao127.MA_YC + ", ngày tiếp nhận:" + item1.NgayLap + " ĐV: " + item1.MaDViQLy + "<br> Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, hồ sơ thỏa thuận đấu nối của khách hàng sắp hết hiệu lực. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định.";
                                         break;
                                         CBservice1.CreateCanhBao(canhbao127, out message1);
                                         service1.CommitChanges();
@@ -431,7 +432,7 @@ namespace EVN.Api.Controllers
                             }
 
 
-                            //cb8
+                            //cb15
                             if (ts.TotalHours > 1)
                             {
 
@@ -440,14 +441,15 @@ namespace EVN.Api.Controllers
 
                                 switch (item1.LoaiCanhBao)
                                 {
-                                    case 8:
+                                    case 15:
                                         canhbao128.LOAI_CANHBAO_ID = item1.LoaiCanhBao;
                                         canhbao128.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
                                         canhbao128.MA_YC = item1.MaYeuCau;
                                         canhbao128.THOIGIANGUI = DateTime.Now;
                                         canhbao128.TRANGTHAI_CANHBAO = 1;
                                         canhbao128.DONVI_DIENLUC = item1.MaDViQLy;
-                                        canhbao128.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao128.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao128.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " ,đơn vị: " + item1.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                                        
+                                        canhbao128.NOIDUNG = "Loại cảnh báo 15 - lần " + canhbao128.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", ĐC: " + item1.DiaChiDungDien + ", MaYC: " + canhbao128.MA_YC + ", ngày tiếp nhận:" + item1.NgayLap + " ĐV: " + item1.MaDViQLy + "<br>  Đã quá thời gian 02 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành nghiệm thu và đóng điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                         CBservice1.CreateCanhBao(canhbao128, out message1);
                                         service1.CommitChanges();
                                         break;

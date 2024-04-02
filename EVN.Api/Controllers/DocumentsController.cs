@@ -202,7 +202,7 @@ namespace EVN.Api.Controllers
 
                 result.success = DocumentUtils.UpdatePdf(request.maYCau, request.loaiHSo, pdfdata, request.NoiDungXuLy, request.ThuanLoi, request.Huy);
 
-                if (request.loaiHSo == "56" && request.Huy == true)
+                if (request.loaiHSo == "57" && request.Huy == true)
                 {
                     IBienBanKSService service = IoC.Resolve<IBienBanKSService>();
                     IKetQuaKSService ketquasrv = IoC.Resolve<IKetQuaKSService>();

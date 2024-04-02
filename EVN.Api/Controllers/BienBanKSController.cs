@@ -192,17 +192,18 @@ namespace EVN.Api.Controllers
 
                     ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
                     var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
-                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 16 && p.MA_YC == item.MaYeuCau);
+                    var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 8 && p.MA_YC == item.MaYeuCau);
                     var canhbao = new CanhBao();
                     if (lcanhbao1 == null)
                     {
-                        canhbao.LOAI_CANHBAO_ID = 16;
+                        canhbao.LOAI_CANHBAO_ID = 8;
                         canhbao.LOAI_SOLANGUI = 1;
                         canhbao.MA_YC = yeucau.MaYeuCau;
                         canhbao.THOIGIANGUI = DateTime.Now;
                         canhbao.TRANGTHAI_CANHBAO = 1;
                         canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, hồ sơ thỏa thuận đấu nối của khách hàng sắp hết hiệu lực. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định.";
+                        canhbao.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                       
                     }
                     else
                     {
@@ -210,15 +211,14 @@ namespace EVN.Api.Controllers
                         var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
                         if (checkTonTai1)
                         {
-                            canhbao.LOAI_CANHBAO_ID = 16;
+                            canhbao.LOAI_CANHBAO_ID = 8;
                             canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
                             canhbao.MA_YC = yeucau.MaYeuCau;
                             canhbao.THOIGIANGUI = DateTime.Now;
                             canhbao.TRANGTHAI_CANHBAO = 1;
                             canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                            canhbao.NOIDUNG = "Loại cảnh báo 16 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Đã quá thời gian 2 năm kể từ khi tiếp nhận đầy đủ hồ sơ thoản thuận đấu nối, hồ sơ thỏa thuận đấu nối của khách hàng sắp hết hiệu lực. Đơn vị liên hệ xác nhận với khách hàng để xử lý hồ sơ đúng qui định.";
-
-
+                            canhbao.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                           
                         }
                     }
 

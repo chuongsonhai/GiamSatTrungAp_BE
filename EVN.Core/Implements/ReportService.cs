@@ -2312,7 +2312,7 @@ namespace EVN.Core.Implements
 
                             if (item.TrangThai == TrangThaiCongVan.HoanThanh)
                             {
-                                item.LoaiCanhBao = 7;
+                                item.LoaiCanhBao = 16;
                                 response.Add(item);
                             }
                         
@@ -2387,7 +2387,7 @@ namespace EVN.Core.Implements
                         }
                             if (TongSoNgayTCDN > 4)
                             {
-                                item.LoaiCanhBao = 8;
+                                item.LoaiCanhBao = 15;
                                 response.Add(item);
                             }
                         
@@ -2464,8 +2464,8 @@ namespace EVN.Core.Implements
                     var lcanhbao4 = lcanhbao.FirstOrDefault(p => p.ID == 4);
                     var lcanhbao5 = lcanhbao.FirstOrDefault(p => p.ID == 5);
                     var lcanhbao6 = lcanhbao.FirstOrDefault(p => p.ID == 6);
-                    var lcanhbao7 = lcanhbao.FirstOrDefault(p => p.ID == 7);
-                    var lcanhbao8 = lcanhbao.FirstOrDefault(p => p.ID == 8);
+                    var lcanhbao16 = lcanhbao.FirstOrDefault(p => p.ID == 16);
+                    var lcanhbao15 = lcanhbao.FirstOrDefault(p => p.ID == 15);
 
                     if (lcanhbao1.ID == 1)
                     {     
@@ -2639,16 +2639,16 @@ namespace EVN.Core.Implements
                     }
 
 
-                    if (lcanhbao7.ID == 7)
+                    if (lcanhbao16.ID == 16)
                     {
                         //if (tsCanhBaoHetHanTTDN.TotalDays > 730) // CODE GỐC
                         //{
-                        if (tsCanhBaoHetHanTTDN.TotalDays > lcanhbao7.CHUKYCANHBAO) //TEST UAT
+                        if (tsCanhBaoHetHanTTDN.TotalDays > lcanhbao16.CHUKYCANHBAO) //TEST UAT
                         {
 
                             if (item.TrangThai == TrangThaiCongVan.HoanThanh)
                             {
-                                item.LoaiCanhBao = 7;
+                                item.LoaiCanhBao = 16;
                                 response.Add(item);
                             }
                         }
@@ -2721,11 +2721,11 @@ namespace EVN.Core.Implements
 
                         }
 
-                        if (lcanhbao8.ID == 8)
+                        if (lcanhbao15.ID == 15)
                         {
-                            if (TongSoNgayTCDN > lcanhbao8.CHUKYCANHBAO)
+                            if (TongSoNgayTCDN > lcanhbao15.CHUKYCANHBAO)
                                 {
-                                item.LoaiCanhBao = 8;
+                                item.LoaiCanhBao = 15;
                                 response.Add(item);
                             }
                         }
