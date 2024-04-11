@@ -15,6 +15,7 @@ namespace EVN.Core.Domain
         public virtual string DONVI_DIENLUC { get; set; }
         public virtual int NGUYENHHAN_CANHBAO { get; set; }
         public virtual string KETQUA_GIAMSAT { get; set; }
+        public virtual string NGUOI_GIAMSAT { get; set; }
     }
 
 }

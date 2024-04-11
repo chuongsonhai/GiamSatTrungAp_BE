@@ -947,14 +947,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_loglast.THOIGIAN.ToString();
                         }
 
-                        if (id_phanhoi == null)
+                        if (id_canhbao == null)
                         {
 
                             baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_PHANHOI_X3;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_canhbao.NGUOI_GIAMSAT;
                         }
 
 
@@ -1230,14 +1230,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_loglast.THOIGIAN.ToString();
                         }
 
-                        if (id_phanhoi == null)
+                        if (id_canhbao == null)
                         {
 
                             baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_PHANHOI_X3;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_canhbao.NGUOI_GIAMSAT;
                         }
 
 
@@ -1518,14 +1518,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_loglast.THOIGIAN.ToString();
                         }
 
-                        if (id_phanhoi == null)
+                        if (id_canhbao == null)
                         {
 
                             baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_PHANHOI_X3;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_canhbao.NGUOI_GIAMSAT;
                         }
 
 
@@ -1799,14 +1799,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_loglast.THOIGIAN.ToString();
                         }
 
-                        if (id_phanhoi == null)
+                        if (id_canhbao == null)
                         {
 
                             baoCaoChiTietGiamSatTienDo.NguoiGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_phanhoi.NGUOI_PHANHOI_X3;
+                            baoCaoChiTietGiamSatTienDo.NguoiGiamSat = id_canhbao.NGUOI_GIAMSAT;
                         }
 
 

@@ -756,6 +756,8 @@ namespace EVN.Api.Controllers
                 item.TRANGTHAI_CANHBAO = 6;
                 item.NGUYENHHAN_CANHBAO = model.NGUYENHHAN_CANHBAO;
                 item.KETQUA_GIAMSAT = model.KETQUA_GIAMSAT;
+                item.NGUOI_GIAMSAT = model.NGUOI_GIAMSAT;
+
                 service.Update(item);
                 service.CommitChanges();
 
