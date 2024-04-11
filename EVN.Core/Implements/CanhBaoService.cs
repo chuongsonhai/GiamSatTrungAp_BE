@@ -780,8 +780,8 @@ namespace EVN.Core.Implements
             IXacNhanTroNgaiService xacNhanTroNgaiService = IoC.Resolve<IXacNhanTroNgaiService>();
             IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
             IYCauNghiemThuService NTservice = IoC.Resolve<IYCauNghiemThuService>();
-           // var query = Query.Where(p => p.THOIGIANGUI >= tuNgayCast && p.THOIGIANGUI <= denNgayCast && p.TRANGTHAI_CANHBAO >= 2 && p.TRANGTHAI_CANHBAO <= 6 && p.NGUYENHHAN_CANHBAO != 0);
-          
+            ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
+
             var resultList = new List<BaoCaoChiTietGiamSatTienDo>();
                 if (maDViQly == "-1")
                 {
@@ -931,15 +931,20 @@ namespace EVN.Core.Implements
 
                         var id_canhbao = canhBaoService.Getbyid(canhbao.ID);
                         var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
-
                         baoCaoChiTietGiamSatTienDo.id = canhbao.ID;
-                        if (id_phanhoi == null)
+
+
+                        var id_logfist = LogCBservice.Getbyid_canhbaofirst(canhbao.ID);
+                        var id_loglast = LogCBservice.Getbyid_canhbaolast(canhbao.ID);
+
+                      
+                        if (id_loglast == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_loglast.THOIGIAN.ToString();
                         }
 
                         if (id_phanhoi == null)
@@ -1050,14 +1055,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (id_logfist == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayTiepNhan = null;
                         }
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = id_logfist.THOIGIAN.ToString();
                         }
 
 
@@ -1212,13 +1217,17 @@ namespace EVN.Core.Implements
                         var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
                         baoCaoChiTietGiamSatTienDo.id = canhbao.ID;
 
-                        if (id_phanhoi == null)
+                        var id_logfist = LogCBservice.Getbyid_canhbaofirst(canhbao.ID);
+                        var id_loglast = LogCBservice.Getbyid_canhbaolast(canhbao.ID);
+
+
+                        if (id_loglast == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_loglast.THOIGIAN.ToString();
                         }
 
                         if (id_phanhoi == null)
@@ -1329,14 +1338,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (id_logfist == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayTiepNhan = null;
                         }
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = id_logfist.THOIGIAN.ToString();
                         }
 
 
@@ -1496,13 +1505,17 @@ namespace EVN.Core.Implements
                         var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
 
                         baoCaoChiTietGiamSatTienDo.id = canhbao.ID;
-                        if (id_phanhoi == null)
+                        var id_logfist = LogCBservice.Getbyid_canhbaofirst(canhbao.ID);
+                        var id_loglast = LogCBservice.Getbyid_canhbaolast(canhbao.ID);
+
+
+                        if (id_loglast == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_phanhoi.THOIGIAN_GUI.ToString();
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_loglast.THOIGIAN.ToString();
                         }
 
                         if (id_phanhoi == null)
@@ -1613,14 +1626,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (id_logfist == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayTiepNhan = null;
                         }
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = id_logfist.THOIGIAN.ToString();
                         }
 
                         resultList.Add(baoCaoChiTietGiamSatTienDo);
@@ -1773,13 +1786,17 @@ namespace EVN.Core.Implements
                         var id_phanhoi = phanhoiService.Getbyid_phanhoi(canhbao.ID);
 
                         baoCaoChiTietGiamSatTienDo.id = canhbao.ID;
-                        if (id_phanhoi == null)
+                        var id_logfist = LogCBservice.Getbyid_canhbaofirst(canhbao.ID);
+                        var id_loglast = LogCBservice.Getbyid_canhbaolast(canhbao.ID);
+
+
+                        if (id_loglast == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = null;
                         }
                         else
                         {
-                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = xacNhanTroNgai.NGAY_TIEPNHAN.ToString();
+                            baoCaoChiTietGiamSatTienDo.NgayGioGiamSat = id_loglast.THOIGIAN.ToString();
                         }
 
                         if (id_phanhoi == null)
@@ -1890,14 +1907,14 @@ namespace EVN.Core.Implements
                             baoCaoChiTietGiamSatTienDo.TongCongSuatDangKy = xacNhanTroNgai.TONG_CONGSUAT_CD;
                         }
 
-                        if (xacNhanTroNgai == null)
+                        if (id_logfist == null)
                         {
                             baoCaoChiTietGiamSatTienDo.NgayTiepNhan = null;
                         }
                         else
                         {
 
-                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = id_phanhoi.THOIGIAN_GUI.ToString(); 
+                            baoCaoChiTietGiamSatTienDo.NgayTiepNhan = id_logfist.THOIGIAN.ToString(); 
                         }
 
 

@@ -13,7 +13,11 @@ namespace EVN.Core.IServices
 
         IList<LogCanhBao> Filter(int id);
 
+
         IList<LogCanhBao> GetByMaCanhBao(int MaCanhBao);
-     
+
+        LogCanhBao Getbyid_canhbaofirst(int id);
+
+        LogCanhBao Getbyid_canhbaolast(int id);
     }
 }

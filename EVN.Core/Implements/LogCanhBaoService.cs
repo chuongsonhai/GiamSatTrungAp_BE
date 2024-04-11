@@ -42,8 +42,28 @@ namespace EVN.Core.Implements
         {
             var query = Query.Where(p => p.CANHBAO_ID == id);
             return query.ToList();
+        }
 
 
+        public LogCanhBao Getbyid_canhbaofirst(int id)
+        {
+            var query = Query.OrderBy(p => p.THOIGIAN).FirstOrDefault(p => p.CANHBAO_ID == id);
+            return query;
+        }
+
+
+        public LogCanhBao Getbyid_canhbaolast(int id)
+        {
+            var query = Query.OrderByDescending(p => p.THOIGIAN).FirstOrDefault(p => p.CANHBAO_ID == id);
+            return query;
+        }
+
+
+
+
+        public LogCanhBao Getbyid_canhbaoend(int id)
+        {
+            return Get(p => p.CANHBAO_ID == id);
         }
 
         public bool Save(LogCanhBao danhMucLoaiCanhBao, out string message)
