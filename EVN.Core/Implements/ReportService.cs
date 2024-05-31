@@ -2152,10 +2152,8 @@ namespace EVN.Core.Implements
                 else
                 {
 
-   
-
                         TimeSpan ts = DateTime.Now - item.NgayLap;
-                        if (ts.TotalHours > 1)
+                        if (ts.TotalMinutes > 30)
                         {
                             if (item.TrangThai == TrangThaiCongVan.MoiTao)
                             {
@@ -2183,7 +2181,7 @@ namespace EVN.Core.Implements
                             tsthoathuanDN = ttrinhBDN.NGAY_KTHUC.Value - ttrinhKS.NGAY_BDAU;
                         }
                     }
-                        if (tsthoathuanDN.TotalHours > 1) 
+                        if (tsthoathuanDN.TotalMinutes > 30) 
                         {
 
                             if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
@@ -2201,7 +2199,7 @@ namespace EVN.Core.Implements
                     {
                       
                             TimeSpan tsNT = DateTime.Now - itemNT.NgayLap;
-                            if (tsNT.TotalHours > 1)
+                            if (tsNT.TotalMinutes > 30)
                             {
                                 if (itemNT.TrangThai == TrangThaiNghiemThu.MoiTao)
                                 {
@@ -2232,7 +2230,7 @@ namespace EVN.Core.Implements
 
                         }
 
-                            if (tsKyHopDong.TotalHours > 1) // TEST UAT
+                            if (tsKyHopDong.TotalMinutes > 30) // TEST UAT
                             {
                                 if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongTC && itemNT.TrangThai <= TrangThaiNghiemThu.NghiemThu)
                                 {
@@ -2263,7 +2261,7 @@ namespace EVN.Core.Implements
                         }
 
 
-                            if (tsKyNghiemThu.TotalHours > 1)
+                            if (tsKyNghiemThu.TotalMinutes > 30)
                             {
                                 if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
                                 {
@@ -2288,7 +2286,7 @@ namespace EVN.Core.Implements
                         }
 
                  
-                            if (tsKyNghiemThu.TotalHours > 1) //test UAT
+                            if (tsKyNghiemThu.TotalMinutes > 30) //test UAT
                             {
                                 if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
                                 {
@@ -2307,7 +2305,7 @@ namespace EVN.Core.Implements
                         tsCanhBaoHetHanTTDN = DateTime.Now - ttrinhDDN.NGAY_KTHUC.Value;
                     }
 
-                        if (tsCanhBaoHetHanTTDN.TotalDays > 1) //TEST UAT
+                        if (tsCanhBaoHetHanTTDN.TotalMinutes > 30) //TEST UAT
                         {
 
                             if (item.TrangThai == TrangThaiCongVan.HoanThanh)
@@ -2398,6 +2396,18 @@ namespace EVN.Core.Implements
             return response;
         }
 
+        static bool IsWeekend_Thursday(DateTime date)
+        {
+            // Kiểm tra nếu ngày trong tuần là Thứ Năm (Thursday) 
+            return date.DayOfWeek == DayOfWeek.Thursday;
+        }
+
+        static bool IsWeekend_Friday(DateTime date)
+        {
+            // Kiểm tra nếu ngày trong tuần là Thứ Sáu (Friday) 
+            return date.DayOfWeek == DayOfWeek.Friday;
+        }
+
         public IList<CongVanYeuCau> TinhThoiGian()
         {
             IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
@@ -2405,7 +2415,6 @@ namespace EVN.Core.Implements
             INgayNghiLeService ngayNghiLeService = IoC.Resolve<INgayNghiLeService>();
             ILoaiCanhBaoService dLoaicanhbao = IoC.Resolve<ILoaiCanhBaoService>();
 
-          
             var now = DateTime.Now;
 
             //setting ngày lễ value phải lưu dưới dạng ngày/tháng. Nhiều giá trị thì phải cách nhau dấu ,
@@ -2426,6 +2435,7 @@ namespace EVN.Core.Implements
 
             var response = new List<CongVanYeuCau>();
             DateTime ngay = DateTime.ParseExact("01/04/2024", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
             var query = Query.Where(p => p.TrangThai >= TrangThaiCongVan.MoiTao && p.NgayLap >= ngay).ToList();
             foreach (var item in query)
             {
@@ -2455,6 +2465,7 @@ namespace EVN.Core.Implements
                 {
 
                 }
+             
                 else
                 {
                     var lcanhbao = dLoaicanhbao.Query.Where(p => p.TRANGTHAI == 0);
@@ -2503,19 +2514,34 @@ namespace EVN.Core.Implements
 
                     if (lcanhbao2.ID == 2)
                     {
-                        if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO)
+                        if (IsWeekend_Friday(ttrinhKS.NGAY_BDAU))
                         {
-                       
-                            if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
+                            if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO +24)
                             {
-                                item.LoaiCanhBao = 2;
-                                response.Add(item);
-                            }
 
+                                if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
+                                {
+                                    item.LoaiCanhBao = 2;
+                                    response.Add(item);
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO)
+                            {
+
+                                if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
+                                {
+                                    item.LoaiCanhBao = 2;
+                                    response.Add(item);
+                                }
+
+                            }
                         }
                     }
 
-                  
                         // Thời gian tiếp nhận yêu cầu kiểm tra đóng điện và nghiệm thu quá 2h
                         var itemNT = yCauNghiemThuService.GetbyMaYCau(item.MaYeuCau);
                     if (itemNT != null)
@@ -2590,13 +2616,26 @@ namespace EVN.Core.Implements
                         if (lcanhbao5.ID == 5)
                         {
 
-
-                            if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO)
+                            if (IsWeekend_Friday(ttrinhTVB.NGAY_BDAU))
                             {
-                                if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO + 24)
                                 {
-                                    item.LoaiCanhBao = 5;
-                                    response.Add(item);
+                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                    {
+                                        item.LoaiCanhBao = 5;
+                                        response.Add(item);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO)
+                                {
+                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                    {
+                                        item.LoaiCanhBao = 5;
+                                        response.Add(item);
+                                    }
                                 }
                             }
                         }
@@ -2620,12 +2659,38 @@ namespace EVN.Core.Implements
                         {
                             //if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
                             //{
-                            if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO) //test UAT
+                       
+                            if (IsWeekend_Thursday(itemNT.NgayLap))
                             {
-                                if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 48) //test UAT
                                 {
-                                    item.LoaiCanhBao = 6;
-                                    response.Add(item);
+                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                    {
+                                        item.LoaiCanhBao = 6;
+                                        response.Add(item);
+                                    }
+                                }
+                            }
+                            else if (IsWeekend_Friday(itemNT.NgayLap))
+                            {
+                                if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 24) //test UAT
+                                {
+                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                    {
+                                        item.LoaiCanhBao = 6;
+                                        response.Add(item);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO) //test UAT
+                                {
+                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                    {
+                                        item.LoaiCanhBao = 6;
+                                        response.Add(item);
+                                    }
                                 }
                             }
                         }
@@ -2721,8 +2786,10 @@ namespace EVN.Core.Implements
 
                         }
 
+
                         if (lcanhbao15.ID == 15)
                         {
+
                             if (TongSoNgayTCDN > lcanhbao15.CHUKYCANHBAO)
                                 {
                                 item.LoaiCanhBao = 15;

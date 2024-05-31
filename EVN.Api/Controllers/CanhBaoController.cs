@@ -65,7 +65,7 @@ namespace EVN.Api.Controllers
                                 canhbao.NOIDUNG = "Loại cảnh báo 4 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Đã quá 02 giờ kể từ khi có thông báo lập Hợp đồng mua bán điện đơn vị chưa xử lý thông tin trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                 break;
                             case 5:
-                                canhbao.NOIDUNG = "Loại cảnh báo 5 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Đã quá 02 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                canhbao.NOIDUNG = "Loại cảnh báo 5 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Đã quá 01 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                 break;
                             case 6:
                                 canhbao.NOIDUNG = "Loại cảnh báo 6 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.TenKhachHang + ", SĐT: " + item.DienThoai + ", ĐC: " + item.DiaChiDungDien + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Đã quá 04 ngày kể từ khi tiếp nhận đầy đủ hồ sơ của khách hàng, đơn vị chưa hoàn thành cấp điện trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
@@ -126,7 +126,7 @@ namespace EVN.Api.Controllers
 
                             TimeSpan ts = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
                             //cb1
-                            if (ts.TotalHours > 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao12 = new CanhBao();
@@ -169,7 +169,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb2
-                            if (ts.TotalHours > 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao122 = new CanhBao();
@@ -214,7 +214,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb3
-                            if (ts.TotalHours > 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao123 = new CanhBao();
@@ -257,7 +257,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb4
-                            if (ts.TotalHours > 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao124 = new CanhBao();
@@ -302,7 +302,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb5
-                            if (ts.TotalHours > 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao125 = new CanhBao();
@@ -318,7 +318,7 @@ namespace EVN.Api.Controllers
                                         canhbao125.THOIGIANGUI = DateTime.Now;
                                         canhbao125.TRANGTHAI_CANHBAO = 1;
                                         canhbao125.DONVI_DIENLUC = item1.MaDViQLy;
-                                        canhbao125.NOIDUNG = "Loại cảnh báo 5 - lần " + canhbao125.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao125.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " ,đơn vị: " + item1.MaDViQLy + "<br> Đã quá 02 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
+                                        canhbao125.NOIDUNG = "Loại cảnh báo 5 - lần " + canhbao125.LOAI_SOLANGUI + " <br>KH: " + item1.TenKhachHang + ", SĐT: " + item1.DienThoai + ", địa chỉ: " + item1.DiaChiDungDien + ", maYC: " + canhbao125.MA_YC + ", ngày tiếp nhận: " + item1.NgayLap + " ,đơn vị: " + item1.MaDViQLy + "<br> Đã quá 01 ngày kể từ khi tiếp nhận đầy đủ hồ sơ kiểm tra điểm đóng điện và nghiệm thu của khách hàng, đơn vị chưa hoàn thành kiểm tra điều kiện kỹ thuật điểm đấu nối và nghiệm thu trên hệ thống Ứng dụng cấp điện mới trực tuyến và giám sát các chỉ số tiếp cận điện năng.";
                                         CBservice1.CreateCanhBao(canhbao125, out message1);
                                         service1.CommitChanges();
                                         break;
@@ -344,7 +344,7 @@ namespace EVN.Api.Controllers
                             }
 
                             //cb6
-                            if (ts.TotalHours > 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao126 = new CanhBao();
@@ -388,7 +388,7 @@ namespace EVN.Api.Controllers
                             }
 
                             //cb16
-                            if (ts.TotalHours > 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao127 = new CanhBao();
@@ -433,7 +433,7 @@ namespace EVN.Api.Controllers
 
 
                             //cb15
-                            if (ts.TotalHours > 1)
+                            if (ts.TotalMinutes > 30)
                             {
 
                                 var canhbao128 = new CanhBao();
