@@ -164,7 +164,7 @@ namespace EVN.Core.Implements
                 bienban.MaLoaiYeuCau = congvan.MaLoaiYeuCau;
 
                 //Đồng bộ tiến trình BDN lên CMIS
-                var ttrinhtruoc = tientrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                var ttrinhtruoc = tientrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                 if (ttrinhtruoc != null && ttrinhtruoc.TRANG_THAI != 1)
                 {
                     ttrinhtruoc.NGAY_KTHUC = DateTime.Today;

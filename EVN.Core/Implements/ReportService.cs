@@ -154,7 +154,7 @@ namespace EVN.Core.Implements
                 var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                 var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                 var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                 if (ttrinhBDN == null)
                 {
                     ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -320,7 +320,7 @@ namespace EVN.Core.Implements
                     var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                     var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                     var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                     if (ttrinhBDN == null)
                     {
                         ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -413,7 +413,7 @@ namespace EVN.Core.Implements
                     var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                     var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                     var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                     if (ttrinhBDN == null)
                     {
                         ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -592,7 +592,7 @@ namespace EVN.Core.Implements
                     var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                     var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                     var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                     if (ttrinhBDN == null)
                     {
                         ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -770,7 +770,7 @@ namespace EVN.Core.Implements
                     var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                     var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                     var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                     if (ttrinhBDN == null)
                     {
                         ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -995,7 +995,7 @@ namespace EVN.Core.Implements
                     }
                 }
 
-                var ttrinhbdn = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                var ttrinhbdn = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                 if (ttrinhbdn == null)
                 {
                     ttrinhbdn = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -1251,7 +1251,7 @@ namespace EVN.Core.Implements
                 var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                 var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                 var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                 if (ttrinhBDN == null)
                 {
                     ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -1528,7 +1528,7 @@ namespace EVN.Core.Implements
                     var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                     var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                     var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                    var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                     if (ttrinhBDN == null)
                     {
                         ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -1784,7 +1784,7 @@ namespace EVN.Core.Implements
                 var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                 var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                 var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                 if (ttrinhBDN == null)
                 {
                     ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -2129,7 +2129,7 @@ namespace EVN.Core.Implements
                 var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                 var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                 var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                 if (ttrinhBDN == null)
                 {
                     ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
@@ -2445,7 +2445,7 @@ namespace EVN.Core.Implements
                 var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                 var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
                 var ttrinhCH5 = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "CH5");
-                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN");
+                var ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "BDN1");
                 if (ttrinhBDN == null)
                 {
                     ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
