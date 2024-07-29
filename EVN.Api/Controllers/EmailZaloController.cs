@@ -134,12 +134,12 @@ namespace EVN.Api.Controllers
 
                 var listCB = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO == 1).ToList();
                 var listItemExistEmail = new List<EmailZaloCountModel>();
-                var listItemExistZalo = new List<EmailZaloCountModel>();
+                //var listItemExistZalo = new List<EmailZaloCountModel>();
                 foreach (var item in listCB) 
                 {
 
                     IList<UserNhanCanhBao> listNguoiNhan = userNhanCanhBaoService.GetbyMaDviQly(item.DONVI_DIENLUC);
-                    IList<Userdata> listNguoiNhanzalo = userdataService.GetbyMaDviQly(item.DONVI_DIENLUC);
+                    //IList<Userdata> listNguoiNhanzalo = userdataService.GetbyMaDviQly(item.DONVI_DIENLUC);
 
 
                     //Email

@@ -80,7 +80,7 @@ namespace EVN.Core
             userId = sodt;
             token = otptoken;
             totp = maxacnhan;
-            extraInfo = madonvi.ToUpper().Trim();
+            //extraInfo = madonvi.ToUpper().Trim();
         }
         public string appCode { get; set; }
         public string password { get; set; }

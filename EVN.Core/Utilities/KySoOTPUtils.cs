@@ -49,8 +49,8 @@ namespace EVN.Core.Utilities
                 // Do something with propValue
             }
 
-            string url = "http://10.9.125.71:6973/otp";
-            //string url = "https://10.9.125.119:6821/otp";
+            //string url = "http://10.9.125.71:6973/otp";
+            string url = "http://10.9.184.124:8080";
             var client = new RestClient($"{url}/PushQueueService/vn/com/evn/otp/generate.wadl?" + stringInput);
             var restRequest = new RestRequest();
             restRequest.Method = Method.POST;
@@ -89,8 +89,8 @@ namespace EVN.Core.Utilities
                 // Do something with propValue
             }
 
-            string url = "http://10.9.125.71:6973/otp";
-            //string url = "https://10.9.125.119:6821/otp";
+            //string url = "http://10.9.125.71:6973/otp";
+            string url = "http://10.9.184.124:8080";
             var client = new RestClient($"{url}/PushQueueService/vn/com/evn/otp/verify.wadl?" + stringInput);
             log.ErrorFormat("XacNhanOTP: {0}", JsonConvert.SerializeObject(client));
             var restRequest = new RestRequest();
@@ -129,7 +129,7 @@ namespace EVN.Core.Utilities
                 IsError = true,
                 Data = null,
             };
-             string url = "http://10.9.125.104:6064/";
+            string url = "http://10.9.125.104:6064";
             var client = new RestClient($"{url}/KySo_OTP");
             var restRequest = new RestRequest();
             restRequest.Method = Method.POST;

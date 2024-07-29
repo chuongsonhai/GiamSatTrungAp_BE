@@ -1,6 +1,7 @@
 ﻿using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,8 @@ namespace EVN.Core.Models
         static string conStr = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.23)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=khtg3)));User Id=CONGCSKH ;Password=honganh123;";
         static string conStr_CMIS3 = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=CMIS3)));User Id=CONGCSKH ;Password=honganh123;";
         static string conStr_CMIS3_TUPT = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=CMIS3)));User Id=UNGDUNGCMIS3 ;Password=UngdungCmi$3;";
-        static string conStr_CMIS3_UNGDUNG = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=CMIS3)));User Id=UNGDUNGCMIS3 ;Password=UngdungCmi$3;";
+       // static string conStr_CMIS3_UNGDUNG = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=CMIS3)));User Id=UNGDUNGCMIS3 ;Password=UngdungCmi$3;";
+        private static string conStr_CMIS3_UNGDUNG = ConfigurationManager.ConnectionStrings["conStr_CMIS3_UNGDUNG"].ConnectionString;
         static string conStr_CSKH = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.152)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=DBCSKH)));User Id=EVN_CSKH_BNH;Password=oracle_4U";
 
         //string user = "123";
