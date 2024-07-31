@@ -244,7 +244,7 @@ namespace EVN.Core.Implements
                 Save(item);
                 hoSo.TrangThai = 2;
                 hoSo.Data = item.Data;
-                hsogtosrv.Save(hoSo);
+                hsogtosrv.Update(hoSo);
 
                 DvTienTrinh tientrinh = tientrinhsrv.GetbyYCau(yeucau.MaYeuCau, maCViec, 0);
                 if (tientrinh == null)
