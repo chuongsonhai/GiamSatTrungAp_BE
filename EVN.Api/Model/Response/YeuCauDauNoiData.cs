@@ -147,6 +147,9 @@ namespace EVN.Api.Model
         public string TrangThai_khaosat{ get; set; }
         public string mucdo_hailong { get; set; }
 
+        public string sdt_cmis { get; set; }
+        public DateTime NGAY_HTHANH { get; set; }
+
         public YCauNghiemThu ToEntity(YCauNghiemThu entity)
         {
             entity.MaKHang = MaKHang;

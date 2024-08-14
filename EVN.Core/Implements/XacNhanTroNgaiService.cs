@@ -128,7 +128,7 @@ namespace EVN.Core.Implements
         public XacNhanTroNgai FilterByMaYeuCau(string ID)
         {
            return Get(p => p.MA_YCAU == ID);
-            
+           
         }
 
  

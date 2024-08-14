@@ -17,6 +17,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.IO;
+using EVN.Core.Models;
+using System.Data;
 
 namespace EVN.Api.Controllers
 {
@@ -24,9 +26,33 @@ namespace EVN.Api.Controllers
     public class XacNhanTroNgaiController : ApiController
     {
         private ILog log = LogManager.GetLogger(typeof(XacNhanTroNgaiController));
-
+        DataProvide_Oracle cnn = new DataProvide_Oracle();
         //[JwtAuthentication]
-        
+
+        public IList<MayCmis> ConvertDataTableToList(DataTable dt2)
+        {
+            var result = dt2.AsEnumerable().Select(row => new MayCmis
+            {
+                //MA_DVIQLY = row.Field<string>("MA_DVIQLY "),
+                MA_YCAU_KNAI = row.Field<string>("MA_YCAU_KNAI"),
+
+                TEN_KHANG = row.Field<string>("TEN_KHANG"),
+                DU_AN_DIEN = row.Field<string>("DU_AN_DIEN"),
+
+                NGAY_HTHANH = row.Field<DateTime>("NGAY_HTHANH"),
+
+                EMAIL = row.Field<string>("EMAIL"),
+                DTHOAI_YCAU = row.Field<string>("DTHOAI_YCAU"),
+                DTHOAI_KH = row.Field<string>("DTHOAI_KH"),
+
+
+            }).ToList();
+
+            return result;
+        }
+
+
+
         [HttpPost]
         [Route("khachhang/filter")]
         public IHttpActionResult khachhangFilter(XacNhanTroNgaiFilterkhRequest request)
@@ -50,428 +76,153 @@ namespace EVN.Api.Controllers
                     toDate = DateTime.ParseExact(request.Filter.todate, DateTimeParse.Format, null, System.Globalization.DateTimeStyles.None);
                 request.Filter.keyword = !string.IsNullOrWhiteSpace(request.Filter.keyword) ? request.Filter.keyword.Trim() : request.Filter.keyword;
                 var listModel = new List<YeuCauNghiemThuData>();
-                var HTlist = service.GetbyFilter(request.Filter.maDViQLy, request.Filter.keyword, "", (int)TrangThaiNghiemThu.HoanThanh, fromDate, toDate, pageindex, request.Paginator.pageSize, out total1);
-                var HUlist = service.GetbyFilter(request.Filter.maDViQLy, request.Filter.keyword, "", (int)TrangThaiNghiemThu.Huy, fromDate, toDate, pageindex, request.Paginator.pageSize, out total2);
+                // var mayCmisListHT = service.GetbyFilter(request.Filter.maDViQLy, request.Filter.keyword, "", (int)TrangThaiNghiemThu.HoanThanh, fromDate, toDate, pageindex, request.Paginator.pageSize, out total1);
+                //var mayCmisListHU = service.GetbyFilter(request.Filter.maDViQLy, request.Filter.keyword, "", (int)TrangThaiNghiemThu.Huy, fromDate, toDate, pageindex, request.Paginator.pageSize, out total2);
+                DataTable dtHU = new DataTable();
+                DataTable dtHT = new DataTable();
+
+                dtHU = cnn.Get_mayc_cmis_HUY(request.Filter.maDViQLy, fromDate, toDate );
+                dtHT = cnn.Get_mayc_cmis_HT(request.Filter.maDViQLy, fromDate, toDate);
+                IList<MayCmis> mayCmisListHU = ConvertDataTableToList(dtHU);
+                IList<MayCmis> mayCmisListHT = ConvertDataTableToList(dtHT);
+                var addedMaYeuCau = new HashSet<string>();
+                bool FilterByMaYeuCauMatch(string maYeuCauKhai)
+                {
+                    var result1 = svkhaosat.FilterByMaYeuCau(maYeuCauKhai);
+                    return result1 != null;
+                }
 
 
                 if (request.Filter.trangthai_khaosat == "Chưa khảo sát") //chưa khảo sát
                 {
-                    if (request.Filter.mucdo_hailong == "1") //Rất không hài lòng
-                    {
-                        if (request.Filter.trangthai_ycau == "Hoàn thành")
-                        {
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 1)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                              
-                            }
-                        }
-                        else if (request.Filter.trangthai_ycau == "Hủy")
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 1)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                              
-                            }
-
-                        }
-                        else
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 1)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                            
-                            }
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 1)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                               
-                            }
-                        }
-                    }
-
-                    if (request.Filter.mucdo_hailong == "2") //không hài lòng
-                    {
-                        if (request.Filter.trangthai_ycau == "Hoàn thành")
-                        {
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 2)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                               
-                            }
-                        }
-                        else if (request.Filter.trangthai_ycau == "Hủy")
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 2)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                              
-                            }
-
-                        }
-                        else
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 2)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                               
-                            }
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 2)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                               
-                            }
-                        }
-                    }
-
-                    if (request.Filter.mucdo_hailong == "3") //bình thường
-                    {
-                        if (request.Filter.trangthai_ycau == "Hoàn thành")
-                        {
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 3)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                            
-                            }
-                        }
-                        else if (request.Filter.trangthai_ycau == "Hủy")
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 3)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                                
-                            }
-
-                        }
-                        else
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 3)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                               
-                            }
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 3)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                                
-                            }
-                        }
-                    }
-
-                    if (request.Filter.mucdo_hailong == "4") //hài lòng
-                    {
-                        if (request.Filter.trangthai_ycau == "Hoàn thành")
-                        {
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 4)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                            
-                            }
-                        }
-                        else if (request.Filter.trangthai_ycau == "Hủy")
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 4)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                                
-                            }
-
-                        }
-                        else
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 4)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                                
-                            }
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 4)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                              
-                            }
-                        }
-                    }
-
-                    if (request.Filter.mucdo_hailong == "5") //hài lòng
-                    {
-                        if (request.Filter.trangthai_ycau == "Hoàn thành")
-                        {
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 5)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                             
-                            }
-                        }
-                        else if (request.Filter.trangthai_ycau == "Hủy")
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 5)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                             
-                            }
-
-                        }
-                        else
-                        {
-                            foreach (var item in HUlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 5)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                               
-                            }
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null && kskh.DGHL_CAPDIEN == 5)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
-                                }
-                              
-                            }
-                        }
-                    }
 
                     if (request.Filter.mucdo_hailong == "-1") //all
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh == null)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT
+                                .Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && !FilterByMaYeuCauMatch(x.MA_YCAU_KNAI))
+                                .ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh == null)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU
+                                 .Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && !FilterByMaYeuCauMatch(x.MA_YCAU_KNAI))
+                                 .ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh == null)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU
+                               .Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && !FilterByMaYeuCauMatch(x.MA_YCAU_KNAI))
+                               .ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                           
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh == null)
+
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh == null)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT
+                                    .Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && !FilterByMaYeuCauMatch(x.MA_YCAU_KNAI))
+                                    .ToList();
+
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
+
                             }
                         }
                     }
@@ -486,72 +237,125 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Rất không hài lòng";
-                                    listModel.Add(model);
+
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất không hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Rất không hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất không hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Rất không hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất không hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Rất không hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất không hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
                         }
 
@@ -562,72 +366,124 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Không hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất không hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Không hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất không hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                           
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Không hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất không hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                            
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Không hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất không hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
                         }
                     }
@@ -640,72 +496,124 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Bình thường";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Bình thường",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Bình thường";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Bình thường",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                            
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Bình thường";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Bình thường",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Bình thường";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Bình thường",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
 
                         }
@@ -719,72 +627,124 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
 
                             }
                         }
@@ -796,71 +756,124 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                           
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Rất hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Rất hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    model.mucdo_hailong = "Rất hài lòng";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            mucdo_hailong = "Rất hài lòng",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
 
                             }
                         }
@@ -870,68 +883,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                            
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
@@ -945,68 +1010,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                     }
@@ -1015,68 +1132,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null & kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                     }
@@ -1085,68 +1254,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                           
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                     }
@@ -1155,68 +1376,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                     }
@@ -1225,142 +1498,246 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                            
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
                         }
                     }
                     if (request.Filter.mucdo_hailong == "-1") //all
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
-                    {
-                        foreach (var item in HTlist)
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6)
+                            foreach (var item in mayCmisListHT)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6)
+                                {
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                    }
-                    else if (request.Filter.trangthai_ycau == "Hủy")
-                    {
-                        foreach (var item in HUlist)
+                        }
+                        else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6)
+                            foreach (var item in mayCmisListHU)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hủy";
-                                model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6)
+                                {
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
 
-                    }
-                    else
-                    {
-                        foreach (var item in HUlist)
+                        }
+                        else
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6)
+                            foreach (var item in mayCmisListHU)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hủy";
-                                model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6)
+                                {
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
-                        foreach (var item in HTlist)
-                        {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 6)
+                            foreach (var item in mayCmisListHT)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    listModel.Add(model);
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 6)
+                                {
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Kết thúc khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
+                        }
                     }
+
                 }
-
-            }
                 //end
 
                 if (request.Filter.trangthai_khaosat == "Dừng ngang cuộc gọi")   //Dừng ngang cuộc gọi
@@ -1370,68 +1747,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                     }
@@ -1440,68 +1869,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                     }
@@ -1510,68 +1991,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                     }
@@ -1580,68 +2113,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                     }
@@ -1650,68 +2235,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                            
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 2 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Dừng ngang cuộc gọi";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Dừng ngang cuộc gọi",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                     }
@@ -1725,68 +2362,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                     }
@@ -1795,68 +2484,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                     }
@@ -1866,68 +2607,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                     }
@@ -1936,68 +2729,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                     }
@@ -2006,68 +2851,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                     }
@@ -2076,68 +2973,120 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 1 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa gọi được";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa gọi được",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                     }
@@ -2153,68 +3102,120 @@ namespace EVN.Api.Controllers
 
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
                         }
                     }
@@ -2224,68 +3225,120 @@ namespace EVN.Api.Controllers
 
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                     }
@@ -2295,68 +3348,120 @@ namespace EVN.Api.Controllers
 
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                            
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                            
+
                             }
                         }
                     }
@@ -2366,68 +3471,120 @@ namespace EVN.Api.Controllers
 
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                     }
@@ -2437,68 +3594,120 @@ namespace EVN.Api.Controllers
 
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                         
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                     }
@@ -2508,68 +3717,120 @@ namespace EVN.Api.Controllers
 
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI_GOI == 0 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Đã gọi thành công";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Đã gọi thành công",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
                     }
@@ -2583,142 +3844,246 @@ namespace EVN.Api.Controllers
                     if (request.Filter.mucdo_hailong == "-1") //rất không hài lòng
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
-                    {
-                        foreach (var item in HTlist)
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3)
+                            foreach (var item in mayCmisListHT)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Chuyển đơn vị";
-                                listModel.Add(model);
-                            }
-                             
-                            }
-                    }
-                    else if (request.Filter.trangthai_ycau == "Hủy")
-                    {
 
-                        foreach (var item in HUlist)
-                        {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3)
-                            {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Chuyển đơn vị";
-                                listModel.Add(model);
-                            }
-                         
-                            }
-
-                    }
-                    else
-                    {
-                        foreach (var item in HUlist)
-                        {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3)
-                            {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Chuyển đơn vị";
-                                listModel.Add(model);
-                            }
-                           
-                            }
-                        foreach (var item in HTlist)
-                        {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3)
-                            {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Chuyển đơn vị";
-                                listModel.Add(model);
-                            }
-                     
-                            }
-                    }
-
-                }
-
-                    if (request.Filter.mucdo_hailong == "1") //rất không hài lòng
-                    {
-                        if (request.Filter.trangthai_ycau == "Hoàn thành")
-                        {
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 1)
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                          
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
 
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                         
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                          
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                          
+
+                            }
+                        }
+
+                    }
+
+                    if (request.Filter.mucdo_hailong == "1") //rất không hài lòng
+                    {
+                        if (request.Filter.trangthai_ycau == "Hoàn thành")
+                        {
+                            foreach (var item in mayCmisListHT)
+                            {
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 1)
+                                {
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
+                                }
+
+                            }
+                        }
+                        else if (request.Filter.trangthai_ycau == "Hủy")
+                        {
+
+                            foreach (var item in mayCmisListHU)
+                            {
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 1)
+                                {
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
+                                }
+
+                            }
+
+                        }
+                        else
+                        {
+                            foreach (var item in mayCmisListHU)
+                            {
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 1)
+                                {
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
+                                }
+
+                            }
+                            foreach (var item in mayCmisListHT)
+                            {
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 1)
+                                {
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
+                                }
+
                             }
                         }
 
@@ -2728,69 +4093,121 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
 
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
 
@@ -2800,69 +4217,121 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
 
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
 
@@ -2872,69 +4341,121 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                            
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
 
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                
+
                             }
                         }
 
@@ -2944,69 +4465,121 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "Hoàn thành")
                         {
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
                         }
                         else if (request.Filter.trangthai_ycau == "Hủy")
                         {
 
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
+
                             }
 
                         }
                         else
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                               
+
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.TRANGTHAI == 3 && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chuyển đơn vị";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chuyển đơn vị",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                              
+
                             }
                         }
 
@@ -3018,136 +4591,237 @@ namespace EVN.Api.Controllers
                 {
                     if (request.Filter.trangthai_ycau == "Hoàn thành")
                     {
-                        foreach (var item in HTlist)
+                        foreach (var item in mayCmisListHT)
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                            if (bbkt != null && kskh != null)
+
+                            var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                            var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                            if (kskh != null)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hoàn thành";
-                                if (kskh.TRANGTHAI == 6)
+                                if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
                                 {
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                {
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                }
-                                listModel.Add(model);
 
                             }
                             else if (kskh == null)
                             {
-                                model.TrangThaiText = "Hoàn thành";
-                                model.TrangThai_khaosat = "Chưa khảo sát";
-                                listModel.Add(model);
+                                var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI)).ToList();
+                                foreach (var x in filteredList)
+                                {
+                                    addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                    listModel.Add(new YeuCauNghiemThuData()
+                                    {
+                                        MaYeuCau = x.MA_YCAU_KNAI,
+                                        CoQuanChuQuan = x.TEN_KHANG,
+                                        DuAnDien = x.DU_AN_DIEN,
+                                        TrangThaiText = "Hoàn thành",
+                                        TrangThai_khaosat = "Chưa khảo sát",
+                                        DienThoai = x.DTHOAI_YCAU,
+                                        Email = x.EMAIL,
+                                        sdt_cmis = x.DTHOAI_KH,
+                                        NGAY_HTHANH = x.NGAY_HTHANH,
+                                    });
+                                }
                             }
-                      
+
 
                         }
                     }
-                   else if (request.Filter.trangthai_ycau == "Hủy")
+                    else if (request.Filter.trangthai_ycau == "Hủy")
                     {
-                        foreach (var item in HUlist)
+                        foreach (var item in mayCmisListHU)
                         {
-                            var model = new YeuCauNghiemThuData(item);
-                            var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                            var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
+                            //    
+                            var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                            var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
 
-                            if (bbkt != null && kskh != null)
+                            if (kskh != null)
                             {
-                                model.TroNgai = bbkt.TroNgai;
-                                model.TrangThaiText = "Hủy";
-                                if (kskh.TRANGTHAI == 6)
+                                if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
                                 {
-                                    model.TrangThai_khaosat = "Kết thúc khảo sát";
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                                if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                {
-                                    model.TrangThai_khaosat = "Đang khảo sát";
-                                }
-                                listModel.Add(model);
 
                             }
                             else
                             {
-                                model.TrangThaiText = "Hủy";
-                                model.TrangThai_khaosat = "Chưa khảo sát";
-                                listModel.Add(model);
+                                var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                foreach (var x in filteredList)
+                                {
+                                    addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                    listModel.Add(new YeuCauNghiemThuData()
+                                    {
+                                        MaYeuCau = x.MA_YCAU_KNAI,
+                                        CoQuanChuQuan = x.TEN_KHANG,
+                                        DuAnDien = x.DU_AN_DIEN,
+                                        TrangThaiText = "Hoàn thành",
+                                        TrangThai_khaosat = "Chưa khảo sát",
+                                        DienThoai = x.DTHOAI_YCAU,
+                                        Email = x.EMAIL,
+                                        sdt_cmis = x.DTHOAI_KH,
+                                        NGAY_HTHANH = x.NGAY_HTHANH,
+                                    });
+                                }
                             }
-                           
+
                         }
 
                     }
 
-                    if (request.Filter.mucdo_hailong == "-1") //all hài lòng
+
+
+
+                    if (request.Filter.mucdo_hailong == "-1")
                     {
-
-                     if (request.Filter.trangthai_ycau == "-1")
-
-
+                        if (request.Filter.trangthai_ycau == "-1")
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null)
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+
+                                if (kskh != null)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    if (kskh.TRANGTHAI == 6)
+                                    if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
+                                        var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) &&
+                                        (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                        if (kskh.MA_YCAU != null)
+                                        {
+                                            foreach (var x in filteredList)
+                                            {
+                                                addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                                listModel.Add(new YeuCauNghiemThuData()
+                                                {
+                                                    MaYeuCau = x.MA_YCAU_KNAI,
+                                                    CoQuanChuQuan = x.TEN_KHANG,
+                                                    DuAnDien = x.DU_AN_DIEN,
+                                                    TrangThaiText = "Hủy",
+                                                    TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                                    DienThoai = x.DTHOAI_YCAU,
+                                                    Email = x.EMAIL,
+                                                    sdt_cmis = x.DTHOAI_KH,
+                                                    NGAY_HTHANH = x.NGAY_HTHANH,
+                                                });
+                                            }
+                                        }
+
+
                                     }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
-                                    }
-                                    listModel.Add(model);
 
                                 }
                                 else
                                 {
-                                    model.TrangThaiText = "Hủy";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
-                                    listModel.Add(model);
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = "Chưa khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
                                 }
-                             
                             }
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    if (kskh.TRANGTHAI == 6)
-                                    {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
-                                    }
 
+                            foreach (var item in mayCmisListHT)
+                            {
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+
+                                if (kskh != null)
+                                {
+                                    if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
+                                    {
+                                        var filteredList = mayCmisListHT
+                                       .Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+
+                                        foreach (var x in filteredList)
+                                        {
+                                            addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                            listModel.Add(new YeuCauNghiemThuData()
+                                            {
+                                                MaYeuCau = x.MA_YCAU_KNAI,
+                                                CoQuanChuQuan = x.TEN_KHANG,
+                                                DuAnDien = x.DU_AN_DIEN,
+                                                TrangThaiText = "Hoàn thành",
+                                                TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                                DienThoai = x.DTHOAI_YCAU,
+                                                Email = x.EMAIL,
+                                                sdt_cmis = x.DTHOAI_KH,
+                                                NGAY_HTHANH = x.NGAY_HTHANH,
+                                            });
+
+                                        }
+                                    }
 
                                 }
                                 else
                                 {
-                                    model.TrangThaiText = "Hoàn thành";
-                                    model.TrangThai_khaosat = "Chưa khảo sát";
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
+                                    {
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = "Chưa khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
+                                    }
+
                                 }
-                                listModel.Add(model);
                             }
-                        } 
+                        }
                     }
 
-                   
+
+
 
                     if (request.Filter.mucdo_hailong == "1") //all hài lòng
                     {
@@ -3155,47 +4829,32 @@ namespace EVN.Api.Controllers
                         if (request.Filter.trangthai_ycau == "-1")
 
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 1)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 1)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    if (kskh.TRANGTHAI == 6)
+                                    if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
-                                    }
-                                }
-                                else
-                                {
-                                    continue;
-                                }
-                
-                                listModel.Add(model);
-                            }
-                            foreach (var item in HTlist)
-                            {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 1)
-                                {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    if (kskh.TRANGTHAI == 6)
-                                    {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
+                                        var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                        foreach (var x in filteredList)
+                                        {
+                                            addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                            listModel.Add(new YeuCauNghiemThuData()
+                                            {
+                                                MaYeuCau = x.MA_YCAU_KNAI,
+                                                CoQuanChuQuan = x.TEN_KHANG,
+                                                DuAnDien = x.DU_AN_DIEN,
+                                                TrangThaiText = "Hủy",
+                                                TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                                DienThoai = x.DTHOAI_YCAU,
+                                                Email = x.EMAIL,
+                                                sdt_cmis = x.DTHOAI_KH,
+                                                NGAY_HTHANH = x.NGAY_HTHANH,
+                                            });
+                                        }
                                     }
                                 }
                                 else
@@ -3203,7 +4862,42 @@ namespace EVN.Api.Controllers
                                     continue;
                                 }
 
-                                listModel.Add(model);
+                                //listModel.Add(model);
+                            }
+                            foreach (var item in mayCmisListHT)
+                            {
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 1)
+                                {
+                                    if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
+                                    {
+                                        var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                        foreach (var x in filteredList)
+                                        {
+                                            addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                            listModel.Add(new YeuCauNghiemThuData()
+                                            {
+                                                MaYeuCau = x.MA_YCAU_KNAI,
+                                                CoQuanChuQuan = x.TEN_KHANG,
+                                                DuAnDien = x.DU_AN_DIEN,
+                                                TrangThaiText = "Hủy",
+                                                TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                                DienThoai = x.DTHOAI_YCAU,
+                                                Email = x.EMAIL,
+                                                sdt_cmis = x.DTHOAI_KH,
+                                                NGAY_HTHANH = x.NGAY_HTHANH,
+                                            });
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+
+                                //listModel.Add(model);
                             }
                         }
                     }
@@ -3214,22 +4908,32 @@ namespace EVN.Api.Controllers
                         if (request.Filter.trangthai_ycau == "-1")
 
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    if (kskh.TRANGTHAI == 6)
+                                    if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
+                                        var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                        foreach (var x in filteredList)
+                                        {
+                                            addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                            listModel.Add(new YeuCauNghiemThuData()
+                                            {
+                                                MaYeuCau = x.MA_YCAU_KNAI,
+                                                CoQuanChuQuan = x.TEN_KHANG,
+                                                DuAnDien = x.DU_AN_DIEN,
+                                                TrangThaiText = "Hủy",
+                                                TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                                DienThoai = x.DTHOAI_YCAU,
+                                                Email = x.EMAIL,
+                                                sdt_cmis = x.DTHOAI_KH,
+                                                NGAY_HTHANH = x.NGAY_HTHANH,
+                                            });
+                                        }
                                     }
                                 }
                                 else
@@ -3237,24 +4941,34 @@ namespace EVN.Api.Controllers
                                     continue;
                                 }
 
-                                listModel.Add(model);
+                                //listModel.Add(model);
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 2)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 2)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    if (kskh.TRANGTHAI == 6)
+                                    if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
+                                        var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                        foreach (var x in filteredList)
+                                        {
+                                            addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                            listModel.Add(new YeuCauNghiemThuData()
+                                            {
+                                                MaYeuCau = x.MA_YCAU_KNAI,
+                                                CoQuanChuQuan = x.TEN_KHANG,
+                                                DuAnDien = x.DU_AN_DIEN,
+                                                TrangThaiText = "Hủy",
+                                                TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                                DienThoai = x.DTHOAI_YCAU,
+                                                Email = x.EMAIL,
+                                                sdt_cmis = x.DTHOAI_KH,
+                                                NGAY_HTHANH = x.NGAY_HTHANH,
+                                            });
+                                        }
                                     }
                                 }
                                 else
@@ -3262,7 +4976,7 @@ namespace EVN.Api.Controllers
                                     continue;
                                 }
 
-                                listModel.Add(model);
+                                //listModel.Add(model);
                             }
                         }
                     }
@@ -3273,22 +4987,32 @@ namespace EVN.Api.Controllers
                         if (request.Filter.trangthai_ycau == "-1")
 
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    if (kskh.TRANGTHAI == 6)
+                                    if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
+                                        var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                        foreach (var x in filteredList)
+                                        {
+                                            addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                            listModel.Add(new YeuCauNghiemThuData()
+                                            {
+                                                MaYeuCau = x.MA_YCAU_KNAI,
+                                                CoQuanChuQuan = x.TEN_KHANG,
+                                                DuAnDien = x.DU_AN_DIEN,
+                                                TrangThaiText = "Hủy",
+                                                TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                                DienThoai = x.DTHOAI_YCAU,
+                                                Email = x.EMAIL,
+                                                sdt_cmis = x.DTHOAI_KH,
+                                                NGAY_HTHANH = x.NGAY_HTHANH,
+                                            });
+                                        }
                                     }
                                 }
                                 else
@@ -3296,24 +5020,31 @@ namespace EVN.Api.Controllers
                                     continue;
                                 }
 
-                                listModel.Add(model);
+                                //listModel.Add(model);
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 3)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 3)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    if (kskh.TRANGTHAI == 6)
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
                                     }
                                 }
                                 else
@@ -3321,7 +5052,7 @@ namespace EVN.Api.Controllers
                                     continue;
                                 }
 
-                                listModel.Add(model);
+                                //listModel.Add(model);
                             }
                         }
                     }
@@ -3332,22 +5063,29 @@ namespace EVN.Api.Controllers
                         if (request.Filter.trangthai_ycau == "-1")
 
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    if (kskh.TRANGTHAI == 6)
+                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hủy",
+                                            TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
                                     }
                                 }
                                 else
@@ -3355,24 +5093,31 @@ namespace EVN.Api.Controllers
                                     continue;
                                 }
 
-                                listModel.Add(model);
+                                //listModel.Add(model);
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 4)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 4)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    if (kskh.TRANGTHAI == 6)
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
                                     }
                                 }
                                 else
@@ -3380,7 +5125,7 @@ namespace EVN.Api.Controllers
                                     continue;
                                 }
 
-                                listModel.Add(model);
+                                //listModel.Add(model);
                             }
                         }
                     }
@@ -3391,22 +5136,32 @@ namespace EVN.Api.Controllers
                         if (request.Filter.trangthai_ycau == "-1")
 
                         {
-                            foreach (var item in HUlist)
+                            foreach (var item in mayCmisListHU)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hủy";
-                                    if (kskh.TRANGTHAI == 6)
+                                    if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
+                                        var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                        foreach (var x in filteredList)
+                                        {
+                                            addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                            listModel.Add(new YeuCauNghiemThuData()
+                                            {
+                                                MaYeuCau = x.MA_YCAU_KNAI,
+                                                CoQuanChuQuan = x.TEN_KHANG,
+                                                DuAnDien = x.DU_AN_DIEN,
+                                                TrangThaiText = "Hủy",
+                                                TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                                DienThoai = x.DTHOAI_YCAU,
+                                                Email = x.EMAIL,
+                                                sdt_cmis = x.DTHOAI_KH,
+                                                NGAY_HTHANH = x.NGAY_HTHANH,
+                                            });
+                                        }
                                     }
                                 }
                                 else
@@ -3414,24 +5169,31 @@ namespace EVN.Api.Controllers
                                     continue;
                                 }
 
-                                listModel.Add(model);
+                                //listModel.Add(model);
                             }
-                            foreach (var item in HTlist)
+                            foreach (var item in mayCmisListHT)
                             {
-                                var model = new YeuCauNghiemThuData(item);
-                                var bbkt = bienBanKTService.GetbyMaYCau(item.MaYeuCau);
-                                var kskh = svkhaosat.FilterByMaYeuCau(item.MaYeuCau);
-                                if (bbkt != null && kskh != null && bbkt.MaYeuCau == kskh.MA_YCAU && kskh.DGHL_CAPDIEN == 5)
+
+                                var bbkt = bienBanKTService.GetbyMaYCau(item.MA_YCAU_KNAI);
+                                var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
+                                if (kskh != null && kskh.DGHL_CAPDIEN == 5)
                                 {
-                                    model.TroNgai = bbkt.TroNgai;
-                                    model.TrangThaiText = "Hoàn thành";
-                                    if (kskh.TRANGTHAI == 6)
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    foreach (var x in filteredList)
                                     {
-                                        model.TrangThai_khaosat = "Kết thúc khảo sát";
-                                    }
-                                    if (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5)
-                                    {
-                                        model.TrangThai_khaosat = "Đang khảo sát";
+                                        addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
+                                        listModel.Add(new YeuCauNghiemThuData()
+                                        {
+                                            MaYeuCau = x.MA_YCAU_KNAI,
+                                            CoQuanChuQuan = x.TEN_KHANG,
+                                            DuAnDien = x.DU_AN_DIEN,
+                                            TrangThaiText = "Hoàn thành",
+                                            TrangThai_khaosat = kskh.TRANGTHAI == 6 ? "Kết thúc khảo sát" : "Đang khảo sát",
+                                            DienThoai = x.DTHOAI_YCAU,
+                                            Email = x.EMAIL,
+                                            sdt_cmis = x.DTHOAI_KH,
+                                            NGAY_HTHANH = x.NGAY_HTHANH,
+                                        });
                                     }
                                 }
                                 else
@@ -3439,7 +5201,7 @@ namespace EVN.Api.Controllers
                                     continue;
                                 }
 
-                                listModel.Add(model);
+                                //listModel.Add(model);
                             }
                         }
                     }
@@ -3447,12 +5209,12 @@ namespace EVN.Api.Controllers
 
 
                 total = total1 + total2;
-                    result.total = total;
-                    result.data = listModel;
-                    result.success = true;
+                result.total = total;
+                result.data = listModel;
+                result.success = true;
 
-                    return Ok(result);
-            
+                return Ok(result);
+
             }
             catch (Exception ex)
             {
@@ -3467,11 +5229,11 @@ namespace EVN.Api.Controllers
         //[JwtAuthentication]
         [HttpGet]
         [Route("{id}")]
-            public IHttpActionResult GetBykhaosatId(int id)
+        public IHttpActionResult GetBykhaosatId(int id)
+        {
+            ResponseResult result = new ResponseResult();
+            try
             {
-                ResponseResult result = new ResponseResult();
-                try
-                {                
                 IXacNhanTroNgaiService khaosatService = IoC.Resolve<IXacNhanTroNgaiService>();
                 IGiamSatCongVanCanhbaoidService serviceyeucau = IoC.Resolve<IGiamSatCongVanCanhbaoidService>();
                 IGiamSatCanhBaoCanhbaoidService servicecanhbao = IoC.Resolve<IGiamSatCanhBaoCanhbaoidService>();
@@ -3512,32 +5274,32 @@ namespace EVN.Api.Controllers
 
                 var oj1 = new
                 {
-                 //maYeuCau = ThongTinYeuCau.MaYeuCau,
-                   //KETQUA = khaosat.KETQUA,
-                   // trangThaiYeuCau = textTrangThaiYeuCau,
-                   // trangThaiKhaoSat = textTrangThaiKhaoSat,
-                   // tenKhachHang = ThongTinYeuCau.TenKhachHang,
-                   // nguoiKhaoSat = HttpContext.Current.User.Identity.Name,
-                   // thoiGianKhaoSat = khaosat.THOIGIAN_KHAOSAT,
-                   // CANHBAO_ID = ThongTinCanhBao.idCanhBao,
-                   // NOIDUNG_CAUHOI = khaosat.NOIDUNG_CAUHOI,
-                   // PHANHOI_KH = khaosat.PHANHOI_KH,
-                   // PHANHOI_DV = khaosat.PHANHOI_DV
+                    //maYeuCau = ThongTinYeuCau.MaYeuCau,
+                    //KETQUA = khaosat.KETQUA,
+                    // trangThaiYeuCau = textTrangThaiYeuCau,
+                    // trangThaiKhaoSat = textTrangThaiKhaoSat,
+                    // tenKhachHang = ThongTinYeuCau.TenKhachHang,
+                    // nguoiKhaoSat = HttpContext.Current.User.Identity.Name,
+                    // thoiGianKhaoSat = khaosat.THOIGIAN_KHAOSAT,
+                    // CANHBAO_ID = ThongTinCanhBao.idCanhBao,
+                    // NOIDUNG_CAUHOI = khaosat.NOIDUNG_CAUHOI,
+                    // PHANHOI_KH = khaosat.PHANHOI_KH,
+                    // PHANHOI_DV = khaosat.PHANHOI_DV
 
                 };
-                    result.data = khaosat;
-                    result.success = true;
-                    return Ok(result);
-                }
-                catch (Exception ex)
-                {
-                    log.Error(ex);
-                    result.data = new CanhBaoRequest();
-                    result.success = false;
-                    result.message = ex.Message;
-                    return Ok(result);
-                }
+                result.data = khaosat;
+                result.success = true;
+                return Ok(result);
             }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                result.data = new CanhBaoRequest();
+                result.success = false;
+                result.message = ex.Message;
+                return Ok(result);
+            }
+        }
 
         //2.5 (POST) /khaosat/add
         //[JwtAuthentication]
@@ -3562,46 +5324,62 @@ namespace EVN.Api.Controllers
                 YCauNghiemThu YCNT = NTservice.GetbyMaYCau(model.MA_YCAU);
                 var canhbao = canhBaoService.GetByMaYeuCau(model.MA_YCAU);
                 var item = new XacNhanTroNgai();
+                DataTable dt = new DataTable();
+                dt = cnn.Get_mayc_cmis(model.MA_YCAU);
+                var MaYeuCau = dt.Rows[0]["ma_ycau_knai"].ToString();
+                var TenKhachHang = dt.Rows[0]["TEN_KHANG"].ToString();
+                var DienThoai = dt.Rows[0]["DTHOAI_YCAU"].ToString();
+                var Email = dt.Rows[0]["EMAIL"].ToString();
+                var DONVI_DIENLUC = dt.Rows[0]["MA_DVIQLY"].ToString();
+                var DiaChi = dt.Rows[0]["DCHI_NGUOIYCAU"].ToString();
 
-                    string mucdichsd = "";
-                    if (YCNT.DienSinhHoat)
-                    {
-                        mucdichsd = "Sinh hoạt";
-                    }
-                    else { mucdichsd = "Ngoài sinh hoạt"; }
-                item.MA_DVI = YCNT.MaDViQLy;
-                    item.MA_YCAU = model.MA_YCAU;
-                    item.MA_KH = YCNT.MaKHang;
-                    item.TEN_KH = YCNT.CoQuanChuQuan;
-                    item.DIA_CHI = YCNT.DiaChiDungDien;
-                    item.DIEN_THOAI = YCNT.DienThoai;
-                    item.MUCDICH_SD_DIEN = mucdichsd;
-                    item.SO_NGAY_CT = model.SO_NGAY_CT;
-                    item.SO_NGAY_TH_ND = model.SO_NGAY_TH_ND;
-                    item.TRANGTHAI_GQ = model.TRANGTHAI_GQ;
-                    item.TONG_CONGSUAT_CD = model.TONG_CONGSUAT_CD;
-                    item.DGCD_KH_PHANHOI = model.DGCD_KH_PHANHOI;
-                    item.DGCD_TH_CHUONGTRINH = model.DGCD_TH_CHUONGTRINH;
-                    item.DGCD_TH_DANGKY = model.DGCD_TH_DANGKY;
-                    item.CHENH_LECH = model.DGCD_TH_DANGKY - model.DGCD_KH_PHANHOI;
-                    item.DGYC_DK_DEDANG = model.DGYC_DK_DEDANG;
-                    item.DGYC_XACNHAN_NCHONG_KTHOI = model.DGYC_XACNHAN_NCHONG_KTHOI;
-                    item.DGYC_THAIDO_CNGHIEP = model.DGYC_THAIDO_CNGHIEP;
-                    item.DGKS_TDO_KSAT = model.DGKS_TDO_KSAT;
-                    item.DGKS_MINH_BACH = model.DGKS_MINH_BACH;
-                    item.DGKS_CHU_DAO = model.DGKS_CHU_DAO;
-                    item.DGNT_THUAN_TIEN = model.DGNT_THUAN_TIEN;
-                    item.DGNT_MINH_BACH = model.DGNT_MINH_BACH;
-                    item.DGNT_CHU_DAO = model.DGNT_CHU_DAO;
-                    item.KSAT_CHI_PHI = model.KSAT_CHI_PHI;
-                    item.DGHL_CAPDIEN = model.DGHL_CAPDIEN;
-                    item.TRANGTHAI_GOI = model.TRANGTHAI_GOI;
-                    item.NGAY = DateTime.Now;
-                    item.NGUOI_KSAT = model.NGUOI_KSAT;
-                    item.Y_KIEN_KH = model.Y_KIEN_KH;
-                    item.NOIDUNG = model.NOIDUNG;
-                    item.PHAN_HOI = model.PHAN_HOI;
-                    item.GHI_CHU = model.GHI_CHU;
+                //string mucdichsd = "";
+                string mucdichsd = "Ngoài sinh hoạt";
+                //if (YCNT.DienSinhHoat)
+                //{
+                //    mucdichsd = "Sinh hoạt";
+                //}
+                //else { mucdichsd = "Ngoài sinh hoạt"; }
+
+                //item.MA_DVI = YCNT.MaDViQLy;
+                item.MA_DVI = YCNT != null ? YCNT.MaDViQLy : DONVI_DIENLUC;
+
+                item.MA_YCAU = model.MA_YCAU;
+                // item.MA_KH = YCNT.MaKHang;
+                item.MA_KH = YCNT != null ? YCNT.MaDViQLy : DONVI_DIENLUC;
+                // item.TEN_KH = YCNT.CoQuanChuQuan;
+                item.TEN_KH = YCNT != null ? YCNT.CoQuanChuQuan : TenKhachHang;
+                // item.DIA_CHI = YCNT.DiaChiDungDien;
+                item.DIA_CHI = YCNT != null ? YCNT.DiaChiDungDien : DiaChi;
+                //item.DIEN_THOAI = YCNT.DienThoai;
+                item.DIEN_THOAI = YCNT != null ? YCNT.DienThoai : DienThoai;
+                item.MUCDICH_SD_DIEN = mucdichsd;
+                item.SO_NGAY_CT = model.SO_NGAY_CT;
+                item.SO_NGAY_TH_ND = model.SO_NGAY_TH_ND;
+                item.TRANGTHAI_GQ = model.TRANGTHAI_GQ;
+                item.TONG_CONGSUAT_CD = model.TONG_CONGSUAT_CD;
+                item.DGCD_KH_PHANHOI = model.DGCD_KH_PHANHOI;
+                item.DGCD_TH_CHUONGTRINH = model.DGCD_TH_CHUONGTRINH;
+                item.DGCD_TH_DANGKY = model.DGCD_TH_DANGKY;
+                item.CHENH_LECH = model.DGCD_TH_DANGKY - model.DGCD_KH_PHANHOI;
+                item.DGYC_DK_DEDANG = model.DGYC_DK_DEDANG;
+                item.DGYC_XACNHAN_NCHONG_KTHOI = model.DGYC_XACNHAN_NCHONG_KTHOI;
+                item.DGYC_THAIDO_CNGHIEP = model.DGYC_THAIDO_CNGHIEP;
+                item.DGKS_TDO_KSAT = model.DGKS_TDO_KSAT;
+                item.DGKS_MINH_BACH = model.DGKS_MINH_BACH;
+                item.DGKS_CHU_DAO = model.DGKS_CHU_DAO;
+                item.DGNT_THUAN_TIEN = model.DGNT_THUAN_TIEN;
+                item.DGNT_MINH_BACH = model.DGNT_MINH_BACH;
+                item.DGNT_CHU_DAO = model.DGNT_CHU_DAO;
+                item.KSAT_CHI_PHI = model.KSAT_CHI_PHI;
+                item.DGHL_CAPDIEN = model.DGHL_CAPDIEN;
+                item.TRANGTHAI_GOI = model.TRANGTHAI_GOI;
+                item.NGAY = DateTime.Now;
+                item.NGUOI_KSAT = model.NGUOI_KSAT;
+                item.Y_KIEN_KH = model.Y_KIEN_KH;
+                item.NOIDUNG = model.NOIDUNG;
+                item.PHAN_HOI = model.PHAN_HOI;
+                item.GHI_CHU = model.GHI_CHU;
                 var postedFile = httpRequest.Files["File"];
                 if (postedFile != null && postedFile.ContentLength > 0)
                 {
@@ -3616,7 +5394,7 @@ namespace EVN.Api.Controllers
                 }
 
                 item.HANGMUC_KHAOSAT = model.HANGMUC_KHAOSAT;
-                    item.TRANGTHAI = 1;
+                item.TRANGTHAI = 1;
                 if (model.TRANGTHAI_GOI == 0 && model.DGHL_CAPDIEN != null)
                 {
                     service.CreateNew(item);
@@ -3647,7 +5425,7 @@ namespace EVN.Api.Controllers
                     LogKhaoSatservice.CommitChanges();
                     result.success = true;
                 }
-                if(model.TRANGTHAI_GOI == 2 && model.DGHL_CAPDIEN == null)
+                if (model.TRANGTHAI_GOI == 2 && model.DGHL_CAPDIEN == null)
                 {
                     service.CreateNew(item);
                     service.CommitChanges();
@@ -3722,10 +5500,11 @@ namespace EVN.Api.Controllers
                 //khaosat.DGCD_TH_CHUONGTRINH = (khaosat.NGAY - canhbao.THOIGIANGUI).Hours;
                 //khaosat.DGCD_TH_DANGKY = (DateTime.Now - canhbao.THOIGIANGUI).Hours;
 
-                if (string.IsNullOrEmpty(model.PHAN_HOI)) 
+                if (string.IsNullOrEmpty(model.PHAN_HOI))
                 {
                     khaosat.TRANGTHAI = 3;
-                } else
+                }
+                else
                 {
                     khaosat.TRANGTHAI = 5;
                 }
@@ -3752,7 +5531,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-    
+
         //2.6 (POST) /khaosat/phanhoi/add
         //[JwtAuthentication]
         // thêm mới phản hồi
@@ -3766,7 +5545,7 @@ namespace EVN.Api.Controllers
                 IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
 
                 var item = new PhanhoiTraodoi();
-            
+
                 item.NOIDUNG_PHANHOI = model.NOIDUNG_PHANHOI;
                 item.NGUOI_GUI = HttpContext.Current.User.Identity.Name;
                 item.TRANGTHAI_XOA = 0;
@@ -3791,14 +5570,14 @@ namespace EVN.Api.Controllers
         // sửa nội dung phản hồi
         [HttpPost]
         [Route("phanhoi/{id}")]
-        public IHttpActionResult UpdateById([FromUri] int id, [FromBody] PhanhoiTraodoiRequest model )
+        public IHttpActionResult UpdateById([FromUri] int id, [FromBody] PhanhoiTraodoiRequest model)
         {
             ResponseFileResult result = new ResponseFileResult();
             try
             {
                 IPhanhoiTraodoiService service = IoC.Resolve<IPhanhoiTraodoiService>();
-               // var item = new PhanhoiTraodoi();
-               // service.Updatephanhoiid(model.ID);
+                // var item = new PhanhoiTraodoi();
+                // service.Updatephanhoiid(model.ID);
 
                 // lấy phản hồi trao đổi bằng ID 
                 var phanhoi = service.GetbyPhanHoiId(id);
@@ -3870,20 +5649,49 @@ namespace EVN.Api.Controllers
                 //lọc ra các thông tin liên quan đến khảo sát
                 YCauNghiemThu YCNT = NTservice.GetbyMaYCau(request.IdYeuCau);
                 var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai2(request.IdYeuCau, request.TrangThaiKhaoSat, request.mucdo_hailong);
-                
+
                 //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
+                DataTable dt = new DataTable();
+                dt = cnn.Get_mayc_cmis(request.IdYeuCau);
+                var MaYeuCau = dt.Rows[0]["ma_ycau_knai"].ToString();
+                var TenKhachHang = dt.Rows[0]["TEN_KHANG"].ToString();
+                var DienThoai = dt.Rows[0]["DTHOAI_YCAU"].ToString();
+                var Email = dt.Rows[0]["EMAIL"].ToString();
+                var DONVI_DIENLUC = dt.Rows[0]["MA_DVIQLY"].ToString();
+             
 
+                if (YCNT == null)
+                {
+                    var obj1 = new
+                    {
+                        MaYeuCau,
+                        TenKhachHang = TenKhachHang,
+                        DienThoai = DienThoai,
+                        Email = Email,
+                        DanhSachKhaoSat = listKhaoSat,
+                        DONVI_DIENLUC = DONVI_DIENLUC
+
+                    };
+                    result.data = obj1;
+                }
+                else
+                {
+                    var obj = new
+                    {
+                        YCNT.MaYeuCau,
+                        TenKhachHang = YCNT.CoQuanChuQuan,
+                        DienThoai = YCNT.DienThoai,
+                        Email = YCNT.Email,
+                        DanhSachKhaoSat = listKhaoSat,
+                        DONVI_DIENLUC = YCNT.MaDViQLy
+
+                    };
+                    result.data = obj;
+                }
                 //tạo ra response API
-                var obj = new {
-                    YCNT.MaYeuCau,
-                    TenKhachHang = YCNT.CoQuanChuQuan,
-                    DienThoai = YCNT.DienThoai,
-                    Email = YCNT.Email,
-                    DanhSachKhaoSat = listKhaoSat,
-                    DONVI_DIENLUC = YCNT.MaDViQLy
 
-                };
-                result.data = obj;
+                // result.data = obj;
+
                 result.success = true;
                 return Ok(result);
             }
@@ -3914,34 +5722,77 @@ namespace EVN.Api.Controllers
                 YCauNghiemThu YCNT = NTservice.GetbyMaYCau(request.IdYeuCau);
                 var listKhaoSat = xacMinhTroNgaiService.FilterByCanhBaoIDAndTrangThai(request.IdYeuCau);
                 //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
-
-                //lấy mã ycau
-                var dvtientrinh = DVTIENTRINH.FilterByMaYeuCau(YCNT.MaYeuCau);
-                var tientrinh = DVTIENTRINH.myeutop1(YCNT.MaYeuCau);
-                var khaosat = xacMinhTroNgaiService.FilterByMaYeuCau(YCNT.MaYeuCau);
-                var checkTonTai1 = await xacMinhTroNgaiService.CheckExits(YCNT.MaYeuCau);
-                var tientrinhend = DVTIENTRINH.myeutopend(YCNT.MaYeuCau);
                 var item = new XacNhanTroNgai();
-                if (!checkTonTai1)
+                //lấy mã ycau
+                if (YCNT == null)
                 {
-                    //tạo ra response API
-                    var obj = new
-                    {
-                        DGCD_TH_CHUONGTRINH = (int)(tientrinhend.NGAY_TAO - tientrinh.NGAY_TAO).Days,
-                        DGCD_TH_DANGKY = (int)(DateTime.Now - tientrinh.NGAY_TAO).Days,
-                        TEN_KH = YCNT.CoQuanChuQuan,
-                        DIA_CHI = YCNT.DiaChi,
-                        SDT = YCNT.DienThoai
+                    DataTable dt = new DataTable();
+                    dt = cnn.Get_mayc_cmis(request.IdYeuCau);
+                    var MaYeuCau = dt.Rows[0]["ma_ycau_knai"].ToString();
+                    var TenKhachHang = dt.Rows[0]["TEN_KHANG"].ToString();
+                    var DienThoai = dt.Rows[0]["DTHOAI_YCAU"].ToString();
+                    var Email = dt.Rows[0]["EMAIL"].ToString();
+                    var DONVI_DIENLUC = dt.Rows[0]["MA_DVIQLY"].ToString();
+                    var DiaChi = dt.Rows[0]["DCHI_NGUOIYCAU"].ToString();
+                    var NGAY_THIEN = dt.Rows[0]["NGAY_THIEN"].ToString();
+                    var NGAYTH = dt.Rows[0]["NGAYTH"].ToString();
 
-                    };
-                    result.data = obj;
-                    result.success = true;
+                    //var tientrinh = DVTIENTRINH.myeutop1(MaYeuCau);
+                    var checkTonTai1 = await xacMinhTroNgaiService.CheckExits(MaYeuCau);
+                    //var tientrinhend = DVTIENTRINH.myeutopend(MaYeuCau);
+                    if (!checkTonTai1)
+                    {
+                        //tạo ra response API
+                        var obj1 = new
+                        {
+                            // DGCD_TH_CHUONGTRINH = (int)(tientrinhend.NGAY_TAO - tientrinh.NGAY_TAO).Days,
+                            //DGCD_TH_DANGKY = (int)(DateTime.Now - tientrinh.NGAY_TAO).Days,
+                            DGCD_TH_CHUONGTRINH = NGAY_THIEN,
+                            DGCD_TH_DANGKY = NGAYTH,
+                            TEN_KH = TenKhachHang,
+                            DIA_CHI = DiaChi,
+                            SDT = DienThoai
+
+                        };
+                        result.data = obj1;
+                        result.success = true;
+                    }
+                    else
+                    {
+                        result.success = false;
+                        result.message = "Mã yêu cầu đã khảo sát";
+                    }
                 }
                 else
                 {
-                    result.success = false;
-                    result.message = "Mã yêu cầu đã khảo sát";
+                    var dvtientrinh = DVTIENTRINH.FilterByMaYeuCau(YCNT.MaYeuCau);
+                    var tientrinh = DVTIENTRINH.myeutop1(YCNT.MaYeuCau);
+                    var khaosat = xacMinhTroNgaiService.FilterByMaYeuCau(YCNT.MaYeuCau);
+                    var checkTonTai1 = await xacMinhTroNgaiService.CheckExits(YCNT.MaYeuCau);
+                    var tientrinhend = DVTIENTRINH.myeutopend(YCNT.MaYeuCau);
+                    if (!checkTonTai1)
+                    {
+                        //tạo ra response API
+                        var obj = new
+                        {
+                            DGCD_TH_CHUONGTRINH = (int)(tientrinhend.NGAY_TAO - tientrinh.NGAY_TAO).Days,
+                            DGCD_TH_DANGKY = (int)(DateTime.Now - tientrinh.NGAY_TAO).Days,
+                            TEN_KH = YCNT.CoQuanChuQuan,
+                            DIA_CHI = YCNT.DiaChi,
+                            SDT = YCNT.DienThoai
+
+                        };
+                        result.data = obj;
+                        result.success = true;
+                    }
+                    else
+                    {
+                        result.success = false;
+                        result.message = "Mã yêu cầu đã khảo sát";
+                    }
                 }
+
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -3981,7 +5832,7 @@ namespace EVN.Api.Controllers
                     var listKhaoSatFilter = new List<object>();
                     foreach (var khaosat in listKhaoSat)
                     {
-                       //1 listKhaoSatFilter.Add(new { khaosat.ID, khaosat.NOIDUNG_CAUHOI });
+                        //1 listKhaoSatFilter.Add(new { khaosat.ID, khaosat.NOIDUNG_CAUHOI });
                     }
 
                     //lay ra danh sach Log canh bao ung voi moi canh bao va add vao list Log canh bao filter
@@ -4018,13 +5869,13 @@ namespace EVN.Api.Controllers
             {
                 int pageindex = request.Paginator.page > 0 ? request.Paginator.page - 1 : 0;
                 int total = 0;
-               
+
                 ILogKhaoSatService logKhaoSatService = IoC.Resolve<ILogKhaoSatService>();
-                
+
                 //lấy danh sách log khảo sát
                 var listLog = logKhaoSatService.Filter(request.Filter.fromdate, request.Filter.todate, request.Filter.IdKhaoSat, pageindex, request.Paginator.pageSize, out total);
-                
-                if(total == 0)
+
+                if (total == 0)
                 {
                     result.message = "Không có dữ liệu";
                 }

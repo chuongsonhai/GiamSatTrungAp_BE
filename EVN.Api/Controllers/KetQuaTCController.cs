@@ -47,7 +47,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-        [JwtAuthentication]
+       // [JwtAuthentication]
         [HttpPost]
         public IHttpActionResult Post([FromBody] KetQuaTCModel model)
         {
@@ -85,16 +85,25 @@ namespace EVN.Api.Controllers
                 item.NGUYEN_NHAN = string.Empty;
                 item.MA_TNGAI = string.Empty;
             }
+            else
+            {
+                item.NGUYEN_NHAN = model.NGUYEN_NHAN;
+                item.MA_TNGAI = model.MA_TNGAI;
+            }
 
             if (item.TRANG_THAI == 0)
             {
                 service.Save(item);
                 service.CommitChanges();
-                return Ok(new KetQuaTCModel(item));
+                //return Ok(new KetQuaTCModel(item));
             }
             var pcongtc = pcongtcsrv.GetbyMaYCau(yeucau.MaLoaiYeuCau, yeucau.MaYeuCau);
             if (!service.SaveKetQua(ttdn, item, pcongtc))
                 return BadRequest();
+            else
+            {
+                if (service.SaveKetQua(ttdn, item, pcongtc)) ;
+            }
             return Ok(new KetQuaTCModel(item));
         }
 
@@ -132,6 +141,11 @@ namespace EVN.Api.Controllers
             {
                 item.NGUYEN_NHAN = string.Empty;
                 item.MA_TNGAI = string.Empty;
+            }
+            else
+            {
+                item.NGUYEN_NHAN = model.NGUYEN_NHAN;
+                item.MA_TNGAI = model.MA_TNGAI;
             }
             if (item.TRANG_THAI == 0)
             {

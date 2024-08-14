@@ -400,6 +400,7 @@
     <Compile Include="Model\HoSoKemTheoModel.cs" />
     <Compile Include="Model\CanhbaoUpdateStatusModel.cs" />
     <Compile Include="Model\UpdateStatusModel.cs" />
+    <Compile Include="Model\MayCmis.cs" />
     <Compile Include="Model\XacNhanTroNgaiModelkhaosatid.cs" />
     <Compile Include="Model\XacNhanTroNgaiModel.cs" />
     <Compile Include="Model\KySoOTPRequest.cs" />

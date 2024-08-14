@@ -496,5 +496,93 @@ namespace EVN.Core.Models
             }
         }
 
+        public DataTable Get_sdt_cmis()
+        {
+            using (OracleConnection conn = new OracleConnection(conStr_CMIS3_UNGDUNG))
+            {
+                DataSet ds = new DataSet();
+                OracleCommand cmd2 = new OracleCommand();
+                cmd2.Parameters.Clear();
+                cmd2.Connection = conn;
+                cmd2.CommandType = CommandType.StoredProcedure;
+                cmd2.CommandText = "UNGDUNG_TRUNGAP.YEUCAU_TRUNGAP.DS_SDT";
+
+                cmd2.Parameters.Add(new OracleParameter("pcusor", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
+                OracleDataAdapter daTemp1 = new OracleDataAdapter(cmd2);
+                daTemp1.Fill(ds);
+                conn.Close();
+                conn.Dispose();
+                return ds.Tables[0];
+            }
+        }
+
+        public DataTable Get_mayc_cmis_HT( string madvi, DateTime tungay, DateTime denngay )
+        {
+            madvi = (madvi == "") ? "-1" : madvi;
+            using (OracleConnection conn = new OracleConnection(conStr_CMIS3_UNGDUNG))
+            {
+                DataSet ds = new DataSet();
+                OracleCommand cmd2 = new OracleCommand();
+                cmd2.Parameters.Clear();
+                cmd2.Connection = conn;
+                cmd2.CommandType = CommandType.StoredProcedure;
+                cmd2.CommandText = "UNGDUNG_TRUNGAP.YEUCAU_TRUNGAP.DS_YCAU_CMIS_HT";
+                cmd2.Parameters.Add("PMADVI", madvi).Direction = ParameterDirection.Input;
+                cmd2.Parameters.Add("PTUNGAY", tungay).Direction = ParameterDirection.Input;
+                cmd2.Parameters.Add("PDENNGAY", denngay).Direction = ParameterDirection.Input;
+                cmd2.Parameters.Add(new OracleParameter("pcusor", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
+                OracleDataAdapter daTemp1 = new OracleDataAdapter(cmd2);
+                daTemp1.Fill(ds);
+                conn.Close();
+                conn.Dispose();
+
+                return ds.Tables[0];
+            }
+        }
+
+        public DataTable Get_mayc_cmis_HUY(string madvi, DateTime tungay, DateTime denngay)
+        {
+            madvi = (madvi == "") ? "-1" : madvi;
+            using (OracleConnection conn = new OracleConnection(conStr_CMIS3_UNGDUNG))
+            {
+                DataSet ds = new DataSet();
+                OracleCommand cmd2 = new OracleCommand();
+                cmd2.Parameters.Clear();
+                cmd2.Connection = conn;
+                cmd2.CommandType = CommandType.StoredProcedure;
+                cmd2.CommandText = "UNGDUNG_TRUNGAP.YEUCAU_TRUNGAP.DS_YCAU_CMIS_HU";
+                cmd2.Parameters.Add("PMADVI", madvi).Direction = ParameterDirection.Input;
+                cmd2.Parameters.Add("PTUNGAY", tungay).Direction = ParameterDirection.Input;
+                cmd2.Parameters.Add("PDENNGAY", denngay).Direction = ParameterDirection.Input;
+                cmd2.Parameters.Add(new OracleParameter("pcusor", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
+                OracleDataAdapter daTemp1 = new OracleDataAdapter(cmd2);
+                daTemp1.Fill(ds);
+                conn.Close();
+                conn.Dispose();
+                return ds.Tables[0];
+            }
+        }
+
+        public DataTable Get_mayc_cmis(string maycau)
+        {
+
+            using (OracleConnection conn = new OracleConnection(conStr_CMIS3_UNGDUNG))
+            {
+                DataSet ds = new DataSet();
+                OracleCommand cmd2 = new OracleCommand();
+                cmd2.Parameters.Clear();
+                cmd2.Connection = conn;
+                cmd2.CommandType = CommandType.StoredProcedure;
+                cmd2.CommandText = "UNGDUNG_TRUNGAP.YEUCAU_TRUNGAP.MYCAU_CMIS";
+                cmd2.Parameters.Add("PYCAU", maycau).Direction = ParameterDirection.Input;
+                cmd2.Parameters.Add(new OracleParameter("pcusor", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
+                OracleDataAdapter daTemp1 = new OracleDataAdapter(cmd2);
+                daTemp1.Fill(ds);
+                conn.Close();
+                conn.Dispose();
+                return ds.Tables[0];
+            }
+        }
+
     }
 }
