@@ -4,6 +4,7 @@ using EVN.Core.Domain;
 using EVN.Core.IServices;
 using FX.Core;
 using System;
+using System.Collections.Generic;
 using System.Web.Http;
 
 namespace EVN.Api.Controllers
@@ -47,7 +48,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-       // [JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         public IHttpActionResult Post([FromBody] KetQuaTCModel model)
         {
@@ -57,9 +58,12 @@ namespace EVN.Api.Controllers
             IPhanCongTCService pcongtcsrv = IoC.Resolve<IPhanCongTCService>();
             ICongViecService cvservice = IoC.Resolve<ICongViecService>();
             ITroNgaiService tngaisrv = IoC.Resolve<ITroNgaiService>();
+            IDvTienTrinhService tientrinhsrv = IoC.Resolve<IDvTienTrinhService>();
 
             var yeucau = congvansrv.GetbyMaYCau(model.MA_YCAU_KNAI);
             var ttdn = ttdnservice.GetbyNo(yeucau.SoThoaThuanDN, yeucau.MaYeuCau);
+            DvTienTrinh tientrinh = tientrinhsrv.GetbyYCau(model.MA_YCAU_KNAI, model.MA_CVIEC, 1);
+ 
 
             var congviec = cvservice.Getbykey(model.MA_CVIEC);
             if (string.IsNullOrWhiteSpace(model.NDUNG_XLY))
@@ -74,11 +78,13 @@ namespace EVN.Api.Controllers
 
             var item = service.GetbyMaYCau(yeucau.MaYeuCau);
             if (item == null) item = new KetQuaTC();
+            var item1 = new DvTienTrinh();
 
             item = model.ToEntity(item);
             item.MA_LOAI_YCAU = yeucau.MaLoaiYeuCau;
             item.MA_YCAU_KNAI = yeucau.MaYeuCau;
             item.MA_DVIQLY = yeucau.MaDViQLy;
+       
 
             if (item.THUAN_LOI)
             {
@@ -87,23 +93,28 @@ namespace EVN.Api.Controllers
             }
             else
             {
-                item.NGUYEN_NHAN = model.NGUYEN_NHAN;
-                item.MA_TNGAI = model.MA_TNGAI;
+                tientrinh.MA_TNGAI = model.MA_TNGAI;
+                tientrinh.NGUYEN_NHAN = model.NGUYEN_NHAN;
             }
 
             if (item.TRANG_THAI == 0)
             {
                 service.Save(item);
                 service.CommitChanges();
-                //return Ok(new KetQuaTCModel(item));
+
+                tientrinhsrv.Save(item1);
+                tientrinhsrv.CommitChanges();
+
+                return Ok(new List<object>
+                {
+                    new KetQuaTCModel(item),
+                    new TienTrinhModel(item1)
+                });
             }
+
             var pcongtc = pcongtcsrv.GetbyMaYCau(yeucau.MaLoaiYeuCau, yeucau.MaYeuCau);
             if (!service.SaveKetQua(ttdn, item, pcongtc))
                 return BadRequest();
-            else
-            {
-                if (service.SaveKetQua(ttdn, item, pcongtc)) ;
-            }
             return Ok(new KetQuaTCModel(item));
         }
 
@@ -141,11 +152,6 @@ namespace EVN.Api.Controllers
             {
                 item.NGUYEN_NHAN = string.Empty;
                 item.MA_TNGAI = string.Empty;
-            }
-            else
-            {
-                item.NGUYEN_NHAN = model.NGUYEN_NHAN;
-                item.MA_TNGAI = model.MA_TNGAI;
             }
             if (item.TRANG_THAI == 0)
             {
