@@ -2514,17 +2514,20 @@ namespace EVN.Core.Implements
 
                     if (lcanhbao2.ID == 2)
                     {
-                        if (IsWeekend_Friday(ttrinhKS.NGAY_BDAU))
-                        {
-                            if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO +24)
+                        if(ttrinhKS != null) 
+                        { 
+                            if (IsWeekend_Friday(ttrinhKS.NGAY_BDAU))
                             {
-
-                                if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
+                                if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO +24)
                                 {
-                                    item.LoaiCanhBao = 2;
-                                    response.Add(item);
-                                }
 
+                                    if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
+                                    {
+                                        item.LoaiCanhBao = 2;
+                                        response.Add(item);
+                                    }
+
+                                }
                             }
                         }
                         else
@@ -2615,15 +2618,17 @@ namespace EVN.Core.Implements
 
                         if (lcanhbao5.ID == 5)
                         {
-
-                            if (IsWeekend_Friday(ttrinhTVB.NGAY_BDAU))
-                            {
-                                if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO + 24)
+                            if(ttrinhTVB != null)
+                            { 
+                                if (IsWeekend_Friday(ttrinhTVB.NGAY_BDAU))
                                 {
-                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                    if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO + 24)
                                     {
-                                        item.LoaiCanhBao = 5;
-                                        response.Add(item);
+                                        if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                        {
+                                            item.LoaiCanhBao = 5;
+                                            response.Add(item);
+                                        }
                                     }
                                 }
                             }
@@ -2659,26 +2664,29 @@ namespace EVN.Core.Implements
                         {
                             //if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
                             //{
-                       
-                            if (IsWeekend_Thursday(itemNT.NgayLap))
-                            {
-                                if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 48) //test UAT
+                            if(itemNT != null)
+                            { 
+                                if (IsWeekend_Thursday(itemNT.NgayLap))
                                 {
-                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                    if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 48) //test UAT
                                     {
-                                        item.LoaiCanhBao = 6;
-                                        response.Add(item);
+                                        if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                        {
+                                            item.LoaiCanhBao = 6;
+                                            response.Add(item);
+                                        }
                                     }
                                 }
-                            }
-                            else if (IsWeekend_Friday(itemNT.NgayLap))
-                            {
-                                if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 24) //test UAT
+
+                                else if (IsWeekend_Friday(itemNT.NgayLap))
                                 {
-                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                    if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 24) //test UAT
                                     {
-                                        item.LoaiCanhBao = 6;
-                                        response.Add(item);
+                                        if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                        {
+                                            item.LoaiCanhBao = 6;
+                                            response.Add(item);
+                                        }
                                     }
                                 }
                             }
