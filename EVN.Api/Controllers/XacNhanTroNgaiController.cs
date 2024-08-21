@@ -4600,7 +4600,7 @@ namespace EVN.Api.Controllers
                             {
                                 if (kskh.TRANGTHAI == 6 || (kskh.TRANGTHAI >= 0 && kskh.TRANGTHAI <= 5))
                                 {
-                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
                                     foreach (var x in filteredList)
                                     {
                                         addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
@@ -4622,7 +4622,7 @@ namespace EVN.Api.Controllers
                             }
                             else if (kskh == null)
                             {
-                                var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI)).ToList();
+                                var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) ).ToList();
                                 foreach (var x in filteredList)
                                 {
                                     addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
@@ -4678,7 +4678,9 @@ namespace EVN.Api.Controllers
                             }
                             else
                             {
-                                var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && (kskh.MA_YCAU == x.MA_YCAU_KNAI)).ToList();
+                                var filteredList = mayCmisListHU
+                              .Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && !FilterByMaYeuCauMatch(x.MA_YCAU_KNAI))
+                              .ToList();
                                 foreach (var x in filteredList)
                                 {
                                     addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
@@ -4708,7 +4710,7 @@ namespace EVN.Api.Controllers
                     {
                         if (request.Filter.trangthai_ycau == "-1")
                         {
-                            foreach (var item in mayCmisListHT)
+                            foreach (var item in mayCmisListHU)
                             {
                                 var kskh = svkhaosat.FilterByMaYeuCau(item.MA_YCAU_KNAI);
 
@@ -4744,7 +4746,9 @@ namespace EVN.Api.Controllers
                                 }
                                 else
                                 {
-                                    var filteredList = mayCmisListHU.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI)).ToList();
+                                    var filteredList = mayCmisListHU
+                                .Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && !FilterByMaYeuCauMatch(x.MA_YCAU_KNAI))
+                                .ToList();
                                     foreach (var x in filteredList)
                                     {
                                         addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
@@ -4797,7 +4801,9 @@ namespace EVN.Api.Controllers
                                 }
                                 else
                                 {
-                                    var filteredList = mayCmisListHT.Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI)).ToList();
+                                    var filteredList = mayCmisListHT
+                              .Where(x => !addedMaYeuCau.Contains(x.MA_YCAU_KNAI) && !FilterByMaYeuCauMatch(x.MA_YCAU_KNAI))
+                              .ToList();
                                     foreach (var x in filteredList)
                                     {
                                         addedMaYeuCau.Add(x.MA_YCAU_KNAI); // Add to HashSet to track duplicates
@@ -5724,18 +5730,20 @@ namespace EVN.Api.Controllers
                 //lọc ra tên khác hàng, trạng thái yêu cầu ứng với mã yêu cầu
                 var item = new XacNhanTroNgai();
                 //lấy mã ycau
+                DataTable dt = new DataTable();
+                dt = cnn.Get_mayc_cmis(request.IdYeuCau);
+                var MaYeuCau = dt.Rows[0]["ma_ycau_knai"].ToString();
+                var TenKhachHang = dt.Rows[0]["TEN_KHANG"].ToString();
+                var DienThoai = dt.Rows[0]["DTHOAI_YCAU"].ToString();
+                var Email = dt.Rows[0]["EMAIL"].ToString();
+                var DONVI_DIENLUC = dt.Rows[0]["MA_DVIQLY"].ToString();
+                var DiaChi = dt.Rows[0]["DCHI_NGUOIYCAU"].ToString();
+                var NGAY_THIEN = dt.Rows[0]["NGAY_THIEN"].ToString();
+                var NGAYTH = dt.Rows[0]["NGAYTH"].ToString();
+                var DTHOAI_KH = dt.Rows[0]["DTHOAI_KH"].ToString();
                 if (YCNT == null)
                 {
-                    DataTable dt = new DataTable();
-                    dt = cnn.Get_mayc_cmis(request.IdYeuCau);
-                    var MaYeuCau = dt.Rows[0]["ma_ycau_knai"].ToString();
-                    var TenKhachHang = dt.Rows[0]["TEN_KHANG"].ToString();
-                    var DienThoai = dt.Rows[0]["DTHOAI_YCAU"].ToString();
-                    var Email = dt.Rows[0]["EMAIL"].ToString();
-                    var DONVI_DIENLUC = dt.Rows[0]["MA_DVIQLY"].ToString();
-                    var DiaChi = dt.Rows[0]["DCHI_NGUOIYCAU"].ToString();
-                    var NGAY_THIEN = dt.Rows[0]["NGAY_THIEN"].ToString();
-                    var NGAYTH = dt.Rows[0]["NGAYTH"].ToString();
+               
 
                     //var tientrinh = DVTIENTRINH.myeutop1(MaYeuCau);
                     var checkTonTai1 = await xacMinhTroNgaiService.CheckExits(MaYeuCau);
@@ -5751,7 +5759,8 @@ namespace EVN.Api.Controllers
                             DGCD_TH_DANGKY = NGAYTH,
                             TEN_KH = TenKhachHang,
                             DIA_CHI = DiaChi,
-                            SDT = DienThoai
+                            SDT = DienThoai,
+                            SDT_KH = DTHOAI_KH
 
                         };
                         result.data = obj1;
@@ -5779,8 +5788,8 @@ namespace EVN.Api.Controllers
                             DGCD_TH_DANGKY = (int)(DateTime.Now - tientrinh.NGAY_TAO).Days,
                             TEN_KH = YCNT.CoQuanChuQuan,
                             DIA_CHI = YCNT.DiaChi,
-                            SDT = YCNT.DienThoai
-
+                            SDT = YCNT.DienThoai,
+                            SDT_KH = DTHOAI_KH
                         };
                         result.data = obj;
                         result.success = true;
