@@ -120,7 +120,7 @@ namespace EVN.Api.Controllers
 
                 BienBanTTData model = new BienBanTTData();
                 model.BienBanTT = new BienBanTTModel(item);
-                model.KetQuaTC = new KetQuaTCModel(ketquatc);
+                model.KetQuaTC = new KetQuaTCModel(ketquatc, new DvTienTrinh());
                 model.LapBienBan = ketquatc != null && ketquatc.TRANG_THAI == 1;
                 return Ok(model);
             }
@@ -193,7 +193,7 @@ namespace EVN.Api.Controllers
 
                 BienBanTTData model = new BienBanTTData();
                 model.BienBanTT = new BienBanTTModel(item);
-                model.KetQuaTC = new KetQuaTCModel(ketquatc);
+                model.KetQuaTC = new KetQuaTCModel(ketquatc, new DvTienTrinh());
                 model.LapBienBan = ketquatc != null && ketquatc.TRANG_THAI == 1;
                 return Ok(model);
             }

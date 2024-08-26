@@ -39,7 +39,7 @@ namespace EVN.Api.Controllers
                     item.MA_CVIEC_TRUOC = congvan.MaCViec;
                     item.THUAN_LOI = true;
                 }
-                KetQuaTCModel model = new KetQuaTCModel(item);
+                KetQuaTCModel model = new KetQuaTCModel(item,new DvTienTrinh());
                 return Ok(model);
             }
             catch (Exception ex)
@@ -84,8 +84,8 @@ namespace EVN.Api.Controllers
             item.MA_LOAI_YCAU = yeucau.MaLoaiYeuCau;
             item.MA_YCAU_KNAI = yeucau.MaYeuCau;
             item.MA_DVIQLY = yeucau.MaDViQLy;
-       
 
+            DvTienTrinh tientrinh = new DvTienTrinh();
             if (item.THUAN_LOI)
             {
                 item.NGUYEN_NHAN = string.Empty;
@@ -93,7 +93,7 @@ namespace EVN.Api.Controllers
             }
             else
             {
-                DvTienTrinh tientrinh = tientrinhsrv.GetbyYCau(model.MA_YCAU_KNAI, model.MA_CVIEC, 1);
+                tientrinhsrv.GetbyYCau(model.MA_YCAU_KNAI, model.MA_CVIEC, 1);
                 tientrinh.MA_TNGAI = model.MA_TNGAI;
                 tientrinh.NGUYEN_NHAN = model.NGUYEN_NHAN;
             }
@@ -103,20 +103,16 @@ namespace EVN.Api.Controllers
                 service.Save(item);
                 service.CommitChanges();
 
-                tientrinhsrv.Save(item1);
-                tientrinhsrv.CommitChanges();
+                //tientrinhsrv.Save(item1);
+                //tientrinhsrv.CommitChanges();
 
-                return Ok(new List<object>
-                {
-                    new KetQuaTCModel(item),
-                    new TienTrinhModel(item1)
-                });
+                return Ok(new KetQuaTCModel(item, tientrinh));
             }
 
             var pcongtc = pcongtcsrv.GetbyMaYCau(yeucau.MaLoaiYeuCau, yeucau.MaYeuCau);
             if (!service.SaveKetQua(ttdn, item, pcongtc))
                 return BadRequest();
-            return Ok(new KetQuaTCModel(item));
+            return Ok(new KetQuaTCModel(item, tientrinh));
         }
 
         [JwtAuthentication]
@@ -158,12 +154,12 @@ namespace EVN.Api.Controllers
             {
                 service.Save(item);
                 service.CommitChanges();
-                return Ok(new KetQuaTCModel(item));
+                return Ok(new KetQuaTCModel(item, new DvTienTrinh()));
             }
             var pcongtc = pcongtcsrv.GetbyMaYCau(yeucau.MaLoaiYeuCau, yeucau.MaYeuCau);
             if (!service.SaveKetQua(ttdn, item, pcongtc))
                 return BadRequest();
-            return Ok(new KetQuaTCModel(item));
+            return Ok(new KetQuaTCModel(item, new DvTienTrinh()));
         }
     }
 }
