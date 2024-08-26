@@ -7,6 +7,7 @@ using FX.Core;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace EVN.Core.Implements
     public class XacNhanTroNgaiService : FX.Data.BaseService<XacNhanTroNgai, int>, IXacNhanTroNgaiService
     {
         ILog log = LogManager.GetLogger(typeof(XacNhanTroNgaiService));
+        DataProvide_Oracle cnn = new DataProvide_Oracle();
         public XacNhanTroNgaiService(string sessionFactoryConfigPath, string connectionString = null) : base(sessionFactoryConfigPath, connectionString)
         {
         }
@@ -508,6 +510,11 @@ namespace EVN.Core.Implements
             IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
             IXacNhanTroNgaiService servicetn = IoC.Resolve<IXacNhanTroNgaiService>();
 
+            DataTable dt = new DataTable();
+       
+  
+
+
 
             if (maDViQly != "-1")
             {
@@ -515,9 +522,33 @@ namespace EVN.Core.Implements
                 var listCanhBao = query.ToList();
                 foreach (var xacnhan in listCanhBao)
                 {
+                    dt = cnn.Get_mayc_cmis(xacnhan.MA_YCAU);
+                    var NGAY_TNHAN = "";
+                    var NGAY_HTHANH = "";
+                    if (dt.Rows.Count > 0)
+                    {
+                         NGAY_TNHAN = dt.Rows[0]["NGAY_TNHAN"].ToString();
+                    }
+                    else
+                    {
+                        var tientrinh = ttrinhsrv.myeutop1(xacnhan.MA_YCAU);
+                        NGAY_TNHAN = tientrinh.NGAY_TAO.ToString();
+                    }
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        NGAY_HTHANH = dt.Rows[0]["NGAY_HTHANH"].ToString();
+                    }
+                    else
+                    {
+                        var tientrinhend = ttrinhsrv.myeutopend(xacnhan.MA_YCAU);
+                        NGAY_HTHANH = tientrinhend.NGAY_TAO.ToString();
+                    }
+                
+
                     var xacnhantrongai = new XacNhanTroNgai();
-                    var tientrinh = ttrinhsrv.myeutop1(xacnhan.MA_YCAU);
-                    var tientrinhend = ttrinhsrv.myeutopend(xacnhan.MA_YCAU);
+
+
                     xacnhantrongai.MA_DVI = xacnhan.MA_DVI;
                     xacnhantrongai.MA_YCAU = xacnhan.MA_YCAU;
                     xacnhantrongai.MA_KH = xacnhan.MA_KH;
@@ -525,8 +556,10 @@ namespace EVN.Core.Implements
                     xacnhantrongai.DIA_CHI = xacnhan.DIA_CHI;
                     xacnhantrongai.DIEN_THOAI = xacnhan.DIEN_THOAI;
                     xacnhantrongai.MUCDICH_SD_DIEN = xacnhan.MUCDICH_SD_DIEN;
-                    xacnhantrongai.NGAY_TIEPNHAN = tientrinh.NGAY_TAO;
-                    xacnhantrongai.NGAY_HOANTHANH = tientrinhend.NGAY_TAO;
+
+                    xacnhantrongai.NGAY_TIEPNHAN = DateTime.Parse(NGAY_TNHAN);
+                    xacnhantrongai.NGAY_HOANTHANH = DateTime.Parse(NGAY_HTHANH) ; 
+
                     xacnhantrongai.SO_NGAY_CT = xacnhan.SO_NGAY_CT;
                     xacnhantrongai.SO_NGAY_TH_ND = xacnhan.SO_NGAY_TH_ND;
                     xacnhantrongai.TRANGTHAI_GQ = xacnhan.TRANGTHAI_GQ;
@@ -555,7 +588,6 @@ namespace EVN.Core.Implements
                     xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
                     xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
 
-
                     resultList.Add(xacnhantrongai);
                 } 
             }
@@ -567,11 +599,31 @@ namespace EVN.Core.Implements
 
                 foreach (var xacnhan in listCanhBao2)
                 {
-                  
+                    dt = cnn.Get_mayc_cmis(xacnhan.MA_YCAU);
+                    var NGAY_TNHAN = "";
+                    var NGAY_HTHANH = "";
+                    if (dt.Rows.Count > 0)
+                    {
+                        NGAY_TNHAN = dt.Rows[0]["NGAY_TNHAN"].ToString();
+                    }
+                    else
+                    {
+                        var tientrinh = ttrinhsrv.myeutop1(xacnhan.MA_YCAU);
+                        NGAY_TNHAN = tientrinh.NGAY_TAO.ToString();
+                    }
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        NGAY_HTHANH = dt.Rows[0]["NGAY_HTHANH"].ToString();
+                    }
+                    else
+                    {
+                        var tientrinhend = ttrinhsrv.myeutopend(xacnhan.MA_YCAU);
+                        NGAY_HTHANH = tientrinhend.NGAY_TAO.ToString();
+                    }
+
                     var xacnhantrongai = new XacNhanTroNgai();
             
-                    var tientrinh = ttrinhsrv.myeutop1(xacnhan.MA_YCAU);
-                    var tientrinhend = ttrinhsrv.myeutopend(xacnhan.MA_YCAU);
                     xacnhantrongai.MA_DVI = xacnhan.MA_DVI;
                     xacnhantrongai.MA_YCAU = xacnhan.MA_YCAU;
                     xacnhantrongai.MA_KH = xacnhan.MA_KH;
@@ -579,8 +631,10 @@ namespace EVN.Core.Implements
                     xacnhantrongai.DIA_CHI = xacnhan.DIA_CHI;
                     xacnhantrongai.DIEN_THOAI = xacnhan.DIEN_THOAI;
                     xacnhantrongai.MUCDICH_SD_DIEN = xacnhan.MUCDICH_SD_DIEN;
-                    xacnhantrongai.NGAY_TIEPNHAN = tientrinh.NGAY_TAO;
-                    xacnhantrongai.NGAY_HOANTHANH = tientrinhend.NGAY_TAO;
+
+                    xacnhantrongai.NGAY_TIEPNHAN = DateTime.Parse(NGAY_TNHAN);
+                    xacnhantrongai.NGAY_HOANTHANH = DateTime.Parse(NGAY_HTHANH);
+
                     xacnhantrongai.SO_NGAY_CT = xacnhan.SO_NGAY_CT;
                     xacnhantrongai.SO_NGAY_TH_ND = xacnhan.SO_NGAY_TH_ND;
                     xacnhantrongai.TRANGTHAI_GQ = xacnhan.TRANGTHAI_GQ;

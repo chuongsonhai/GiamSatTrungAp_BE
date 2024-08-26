@@ -62,7 +62,7 @@ namespace EVN.Api.Controllers
 
             var yeucau = congvansrv.GetbyMaYCau(model.MA_YCAU_KNAI);
             var ttdn = ttdnservice.GetbyNo(yeucau.SoThoaThuanDN, yeucau.MaYeuCau);
-            DvTienTrinh tientrinh = tientrinhsrv.GetbyYCau(model.MA_YCAU_KNAI, model.MA_CVIEC, 1);
+          
  
 
             var congviec = cvservice.Getbykey(model.MA_CVIEC);
@@ -93,6 +93,7 @@ namespace EVN.Api.Controllers
             }
             else
             {
+                DvTienTrinh tientrinh = tientrinhsrv.GetbyYCau(model.MA_YCAU_KNAI, model.MA_CVIEC, 1);
                 tientrinh.MA_TNGAI = model.MA_TNGAI;
                 tientrinh.NGUYEN_NHAN = model.NGUYEN_NHAN;
             }
