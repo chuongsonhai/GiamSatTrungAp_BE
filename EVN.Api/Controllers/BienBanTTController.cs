@@ -717,7 +717,9 @@ namespace EVN.Api.Controllers
                 IBienBanTTService service = IoC.Resolve<IBienBanTTService>();
                 IYCauNghiemThuService congvansrv = IoC.Resolve<IYCauNghiemThuService>();
                 IRepository repository = new FileStoreRepository();
-                var yeucau = congvansrv.Getbykey(id);
+                
+                var bbantt = service.Getbykey(id);
+                var yeucau = congvansrv.GetbyMaYCau(bbantt.MA_YCAU_KNAI);
                 var item = service.GetbyMaYCau(yeucau.MaYeuCau);
                 if (item.TRANG_THAI >= (int)TrangThaiBienBan.HoanThanh)
                 {
