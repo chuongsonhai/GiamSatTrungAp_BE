@@ -93,7 +93,7 @@ namespace EVN.Api.Model
     public class KetQuaTCModel
     {
         public KetQuaTCModel() { }
-        public KetQuaTCModel(KetQuaTC entity, DvTienTrinh DvTienTrinh) : base()
+        public KetQuaTCModel(KetQuaTC entity) : base()
         {
             ID = entity.ID;
             MA_DVIQLY = entity.MA_DVIQLY;
@@ -119,8 +119,8 @@ namespace EVN.Api.Model
             MA_TNGAI = entity.MA_TNGAI;
             NGUYEN_NHAN = entity.NGUYEN_NHAN;
             THUAN_LOI = entity.THUAN_LOI ? 1 : 0;
-            this.DvTienTrinh = DvTienTrinh;
 
+        
 
         }
         public virtual int ID { get; set; } = 0;
@@ -147,8 +147,6 @@ namespace EVN.Api.Model
         public virtual string MA_TNGAI { get; set; }
 
         public virtual string NGUYEN_NHAN { get; set; }
-
-        public DvTienTrinh DvTienTrinh { get; set; }
 
         public KetQuaTC ToEntity(KetQuaTC entity)
         {
