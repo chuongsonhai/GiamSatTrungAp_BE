@@ -204,7 +204,7 @@ namespace EVN.Api.Controllers
             }
         }
 
-       // [JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("Create")]
         public IHttpActionResult Create(BienBanTTModel model)

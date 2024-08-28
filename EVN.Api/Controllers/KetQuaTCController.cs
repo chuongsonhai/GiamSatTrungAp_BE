@@ -66,8 +66,6 @@ namespace EVN.Api.Controllers
             var yeucau = congvansrv.GetbyMaYCau(model.MA_YCAU_KNAI);
             var ttdn = ttdnservice.GetbyNo(yeucau.SoThoaThuanDN, yeucau.MaYeuCau);
             var congviec = cvservice.Getbykey(model.MA_CVIEC.ToString());
- 
-
 
             if (string.IsNullOrWhiteSpace(model.NDUNG_XLY))
             {
@@ -82,32 +80,22 @@ namespace EVN.Api.Controllers
             var item = service.GetbyMaYCau(yeucau.MaYeuCau);
             if (item == null) item = new KetQuaTC();
 
-
             item = model.ToEntity(item);
             item.MA_LOAI_YCAU = yeucau.MaLoaiYeuCau;
             item.MA_YCAU_KNAI = yeucau.MaYeuCau;
             item.MA_DVIQLY = yeucau.MaDViQLy;
 
-
-            //DvTienTrinh tientrinh = tientrinhsrv.GetbyYCau(model.MA_YCAU_KNAI, model.MA_CVIEC, 1);
-            //if (tientrinh != null) // Chỉ cập nhật nếu tìm thấy
-            //{
                 if (item.THUAN_LOI)
                 {
                     item.NGUYEN_NHAN = string.Empty;
                     item.MA_TNGAI = string.Empty;
                 }
-            //    else
-            //    {
-                  
-            //        tientrinh.MA_TNGAI = model.MA_TNGAI;
-            //        var tngai = tngaisrv.Getbykey(model.MA_TNGAI);
-            //        tientrinh.NGUYEN_NHAN = tngai.TEN_TNGAI;
-            //    }
-
-            //    tientrinhsrv.Save(tientrinh);
-            //    tientrinhsrv.CommitChanges();
-            //}
+                else
+                {
+                var tngai = tngaisrv.Getbykey(model.MA_TNGAI);
+                tientrinhsrv.capnhatientrinh(model.MA_YCAU_KNAI, model.MA_TNGAI, tngai.TEN_TNGAI);
+                }
+   
 
             if (item.TRANG_THAI == 0)
             {
@@ -117,7 +105,6 @@ namespace EVN.Api.Controllers
             }
 
             var pcongtc = pcongtcsrv.GetbyMaYCau(yeucau.MaLoaiYeuCau, yeucau.MaYeuCau);
-            log.ErrorFormat("pcongtc: ", pcongtc);
             if (!service.SaveKetQua(ttdn, item, pcongtc))
                 return BadRequest();
 

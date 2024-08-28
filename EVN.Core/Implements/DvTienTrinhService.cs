@@ -213,6 +213,32 @@ namespace EVN.Core.Implements
             }
         }
 
+        public void capnhatientrinh(string MA_YCAU_KNAI, string matrongai, string nguyennhan)
+        {
+            try
+            {
+                DvTienTrinh tientrinh = GetbyYCau(MA_YCAU_KNAI, "BTT", 1);
+
+                if (tientrinh != null)
+                {
+                    tientrinh.MA_TNGAI = matrongai;
+                    tientrinh.NGUYEN_NHAN = nguyennhan;
+
+                    Save(tientrinh);
+                    CommitChanges();
+                }
+                else
+                {
+                    log.Warn($"Không tìm thấy DvTienTrinh với MA_YCAU_KNAI: {MA_YCAU_KNAI}");
+                }
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+            }
+        }
+
+
         public void ThemTTrinhNT(int tthai, YCauNghiemThu yeucau, Userdata userdata)
         {
             ITThaiYeuCauService ttycausrv = IoC.Resolve<ITThaiYeuCauService>();

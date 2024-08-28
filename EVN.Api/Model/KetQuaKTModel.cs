@@ -119,8 +119,7 @@ namespace EVN.Api.Model
             MA_TNGAI = entity.MA_TNGAI;
             NGUYEN_NHAN = entity.NGUYEN_NHAN;
             THUAN_LOI = entity.THUAN_LOI ? 1 : 0;
-
-        
+       
 
         }
         public virtual int ID { get; set; } = 0;

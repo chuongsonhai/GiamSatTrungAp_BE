@@ -14,6 +14,7 @@ namespace EVN.Core.IServices
         void DongBoTienTrinhHU(CongVanYeuCau yeucau);
 
         void ThemTTrinhNT(int tthai, YCauNghiemThu yeucau, Userdata userdata);
+        void capnhatientrinh(string maYCau, string MaTN, string nguyenhan);
 
         IList<DvTienTrinh> GetbyFilter(string maYCau, string keyword, int pageindex, int pagesize, out int total);
         IList<DvTienTrinh> GetForExport(string maYCau, string keyword);
