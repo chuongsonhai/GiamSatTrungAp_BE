@@ -85,18 +85,16 @@ namespace EVN.Api.Controllers
             item.MA_YCAU_KNAI = yeucau.MaYeuCau;
             item.MA_DVIQLY = yeucau.MaDViQLy;
 
-                if (item.THUAN_LOI)
-                {
-                    item.NGUYEN_NHAN = string.Empty;
-                    item.MA_TNGAI = string.Empty;
-                }
-                else
-                {
-                var tngai = tngaisrv.Getbykey(model.MA_TNGAI);
-                tientrinhsrv.capnhatientrinh(model.MA_YCAU_KNAI, model.MA_TNGAI, tngai.TEN_TNGAI);
-                }
-   
-
+            if (item.THUAN_LOI)
+            {
+            item.NGUYEN_NHAN = string.Empty;
+            item.MA_TNGAI = string.Empty;
+            }
+            else
+            {
+            var tngai = tngaisrv.Getbykey(model.MA_TNGAI);
+            tientrinhsrv.capnhatientrinh(model.MA_YCAU_KNAI, model.MA_TNGAI, tngai.TEN_TNGAI);
+            }
             if (item.TRANG_THAI == 0)
             {
                 service.Save(item);
