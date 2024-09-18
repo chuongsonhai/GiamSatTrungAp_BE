@@ -94,6 +94,9 @@ namespace EVN.Api.Controllers
                         ws.Cells[row, colval].Value = item.NGAY_KTHUC;
 
                         colval++;
+                        ws.Cells[row, colval].Value = item.NGAY_TAO;
+
+                        colval++;
 
                         ws.Cells[row, colval].Value = item.NDUNG_XLY;
 

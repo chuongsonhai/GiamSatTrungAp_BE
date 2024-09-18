@@ -36,6 +36,7 @@ namespace EVN.Api.Model
                 SO_NGAY_LVIEC = songay.ToString();
             }
             TRANG_THAI = entity.TRANG_THAI;
+            NGAY_TAO = entity.NGAY_TAO.ToString("dd/MM/yyyy HH:mm:ss");
         }
         public virtual long KQ_ID_BUOC { get; set; }
         public virtual string MA_BPHAN_GIAO { get; set; }
@@ -55,10 +56,12 @@ namespace EVN.Api.Model
         public virtual string NGAY_HEN { get; set; }
         public virtual string NGAY_KTHUC { get; set; }
         public virtual string NGUYEN_NHAN { get; set; }
+     
 
         public virtual int SO_LAN { get; set; } = 1;
         public virtual string SO_NGAY_LVIEC { get; set; }
 
         public virtual int TRANG_THAI { get; set; } = 0;//0: Chưa gửi, 1: Đã gửi, 2: Gửi lỗi
+        public virtual string NGAY_TAO { get; set; }
     }
 }
