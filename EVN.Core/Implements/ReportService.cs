@@ -2434,7 +2434,7 @@ namespace EVN.Core.Implements
 
 
             var response = new List<CongVanYeuCau>();
-            DateTime ngay = DateTime.ParseExact("01/04/2022", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            DateTime ngay = DateTime.ParseExact("01/04/2024", "dd/MM/yyyy", CultureInfo.InvariantCulture);
 
             var query = Query.Where(p => p.TrangThai >= TrangThaiCongVan.MoiTao && p.NgayLap >= ngay).ToList();
             foreach (var item in query)
