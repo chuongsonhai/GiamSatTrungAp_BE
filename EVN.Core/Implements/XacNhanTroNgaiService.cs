@@ -523,6 +523,17 @@ namespace EVN.Core.Implements
                 foreach (var xacnhan in listCanhBao)
                 {
                     dt = cnn.Get_mayc_cmis(xacnhan.MA_YCAU);
+                    var TTHAI_YCAU = dt.Rows[0]["TTHAI_YCAU"].ToString();
+                    int TT_HTHANH = 0;
+                    if (TTHAI_YCAU == "HOÀN THÀNH")
+                    {
+                        TT_HTHANH = 0;
+                    }
+                    else
+                    {
+                        TT_HTHANH = 1;
+                    }
+
                     var NGAY_TNHAN = "";
                     var NGAY_HTHANH = "";
                     if (dt.Rows.Count > 0)
@@ -579,7 +590,7 @@ namespace EVN.Core.Implements
                     xacnhantrongai.DGNT_CHU_DAO = xacnhan.DGNT_CHU_DAO;
                     xacnhantrongai.KSAT_CHI_PHI = xacnhan.KSAT_CHI_PHI;
                     xacnhantrongai.DGHL_CAPDIEN = xacnhan.DGHL_CAPDIEN;
-                    xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
+                   // xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
                     xacnhantrongai.NGAY = xacnhan.NGAY;
                     xacnhantrongai.NGUOI_KSAT = xacnhan.NGUOI_KSAT;
                     xacnhantrongai.Y_KIEN_KH = xacnhan.Y_KIEN_KH;
@@ -587,6 +598,7 @@ namespace EVN.Core.Implements
                     xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
                     xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
                     xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
+                    xacnhantrongai.TRANGTHAI_GOI = TT_HTHANH;
 
                     resultList.Add(xacnhantrongai);
                 } 
@@ -602,6 +614,16 @@ namespace EVN.Core.Implements
                     dt = cnn.Get_mayc_cmis(xacnhan.MA_YCAU);
                     var NGAY_TNHAN = "";
                     var NGAY_HTHANH = "";
+                    var TTHAI_YCAU = dt.Rows[0]["TTHAI_YCAU"].ToString();
+                    int TT_HTHANH = 0;
+                    if (TTHAI_YCAU == "HOÀN THÀNH")
+                    {
+                        TT_HTHANH = 0;
+                    }
+                    else
+                    {
+                        TT_HTHANH = 1;
+                    }
                     if (dt.Rows.Count > 0)
                     {
                         NGAY_TNHAN = dt.Rows[0]["NGAY_TNHAN"].ToString();
@@ -654,7 +676,7 @@ namespace EVN.Core.Implements
                     xacnhantrongai.DGNT_CHU_DAO = xacnhan.DGNT_CHU_DAO;
                     xacnhantrongai.KSAT_CHI_PHI = xacnhan.KSAT_CHI_PHI;
                     xacnhantrongai.DGHL_CAPDIEN = xacnhan.DGHL_CAPDIEN;
-                    xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
+                  //  xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
                     xacnhantrongai.NGAY = xacnhan.NGAY;
                     xacnhantrongai.NGUOI_KSAT = xacnhan.NGUOI_KSAT;
                     xacnhantrongai.Y_KIEN_KH = xacnhan.Y_KIEN_KH;
@@ -663,6 +685,7 @@ namespace EVN.Core.Implements
                  
                     xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
                     xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
+                    xacnhantrongai.TRANGTHAI_GOI = TT_HTHANH;
                     resultList.Add(xacnhantrongai);
                 }
               
