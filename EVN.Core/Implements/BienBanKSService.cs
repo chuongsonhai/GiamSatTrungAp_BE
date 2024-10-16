@@ -761,18 +761,28 @@ namespace EVN.Core.Implements
                 {
                     var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
                     var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                    if (checkTonTai1)
+                    TimeSpan timeDifference = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
+
+                    if (timeDifference.TotalMinutes < 10)
                     {
-                        canhbao.LOAI_CANHBAO_ID = 7;
-                        canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
-                        canhbao.MA_YC = yeucau.MaYeuCau;
-                        canhbao.THOIGIANGUI = DateTime.Now;
-                        canhbao.TRANGTHAI_CANHBAO = 1;
-                        canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 7 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayLap + " Đơn vị: " + yeucau.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
-                        
+                        // Nếu timeDifference nhỏ hơn 10 phút, bỏ qua và tiếp tục vòng lặp
+                    }
+                    else
+                    {
+                        if (checkTonTai1)
+                        {
+                            canhbao.LOAI_CANHBAO_ID = 7;
+                            canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                            canhbao.MA_YC = yeucau.MaYeuCau;
+                            canhbao.THOIGIANGUI = DateTime.Now;
+                            canhbao.TRANGTHAI_CANHBAO = 1;
+                            canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                            canhbao.NOIDUNG = "Loại cảnh báo 7 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + yeucau.TenKhachHang + ", SĐT: " + yeucau.DienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + yeucau.NgayLap + " Đơn vị: " + yeucau.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình tiếp nhận yêu cầu cấp điện, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện).";
+
+                        }
                     }
                 }
+
 
 
 

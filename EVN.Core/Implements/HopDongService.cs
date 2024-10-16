@@ -106,16 +106,25 @@ namespace EVN.Core.Implements
                 {
                     var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
                     var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                    if (checkTonTai1)
-                    {
-                        canhbao.LOAI_CANHBAO_ID = 14;
-                        canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
-                        canhbao.MA_YC = congvan.MaYeuCau;
-                        canhbao.THOIGIANGUI = DateTime.Now;
-                        canhbao.TRANGTHAI_CANHBAO = 1;
-                        canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                    TimeSpan timeDifference = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
 
+                    if (timeDifference.TotalMinutes < 10)
+                    {
+                        // Nếu timeDifference nhỏ hơn 10 phút, bỏ qua và tiếp tục vòng lặp
+                    }
+                    else
+                    {
+                        if (checkTonTai1)
+                        {
+                            canhbao.LOAI_CANHBAO_ID = 14;
+                            canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                            canhbao.MA_YC = congvan.MaYeuCau;
+                            canhbao.THOIGIANGUI = DateTime.Now;
+                            canhbao.TRANGTHAI_CANHBAO = 1;
+                            canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
+                            canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+
+                        }
                     }
                 }
 
