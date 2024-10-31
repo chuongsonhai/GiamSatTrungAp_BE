@@ -8,6 +8,7 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -240,39 +241,43 @@ namespace EVN.Core.Implements
 
                     var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 12 && p.MA_YC == yeucau.MaYeuCau);
                     var canhbao = new CanhBao();
-                    if (lcanhbao1 == null)
+                    DateTime ngay = DateTime.ParseExact("01/04/2024", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    if (item.NgayLap >= ngay)
                     {
-                        canhbao.LOAI_CANHBAO_ID = 12;
-                        canhbao.LOAI_SOLANGUI = 1;
-                        canhbao.MA_YC = yeucau.MaYeuCau;
-                        canhbao.THOIGIANGUI = DateTime.Now;
-                        canhbao.TRANGTHAI_CANHBAO = 1;
-                        canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 12 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối với lý do: " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
-                    }
-
-                    else
-                    {
-                        var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                        var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                        TimeSpan timeDifference = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
-
-                        if (timeDifference.TotalMinutes < 10)
+                        if (lcanhbao1 == null)
                         {
-                            // Nếu timeDifference nhỏ hơn 10 phút, bỏ qua và tiếp tục vòng lặp
+                            canhbao.LOAI_CANHBAO_ID = 12;
+                            canhbao.LOAI_SOLANGUI = 1;
+                            canhbao.MA_YC = yeucau.MaYeuCau;
+                            canhbao.THOIGIANGUI = DateTime.Now;
+                            canhbao.TRANGTHAI_CANHBAO = 1;
+                            canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                            canhbao.NOIDUNG = "Loại cảnh báo 12 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối với lý do: " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
                         }
+
                         else
                         {
-                            if (checkTonTai1)
-                            {
-                                canhbao.LOAI_CANHBAO_ID = 12;
-                                canhbao.LOAI_SOLANGUI = 1;
-                                canhbao.MA_YC = yeucau.MaYeuCau;
-                                canhbao.THOIGIANGUI = DateTime.Now;
-                                canhbao.TRANGTHAI_CANHBAO = 1;
-                                canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                                canhbao.NOIDUNG = "Loại cảnh báo 12 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối với lý do: " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+                            var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                            var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                            TimeSpan timeDifference = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
 
+                            if (timeDifference.TotalMinutes < 10)
+                            {
+                                // Nếu timeDifference nhỏ hơn 10 phút, bỏ qua và tiếp tục vòng lặp
+                            }
+                            else
+                            {
+                                if (checkTonTai1)
+                                {
+                                    canhbao.LOAI_CANHBAO_ID = 12;
+                                    canhbao.LOAI_SOLANGUI = 1;
+                                    canhbao.MA_YC = yeucau.MaYeuCau;
+                                    canhbao.THOIGIANGUI = DateTime.Now;
+                                    canhbao.TRANGTHAI_CANHBAO = 1;
+                                    canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                                    canhbao.NOIDUNG = "Loại cảnh báo 12 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + item.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Ngành điện gặp trở ngại trong quá trình kiểm tra điều kiện đóng điện điểm đấu nối với lý do: " + ketqua.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và khắc phục theo đúng qui định.";
+
+                                }
                             }
                         }
                     }

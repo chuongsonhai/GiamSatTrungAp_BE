@@ -11,6 +11,8 @@ namespace EVN.Core.Domain
         public virtual string MA_DVIQLY { get; set; }
         public virtual string USERNAME { get; set; }
         public virtual int TRANGTHAI { get; set; } = 0;
+
+        public virtual string MA_NV { get; set; }
     }
 
     public class UserNhanCanhBaoFilterRequest : BaseRequest

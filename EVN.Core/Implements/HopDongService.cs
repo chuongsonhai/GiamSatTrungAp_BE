@@ -6,6 +6,7 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -90,40 +91,44 @@ namespace EVN.Core.Implements
                 var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
                 var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 14 && p.MA_YC == item.MaYeuCau);
                 var canhbao = new CanhBao();
-                if (lcanhbao1 == null)
+                DateTime ngay = DateTime.ParseExact("01/04/2024", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                if (congvan.NgayLap >= ngay)
                 {
-                    canhbao.LOAI_CANHBAO_ID = 14;
-                    canhbao.LOAI_SOLANGUI = 1;
-                    canhbao.MA_YC = congvan.MaYeuCau;
-                    canhbao.THOIGIANGUI = DateTime.Now;
-                    canhbao.TRANGTHAI_CANHBAO = 1;
-                    canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
-                    canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
-
-                }
-
-                else
-                {
-                    var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                    var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                    TimeSpan timeDifference = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
-
-                    if (timeDifference.TotalMinutes < 10)
+                    if (lcanhbao1 == null)
                     {
-                        // Nếu timeDifference nhỏ hơn 10 phút, bỏ qua và tiếp tục vòng lặp
+                        canhbao.LOAI_CANHBAO_ID = 14;
+                        canhbao.LOAI_SOLANGUI = 1;
+                        canhbao.MA_YC = congvan.MaYeuCau;
+                        canhbao.THOIGIANGUI = DateTime.Now;
+                        canhbao.TRANGTHAI_CANHBAO = 1;
+                        canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
+                        canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+
                     }
+
                     else
                     {
-                        if (checkTonTai1)
-                        {
-                            canhbao.LOAI_CANHBAO_ID = 14;
-                            canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
-                            canhbao.MA_YC = congvan.MaYeuCau;
-                            canhbao.THOIGIANGUI = DateTime.Now;
-                            canhbao.TRANGTHAI_CANHBAO = 1;
-                            canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
-                            canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+                        var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                        var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                        TimeSpan timeDifference = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
 
+                        if (timeDifference.TotalMinutes < 10)
+                        {
+                            // Nếu timeDifference nhỏ hơn 10 phút, bỏ qua và tiếp tục vòng lặp
+                        }
+                        else
+                        {
+                            if (checkTonTai1)
+                            {
+                                canhbao.LOAI_CANHBAO_ID = 14;
+                                canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                canhbao.MA_YC = congvan.MaYeuCau;
+                                canhbao.THOIGIANGUI = DateTime.Now;
+                                canhbao.TRANGTHAI_CANHBAO = 1;
+                                canhbao.DONVI_DIENLUC = congvan.MaDViQLy;
+                                canhbao.NOIDUNG = "Loại cảnh báo 14 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHDaiDien + ", SĐT: " + item.KHDienThoai + ", ĐC: " + item.KHDiaChi + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận:" + congvan.NgayLap + " ĐV: " + item.MaDViQLy + "<br> Khách hàng từ chối ký HĐMBĐ với lý do " + tientrinh.NDUNG_XLY + ", đơn vị kiểm tra lý do cập nhật trên hệ thống với thực tế tại hồ sơ và liên hệ với khách hàng để xử lý đúng qui định";
+
+                            }
                         }
                     }
                 }

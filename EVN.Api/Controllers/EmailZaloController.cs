@@ -9,6 +9,7 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -124,10 +125,13 @@ namespace EVN.Api.Controllers
         {
             ResponseFileResult result = new ResponseFileResult();
             ICanhBaoService CBservice = IoC.Resolve<ICanhBaoService>();
+           
             IEmailService service = IoC.Resolve<IEmailService>();
             IZaloService zaloservice = IoC.Resolve<IZaloService>();
             IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
             IUserdataService userdataService = IoC.Resolve<IUserdataService>();
+            IDvTienTrinhService DvTTrinhservice = IoC.Resolve<IDvTienTrinhService>();
+            IReportService congvanservice = IoC.Resolve<IReportService>();
             try
             {
                 
@@ -140,7 +144,7 @@ namespace EVN.Api.Controllers
 
                     IList<UserNhanCanhBao> listNguoiNhan = userNhanCanhBaoService.GetbyMaDviQly(item.DONVI_DIENLUC);
                     //IList<Userdata> listNguoiNhanzalo = userdataService.GetbyMaDviQly(item.DONVI_DIENLUC);
-
+                
 
                     //Email
                     foreach (var nguoiNhan in listNguoiNhan)
@@ -151,7 +155,7 @@ namespace EVN.Api.Controllers
                         }
                       else 
                         { 
-                        var existEmail = await GetExits(listItemExistEmail, item.NOIDUNG);// check nội udng trùng r
+                        var existEmail = await GetExits(listItemExistEmail, item.NOIDUNG);// check nội dung trùng
                         var point = await GetPoint(existEmail);
                         var user = userdataService.Getbykey(nguoiNhan.USER_ID);
                         Email email = new Email();
@@ -174,7 +178,63 @@ namespace EVN.Api.Controllers
                             
                         }
                     }
-              
+
+             
+
+                    //EmailB7
+                        DateTime ngay = DateTime.ParseExact("01/04/2024", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                        var query = congvanservice.Query.Where(p => p.TrangThai >= 0 && p.NgayLap >= ngay).ToList();
+           
+                        var ttrinhs = DvTTrinhservice.Query.Where(p => p.MA_YCAU_KNAI == item.MA_YC).OrderByDescending(p => p.STT).ToList();
+                        var ttrinhend = ttrinhs.First();
+
+                        var ttrinhb71 = userNhanCanhBaoService.Query.Where(p => p.TRANGTHAI == 1).ToList();
+                        var maNVList = ttrinhb71.Select(p => p.MA_NV).ToList();
+                        UserNhanCanhBao listNguoiNhanB7 = userNhanCanhBaoService.GetbyMaDviQlyB7(ttrinhend.MA_NVIEN_NHAN);
+
+                        IList<UserNhanCanhBao> ttrinhb7 = userNhanCanhBaoService.GetMA_NV(maNVList).ToList();
+
+
+                        if (!ttrinhb7.Any(u => u.MA_NV == ttrinhend.MA_NVIEN_NHAN))
+                        {
+
+                        }
+
+                        if (ttrinhb7.Any(u => u.MA_NV == ttrinhend.MA_NVIEN_NHAN))
+                        {
+
+                       
+                                if (item.MA_YC == null)
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    var existEmail = await GetExits(listItemExistEmail, item.NOIDUNG);// check nội dung trùng
+                                    var point = await GetPoint(existEmail);
+                                    var user = userdataService.Getbykey(listNguoiNhanB7.USER_ID);
+                                    Email email = new Email();
+                                    email.MA_DVIQLY = listNguoiNhanB7.MA_DVIQLY;
+                                    email.MA_DVU = "TA";
+                                    email.NOI_DUNG = item.NOIDUNG + point;
+                                    email.NGAY_TAO = DateTime.Now;
+                                    email.NGUOI_TAO = "admin";
+                                    email.TIEU_DE = "Cảnh báo giám sát cấp điện trung áp";
+                                    email.TINH_TRANG = 1;
+                                    email.EMAIL = user.email;
+                                    if (email.EMAIL == null)
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        service.CreateNew(email);
+                                    }
+
+                            
+                            
+                        }
+                    }
                     ////Zalo
                     //foreach (var nguoiNhan2 in listNguoiNhanzalo)
                     //{
@@ -209,7 +269,7 @@ namespace EVN.Api.Controllers
                     //    }
                     //}
 
-               
+
                     item.TRANGTHAI_CANHBAO = 2;
                     CBservice.Update(item);
                 }

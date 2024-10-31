@@ -15,5 +15,7 @@ namespace EVN.Core.IServices
         UserNhanCanhBao GetMaDviQly(string MaDviQly);
         IList<UserNhanCanhBao> Getid(string MaDviQly);
         //IList<UserNhanCanhBao> GetMadvi(string MaDviQly);
+        UserNhanCanhBao GetbyMaDviQlyB7(string maNVList);
+        IList<UserNhanCanhBao> GetMA_NV(List<string> keys);
     }
 }

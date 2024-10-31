@@ -22,22 +22,33 @@ namespace EVN.Core.Implements
 
         public IList<UserNhanCanhBao> GetbyMaDviQly(string MaDviQly)
         {
-            if(MaDviQly != "-1")
+            if (MaDviQly != "-1")
             {
-                return Query.Where(p => p.MA_DVIQLY == MaDviQly || p.MA_DVIQLY == "X0206" || p.MA_DVIQLY == "PD").ToList();
-            } else
-            {
-                return Query.ToList();
+                return Query.Where(p => (p.MA_DVIQLY == MaDviQly || p.MA_DVIQLY == "X0206" || p.MA_DVIQLY == "PD") && p.TRANGTHAI == 0).ToList();
             }
-            
+            else
+            {
+                return Query.Where(p => p.TRANGTHAI == 0).ToList();
+            }
         }
 
 
-        
+        public UserNhanCanhBao GetbyMaDviQlyB7(string maNVList)
+        {
+            return Get(p => p.TRANGTHAI == 1 && maNVList.Contains(p.MA_NV));
+        }
+
+
+
 
         public UserNhanCanhBao GetMaDviQly(string MaDviQly)
         {
                 return Get(p => p.MA_DVIQLY == MaDviQly);
+        }
+
+        public IList<UserNhanCanhBao> GetMA_NV(List<string> keys)
+        {
+            return Query.Where(p => keys.Contains(p.MA_NV)).ToList();
         }
 
         public UserNhanCanhBao GetbyNo(int idloai)

@@ -12,6 +12,7 @@ using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -194,43 +195,46 @@ namespace EVN.Api.Controllers
                     var lcanhbao = CBservice.Query.Where(p => p.TRANGTHAI_CANHBAO <= 6);
                     var lcanhbao1 = lcanhbao.FirstOrDefault(p => p.LOAI_CANHBAO_ID == 8 && p.MA_YC == item.MaYeuCau);
                     var canhbao = new CanhBao();
-                    if (lcanhbao1 == null)
+                    DateTime ngay = DateTime.ParseExact("01/04/2024", "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    if (item.NgayLap >= ngay)
                     {
-                        canhbao.LOAI_CANHBAO_ID = 8;
-                        canhbao.LOAI_SOLANGUI = 1;
-                        canhbao.MA_YC = yeucau.MaYeuCau;
-                        canhbao.THOIGIANGUI = DateTime.Now;
-                        canhbao.TRANGTHAI_CANHBAO = 1;
-                        canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                        canhbao.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
-                       
-                    }
-                    else
-                    {
-                        var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                        var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
-                        TimeSpan timeDifference = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
-
-                        if (timeDifference.TotalMinutes < 10)
+                        if (lcanhbao1 == null)
                         {
-                            // Nếu timeDifference nhỏ hơn 10 phút, bỏ qua và tiếp tục vòng lặp
+                            canhbao.LOAI_CANHBAO_ID = 8;
+                            canhbao.LOAI_SOLANGUI = 1;
+                            canhbao.MA_YC = yeucau.MaYeuCau;
+                            canhbao.THOIGIANGUI = DateTime.Now;
+                            canhbao.TRANGTHAI_CANHBAO = 1;
+                            canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                            canhbao.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+
                         }
                         else
                         {
-                            if (checkTonTai1)
-                            {
-                                canhbao.LOAI_CANHBAO_ID = 8;
-                                canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
-                                canhbao.MA_YC = yeucau.MaYeuCau;
-                                canhbao.THOIGIANGUI = DateTime.Now;
-                                canhbao.TRANGTHAI_CANHBAO = 1;
-                                canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
-                                canhbao.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+                            var checkTonTai1 = CBservice.CheckExits11(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                            var check_tontai_mycau1 = CBservice.GetByMaYeuCautontai(lcanhbao1.MA_YC, lcanhbao1.LOAI_CANHBAO_ID);
+                            TimeSpan timeDifference = DateTime.Now - check_tontai_mycau1.THOIGIANGUI;
 
+                            if (timeDifference.TotalMinutes < 10)
+                            {
+                                // Nếu timeDifference nhỏ hơn 10 phút, bỏ qua và tiếp tục vòng lặp
+                            }
+                            else
+                            {
+                                if (checkTonTai1)
+                                {
+                                    canhbao.LOAI_CANHBAO_ID = 8;
+                                    canhbao.LOAI_SOLANGUI = check_tontai_mycau1.LOAI_SOLANGUI + 1;
+                                    canhbao.MA_YC = yeucau.MaYeuCau;
+                                    canhbao.THOIGIANGUI = DateTime.Now;
+                                    canhbao.TRANGTHAI_CANHBAO = 1;
+                                    canhbao.DONVI_DIENLUC = yeucau.MaDViQLy;
+                                    canhbao.NOIDUNG = "Loại cảnh báo 8 - lần " + canhbao.LOAI_SOLANGUI + " <br>KH: " + item.KHTen + ", SĐT: " + item.KHDienThoai + ", ĐC: " + yeucau.DiaChiCoQuan + ", MaYC: " + canhbao.MA_YC + ", ngày tiếp nhận: " + item.NgayLap + " Đơn vị: " + item.MaDViQLy + "<br> Khách hàng có trở ngại trong quá trình khảo sát, đơn vị kiểm tra trở ngại cập nhật trên hệ thống với thực tế tại hồ sơ và tính chất trở ngại (có thể khắc phục hoặc phải hủy yêu cầu cấp điện)";
+
+                                }
                             }
                         }
                     }
-
                     ILogCanhBaoService LogCBservice = IoC.Resolve<ILogCanhBaoService>();
                     string messageCB = "";
                     LogCanhBao logCB = new LogCanhBao();

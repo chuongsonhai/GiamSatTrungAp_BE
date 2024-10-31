@@ -10,6 +10,7 @@
 		<!--<property name="TRANGTHAI_GUI" column="TRANGTHAI_GUI" type="int"/>-->
 		<property name="USER_ID" column="USER_ID" type="int"/>
 		<property name="TRANGTHAI" column="TRANGTHAI" type="int"/>
+		<property name="MA_NV" column="MA_NV" type="string"/>
 
 	</class>
 </hibernate-mapping>

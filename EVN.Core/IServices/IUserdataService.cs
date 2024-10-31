@@ -27,5 +27,6 @@ namespace EVN.Core.IServices
         IList<Userdata> GetbyFilter(string maDViQLy, string maBPhan, string keyword, int pageindex, int pagesize, out int total);
         IList<Userdata> GetByMaCV(string maDViQLy, string maCV);
         Userdata Getbysdt(string sdt);
+      
     }
 }
