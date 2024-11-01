@@ -2124,7 +2124,6 @@ namespace EVN.Core.Implements
             foreach (var item in query)
             {
                 var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();
-                //var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == "GC9074316208").OrderByDescending(p => p.STT).ToList();
                 var ttrinhTN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TN");
                 var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                 var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
@@ -2170,7 +2169,7 @@ namespace EVN.Core.Implements
                         if (ttrinhKS != null)
                         {
 
-                            tsthoathuanDN = DateTime.Now - ttrinhKS.NGAY_BDAU;
+                            tsthoathuanDN = DateTime.Now - ttrinhKS.NGAY_TAO;
                         }
 
                     }
@@ -2178,7 +2177,7 @@ namespace EVN.Core.Implements
                     {
                         if (ttrinhKS != null && ttrinhBDN.NGAY_KTHUC.HasValue)
                         {
-                            tsthoathuanDN = ttrinhBDN.NGAY_KTHUC.Value - ttrinhKS.NGAY_BDAU;
+                            tsthoathuanDN = ttrinhBDN.NGAY_TAO - ttrinhKS.NGAY_TAO;
                         }
                     }
                         if (tsthoathuanDN.TotalMinutes > 30) 
@@ -2217,7 +2216,7 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhPC != null)
                             {
-                                tsKyHopDong = DateTime.Now - ttrinhPC.NGAY_BDAU;
+                                tsKyHopDong = DateTime.Now - ttrinhPC.NGAY_TAO;
                             }
 
                         }
@@ -2225,7 +2224,7 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhPC != null && ttrinhDHD.NGAY_KTHUC.HasValue)
                             {
-                                tsKyHopDong = ttrinhDHD.NGAY_KTHUC.Value - ttrinhPC.NGAY_BDAU;
+                                tsKyHopDong = ttrinhDHD.NGAY_TAO - ttrinhPC.NGAY_TAO;
                             }
 
                         }
@@ -2247,7 +2246,7 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhTVB != null)
                             {
-                                tsKyNghiemThu = DateTime.Now - ttrinhTVB.NGAY_BDAU;
+                                tsKyNghiemThu = DateTime.Now - ttrinhTVB.NGAY_TAO;
                             }
 
                         }
@@ -2255,7 +2254,7 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhTVB != null && ttrinhNT.NGAY_KTHUC.HasValue)
                             {
-                                tsKyNghiemThu = ttrinhNT.NGAY_KTHUC.Value - ttrinhTVB.NGAY_BDAU;
+                                tsKyNghiemThu = ttrinhNT.NGAY_TAO - ttrinhTVB.NGAY_TAO;
                             }
 
                         }
@@ -2280,7 +2279,7 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhNT.NGAY_KTHUC.HasValue)
                             {
-                                tsGSNghiemThu = ttrinhNT.NGAY_KTHUC.Value - itemNT.NgayLap;
+                                tsGSNghiemThu = ttrinhNT.NGAY_TAO - itemNT.NgayLap;
                             }
 
                         }
@@ -2302,7 +2301,7 @@ namespace EVN.Core.Implements
                     TimeSpan tsCanhBaoHetHanTTDN = new TimeSpan();
                     if (ttrinhDDN != null && ttrinhDDN.NGAY_KTHUC.HasValue)
                     {
-                        tsCanhBaoHetHanTTDN = DateTime.Now - ttrinhDDN.NGAY_KTHUC.Value;
+                        tsCanhBaoHetHanTTDN = DateTime.Now - ttrinhDDN.NGAY_TAO;
                     }
 
                         if (tsCanhBaoHetHanTTDN.TotalMinutes > 30) //TEST UAT
@@ -2440,6 +2439,7 @@ namespace EVN.Core.Implements
             foreach (var item in query)
             {
                 var ttrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == item.MaYeuCau).OrderByDescending(p => p.STT).ToList();
+             
                 var ttrinhTN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TN");
                 var ttrinhPK = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                 var ttrinhKS = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KS");
@@ -2502,7 +2502,7 @@ namespace EVN.Core.Implements
                             if (ttrinhKS != null)
                             {
 
-                                tsthoathuanDN = DateTime.Now - ttrinhKS.NGAY_BDAU;
+                                tsthoathuanDN = DateTime.Now - ttrinhKS.NGAY_TAO;
                             }
 
                         }
@@ -2510,7 +2510,7 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhKS != null && ttrinhBDN.NGAY_KTHUC.HasValue)
                             {
-                                tsthoathuanDN = ttrinhBDN.NGAY_KTHUC.Value - ttrinhKS.NGAY_BDAU;
+                                tsthoathuanDN = ttrinhBDN.NGAY_TAO - ttrinhKS.NGAY_TAO;
                             }
                         }
 
@@ -2518,13 +2518,26 @@ namespace EVN.Core.Implements
                     {
 
                         if(ttrinhCH5 == null)
-                        { 
-                            
-                            if(ttrinhKS != null) 
-                            { 
-                                if (IsWeekend_Friday(ttrinhKS.NGAY_BDAU))
+                        {
+                            if (ttrinhKS != null)
+                            {
+                                if (IsWeekend_Friday(ttrinhKS.NGAY_TAO))
                                 {
-                                    if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO +24)
+                                    if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO + 24)
+                                    {
+
+                                        if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
+                                        {
+                                            item.LoaiCanhBao = 2;
+                                            response.Add(item);
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+
+                                    if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO)
                                     {
 
                                         if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
@@ -2536,19 +2549,7 @@ namespace EVN.Core.Implements
                                     }
                                 }
                             }
-                            else
-                            {
-                                if (tsthoathuanDN.TotalHours > lcanhbao2.CHUKYCANHBAO)
-                                {
-
-                                    if (item.TrangThai >= TrangThaiCongVan.MoiTao && item.TrangThai < TrangThaiCongVan.HoanThanh)
-                                    {
-                                        item.LoaiCanhBao = 2;
-                                        response.Add(item);
-                                    }
-
-                                }
-                            }
+                         
                         }
                     }
 
@@ -2580,7 +2581,7 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhPC != null)
                             {
-                                tsKyHopDong = DateTime.Now - ttrinhPC.NGAY_BDAU;
+                                tsKyHopDong = DateTime.Now - ttrinhPC.NGAY_TAO;
                             }
 
                         }
@@ -2588,7 +2589,7 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhPC != null && ttrinhDHD.NGAY_KTHUC.HasValue)
                             {
-                                tsKyHopDong = ttrinhDHD.NGAY_KTHUC.Value - ttrinhPC.NGAY_BDAU;
+                                tsKyHopDong = ttrinhDHD.NGAY_TAO - ttrinhPC.NGAY_TAO;
                             }
 
                         }
@@ -2615,7 +2616,7 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhTVB != null)
                             {
-                                tsKyNghiemThu = DateTime.Now - ttrinhTVB.NGAY_BDAU;
+                                tsKyNghiemThu = DateTime.Now - ttrinhTVB.NGAY_TAO;
                             }
 
                         }
@@ -2623,40 +2624,45 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhTVB != null && ttrinhNT.NGAY_KTHUC.HasValue)
                             {
-                                tsKyNghiemThu = ttrinhNT.NGAY_KTHUC.Value - ttrinhTVB.NGAY_BDAU;
+                                tsKyNghiemThu = ttrinhNT.NGAY_TAO - ttrinhTVB.NGAY_TAO;
                             }
 
                         }
 
-
-                        if (lcanhbao5.ID == 5)
+                        if (ttrinhNT == null)
                         {
-                            if(ttrinhTVB != null)
-                            { 
-                                if (IsWeekend_Friday(ttrinhTVB.NGAY_BDAU))
+                            if (lcanhbao5.ID == 5)
+                            {
+
+                                if (ttrinhTVB != null)
                                 {
-                                    if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO + 24)
+                                    if (IsWeekend_Friday(ttrinhTVB.NGAY_BDAU))
                                     {
-                                        if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                        if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO + 24)
                                         {
-                                            item.LoaiCanhBao = 5;
-                                            response.Add(item);
+                                            if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                            {
+                                                item.LoaiCanhBao = 5;
+                                                response.Add(item);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO)
+                                        {
+                                            if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                            {
+                                                item.LoaiCanhBao = 5;
+                                                response.Add(item);
+                                            }
                                         }
                                     }
                                 }
-                            }
-                            else
-                            {
-                                if (tsKyNghiemThu.TotalHours > lcanhbao5.CHUKYCANHBAO)
-                                {
-                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.PhanCongKT && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
-                                    {
-                                        item.LoaiCanhBao = 5;
-                                        response.Add(item);
-                                    }
-                                }
+                            
                             }
                         }
+                        
                         //Giám sát thời gian nghiệm thu yêu cầu cấp điện mới trung áp
 
                         TimeSpan tsGSNghiemThu = new TimeSpan();
@@ -2668,49 +2674,51 @@ namespace EVN.Core.Implements
                         {
                             if (ttrinhNT.NGAY_KTHUC.HasValue)
                             {
-                                tsGSNghiemThu = ttrinhNT.NGAY_KTHUC.Value - itemNT.NgayLap;
+                                tsGSNghiemThu = ttrinhNT.NGAY_TAO - itemNT.NgayLap;
                             }
 
                         }
-
-                        if (lcanhbao6.ID == 6)
+                        if (ttrinhNT == null)
                         {
-                            //if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
-                            //{
-                            if(itemNT != null)
-                            { 
-                                if (IsWeekend_Thursday(itemNT.NgayLap))
-                                {
-                                    if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 48) //test UAT
-                                    {
-                                        if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
-                                        {
-                                            item.LoaiCanhBao = 6;
-                                            response.Add(item);
-                                        }
-                                    }
-                                }
-
-                                else if (IsWeekend_Friday(itemNT.NgayLap))
-                                {
-                                    if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 24) //test UAT
-                                    {
-                                        if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
-                                        {
-                                            item.LoaiCanhBao = 6;
-                                            response.Add(item);
-                                        }
-                                    }
-                                }
-                            }
-                            else
+                            if (lcanhbao6.ID == 6)
                             {
-                                if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO) //test UAT
+                                //if (tsKyNghiemThu.TotalHours > 48) // CODE GỐC
+                                //{
+                                if (itemNT != null)
                                 {
-                                    if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                    if (IsWeekend_Thursday(itemNT.NgayLap))
                                     {
-                                        item.LoaiCanhBao = 6;
-                                        response.Add(item);
+                                        if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 48) //test UAT
+                                        {
+                                            if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                            {
+                                                item.LoaiCanhBao = 6;
+                                                response.Add(item);
+                                            }
+                                        }
+                                    }
+
+                                    else if (IsWeekend_Friday(itemNT.NgayLap))
+                                    {
+                                        if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO + 24) //test UAT
+                                        {
+                                            if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                            {
+                                                item.LoaiCanhBao = 6;
+                                                response.Add(item);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (tsKyNghiemThu.TotalHours > lcanhbao6.CHUKYCANHBAO) //test UAT
+                                        {
+                                            if (itemNT.TrangThai >= TrangThaiNghiemThu.TiepNhan && itemNT.TrangThai <= TrangThaiNghiemThu.HoanThanh)
+                                            {
+                                                item.LoaiCanhBao = 6;
+                                                response.Add(item);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -2721,7 +2729,7 @@ namespace EVN.Core.Implements
                     TimeSpan tsCanhBaoHetHanTTDN = new TimeSpan();
                     if (ttrinhDDN != null && ttrinhDDN.NGAY_KTHUC.HasValue)
                     {
-                        tsCanhBaoHetHanTTDN = DateTime.Now - ttrinhDDN.NGAY_KTHUC.Value;
+                        tsCanhBaoHetHanTTDN = DateTime.Now - ttrinhDDN.NGAY_TAO;
                     }
 
                     if (ttrinhTVB == null)
