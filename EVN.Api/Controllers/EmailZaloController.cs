@@ -186,9 +186,12 @@ namespace EVN.Api.Controllers
                         var query = congvanservice.Query.Where(p => p.TrangThai >= 0 && p.NgayLap >= ngay).ToList();
            
                         var ttrinhs = DvTTrinhservice.Query.Where(p => p.MA_YCAU_KNAI == item.MA_YC).OrderByDescending(p => p.STT).ToList();
-                        var ttrinhend = ttrinhs.First();
+                        var ttrinhend = ttrinhs.DefaultIfEmpty().First();
+                        if(ttrinhend != null)
+                          {    
 
                         var ttrinhb71 = userNhanCanhBaoService.Query.Where(p => p.TRANGTHAI == 1).ToList();
+         
                         var maNVList = ttrinhb71.Select(p => p.MA_NV).ToList();
                         UserNhanCanhBao listNguoiNhanB7 = userNhanCanhBaoService.GetbyMaDviQlyB7(ttrinhend.MA_NVIEN_NHAN);
 
@@ -198,12 +201,15 @@ namespace EVN.Api.Controllers
                         if (!ttrinhb7.Any(u => u.MA_NV == ttrinhend.MA_NVIEN_NHAN))
                         {
 
+                            item.TRANGTHAI_CANHBAO = 2;
+                            CBservice.Update(item);
+                            continue;
                         }
 
                         if (ttrinhb7.Any(u => u.MA_NV == ttrinhend.MA_NVIEN_NHAN))
                         {
-
-                       
+                            if(ttrinhb71 != null)
+                            { 
                                 if (item.MA_YC == null)
                                 {
                                     continue;
@@ -233,6 +239,8 @@ namespace EVN.Api.Controllers
 
                             
                             
+                        }
+                            }
                         }
                     }
                     ////Zalo
