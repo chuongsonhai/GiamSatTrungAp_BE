@@ -23,5 +23,6 @@ namespace EVN.Core.IServices
         IList<BaoCaoTHQuaHan> GetListBaoCaoTHQuaHan(string maDViQLy, string keyword, string khachhang, int status, DateTime fromdate, DateTime todate);
         IList<CongVanYeuCau> TinhThoiGian();
         IList<CongVanYeuCau> TinhThoiGian2();
+        IList<CongVanYeuCau> TinhThoiGianCanhBao();
     }
 }

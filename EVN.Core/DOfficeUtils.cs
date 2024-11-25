@@ -64,7 +64,8 @@ namespace EVN.Core
         public VanBanRequest(string sovban, DateTime ngayvban) : base()
         {
             this.SoVanBan = sovban;
-            this.NgayVanBan = ngayvban.ToString("MM/dd/yyyy");
+            //this.NgayVanBan = ngayvban.ToString("MM/dd/yyyy");
+            this.NgayVanBan = ngayvban.ToString("dd/MM/yyyy");
         }
         public string SoVanBan { get; set; }
         public string NgayVanBan { get; set; }
