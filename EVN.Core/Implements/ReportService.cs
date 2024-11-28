@@ -2830,6 +2830,7 @@ namespace EVN.Core.Implements
                     {
                         ttrinhBDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
                     }
+                    var ttrinhDTN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "DTN");
                     var ttrinhKDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "KDN");
                     var ttrinhDDN = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "DDN");
                     var ttrinhTVB = ttrinhs.FirstOrDefault(p => p.MA_CVIEC == "TVB");
@@ -2913,9 +2914,9 @@ namespace EVN.Core.Implements
                             }
                         }
 
-                        else if (ts.TotalHours < chukycanhbao5 && ttrinhPC != null && ttrinhDHD == null && ttnt.TrangThai >= TrangThaiNghiemThu.PhanCongTC && ttnt.TrangThai <= TrangThaiNghiemThu.NghiemThu)
+                        else if (ts.TotalHours < chukycanhbao5 && ttrinhKTR != null && ttrinhDTN == null && ttnt.TrangThai >= TrangThaiNghiemThu.PhanCongTC && ttnt.TrangThai <= TrangThaiNghiemThu.DuThaoHD)
                         {
-                            ts = DateTime.Now - ttrinhPC.NGAY_TAO;
+                            ts = DateTime.Now - ttrinhKTR.NGAY_TAO;
                             chukycanhbao = dLoaicanhbao.Query.FirstOrDefault(p => p.ID == 4).CHUKYCANHBAO;
                             if ( ts.TotalHours >= chukycanhbao && ts.TotalHours < chukycanhbao + 2)
                             {

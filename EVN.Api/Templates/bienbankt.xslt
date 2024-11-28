@@ -198,6 +198,26 @@
 											<td>&#160;</td>
 										</tr>
 										<tr>
+											<td>&#160;</td>
+											<td>&#160;</td>
+										</tr>
+										<tr>
+											<td>&#160;</td>
+											<td>&#160;</td>
+										</tr>
+										<tr>
+											<td>&#160;</td>
+											<td>&#160;</td>
+										</tr>
+										<tr>
+											<td>&#160;</td>
+											<td>&#160;</td>
+										</tr>
+										<tr>
+											<td>&#160;</td>
+											<td>&#160;</td>
+										</tr>
+										<tr>
 											<td colspan="2">
 												<div style="float:left;width:50%;font-size:16px;font-weight: 700;text-align:center" class="label-sign">
 													CHỦ ĐẦU TƯ
