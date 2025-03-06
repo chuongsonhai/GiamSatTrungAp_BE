@@ -94,58 +94,80 @@ namespace EVN.Core
 
             BootstrapperPool.InitializeContainer();
             ISendMailService tranSrv = IoC.Resolve<ISendMailService>();
+            IUserdataService userdataService = IoC.Resolve<IUserdataService>();
+            IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
+            IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
+
             try
             {
-                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
-                var items = tranSrv.Query.Where(p => (p.MA_YCAU_KNAI == maYCau && p.TRANG_THAI == 0) || p.TRANG_THAI == 3).Take(50).ToList();
-                foreach (var item in items)
-                {
-                    if (string.IsNullOrWhiteSpace(item.EMAIL))
-                    {
-                        item.TRANG_THAI = 1;
-                        tranSrv.Save(item);
-                        continue;
-                    }
-                    try
-                    {
-                        bool useSsl = false;
-                        if (!string.IsNullOrWhiteSpace(config.enableSsl))
-                        {
-                            if (!bool.TryParse(config.enableSsl, out useSsl))
-                                useSsl = false;
-                        }
+                var ttrinh = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == maYCau).OrderByDescending(p => p.STT).FirstOrDefault();
+                var ttrinhb44 = userNhanCanhBaoService.Query.Where(p => p.TRANGTHAI == 1).ToList();
+                var maNVList = ttrinhb44.Select(p => p.MA_NV).ToList();
+                IList<UserNhanCanhBao> ttrinhb4 = userNhanCanhBaoService.GetMA_NV(maNVList).ToList();
 
-                        MailMessage mailMessage = new MailMessage(config.mailSender, item.EMAIL, item.TIEUDE, item.NOIDUNG);
-                        mailMessage.BodyEncoding = Encoding.UTF8;
-                        mailMessage.From = new MailAddress(config.mailSender, config.mailSender);
-                        if (emails != null && emails.Count() > 1)
+                    if (ttrinh != null)
+                    {
+                    var manv_thuc_hien = ttrinh.MA_NVIEN_NHAN;
+                    if (string.IsNullOrEmpty(manv_thuc_hien) || ttrinhb4.Any(u => u.MA_NV != manv_thuc_hien))
+                    {
+                     
+                    }
+                    else
+                    {
+                        ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+                        var items = tranSrv.Query.Where(p => (p.MA_YCAU_KNAI == maYCau && p.TRANG_THAI == 0) || p.TRANG_THAI == 3).Take(50).ToList();
+
+
+                        foreach (var item in items)
                         {
-                            for (int i = 1; i < emails.Count(); i++)
+                            if (string.IsNullOrWhiteSpace(item.EMAIL))
                             {
-                                mailMessage.To.Add(emails[i]);
+                                item.TRANG_THAI = 1;
+                                tranSrv.Save(item);
+                                continue;
+                            }
+                            try
+                            {
+                                bool useSsl = false;
+                                if (!string.IsNullOrWhiteSpace(config.enableSsl))
+                                {
+                                    if (!bool.TryParse(config.enableSsl, out useSsl))
+                                        useSsl = false;
+                                }
+
+                                MailMessage mailMessage = new MailMessage(config.mailSender, item.EMAIL, item.TIEUDE, item.NOIDUNG);
+                                mailMessage.BodyEncoding = Encoding.UTF8;
+                                mailMessage.From = new MailAddress(config.mailSender, config.mailSender);
+                                if (emails != null && emails.Count() > 1)
+                                {
+                                    for (int i = 1; i < emails.Count(); i++)
+                                    {
+                                        mailMessage.To.Add(emails[i]);
+                                    }
+                                }
+
+                                mailMessage.IsBodyHtml = true;
+                                SmtpClient smtpClient = new SmtpClient(config.host, int.Parse(config.port));
+                                smtpClient.Credentials = new NetworkCredential(config.mailSender, config.mailPassword);
+
+                                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                                smtpClient.EnableSsl = useSsl;
+                                smtpClient.Send(mailMessage);
+
+                                log.Error("Send mail OK");
+                                item.TRANG_THAI = 1;
+                                tranSrv.Save(item);
+                            }
+                            catch (Exception ex)
+                            {
+                                log.Error(ex);
+                                item.TRANG_THAI = 2;
+                                tranSrv.Save(item);
                             }
                         }
-
-                        mailMessage.IsBodyHtml = true;
-                        SmtpClient smtpClient = new SmtpClient(config.host, int.Parse(config.port));
-                        smtpClient.Credentials = new NetworkCredential(config.mailSender, config.mailPassword);
-
-                        smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        smtpClient.EnableSsl = useSsl;
-                        smtpClient.Send(mailMessage);
-
-                        log.Error("Send mail OK");
-                        item.TRANG_THAI = 1;
-                        tranSrv.Save(item);
-                    }
-                    catch (Exception ex)
-                    {
-                        log.Error(ex);
-                        item.TRANG_THAI = 2;
-                        tranSrv.Save(item);
+                        tranSrv.CommitChanges();
                     }
                 }
-                tranSrv.CommitChanges();
             }
             catch (Exception ex)
             {

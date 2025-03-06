@@ -2779,7 +2779,7 @@ namespace EVN.Api.Controllers
                         //}
                         //colval++;
 
-                        if (item.TRANGTHAI_GOI == 0)
+                        if (item.SO_NGAY_CT == "0")
                         {
                             ws.Cells[row, colval].Value = "Kết thúc chuyển khai thác khách hàng";
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
@@ -2789,7 +2789,7 @@ namespace EVN.Api.Controllers
                             ws.Cells[row, colval].Style.Border.Bottom.Style = ExcelBorderStyle.Thin;
                             colval ++ ;
                         }
-                        else if (item.TRANGTHAI_GOI != 0)
+                        else if (item.SO_NGAY_CT != "0")
                         {
                             ws.Cells[row, colval].Value = "Kết thúc do có trở ngại";
                             ws.Cells[row, colval].Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;

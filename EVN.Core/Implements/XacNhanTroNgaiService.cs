@@ -512,10 +512,6 @@ namespace EVN.Core.Implements
 
             DataTable dt = new DataTable();
        
-  
-
-
-
             if (maDViQly != "-1")
             {
                 var query = Query.Where(p => p.NGAY >= tuNgayCast && p.NGAY <= denNgayCast && p.MA_DVI == maDViQly && p.TRANGTHAI == 6);
@@ -523,6 +519,12 @@ namespace EVN.Core.Implements
                 foreach (var xacnhan in listCanhBao)
                 {
                     dt = cnn.Get_mayc_cmis(xacnhan.MA_YCAU);
+                    if (dt == null || dt.Rows.Count == 0)
+                    {
+                        
+                    }
+                    else 
+                    { 
                     var TTHAI_YCAU = dt.Rows[0]["TTHAI_YCAU"].ToString();
                     int TT_HTHANH = 0;
                     if (TTHAI_YCAU == "HOÀN THÀNH")
@@ -569,9 +571,8 @@ namespace EVN.Core.Implements
                     xacnhantrongai.MUCDICH_SD_DIEN = xacnhan.MUCDICH_SD_DIEN;
 
                     xacnhantrongai.NGAY_TIEPNHAN = DateTime.Parse(NGAY_TNHAN);
-                    xacnhantrongai.NGAY_HOANTHANH = DateTime.Parse(NGAY_HTHANH) ; 
-
-                    xacnhantrongai.SO_NGAY_CT = xacnhan.SO_NGAY_CT;
+                    xacnhantrongai.NGAY_HOANTHANH = DateTime.Parse(NGAY_HTHANH) ;
+                    xacnhantrongai.SO_NGAY_CT = TT_HTHANH.ToString();
                     xacnhantrongai.SO_NGAY_TH_ND = xacnhan.SO_NGAY_TH_ND;
                     xacnhantrongai.TRANGTHAI_GQ = xacnhan.TRANGTHAI_GQ;
                     xacnhantrongai.TONG_CONGSUAT_CD = xacnhan.TONG_CONGSUAT_CD;
@@ -598,10 +599,11 @@ namespace EVN.Core.Implements
                     xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
                     xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
                     xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
-                    xacnhantrongai.TRANGTHAI_GOI = TT_HTHANH;
+                    xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
 
                     resultList.Add(xacnhantrongai);
-                } 
+                }
+                }
             }
             else
             {
@@ -612,81 +614,90 @@ namespace EVN.Core.Implements
                 foreach (var xacnhan in listCanhBao2)
                 {
                     dt = cnn.Get_mayc_cmis(xacnhan.MA_YCAU);
-                    var NGAY_TNHAN = "";
-                    var NGAY_HTHANH = "";
-                    var TTHAI_YCAU = dt.Rows[0]["TTHAI_YCAU"].ToString();
-                    int TT_HTHANH = 0;
-                    if (TTHAI_YCAU == "HOÀN THÀNH")
+                    if (dt == null || dt.Rows.Count == 0 ) // Kiểm tra null và rỗng
                     {
-                        TT_HTHANH = 0;
+                       
                     }
+
                     else
                     {
-                        TT_HTHANH = 1;
-                    }
-                    if (dt.Rows.Count > 0)
-                    {
-                        NGAY_TNHAN = dt.Rows[0]["NGAY_TNHAN"].ToString();
-                    }
-                    else
-                    {
-                        var tientrinh = ttrinhsrv.myeutop1(xacnhan.MA_YCAU);
-                        NGAY_TNHAN = tientrinh.NGAY_TAO.ToString();
-                    }
+                        dt = cnn.Get_mayc_cmis(xacnhan.MA_YCAU);
+                        var NGAY_TNHAN = "";
+                        var NGAY_HTHANH = "";
+                        var TTHAI_YCAU = dt.Rows[0]["TTHAI_YCAU"].ToString();
+                        int TT_HTHANH = 0;
+                        if (TTHAI_YCAU == "HOÀN THÀNH")
+                        {
+                            TT_HTHANH = 0;
+                        }
+                        else
+                        {
+                            TT_HTHANH = 1;
+                        }
+                        if (dt.Rows.Count > 0)
+                        {
+                            NGAY_TNHAN = dt.Rows[0]["NGAY_TNHAN"].ToString();
+                        }
+                        else
+                        {
+                            var tientrinh = ttrinhsrv.myeutop1(xacnhan.MA_YCAU);
+                            NGAY_TNHAN = tientrinh.NGAY_TAO.ToString();
+                        }
 
-                    if (dt.Rows.Count > 0)
-                    {
-                        NGAY_HTHANH = dt.Rows[0]["NGAY_HTHANH"].ToString();
+                        if (dt.Rows.Count > 0)
+                        {
+                            NGAY_HTHANH = dt.Rows[0]["NGAY_HTHANH"].ToString();
+                        }
+                        else
+                        {
+                            var tientrinhend = ttrinhsrv.myeutopend(xacnhan.MA_YCAU);
+                            NGAY_HTHANH = tientrinhend.NGAY_TAO.ToString();
+                        }
+
+                        var xacnhantrongai = new XacNhanTroNgai();
+
+                        xacnhantrongai.MA_DVI = xacnhan.MA_DVI;
+                        xacnhantrongai.MA_YCAU = xacnhan.MA_YCAU;
+                        xacnhantrongai.MA_KH = xacnhan.MA_KH;
+                        xacnhantrongai.TEN_KH = xacnhan.TEN_KH;
+                        xacnhantrongai.DIA_CHI = xacnhan.DIA_CHI;
+                        xacnhantrongai.DIEN_THOAI = xacnhan.DIEN_THOAI;
+                        xacnhantrongai.MUCDICH_SD_DIEN = xacnhan.MUCDICH_SD_DIEN;
+
+                        xacnhantrongai.NGAY_TIEPNHAN = DateTime.Parse(NGAY_TNHAN);
+                        xacnhantrongai.NGAY_HOANTHANH = DateTime.Parse(NGAY_HTHANH);
+
+                        xacnhantrongai.SO_NGAY_CT = TT_HTHANH.ToString();
+                        xacnhantrongai.SO_NGAY_TH_ND = xacnhan.SO_NGAY_TH_ND;
+                        xacnhantrongai.TRANGTHAI_GQ = xacnhan.TRANGTHAI_GQ;
+                        xacnhantrongai.TONG_CONGSUAT_CD = xacnhan.TONG_CONGSUAT_CD;
+                        xacnhantrongai.DGCD_TH_CHUONGTRINH = xacnhan.DGCD_TH_CHUONGTRINH;
+                        xacnhantrongai.DGCD_TH_DANGKY = xacnhan.DGCD_TH_DANGKY;
+                        xacnhantrongai.DGCD_KH_PHANHOI = xacnhan.DGCD_KH_PHANHOI;
+                        xacnhantrongai.CHENH_LECH = xacnhan.CHENH_LECH;
+                        xacnhantrongai.DGYC_DK_DEDANG = xacnhan.DGYC_DK_DEDANG;
+                        xacnhantrongai.DGYC_XACNHAN_NCHONG_KTHOI = xacnhan.DGYC_XACNHAN_NCHONG_KTHOI;
+                        xacnhantrongai.DGYC_THAIDO_CNGHIEP = xacnhan.DGYC_THAIDO_CNGHIEP;
+                        xacnhantrongai.DGKS_TDO_KSAT = xacnhan.DGKS_TDO_KSAT;
+                        xacnhantrongai.DGKS_MINH_BACH = xacnhan.DGKS_MINH_BACH;
+                        xacnhantrongai.DGKS_CHU_DAO = xacnhan.DGKS_CHU_DAO;
+                        xacnhantrongai.DGNT_THUAN_TIEN = xacnhan.DGNT_THUAN_TIEN;
+                        xacnhantrongai.DGNT_MINH_BACH = xacnhan.DGNT_MINH_BACH;
+                        xacnhantrongai.DGNT_CHU_DAO = xacnhan.DGNT_CHU_DAO;
+                        xacnhantrongai.KSAT_CHI_PHI = xacnhan.KSAT_CHI_PHI;
+                        xacnhantrongai.DGHL_CAPDIEN = xacnhan.DGHL_CAPDIEN;
+                        //  xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
+                        xacnhantrongai.NGAY = xacnhan.NGAY;
+                        xacnhantrongai.NGUOI_KSAT = xacnhan.NGUOI_KSAT;
+                        xacnhantrongai.Y_KIEN_KH = xacnhan.Y_KIEN_KH;
+                        xacnhantrongai.PHAN_HOI = xacnhan.PHAN_HOI;
+                        xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
+
+                        xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
+                        xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
+                        xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
+                        resultList.Add(xacnhantrongai);
                     }
-                    else
-                    {
-                        var tientrinhend = ttrinhsrv.myeutopend(xacnhan.MA_YCAU);
-                        NGAY_HTHANH = tientrinhend.NGAY_TAO.ToString();
-                    }
-
-                    var xacnhantrongai = new XacNhanTroNgai();
-            
-                    xacnhantrongai.MA_DVI = xacnhan.MA_DVI;
-                    xacnhantrongai.MA_YCAU = xacnhan.MA_YCAU;
-                    xacnhantrongai.MA_KH = xacnhan.MA_KH;
-                    xacnhantrongai.TEN_KH = xacnhan.TEN_KH;
-                    xacnhantrongai.DIA_CHI = xacnhan.DIA_CHI;
-                    xacnhantrongai.DIEN_THOAI = xacnhan.DIEN_THOAI;
-                    xacnhantrongai.MUCDICH_SD_DIEN = xacnhan.MUCDICH_SD_DIEN;
-
-                    xacnhantrongai.NGAY_TIEPNHAN = DateTime.Parse(NGAY_TNHAN);
-                    xacnhantrongai.NGAY_HOANTHANH = DateTime.Parse(NGAY_HTHANH);
-
-                    xacnhantrongai.SO_NGAY_CT = xacnhan.SO_NGAY_CT;
-                    xacnhantrongai.SO_NGAY_TH_ND = xacnhan.SO_NGAY_TH_ND;
-                    xacnhantrongai.TRANGTHAI_GQ = xacnhan.TRANGTHAI_GQ;
-                    xacnhantrongai.TONG_CONGSUAT_CD = xacnhan.TONG_CONGSUAT_CD;
-                    xacnhantrongai.DGCD_TH_CHUONGTRINH = xacnhan.DGCD_TH_CHUONGTRINH;
-                    xacnhantrongai.DGCD_TH_DANGKY = xacnhan.DGCD_TH_DANGKY;
-                    xacnhantrongai.DGCD_KH_PHANHOI = xacnhan.DGCD_KH_PHANHOI;
-                    xacnhantrongai.CHENH_LECH = xacnhan.CHENH_LECH;
-                    xacnhantrongai.DGYC_DK_DEDANG = xacnhan.DGYC_DK_DEDANG;
-                    xacnhantrongai.DGYC_XACNHAN_NCHONG_KTHOI = xacnhan.DGYC_XACNHAN_NCHONG_KTHOI;
-                    xacnhantrongai.DGYC_THAIDO_CNGHIEP = xacnhan.DGYC_THAIDO_CNGHIEP;
-                    xacnhantrongai.DGKS_TDO_KSAT = xacnhan.DGKS_TDO_KSAT;
-                    xacnhantrongai.DGKS_MINH_BACH = xacnhan.DGKS_MINH_BACH;
-                    xacnhantrongai.DGKS_CHU_DAO = xacnhan.DGKS_CHU_DAO;
-                    xacnhantrongai.DGNT_THUAN_TIEN = xacnhan.DGNT_THUAN_TIEN;
-                    xacnhantrongai.DGNT_MINH_BACH = xacnhan.DGNT_MINH_BACH;
-                    xacnhantrongai.DGNT_CHU_DAO = xacnhan.DGNT_CHU_DAO;
-                    xacnhantrongai.KSAT_CHI_PHI = xacnhan.KSAT_CHI_PHI;
-                    xacnhantrongai.DGHL_CAPDIEN = xacnhan.DGHL_CAPDIEN;
-                  //  xacnhantrongai.TRANGTHAI_GOI = xacnhan.TRANGTHAI_GOI;
-                    xacnhantrongai.NGAY = xacnhan.NGAY;
-                    xacnhantrongai.NGUOI_KSAT = xacnhan.NGUOI_KSAT;
-                    xacnhantrongai.Y_KIEN_KH = xacnhan.Y_KIEN_KH;
-                    xacnhantrongai.PHAN_HOI = xacnhan.PHAN_HOI;
-                    xacnhantrongai.NOIDUNG = xacnhan.NOIDUNG;
-                 
-                    xacnhantrongai.GHI_CHU = xacnhan.GHI_CHU;
-                    xacnhantrongai.TRANGTHAI = xacnhan.TRANGTHAI;
-                    xacnhantrongai.TRANGTHAI_GOI = TT_HTHANH;
-                    resultList.Add(xacnhantrongai);
                 }
               
             }

@@ -7,7 +7,7 @@
 		<property name="adonet.batch_size">100</property>
 		<property name="connection.connection_string">
 			<!--User Id=Ungdungcmis3;Password=UngdungCmi$3;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.0.73)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));-->
-			User Id=UNGDUNG_TRUNGAP;Password=Evnhanoi@123;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.195.245)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));
+			User Id=UNGDUNG_TRUNGAP;Password=Evnhanoi@123;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.169.98)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));
 		</property>
 		<mapping assembly="EVN.Core"/>
 	</session-factory>
