@@ -34,7 +34,7 @@ namespace EVN.Core.CMIS
         public string MA_TCHAT { get; set; } = "GD";
         public string MA_HTHUC { get; set; } = "GD";
         public string MA_LOAI_YCAU { get; set; } = "TBAC_D";
-        public int TINH_TRANG { get; set; } = 1;
+        public int? TINH_TRANG { get; set; } = 1;
         public string DTHOAI { get; set; } = string.Empty;
         public string SNGAY_YCAU { get; set; } = "0";
         public string SNGAY_ND { get; set; } = "0";

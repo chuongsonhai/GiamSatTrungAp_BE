@@ -44,8 +44,8 @@ namespace EVN.Core.CMIS
         public string CQUAN_CHUQUAN { get; set; } = string.Empty;
         public string DCHI_CQUANCQ { get; set; } = string.Empty;
         public string DCHI_NGUOIYCAU { get; set; } = string.Empty;
-        public string DTHOAI { get; set; }
-        public string DTHOAI_DVU { get; set; }
+        public string DTHOAI { get; set; }  = string.Empty;
+        public string DTHOAI_DVU { get; set; } = string.Empty;
 
         public string DUONG_PHO { get; set; } = string.Empty;
         public string EMAIL { get; set; } = string.Empty;
@@ -82,7 +82,7 @@ namespace EVN.Core.CMIS
         public string TEN_KHANG { get; set; } = string.Empty;
 
         public string TEN_NGUOIYCAU { get; set; } = string.Empty;
-        public int TINH_TRANG { get; set; } = 1;
+        public int? TINH_TRANG { get; set; } = 1;
         public string MA_TTO { get; set; } = string.Empty;
 
         public string MA_HOSO_DVC { get; set; } = string.Empty;

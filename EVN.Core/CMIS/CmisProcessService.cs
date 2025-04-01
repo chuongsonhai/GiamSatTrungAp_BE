@@ -70,14 +70,34 @@ namespace EVN.Core.CMIS
                 ctrequest.CHUYEN_CAPDUOI = maDViTNhan;
                 ctrequest.MA_YCAU_KNAI = congvan.MaYeuCau;
                 ctrequest.DV_YEU_CAU = tnhanresp.bangDvYeuCau;
-                ctrequest.DV_TIEN_TRINH = tnhanresp.bangDvTienTrinh;
-                ctrequest.DV_TIEN_TNHAN = tnhanresp.bangDvTienTnhan;
-                ctrequest.CD_DDO_DDIEN = tnhanresp.bangCdDoDdien;
-                ctrequest.CD_BKE_CSUAT_TBI = tnhanresp.bangCdBkeCsuatTbi;
-                ctrequest.CD_GTO_HDCHUNG = tnhanresp.bangCdGtoHdchung;
-                ctrequest.CD_HO_DCHUNG = tnhanresp.bangCdHoDchung;
-                ctrequest.CD_KHANG_LIENHE = tnhanresp.bangCdKhangLienhe;
-                ctrequest.DV_HSO_GTO = new List<HSoGiayTo>();
+                ctrequest.DV_TIEN_TRINH = tnhanresp.bangDvTienTrinh != null && tnhanresp.bangDvTienTrinh.Any()
+                    ? tnhanresp.bangDvTienTrinh
+                    : new List<TienTrinh> { new TienTrinh { MA_DVIQLY = maDViTNhan } };
+
+                ctrequest.DV_TIEN_TNHAN = tnhanresp.bangDvTienTnhan ?? new DvTienTNhan { MA_DVIQLY = maDViTNhan };
+
+                ctrequest.CD_DDO_DDIEN = tnhanresp.bangCdDoDdien != null && tnhanresp.bangCdDoDdien.Any()
+                    ? tnhanresp.bangCdDoDdien
+                    : new List<CdDoDdien> { new CdDoDdien { MA_DVIQLY = maDViTNhan } };
+
+                // Nếu danh sách có dữ liệu thì convert sang JArray, nếu rỗng thì thêm phần tử giả
+                ctrequest.CD_BKE_CSUAT_TBI = (tnhanresp.bangCdBkeCsuatTbi != null && tnhanresp.bangCdBkeCsuatTbi.Any())
+                    ? JArray.FromObject(tnhanresp.bangCdBkeCsuatTbi)
+                    : JArray.FromObject(new List<object> { new { Placeholder = "No Data" } });
+
+                ctrequest.CD_GTO_HDCHUNG = (tnhanresp.bangCdGtoHdchung != null && tnhanresp.bangCdGtoHdchung.Any())
+                    ? JArray.FromObject(tnhanresp.bangCdGtoHdchung)
+                    : JArray.FromObject(new List<object> { new { Placeholder = "No Data" } });
+
+                ctrequest.CD_HO_DCHUNG = (tnhanresp.bangCdHoDchung != null && tnhanresp.bangCdHoDchung.Any())
+                    ? JArray.FromObject(tnhanresp.bangCdHoDchung)
+                    : JArray.FromObject(new List<object> { new { Placeholder = "No Data" } });
+
+                ctrequest.CD_KHANG_LIENHE = tnhanresp.bangCdKhangLienhe != null && tnhanresp.bangCdKhangLienhe.Any()
+                    ? tnhanresp.bangCdKhangLienhe
+                    : new List<KHangLienHe> { new KHangLienHe { MA_DVIQLY = maDViTNhan } };
+
+                ctrequest.DV_HSO_GTO = new List<HSoGiayTo> { new HSoGiayTo { MA_DVIQLY = maDViTNhan } };
 
                 data = JsonConvert.SerializeObject(ctrequest);
                 result = service.PostData(action.chuyenCapDuoi, data);
