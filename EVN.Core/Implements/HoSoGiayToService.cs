@@ -30,6 +30,12 @@ namespace EVN.Core.Implements
             return list;
         }
 
+        public IList<HoSoGiayTo> GetbyYeuCau2( string maYeuCau)
+        {
+            var list = Query.Where(p =>  p.MaYeuCau == maYeuCau).OrderBy(p => p.ID).ToList();
+            return list;
+        }
+
         public IList<HoSoGiayTo> GetbyYeuCaudup(string maDonVi, string maYeuCau)
         {
             var list = Query

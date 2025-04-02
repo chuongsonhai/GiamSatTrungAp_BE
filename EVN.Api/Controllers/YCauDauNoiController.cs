@@ -22,7 +22,7 @@ namespace EVN.Api.Controllers
     {
         private ILog log = LogManager.GetLogger(typeof(YCauDauNoiController));
 
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("filter")]
         public IHttpActionResult Filter(YeuCauFilterRequest request)
@@ -37,11 +37,11 @@ namespace EVN.Api.Controllers
                 IBienBanKSService bienBanKSService = IoC.Resolve<IBienBanKSService>();
                 ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
 
-                var cskhcfg = cfgservice.GetbyCode("TTRINH_SYNC");
-                if (cskhcfg != null && cskhcfg.Value == "1")
-                {
-                    service.SyncHU();
-                }
+                //var cskhcfg = cfgservice.GetbyCode("TTRINH_SYNC");
+                //if (cskhcfg != null && cskhcfg.Value == "1")
+                //{
+                //    service.SyncHU();
+                //}
 
                 var fromDate = DateTime.MinValue;
                 var toDate = DateTime.MaxValue;

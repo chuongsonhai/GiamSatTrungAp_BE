@@ -98,7 +98,7 @@ namespace EVN.Api.Controllers
                     }
                 }
 
-                var list = hsoservice.GetbyYeuCau(maDVu.MA_DVIQLY, maDVu.MA_YCAU_KNAI);
+                var list = hsoservice.GetbyYeuCau2( maDVu.MA_YCAU_KNAI);
                 IList<DocumentData> data = new List<DocumentData>();
                 foreach (var item in list)
                 {
