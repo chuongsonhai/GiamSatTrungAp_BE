@@ -36,7 +36,7 @@ namespace EVN.Core.CMIS
             SO_TKHOAN = congvan.SoTaiKhoan;
 
             TEN_NGUOIYCAU = congvan.NguoiYeuCau;
-
+            MA_DVI_TNHAN = congvan.MaDViTNhan;
             TEN_KHANG = congvan.TenKhachHang;
             if (string.IsNullOrWhiteSpace(congvan.TenKhachHang))
                 TEN_KHANG = congvan.NguoiYeuCau;
@@ -55,6 +55,7 @@ namespace EVN.Core.CMIS
         public string MA_BPHAN { get; set; } = string.Empty;
         public string MA_CNANG { get; set; } = "WEB_TBAC_D";
         public string MA_DVIQLY { get; set; } = string.Empty;
+        public string MA_DVI_TNHAN { get; set; } = string.Empty;
         public string MA_HTHUC { get; set; } = "GD";
         public string MA_KHANG { get; set; } = string.Empty;
         public string MA_LOAI_YCAU { get; set; } = "TBAC_D";
