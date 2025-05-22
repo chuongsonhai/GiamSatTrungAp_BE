@@ -94,26 +94,11 @@ namespace EVN.Core
 
             BootstrapperPool.InitializeContainer();
             ISendMailService tranSrv = IoC.Resolve<ISendMailService>();
-            IUserdataService userdataService = IoC.Resolve<IUserdataService>();
-            IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
-            IUserNhanCanhBaoService userNhanCanhBaoService = IoC.Resolve<IUserNhanCanhBaoService>();
+ 
 
             try
-            {
-                var ttrinh = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == maYCau).OrderByDescending(p => p.STT).FirstOrDefault();
-                var ttrinhb44 = userNhanCanhBaoService.Query.Where(p => p.TRANGTHAI == 1).ToList();
-                var maNVList = ttrinhb44.Select(p => p.MA_NV).ToList();
-                IList<UserNhanCanhBao> ttrinhb4 = userNhanCanhBaoService.GetMA_NV(maNVList).ToList();
-
-                    if (ttrinh != null)
-                    {
-                    var manv_thuc_hien = ttrinh.MA_NVIEN_NHAN;
-                    if (string.IsNullOrEmpty(manv_thuc_hien) || ttrinhb4.Any(u => u.MA_NV != manv_thuc_hien))
-                    {
-                     
-                    }
-                    else
-                    {
+            {              
+            
                         ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
                         var items = tranSrv.Query.Where(p => (p.MA_YCAU_KNAI == maYCau && p.TRANG_THAI == 0) || p.TRANG_THAI == 3).Take(50).ToList();
 
@@ -166,8 +151,8 @@ namespace EVN.Core
                             }
                         }
                         tranSrv.CommitChanges();
-                    }
-                }
+                    
+                
             }
             catch (Exception ex)
             {

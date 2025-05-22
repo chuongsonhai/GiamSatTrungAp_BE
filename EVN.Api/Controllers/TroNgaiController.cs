@@ -14,7 +14,7 @@ namespace EVN.Api.Controllers
     public class TroNgaiController : ApiController
     {
         [HttpPost]
-        [JwtAuthentication]
+        [JwtAuthentication(Roles = "Admin")]
         [Route("filter")]
         public IHttpActionResult Filter(BaseFilterRequest request)
         {

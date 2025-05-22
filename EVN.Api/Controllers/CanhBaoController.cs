@@ -507,7 +507,7 @@ namespace EVN.Api.Controllers
        
 
         //2.1	(GET) /canhbao/filter
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("filter")]
         public IHttpActionResult Filter(CanhBaoFilterRequest filter)

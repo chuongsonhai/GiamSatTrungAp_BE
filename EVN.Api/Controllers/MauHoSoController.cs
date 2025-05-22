@@ -20,7 +20,7 @@ namespace EVN.Api.Controllers
     {
         private ILog log = LogManager.GetLogger(typeof(MauHoSoController));
 
-        [JwtAuthentication]
+        [JwtAuthentication(Roles = "Admin")]
         [HttpPost]
         [Route("filter")]
         public IHttpActionResult Filter()

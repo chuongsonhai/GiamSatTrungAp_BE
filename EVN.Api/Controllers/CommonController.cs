@@ -166,7 +166,7 @@ namespace EVN.Api.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [JwtAuthentication(Roles = "Admin")]
         [Route("bophans/{orgCode}")]
         public IHttpActionResult BoPhans(string orgCode)
         {
@@ -190,7 +190,7 @@ namespace EVN.Api.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [JwtAuthentication]
         [Route("select2bophans/{orgCode}")]
         public IHttpActionResult Select2BoPhans(string orgCode)
         {
@@ -216,7 +216,7 @@ namespace EVN.Api.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [JwtAuthentication]
         [Route("capdienaps")]
         public IHttpActionResult CapDienAps()
         {
@@ -240,7 +240,7 @@ namespace EVN.Api.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [JwtAuthentication]
         [Route("nhanviens/{maDVi}/{maBPhan}")]
         public IHttpActionResult NhanViens(string maDVi, string maBPhan)
         {
@@ -263,7 +263,7 @@ namespace EVN.Api.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [JwtAuthentication]
         [Route("select2nhanviens/{maDVi}/{maBPhan}")]
         public IHttpActionResult Select2NhanViens(string maDVi, string maBPhan)
         {
@@ -287,7 +287,7 @@ namespace EVN.Api.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [JwtAuthentication]
         [Route("select2nhanvientts/{maDVi}/{maBPhan}")]
         public IHttpActionResult Select2NhanVienTTs(string maDVi, string maBPhan)
         {

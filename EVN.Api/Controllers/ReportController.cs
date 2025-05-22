@@ -910,7 +910,7 @@ namespace EVN.Api.Controllers
         }
 
         //Báo cáo tổng hợp tiến độ (excel)
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaotonghoptiendo")]
         public IHttpActionResult ExportBaoCaoTongHopTienDo(BaocaoTHTienDo request)
@@ -1248,7 +1248,7 @@ namespace EVN.Api.Controllers
         }
 
         //Báo cáo tổng hợp tiến độ (get)
-       // [JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("getbaocaotonghoptiendo")]
         public IHttpActionResult GetBaoCaoTonghopTienDo(BaocaoTHTienDo request)
@@ -1301,7 +1301,7 @@ namespace EVN.Api.Controllers
 
 
         //Báo cáo chi tiết tiến độ (get)
-       // [JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("getbaocaochitietgiamsattiendo")]
         public IHttpActionResult GetBaoCaoChiTietGiamSatTienDo(BaoCaoChiTietGiamSatTienDoReq request)
@@ -1329,7 +1329,7 @@ namespace EVN.Api.Controllers
         }
 
         //Báo cáo chi tiết tiến độ (excel)
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaochitietgiamsatiendo")]
         public IHttpActionResult exportbaocaochitietgiamsattiendo(BaoCaoChiTietGiamSatTienDoReq request)
@@ -1538,7 +1538,7 @@ namespace EVN.Api.Controllers
 
 
         //Báo cáo tổng hợp kháo sát khách hàng (get)
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("getbaocaothdanhgiamucdo")]
         public IHttpActionResult GetBaoCaoTongHopDanhGiaMucDo(BaoCaoTHDanhGiaMucDoHaiLong request)
@@ -1614,7 +1614,7 @@ namespace EVN.Api.Controllers
         }
 
         //Báo cáo tổng hợp kháo sát khách hàng (excel)
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("exportbaocaothdanhgiamucdo")]
         public IHttpActionResult ExportBaoCaoTongHopDanhGiaMucDo(BaoCaoTHDanhGiaMucDoHaiLong request)
@@ -2611,7 +2611,7 @@ namespace EVN.Api.Controllers
         }
 
         //Báo cáo chi tiết đánh giá mức độ (excel)
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("exportchitietmucdohailong")]
         public IHttpActionResult ExportBaoCaoChiTietMucDoHaiLong(BaoCaoChiTietMucDoHaiLongReq request)
@@ -3339,7 +3339,7 @@ namespace EVN.Api.Controllers
         }
 
         //Báo cáo chi tiết đánh giá mức độ (get)
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("getchitietmucdohailong")]
         public IHttpActionResult GetBaoCaoChiTietMucDoHaiLong(BaoCaoChiTietMucDoHaiLongReq request)

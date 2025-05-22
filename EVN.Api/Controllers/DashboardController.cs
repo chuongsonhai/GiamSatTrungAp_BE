@@ -23,7 +23,7 @@ namespace EVN.Api.Controllers
     {
         private ILog log = LogManager.GetLogger(typeof(DashboardController));
         //2.1.(GET) dashboard/canhbao
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("dashboard/canhbao")]
         public IHttpActionResult GetCanhbao(CanhBaoFilterRequestdashboardcanhbao model)
@@ -52,7 +52,7 @@ namespace EVN.Api.Controllers
         }
 
         //2.2 (GET)/dashboard/khaosat
-        //[JwtAuthentication]
+        [JwtAuthentication]
         [HttpPost]
         [Route("dashboard/khaosat")]
         public IHttpActionResult GetKhaosat(XacNhanTroNgaiFilterkhaosatRequest Request)
@@ -78,9 +78,10 @@ namespace EVN.Api.Controllers
                 return Ok(result);
             }
         }
-       
+
 
         //2.3.(GET) dashboard/thoigiancapdien
+        [JwtAuthentication]
         [HttpPost]
         [Route("dashboard/thoigiancapdien")]
         public IHttpActionResult GetThoigiancapdien(XacNhanTGCDReques Request)

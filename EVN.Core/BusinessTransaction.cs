@@ -170,10 +170,10 @@ namespace EVN.Core
                 ttrinhtn.NGAY_SUA = DateTime.Now;
 
                 ICmisProcessService cmisProcess = new CmisProcessService();
-                var tiepnhan = cmisProcess.TiepNhanYeuCau(congvan, ttrinhtn);
-                log.Error($"Tiep nhan CMIS: {tiepnhan}");
-                if (!tiepnhan)
-                    return false;
+                //var tiepnhan = cmisProcess.TiepNhanYeuCau(congvan, ttrinhtn);
+                //log.Error($"Tiep nhan CMIS: {tiepnhan}");
+                //if (!tiepnhan)
+                //    return false;
 
                 congvan = service.SyncData(congvan.MaYeuCau);
                 service.BeginTran();

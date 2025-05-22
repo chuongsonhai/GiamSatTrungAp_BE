@@ -52,7 +52,7 @@ namespace EVN.Api.Controllers
         }
 
 
-
+        [JwtAuthentication]
         [HttpPost]
         [Route("khachhang/filter")]
         public IHttpActionResult khachhangFilter(XacNhanTroNgaiFilterkhRequest request)
@@ -5640,6 +5640,7 @@ namespace EVN.Api.Controllers
         }
 
         //2.2 (GET) /khaosat/filter
+        [JwtAuthentication]
         [HttpPost]
         [Route("filter")]
         public IHttpActionResult Filter(FilterKhaoSatByCanhBaoRequest request)

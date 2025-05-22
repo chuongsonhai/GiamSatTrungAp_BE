@@ -25,7 +25,7 @@ namespace EVN.Api.Controllers
         private ILog log = LogManager.GetLogger(typeof(CanhBaoController));
 
         //2.10	(GET) /cauhinhcanhbao/filter
-        //[JwtAuthentication]
+        [JwtAuthentication(Roles = "Admin")]
         [HttpPost]
         [Route("log/filter")]
         public IHttpActionResult FilterLog([FromBody] CauHinhCanhBaoLogFilterRequest request)
@@ -127,7 +127,7 @@ namespace EVN.Api.Controllers
             }
         }
         //2.10	(GET) /cauhinhcanhbao/filter
-        //[JwtAuthentication]
+        [JwtAuthentication(Roles = "Admin")]
         [HttpPost]
         [Route("filter")]
         public IHttpActionResult cauhinhcanhbao(CauhinhcanhbaoFilterRequest request)

@@ -15,7 +15,7 @@ namespace EVN.Api.Controllers
     public class BoPhanController : ApiController
     {
         [HttpPost]
-        [JwtAuthentication]
+        [JwtAuthentication(Roles = "Admin")]
         [Route("filter")]
         public IHttpActionResult Filter(UserFilterRequest request)
         {
