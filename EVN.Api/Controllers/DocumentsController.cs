@@ -149,7 +149,7 @@ namespace EVN.Api.Controllers
                     result.success = false;
                     return Ok(result);
                 }
-                var hoSo = service.GetHoSoGiayTo(yeucau.MaDViQLy, yeucau.MaYeuCau, loaiHSo);
+                var hoSo = service.GetHoSoGiayTo2( yeucau.MaYeuCau, loaiHSo);
                 if (hoSo == null)
                 {
                     log.Error($"Không tìm thấy hồ sơ, giấy tờ: {yeucau.MaDViQLy} - {yeucau.MaYeuCau} - {loaiHSo}");

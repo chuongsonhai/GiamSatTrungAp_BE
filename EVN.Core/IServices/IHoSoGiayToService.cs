@@ -11,6 +11,7 @@ namespace EVN.Core.IServices
     {
         HoSoGiayTo GetbyCode(string code);
         HoSoGiayTo GetHoSoGiayTo(string maDonVi, string maYCau, string loaiHSo);
+        HoSoGiayTo GetHoSoGiayTo2(string maYCau, string loaiHSo);
         IList<HoSoGiayTo> GetbyYeuCau(string maDonVi, string maYeuCau);
         IList<HoSoGiayTo> GetbyYeuCaudup(string maDonVi, string maYeuCau);
         IList<HoSoGiayTo> ListHSoGTo(string maDonVi, string maYeuCau);

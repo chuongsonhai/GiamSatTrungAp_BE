@@ -62,7 +62,8 @@ namespace EVN.Core
                     if (string.IsNullOrWhiteSpace(item.NDUNG_XLY))
                     {
                         var congviec = cviecsrv.Getbykey(item.MA_CVIEC);
-                        item.NDUNG_XLY = congviec.TEN_CVIEC;
+                        item.NDUNG_XLY = congviec?.TEN_CVIEC ?? "1";
+
                     }
                     datareq.Add(new TienTrinhRequest(item));
                 }

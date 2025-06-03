@@ -50,6 +50,11 @@ namespace EVN.Core.Implements
             return Get(p => p.MaDViQLy == maDonVi && p.MaYeuCau == maYCau && p.LoaiHoSo == loaiHSo);
         }
 
+        public HoSoGiayTo GetHoSoGiayTo2( string maYCau, string loaiHSo)
+        {
+            return Get(p => p.MaYeuCau == maYCau && p.LoaiHoSo == loaiHSo);
+        }
+
         public IList<HoSoGiayTo> ListHSoGTo(string maDonVi, string maYeuCau)
         {
             List<string> ignorecodes = new List<string>()

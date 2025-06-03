@@ -20,7 +20,7 @@ namespace EVN.Core.CMIS
         public int TINH_TRANG { get; set; } = 1;
         public string DINH_DANH { get; set; }
         public string ID_DIA_CHINH { get; set; }
-        public string CONG_SUAT { get; set; }
+        public string CONG_SUAT { get; set; } = "0";
         public string MDICH_SHOAT { get; set; }
         public string MDICH_CTIET { get; set; }
         public string SO_PHA { get; set; }
@@ -30,17 +30,17 @@ namespace EVN.Core.CMIS
         public int SNGAY_ND { get; set; } = 1;
         public int SNGAY_KH { get; set; } = 0;
         public int TTRANG_DDIEN { get; set; } = 0;
-        public string TNGUYEN_CSUAT { get; set; }
-        public string SLUONG_MBA { get; set; }
+        public string TNGUYEN_CSUAT { get; set; } = "1";
+        public string SLUONG_MBA { get; set; } = "1";
         public string CSUAT_MBA { get; set; }
         public string TNGUYEN_CSUAT_MBA { get; set; }
         public int MA_CAPDA { get; set; } = 1;
         public string GHI_CHU { get; set; }
-        public string NGAY_TAO { get; set; }
-        public string NGUOI_TAO { get; set; }
-        public string NGAY_SUA { get; set; }
-        public string NGUOI_SUA { get; set; }
-        public string MA_CNANG { get; set; }
-        public string CSUAT_MTAM { get; set; }
+        public string NGAY_TAO { get; set; } = DateTime.Now.ToString("dd/mm/yyyy");
+        public string NGUOI_TAO { get; set; } = "admin";
+        public string NGAY_SUA { get; set; } = DateTime.Now.ToString("dd/mm/yyyy");
+        public string NGUOI_SUA { get; set; } = "admin";
+        public string MA_CNANG { get; set; } = "1";
+        public string CSUAT_MTAM { get; set; } = "0";
     }
 }

@@ -9,15 +9,24 @@ namespace EVN.Core.CMIS
         public DDoDDien(CongVanYeuCau congvan) : base()
         {
             MA_DVIQLY = congvan.MaDViQLy;
+            MA_DDO_DDIEN = congvan.MaDDoDDien ?? "1";
             MA_YCAU_KNAI = congvan.MaYeuCau;
-            SO_NHA = congvan.SoNha ?? String.Empty;
-            DUONG_PHO = !string.IsNullOrWhiteSpace(congvan.DuongPho) ? congvan.DuongPho : congvan.DiaChiDungDien; 
+            SO_NHA = congvan.SoNha ?? "";
+            DUONG_PHO = !string.IsNullOrWhiteSpace(congvan.DuongPho) ? congvan.DuongPho : congvan.DiaChiDungDien;
+            TINH_TRANG = 1;
+            DINH_DANH = "";
             ID_DIA_CHINH = "-1";
+            CONG_SUAT = "";
             MDICH_SHOAT = congvan.DienSinhHoat ? "1" : "0";
             MDICH_CTIET = "Cấp điện trung áp";
             SO_PHA = congvan.SoPha;
-            NGUOI_SUA = congvan.NguoiDuyet;
-            NGUOI_TAO = congvan.NguoiLap;
+            LOAI_TRAM = "";
+            LOAI_TRAM = "";
+            CONG_SUAT = "0";
+            DTU_CTRINH = 0;
+            SNGAY_YCAU = 1;
+            NGUOI_SUA = congvan.NguoiDuyet ?? "admin";
+            NGUOI_TAO = congvan.NguoiLap ?? "admin";
         }        
         public IList<TienTrinh> DV_TIEN_TRINH { get; set; }
     }
