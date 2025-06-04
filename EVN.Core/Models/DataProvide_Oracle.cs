@@ -1,4 +1,7 @@
-﻿using Oracle.ManagedDataAccess.Client;
+﻿using DevExpress.Xpo.Logger.Transport;
+using EVN.Core.IServices;
+using FX.Core;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -12,23 +15,24 @@ namespace EVN.Core.Models
     public class DataProvide_Oracle
     {
         private OracleConnection connection;
-        //static string conStr_CMIS3 = "Data Source= CMIS3 ;Persist Security Info=True;User ID= CONGCSKH;Password= honganh123;Unicode=True";
-        static string conStr = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.23)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=khtg3)));User Id=CONGCSKH ;Password=honganh123;";
-        static string conStr_CMIS3 = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=CMIS3)));User Id=CONGCSKH ;Password=honganh123;";
-        static string conStr_CMIS3_TUPT = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=CMIS3)));User Id=UNGDUNGCMIS3 ;Password=UngdungCmi$3;";
-       // static string conStr_CMIS3_UNGDUNG = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=CMIS3)));User Id=UNGDUNGCMIS3 ;Password=UngdungCmi$3;";
-        private static string conStr_CMIS3_UNGDUNG = ConfigurationManager.ConnectionStrings["conStr_CMIS3_UNGDUNG"].ConnectionString;
-        static string conStr_CSKH = @"Data Source=(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.152)(PORT=1521)))(CONNECT_DATA=(SERVER=DEDICATED)(SERVICE_NAME=DBCSKH)));User Id=EVN_CSKH_BNH;Password=oracle_4U";
-
-        //string user = "123";
-        //public static string conStr = "Data Source=(DESCRIPTION =(ADDRESS = (PROTOCOL = TCP)(HOST = " + host + ")(PORT = " + 1521 + "))(CONNECT_DATA = (SERVER = DEDICATED)(SERVICE_NAME = "+ sid + ")));Password=" + password + ";User ID=" + user;
+        private ISystemConfigService cfgservice;
+        private Dictionary<string, string> conStrConfigs;
+        private static string conStr_CMIS3_UNGDUNG;
+        private static string conStr;
+        private static string conStr_CMIS3;
+        private static string conStr_CMIS3_TUPT;
+        private static string conStr_CSKH;
         public string tracuu;
 
         public DataProvide_Oracle()
         {
-            //
-            // TODO: Add constructor logic here
-            //
+            cfgservice = IoC.Resolve<ISystemConfigService>();
+            conStrConfigs = new Dictionary<string, string>(cfgservice.GetDictionary("conStr"));
+            conStr_CMIS3_UNGDUNG = conStrConfigs["conStr_CMIS3_UNGDUNG"];
+            conStr = conStrConfigs["conStr"];
+            conStr_CMIS3 = conStrConfigs["conStr_CMIS3"];
+            conStr_CMIS3_TUPT = conStrConfigs["conStr_CMIS3_TUPT"];
+            conStr_CSKH = conStrConfigs["conStr_CSKH"];
         }
 
         //Check connection to database

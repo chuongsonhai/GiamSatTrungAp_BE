@@ -19,7 +19,6 @@ namespace EVN.Api.Jwt
         ///     var key = Convert.ToBase64String(hmac.Key);
         /// </summary>
         ///
-        private const string Secret = "db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==";
 
         private static ILog log = LogManager.GetLogger(typeof(JwtManager));
 
@@ -44,8 +43,13 @@ namespace EVN.Api.Jwt
                 //Kiếm tra token của user đã tồn tại trên hệ thống hay chưa
                 //Nếu có rồi thì cập nhật với ID cũ
                 //Nếu chưa có thì tạo mới 1 bản ghi
+                var cfgservice = IoC.Resolve<ISystemConfigService>();
+                var mySecretConfigs = cfgservice.GetDictionary("Secret");
+                var Secret = mySecretConfigs["Secret"];
+
                 lock (looker)
                 {
+
                     JWTToken jwtToken = service.GetbyUser(username);
                     if (jwtToken == null) jwtToken = new JWTToken();
                     jwtToken.UserName = username.Trim().ToLower();
@@ -101,6 +105,10 @@ namespace EVN.Api.Jwt
                 var service = IoC.Resolve<IJWTTokenService>();
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var jwtToken = tokenHandler.ReadToken(token) as JwtSecurityToken;
+
+                var cfgservice = IoC.Resolve<ISystemConfigService>();
+                var mySecretConfigs = cfgservice.GetDictionary("Secret");
+                var Secret = mySecretConfigs["Secret"];
 
                 if (jwtToken == null)
                 {

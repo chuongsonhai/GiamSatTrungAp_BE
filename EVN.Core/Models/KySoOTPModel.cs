@@ -1,15 +1,23 @@
-﻿using Newtonsoft.Json;
+﻿using EVN.Core.IServices;
+using FX.Core;
+using Newtonsoft.Json;
 
 namespace EVN.Core
 {
     public class CreateAndSendOtpCmisCommand
     {
+       
+
         public CreateAndSendOtpCmisCommand(string maDonViQuanLy, string noiDung, string soDienThoai, string _extraInfo = "5")
         {
+            ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
+            var doConfigs = cfgservice.GetDictionary("passKySoOTP");
+            string passKySoOTP = doConfigs["passKySoOTP"];
+
             brandname = "EVNHANOI";
             type = 1;
             appCode = "app1";
-            password = "app1";
+            password = passKySoOTP;
             systemKey = "RVZOSUNUMTFDVUFCQUM=";
             token = "abcxyz";
             extraInfo = _extraInfo;
@@ -75,8 +83,13 @@ namespace EVN.Core
     {
         public VerifyOtpCmisCommand(string sodt, string otptoken, string maxacnhan, string madonvi)
         {
+
+            ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
+            var doConfigs = cfgservice.GetDictionary("passKySoOTP");
+            string passKySoOTP = doConfigs["passKySoOTP"];
+
             appCode = "app1";
-            password = "app1";
+            password = passKySoOTP;
             userId = sodt;
             token = otptoken;
             totp = maxacnhan;

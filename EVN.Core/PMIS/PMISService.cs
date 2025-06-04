@@ -22,11 +22,12 @@ namespace EVN.Core
             try
             {
                 INoTemplateService notempsrv = IoC.Resolve<INoTemplateService>();
-                //var config = ConnectConfig.Instance;
-               // SqlConnection con = new SqlConnection("User Id=pmis;Password=pmis@202);Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.77)(PORT=1444))(CONNECT_DATA=(SERVICE_NAME=PMIS_PD)));");
-                SqlConnection con = new SqlConnection("Data Source = 10.9.184.77,1444; initial catalog = PMIS_PD; User Id = pmis; pwd = pmis@202);");
 
+                ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
+                var conPmisConfigs = cfgservice.GetDictionary("conPmis");
+                string conPmis = conPmisConfigs["conPmis"];
 
+                SqlConnection con = new SqlConnection(conPmis);
                 try
                 {
                     string AFFILEID = "";
