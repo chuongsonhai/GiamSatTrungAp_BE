@@ -24,7 +24,7 @@ namespace EVN.Core.Implements
         {
             if (MaDviQly != "-1")
             {
-                return Query.Where(p => (p.MA_DVIQLY == MaDviQly || p.MA_DVIQLY == "X0206" || p.MA_DVIQLY == "PD") && p.TRANGTHAI == 0).ToList();
+                return Query.Where(p => (p.MA_DVIQLY == MaDviQly || p.MA_DVIQLY == "X0206" || p.MA_DVIQLY == "HN") && p.TRANGTHAI == 0).ToList();
             }
             else
             {

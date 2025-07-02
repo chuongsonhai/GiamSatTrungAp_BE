@@ -6,9 +6,9 @@
 		<property name="show_sql">true</property>
 		<property name="adonet.batch_size">100</property>
 		<property name="connection.connection_string">
-			<!--User Id=Ungdungcmis3;Password=UngdungCmi$3;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.0.73)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));-->
-			User Id=UNGDUNG_TRUNGAP;Password=1234567890;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.169.98)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));
-		</property>
+			User Id=CHUYENDOI;Password=CHUYENDOI;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.184.21)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));
+			<!--User Id=UNGDUNG_TRUNGAP;Password=1234567890;Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=10.9.169.98)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=CMIS3)));-->
+	</property>
 		<mapping assembly="EVN.Core"/>
 	</session-factory>
 
@@ -24,3 +24,5 @@
 		<mapping assembly="EVN.Core"/>
 	</session-factory>-->
 </hibernate-configuration>
+
+
