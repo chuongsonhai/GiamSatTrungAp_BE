@@ -38,11 +38,11 @@ namespace EVN.Api.Controllers
                 ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();                
 
                 var cskhcfg = cfgservice.GetbyCode("TTRINH_SYNC");
-                if (cskhcfg != null && cskhcfg.Value == "1")
-                {
-                    service.Sync();
-                    service.SyncPMIS();
-                }
+                //if (cskhcfg != null && cskhcfg.Value == "1")
+                //{
+                //    service.Sync();
+                //    service.SyncPMIS();
+                //}
 
                 var fromDate = DateTime.MinValue;
                 var toDate = DateTime.MaxValue;
