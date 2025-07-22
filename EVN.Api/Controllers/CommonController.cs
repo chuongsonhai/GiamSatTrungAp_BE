@@ -144,7 +144,10 @@ namespace EVN.Api.Controllers
                 var user = usersrv.GetbyName(HttpContext.Current.User.Identity.Name);
                 var org = service.Getbykey(long.Parse(user.orgId));                
                 if (org.orgCode == "X1")
-                    org = service.GetbyCode("PD");
+                    org = service.GetbyCode("HN");
+
+                if (org.orgCode == "X0206")
+                    org = service.GetbyCode("HN");
 
                 var list = service.GetbyParent(org.orgCode);
                 data.Add(new OrganizationModel(org));
