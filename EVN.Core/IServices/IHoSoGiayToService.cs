@@ -18,5 +18,6 @@ namespace EVN.Core.IServices
 
         IList<HoSoGiayTo> ListSign(string maDonVi, string keyword, int pageIndex, int pageSize, out int total);
         IList<HoSoGiayTo> GetbyYeuCau2(string maYeuCau);
+        IList<HoSoGiayTo> GetbyYeuCaudup2(string maYeuCau);
     }
 }

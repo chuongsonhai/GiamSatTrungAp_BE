@@ -161,7 +161,7 @@ namespace EVN.Api.Controllers
                 }
                 YeuCauNghiemThuData model = new YeuCauNghiemThuData(item);
                 model.PdfBienBanDN = ttdn.Data;
-                model.GiaoB4 = item.MaDViQLy == "PD";
+                model.GiaoB4 = item.MaDViQLy == "HN";
                 return Ok(model);
             }
             catch (Exception ex)

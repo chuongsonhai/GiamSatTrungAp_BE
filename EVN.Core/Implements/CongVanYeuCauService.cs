@@ -808,14 +808,34 @@ namespace EVN.Core.Implements
                 try
                 {
                     IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
+                    IYCauNghiemThuService ntservice = IoC.Resolve<IYCauNghiemThuService>();
+                    IBienBanDNService dnservice = IoC.Resolve<IBienBanDNService>();
                     yeucau.TrangThai = TrangThaiCongVan.ChuyenTiep;
                     Save(yeucau);
 
                     IList<DvTienTrinh> tientrinhs = ttrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == maYCau).ToList();
+
                     foreach (var ttrinh in tientrinhs)
                     {
                         ttrinh.MA_DVIQLY = maDViTNhan;
                         ttrinhsrv.Save(ttrinh);
+                    }
+                    //2
+                    IList<YCauNghiemThu> ycaunghiemthu = ntservice.Query.Where(p => p.MaYeuCau == maYCau).ToList();
+
+                    foreach (var nthu in ycaunghiemthu)
+                    {
+                        nthu.MaDViQLy = maDViTNhan;
+                        ntservice.Save(nthu);
+                    }
+
+                    //3
+                    IList<BienBanDN> bbdaunoi = dnservice.Query.Where(p => p.MaYeuCau == maYCau).ToList();
+
+                    foreach (var dnoi in bbdaunoi)
+                    {
+                        dnoi.MaDViQLy = maDViTNhan;
+                        dnservice.Save(dnoi);
                     }
                     CommitChanges();
                     SyncData(maYCau);
