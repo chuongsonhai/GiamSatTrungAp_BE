@@ -77,6 +77,7 @@ namespace EVN.Api.Controllers
                 string maDViQly = request.maDViQLy;
                 string maYCau = request.maYCau;
                 string maLoaiHSo = LoaiHSoCode.HD_NSH;
+
                 ICmisProcessService cmisProcess = new CmisProcessService();
                 byte[] pdfdata = cmisProcess.GetData(maDViQly, maYCau, maLoaiHSo);
                 if (pdfdata != null && pdfdata.Length > 0)
@@ -103,14 +104,14 @@ namespace EVN.Api.Controllers
                         item.KHTen = !string.IsNullOrWhiteSpace(yeucau.CoQuanChuQuan) ? yeucau.CoQuanChuQuan : yeucau.NguoiYeuCau;
                         item.KHDaiDien = yeucau.NguoiYeuCau;
 
-                        string folder = $"{yeucau.MaDViQLy}/{yeucau.MaYeuCau}/HDNSH";
-                        item.Data = repository.Store(folder, pdfdata);
+                            string folder = $"{yeucau.MaDViQLy}/{yeucau.MaYeuCau}/HDNSH";
+                            item.Data = repository.Store(folder, pdfdata);
 
                         if (hoso == null)
                         {
                             hoso = new HoSoGiayTo();
                             hoso.MaHoSo = Guid.NewGuid().ToString("N");
-                            hoso.TenHoSo = "Dự thảo hợp đồng mua bán điện";
+                            hoso.TenHoSo = "Dự thảo hợp đồng mua bán điện ngoài sinh hoạt";
                             hoso.LoaiHoSo = maLoaiHSo;
                         }
 
@@ -124,6 +125,63 @@ namespace EVN.Api.Controllers
                         service.Save(item);
                         service.CommitTran();
                         return Ok(pdfdata);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.Error(ex);
+                        service.RolbackTran();
+                        return NotFound();
+                    }
+                }
+
+                string maLoaiHSo1 = LoaiHSoCode.HD_SH;
+
+                byte[] pdfdata1 = cmisProcess.GetData(maDViQly, maYCau, maLoaiHSo1);
+                if (pdfdata1 != null && pdfdata1.Length > 0)
+                {
+                    IHoSoGiayToService hsoservice = IoC.Resolve<IHoSoGiayToService>();
+                    var hoso = hsoservice.Get(p => p.MaDViQLy == maDViQly && p.MaYeuCau == maYCau && p.LoaiHoSo == maLoaiHSo1);
+                    if (item == null) item = new HopDong();
+                    try
+                    {
+                        var org = orgsrv.GetbyCode(request.maDViQLy);
+                        var yeucau = ycausrv.GetbyMaYCau(request.maYCau);
+                        item = new HopDong();
+                        item.MaYeuCau = yeucau.MaYeuCau;
+                        item.MaDViQLy = yeucau.MaDViQLy;
+                        item.KHMa = yeucau.MaKHang;
+
+                        item.DonVi = org.orgName;
+                        item.DiaChi = org.address;
+                        item.MaSoThue = org.taxCode;
+                        item.DaiDien = org.daiDien;
+                        item.ChucVu = org.chucVu;
+                        item.DienThoai = org.phone;
+                        item.Email = org.email;
+                        item.KHTen = !string.IsNullOrWhiteSpace(yeucau.CoQuanChuQuan) ? yeucau.CoQuanChuQuan : yeucau.NguoiYeuCau;
+                        item.KHDaiDien = yeucau.NguoiYeuCau;
+
+                        string folder = $"{yeucau.MaDViQLy}/{yeucau.MaYeuCau}/HDSH";
+                        item.Data = repository.Store(folder, pdfdata1);
+
+                        if (hoso == null)
+                        {
+                            hoso = new HoSoGiayTo();
+                            hoso.MaHoSo = Guid.NewGuid().ToString("N");
+                            hoso.TenHoSo = "Dự thảo hợp đồng mua bán điện sinh hoạt";
+                            hoso.LoaiHoSo = maLoaiHSo1;
+                        }
+
+                        hoso.MaYeuCau = item.MaYeuCau;
+                        hoso.MaDViQLy = item.MaDViQLy;
+                        hoso.Data = item.Data;
+                        hoso.TrangThai = 0;
+                        hoso.Data = item.Data;
+                        service.BeginTran();
+                        hsoservice.Save(hoso);
+                        service.Save(item);
+                        service.CommitTran();
+                        return Ok(pdfdata1);
                     }
                     catch (Exception ex)
                     {

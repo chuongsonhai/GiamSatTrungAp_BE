@@ -301,7 +301,74 @@ namespace EVN.Core.Implements
                 {
                     hoso = new HoSoGiayTo();
                     hoso.MaHoSo = Guid.NewGuid().ToString("N");
-                    hoso.TenHoSo = "Dự thảo hợp đồng mua bán điện";
+                    hoso.TenHoSo = "Dự thảo hợp đồng mua bán điện ngoài sinh hoạt";
+                    hoso.LoaiHoSo = maLoaiHSo;
+                }
+                hoso.MaYeuCau = item.MaYeuCau;
+                hoso.MaDViQLy = item.MaDViQLy;
+                hoso.Data = item.Data;
+
+                item.TrangThai = (int)TrangThaiBienBan.DaDuyet;
+                checkTienTrinh(item, yeucau, hoso);
+
+                if (item.TrangThai < (int)TrangThaiBienBan.KhachHangKy)
+                    checkSignature(item, yeucau, hoso, pdfdata);
+ 
+                    string folder = $"{item.MaDViQLy}/{item.MaYeuCau}/HDNSH";
+                    item.Data = repository.Store(folder, pdfdata, item.Data);
+
+
+                hoso.Data = item.Data;
+                BeginTran();
+                hsoservice.Save(hoso);
+
+                service.Save(yeucau);
+                Save(item);
+                CommitTran();
+                //if (item.TrangThai == (int)TrangThaiBienBan.HoanThanh || yeucau.TrangThai == TrangThaiNghiemThu.NghiemThu)
+                //{
+                //    ttrinhsrv.ThemTTrinhNT((int)TrangThaiNghiemThu.EVNKyHD, yeucau, userdata);
+                //    ttrinhsrv.ThemTTrinhNT((int)TrangThaiNghiemThu.HoanThanh, yeucau, userdata);
+                //}
+                if (yeucau.TrangThai == TrangThaiNghiemThu.PhanCongTC)
+                {
+                    ttrinhsrv.ThemTTrinhNT((int)TrangThaiNghiemThu.PhanCongTC, yeucau, userdata);
+                    ttrinhsrv.ThemTTrinhNT((int)TrangThaiNghiemThu.KetQuaTC, yeucau, userdata);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                RolbackTran();
+                log.Error(ex);
+                return false;
+            }
+        }
+
+        public bool UpdatebyCMIS_SH(HopDong item, byte[] pdfdata)
+        {
+            try
+            {
+                string maLoaiHSo = LoaiHSoCode.HD_SH;
+
+                IYCauNghiemThuService service = IoC.Resolve<IYCauNghiemThuService>();
+                IDvTienTrinhService ttrinhsrv = IoC.Resolve<IDvTienTrinhService>();
+                IRepository repository = new FileStoreRepository();
+                IHoSoGiayToService hsoservice = IoC.Resolve<IHoSoGiayToService>();
+                IUserdataService userdatasrv = IoC.Resolve<IUserdataService>();
+
+                var userdata = userdatasrv.GetbyName(HttpContext.Current.User.Identity.Name);
+
+                var yeucau = service.GetbyMaYCau(item.MaYeuCau);
+                ttrinhsrv.DongBoTienDo(yeucau);
+
+                var hoso = hsoservice.Get(p => p.MaDViQLy == item.MaDViQLy && p.MaYeuCau == item.MaYeuCau && p.LoaiHoSo == maLoaiHSo);
+                if (hoso == null)
+                {
+                    hoso = new HoSoGiayTo();
+                    hoso.MaHoSo = Guid.NewGuid().ToString("N");
+                    hoso.TenHoSo = "Dự thảo hợp đồng mua bán điện sinh hoạt";
                     hoso.LoaiHoSo = maLoaiHSo;
                 }
                 hoso.MaYeuCau = item.MaYeuCau;
@@ -314,8 +381,10 @@ namespace EVN.Core.Implements
                 if (item.TrangThai < (int)TrangThaiBienBan.KhachHangKy)
                     checkSignature(item, yeucau, hoso, pdfdata);
 
-                string folder = $"{item.MaDViQLy}/{item.MaYeuCau}/HDNSH";
+                string folder = $"{item.MaDViQLy}/{item.MaYeuCau}/HDSH";
                 item.Data = repository.Store(folder, pdfdata, item.Data);
+
+
                 hoso.Data = item.Data;
                 BeginTran();
                 hsoservice.Save(hoso);

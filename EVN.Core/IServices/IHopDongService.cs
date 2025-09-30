@@ -14,5 +14,6 @@ namespace EVN.Core.IServices
         bool Notify(HopDong item, string maCViec, string deptId, string staffCode, DateTime ngayHen, string noiDung, out string message);
 
         bool UpdatebyCMIS(HopDong item, byte[] pdfdata);
+        bool UpdatebyCMIS_SH(HopDong item, byte[] pdfdata);
     }
 }

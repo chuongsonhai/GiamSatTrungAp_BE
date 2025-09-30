@@ -78,6 +78,24 @@ namespace EVN.Api.Controllers
                     }
                 }
 
+                maLoaiHSo = LoaiHSoCode.HD_SH;
+                var hsoHDong1 = hsoservice.GetHoSoGiayTo(maDViQly, maYCau, maLoaiHSo);
+                if (hsoHDong1 != null)
+                {
+                    IHopDongService hdongsrv = IoC.Resolve<IHopDongService>();
+                    var hdong = hdongsrv.GetbyMaYCau(maDVu.MA_YCAU_KNAI);
+                    if (hdong != null && hsoHDong1.TrangThai < 2)
+                    {
+                        ICmisProcessService cmisProcess = new CmisProcessService();
+                        byte[] pdfdata = cmisProcess.GetData(maDViQly, maYCau, maLoaiHSo);
+                        if (pdfdata != null && pdfdata.Length > 0)
+                        {
+                            hdongsrv.UpdatebyCMIS_SH(hdong, pdfdata);
+                            hsoHDong1 = hsoservice.GetHoSoGiayTo(maDViQly, maYCau, maLoaiHSo);
+                        }
+                    }
+                }
+
                 maLoaiHSo = LoaiHSoCode.BB_TT;
                 var hsoTThao = hsoservice.GetHoSoGiayTo(maDViQly, maYCau, maLoaiHSo);
                 if (hsoTThao != null)

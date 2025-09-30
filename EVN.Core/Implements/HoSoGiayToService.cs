@@ -67,7 +67,7 @@ namespace EVN.Core.Implements
         public IList<HoSoGiayTo> ListHSoGTo(string maDonVi, string maYeuCau)
         {
             List<string> ignorecodes = new List<string>()
-            { LoaiHSoCode.CV_DN, LoaiHSoCode.BB_KS, LoaiHSoCode.BB_DN, LoaiHSoCode.CV_NT, LoaiHSoCode.BB_KT, LoaiHSoCode.BB_NT, LoaiHSoCode.HD_NSH, LoaiHSoCode.DN_NT, LoaiHSoCode.BB_TT, LoaiHSoCode.PL_HD };
+            { LoaiHSoCode.CV_DN, LoaiHSoCode.BB_KS, LoaiHSoCode.BB_DN, LoaiHSoCode.CV_NT, LoaiHSoCode.BB_KT, LoaiHSoCode.BB_NT, LoaiHSoCode.HD_NSH,LoaiHSoCode.HD_SH, LoaiHSoCode.DN_NT, LoaiHSoCode.BB_TT, LoaiHSoCode.PL_HD };
             ignorecodes.AddRange(new List<string>() { LoaiHSoCode.PL_HD_DB, LoaiHSoCode.PL_HD_MB, LoaiHSoCode.PL_HD_CD, LoaiHSoCode.PL_BDPT, LoaiHSoCode.PL_TB });
             //var items = Query.Where(p => p.MaDViQLy == maDonVi && p.MaYeuCau == maYeuCau && !ignorecodes.Contains(p.LoaiHoSo)).OrderBy(p => p.ID).ToList();
             //if (items.Count() > 0) return items;

@@ -426,7 +426,7 @@ namespace EVN.Api.Utils
                     hdservice.CommitChanges();
                     return true;
                 }
-                string maLoaiHSo = LoaiHSoCode.HD_NSH;
+                string maLoaiHSo = LoaiHSoCode.HD_NSH ?? LoaiHSoCode.HD_SH;
                 ICmisProcessService cmisProcess = new CmisProcessService();
                 byte[] pdfdata = cmisProcess.GetData(item.MaDViQLy, maYCau, maLoaiHSo);
                 if (pdfdata == null || pdfdata.Length == 0)
