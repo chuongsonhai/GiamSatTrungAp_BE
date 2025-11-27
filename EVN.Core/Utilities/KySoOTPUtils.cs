@@ -21,53 +21,47 @@ namespace EVN.Core.Utilities
         static ILog log = LogManager.GetLogger(typeof(KySoOTPUtils));
         public static ApiResult LayMaOTP(CreateAndSendOtpCmisCommand request, CancellationToken cancellationToken)
         {
-
             ServicePointManager.ServerCertificateValidationCallback +=
-        (sender, certificate, chain, sslPolicyErrors) =>
-        {
-            return true;
-        };
-            string stringInput = "";
-            //request.userId = "0917709015"; //0912312530
-            //request.content =
-            //    "Ma OTP cua Giao dich ky so ho so mua ban dien cua KH la %23OTP. Ma OTP nay se het hieu luc sau 03 phut.Hotline:19001288";
-            if (string.IsNullOrWhiteSpace(request.content))
+                (sender, certificate, chain, sslPolicyErrors) => true;
+
+            if (string.IsNullOrWhiteSpace(request.noiDung))
             {
-                request.content =
-                    "Ma OTP cua quy khach hang la %23OTP. Ma OTP nay se het hieu luc sau 03 phut.Hotline:19001288";
-            }
-        
-            Type myType = request.GetType();
-            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
-            int i = 1;
-            foreach (PropertyInfo prop in props)
-            {
-                object propValue = prop.GetValue(request, null);
-                stringInput += (i == 1) ? string.Empty : "&";
-                stringInput += prop.Name + "=" + propValue;
-                i++;
-                // Do something with propValue
+                request.noiDung =
+                    "Ma OTP cua quy khach hang la #OTP. Ma OTP nay se het hieu luc sau 03 phut.Hotline:19001288";
             }
 
-            //string url = "http://10.9.125.71:6973/otp";
-            string url = "http://10.9.184.124:8080";
-            var client = new RestClient($"{url}/PushQueueService/vn/com/evn/otp/generate.wadl?" + stringInput);
-            var restRequest = new RestRequest();
-            restRequest.Method = Method.POST;
+            string url = "http://gwlocal.evnhanoi.vn/otp/api/Otp/send-otp-sms-email";
+
+            var client = new RestClient(url);
+            client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator("otp", "otp");
+
+            var restRequest = new RestRequest(Method.POST);
             restRequest.AddHeader("Content-Type", "application/json");
+            restRequest.AddHeader("Accept", "*/*");
+            restRequest.AddHeader("apikey", "VKf8YECodV");
 
+            // Gửi đúng 3 field giống Postman
+            var body = new
+            {
+                soDienThoai = request.soDienThoai,
+                maDonVi = request.maDonVi,
+                noiDung = request.noiDung
+            };
+            restRequest.AddJsonBody(body);
 
-            IRestResponse response = client.Execute(restRequest);            
-            string content =  response.Content;
-            var evnResult = JsonUtilSerializer.FromJsonString<BaseOtpWebServiceResultDto>(content);
+            IRestResponse response = client.Execute(restRequest);
+            string content = response.Content;
+
+            var evnResult = JsonUtilSerializer.FromJsonString<BaseOtpResponseWrapper>(content);
             var returnObject = new ApiResult
             {
-                IsError = evnResult.ErrorCode != "0",
-                Data = evnResult.Token,
-                Message = evnResult.Message
+                IsError = evnResult.data.errorCode != "0",
+                Data = evnResult.data.token,
+                Message = evnResult.data.message
             };
             return returnObject;
         }
+
 
         public static ApiResult XacNhanOTP(VerifyOtpCmisCommand request, CancellationToken cancellationToken)
         {
@@ -76,36 +70,36 @@ namespace EVN.Core.Utilities
                 {
                 return true;
                 };
-            string stringInput = "";
-            Type myType = request.GetType();
-            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
-            int i = 1;
-            foreach (PropertyInfo prop in props)
-            {
-                object propValue = prop.GetValue(request, null);
-                stringInput += (i == 1) ? string.Empty : "&";
-                stringInput += prop.Name + "=" + propValue;
-                i++;
-                // Do something with propValue
-            }
+            string url = "http://gwlocal.evnhanoi.vn/otp/api/Otp/send-otp-sms-email";
 
-            //string url = "http://10.9.125.71:6973/otp";
-            string url = "http://10.9.184.124:8080";
-            var client = new RestClient($"{url}/PushQueueService/vn/com/evn/otp/verify.wadl?" + stringInput);
-            log.ErrorFormat("XacNhanOTP: {0}", JsonConvert.SerializeObject(client));
-            var restRequest = new RestRequest();
-            restRequest.Method = Method.POST;
+            var client = new RestClient(url);
+            client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator("otp", "otp");
+
+            var restRequest = new RestRequest(Method.POST);
             restRequest.AddHeader("Content-Type", "application/json");
+            restRequest.AddHeader("Accept", "*/*");
+            restRequest.AddHeader("apikey", "VKf8YECodV");
+
+            // Gửi đúng 3 field giống Postman
+            var body = new
+            {
+                SoDienThoai = request.SoDienThoai,
+                MaOTP = request.MaOtp,
+                MaToken  = request.Token,
+                MaDonVi = request.MaDonVi,
+                Noidung = "Xác nhận OTP",
+            };
+            restRequest.AddJsonBody(body);
 
             IRestResponse response = client.Execute(restRequest);
             log.ErrorFormat("Response: {0}", JsonConvert.SerializeObject(response));
             string content =  response.Content;
-            var evnResult = JsonUtilSerializer.FromJsonString<BaseOtpWebServiceResultDto>(content);
+            var evnResult = JsonUtilSerializer.FromJsonString<BaseOtpResponseWrapper>(content);
             var returnObject = new ApiResult
             {
-                IsError = evnResult.ErrorCode != "0",
-                Data = evnResult.Token,
-                Message = evnResult.Message
+                IsError = evnResult.data.errorCode != "0",
+                Data = evnResult.data.token,
+                Message = evnResult.data.message
             };
 
             if (!returnObject.IsError)

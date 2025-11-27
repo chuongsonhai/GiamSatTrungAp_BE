@@ -6,35 +6,50 @@ namespace EVN.Core
 {
     public class CreateAndSendOtpCmisCommand
     {
-       
 
-        public CreateAndSendOtpCmisCommand(string maDonViQuanLy, string noiDung, string soDienThoai, string _extraInfo = "5")
+
+        //    public CreateAndSendOtpCmisCommand(string maDonViQuanLy, string noiDung, string soDienThoai, string _extraInfo = "5")
+        //    {
+        //        ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
+        //        var doConfigs = cfgservice.GetDictionary("passKySoOTP");
+        //        string passKySoOTP = doConfigs["passKySoOTP"];
+
+        //        brandname = "EVNHANOI";
+        //        type = 1;
+        //        appCode = "app1";
+        //        password = passKySoOTP;
+        //        systemKey = "RVZOSUNUMTFDVUFCQUM=";
+        //        token = "abcxyz";
+        //        extraInfo = _extraInfo;
+        //        regionCode = maDonViQuanLy.ToUpper().Trim();
+        //        content = noiDung;
+        //        userId = soDienThoai;
+        //    }
+        //    public string brandname { get; set; }
+        //    public int type { get; set; }
+        //    public string content { get; set; }
+        //    public string regionCode { get; set; }
+        //    public string appCode { get; set; }
+        //    public string password { get; set; }
+        //    public string systemKey { get; set; }
+        //    public string userId { get; set; }
+        //    public string token { get; set; }
+        //    public string extraInfo { get; set; }
+
+        //}
+
+        public CreateAndSendOtpCmisCommand(string maDonViQuanLy, string NoiDung, string SoDienThoai)
         {
-            ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
-            var doConfigs = cfgservice.GetDictionary("passKySoOTP");
-            string passKySoOTP = doConfigs["passKySoOTP"];
 
-            brandname = "EVNHANOI";
-            type = 1;
-            appCode = "app1";
-            password = passKySoOTP;
-            systemKey = "RVZOSUNUMTFDVUFCQUM=";
-            token = "abcxyz";
-            extraInfo = _extraInfo;
-            regionCode = maDonViQuanLy.ToUpper().Trim();
-            content = noiDung;
-            userId = soDienThoai;
+            maDonVi = maDonViQuanLy.ToUpper().Trim();
+            noiDung = NoiDung;
+            soDienThoai = SoDienThoai;
         }
-        public string brandname { get; set; }
-        public int type { get; set; }
-        public string content { get; set; }
-        public string regionCode { get; set; }
-        public string appCode { get; set; }
-        public string password { get; set; }
-        public string systemKey { get; set; }
-        public string userId { get; set; }
-        public string token { get; set; }
-        public string extraInfo { get; set; }
+
+        public string noiDung { get; set; }
+        public string maDonVi { get; set; }
+        public string soDienThoai { get; set; }
+
 
     }
 
@@ -72,35 +87,63 @@ namespace EVN.Core
 
     }
 
+    //public class BaseOtpWebServiceResultDto
+    //{
+    //    public string Key { get; set; }
+    //    public string ErrorCode { get; set; }
+    //    public string Message { get; set; }
+    //    public string Token { get; set; }
+    //}
+
     public class BaseOtpWebServiceResultDto
     {
-        public string Key { get; set; }
-        public string ErrorCode { get; set; }
-        public string Message { get; set; }
-        public string Token { get; set; }
+        public string key { get; set; }
+        public string errorCode { get; set; }
+        public string message { get; set; }
+        public string token { get; set; }
     }
+    //public class VerifyOtpCmisCommand
+    //{
+    //    public VerifyOtpCmisCommand(string sodt, string otptoken, string maxacnhan, string madonvi)
+    //    {
+
+    //        ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
+    //        var doConfigs = cfgservice.GetDictionary("passKySoOTP");
+    //        string passKySoOTP = doConfigs["passKySoOTP"];
+
+    //        appCode = "app1";
+    //        password = passKySoOTP;
+    //        userId = sodt;
+    //        token = otptoken;
+    //        totp = maxacnhan;
+    //        //extraInfo = madonvi.ToUpper().Trim();
+    //    }
+    //    public string appCode { get; set; }
+    //    public string password { get; set; }
+    //    public string userId { get; set; }
+    //    public string token { get; set; }
+    //    public string totp { get; set; }
+    //    public string extraInfo { get; set; }
+
+    //}
+
     public class VerifyOtpCmisCommand
     {
         public VerifyOtpCmisCommand(string sodt, string otptoken, string maxacnhan, string madonvi)
         {
 
-            ISystemConfigService cfgservice = IoC.Resolve<ISystemConfigService>();
-            var doConfigs = cfgservice.GetDictionary("passKySoOTP");
-            string passKySoOTP = doConfigs["passKySoOTP"];
+            SoDienThoai = sodt;
+            MaOtp = maxacnhan;
+            Token = otptoken;
+            MaDonVi = madonvi.ToUpper().Trim();
 
-            appCode = "app1";
-            password = passKySoOTP;
-            userId = sodt;
-            token = otptoken;
-            totp = maxacnhan;
-            //extraInfo = madonvi.ToUpper().Trim();
         }
-        public string appCode { get; set; }
-        public string password { get; set; }
-        public string userId { get; set; }
-        public string token { get; set; }
-        public string totp { get; set; }
-        public string extraInfo { get; set; }
+        public string SoDienThoai { get; set; }
+        public string MaOtp { get; set; }
+        public string Token { get; set; }
+        public string MaDonVi { get; set; }
+        public string NoiDung { get; set; }
+
 
     }
 
@@ -145,6 +188,21 @@ namespace EVN.Core
         public string Message { get; set; }
         public bool IsError { get; set; }
         public string Code { get; set; }
+    }
+
+    public class BaseOtpResponseWrapper
+    {
+        public BaseOtpWebServiceResultDto data { get; set; }
+        public bool status { get; set; }
+        public int statusCode { get; set; }
+    }
+
+    public class ApiResultNew
+    {
+        public string token { get; set; }
+        public string message { get; set; }
+        public bool errorCode { get; set; }
+        public string key { get; set; }
     }
     public class KySoOTPTrungApCommand 
     {
