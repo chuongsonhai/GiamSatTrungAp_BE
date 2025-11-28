@@ -70,7 +70,7 @@ namespace EVN.Core.Utilities
                 {
                 return true;
                 };
-            string url = "http://gwlocal.evnhanoi.vn/otp/api/Otp/send-otp-sms-email";
+            string url = "http://gwlocal.evnhanoi.vn/otp/api/Otp/verify-otp-sms-email";
 
             var client = new RestClient(url);
             client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator("otp", "otp");
