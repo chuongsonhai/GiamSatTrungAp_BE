@@ -320,7 +320,15 @@ namespace EVN.Core
                     tientrinh.MA_CVIEC = ttrinh.MA_CVIEC;
                     tientrinh.MA_CVIECTIEP = ttrinh.MA_CVIECTIEP;
 
-                    tientrinh.MA_DDO_DDIEN = congvan.MaDDoDDien;
+                    if (int.TryParse(congvan.MaDDoDDien, out int maDdo))
+                    {
+                        tientrinh.MA_DDO_DDIEN = (maDdo + 1).ToString();
+                    }
+                    else
+                    {
+                        tientrinh.MA_DDO_DDIEN = "1"; // hoặc xử lý theo yêu cầu
+                    }
+
 
                     tientrinh.NDUNG_XLY = ttrinh.NDUNG_XLY;
 

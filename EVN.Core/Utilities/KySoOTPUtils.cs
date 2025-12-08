@@ -30,7 +30,7 @@ namespace EVN.Core.Utilities
                     "Ma OTP cua quy khach hang la #OTP. Ma OTP nay se het hieu luc sau 03 phut.Hotline:19001288";
             }
 
-            string url = "http://gwlocal.evnhanoi.vn/otp/api/Otp/send-otp-sms-email";
+            string url = "https://gwlocal.evnhanoi.vn/otp/api/Otp/send-otp-sms-email";
 
             var client = new RestClient(url);
             client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator("otp", "otp");
@@ -70,7 +70,7 @@ namespace EVN.Core.Utilities
                 {
                 return true;
                 };
-            string url = "http://gwlocal.evnhanoi.vn/otp/api/Otp/verify-otp-sms-email";
+            string url = "https://gwlocal.evnhanoi.vn/otp/api/Otp/verify-otp-sms-email";
 
             var client = new RestClient(url);
             client.Authenticator = new RestSharp.Authenticators.HttpBasicAuthenticator("otp", "otp");
