@@ -223,7 +223,14 @@ namespace EVN.Core.CMIS
                         tbi.MA_DVIKD = item["MA_DVIKD"].ToString();
                         tbi.NAM_SX = item["NAM_SX"].ToString();
                         tbi.DONG_DIEN = item["DONG_DIEN"].ToString();
-                        tbi.NGAY_LTRINH = item["NGAY_LTRINH"].ToString();
+                        DateTime ngay;
+                        if (DateTime.TryParse(item["NGAY_LTRINH"]?.ToString(), out ngay))
+                        {
+                            tbi.NGAY_LTRINH = ngay.ToString("yyyy-MM-dd");
+                            // hoặc "dd/MM/yyyy" theo nghiệp vụ
+                        }
+
+
                         tbi.MA_CLOAI = item["MA_CLOAI"].ToString();
                         tbi.VH_CONG = item["VH_CONG"].ToString();
                         tbi.SO_HUU = item["SO_HUU"].ToString();
@@ -231,9 +238,10 @@ namespace EVN.Core.CMIS
                         tbi.KIM_CHITAI = item["KIM_CHITAI"].ToString();
                         tbi.LOAI_SOHUU = item["LOAI_SOHUU"].ToString();
                         tbi.LOAI_CTO = item["LOAI_CTO"].ToString();
-                        tbi.SLAN_LT = item["SLAN_LT"].ToString();
+                        tbi.SLAN_LT = item["SLAN_LT"]?.ToString() ?? "0";
+
                         tbi.SO_CHITAI = item["SO_CHITAI"].ToString();
-                        tbi.TYSO_TI = item["TYSO_TI"].ToString();
+                        tbi.TYSO_TI = item["TYSO_TI"]?.ToString() ?? "0";
 
                         tbi.BCS = item["BCS"].ToString();
                         tbi.MA_CTO = item["MA_CTO"].ToString();
@@ -242,7 +250,7 @@ namespace EVN.Core.CMIS
                         tbi.SO_CTO = item["SO_CTO"].ToString();
                         tbi.MA_DVI_SD = item["MA_DVI_SD"].ToString();
                         tbi.SO_BBAN = item["SO_BBAN"].ToString();
-                        tbi.TYSO_TU = item["TYSO_TU"].ToString();
+                        tbi.TYSO_TU = item["TYSO_TU"]?.ToString() ?? "0";
                         listTbi.Add(tbi);
                     }
                     catch (Exception ex)
