@@ -20,11 +20,11 @@ namespace EVN.Core.CMIS
             MA_TNGAI = tientrinh.MA_TNGAI ?? "";
             MA_YCAU_KNAI = tientrinh.MA_YCAU_KNAI;
             NDUNG_XLY = tientrinh.NDUNG_XLY ?? "1";
-            NGAY_BDAU = tientrinh.NGAY_BDAU.ToString("yyyy-mm-dd HH:mm:ss");
-            NGAY_HEN = tientrinh.NGAY_HEN.ToString("yyyy-mm-dd HH:mm:ss");
-            NGAY_KTHUC = tientrinh.NGAY_KTHUC.HasValue ? tientrinh.NGAY_KTHUC.Value.ToString("yyyy-mm-dd HH:mm:ss") : DateTime.Today.ToString("yyyy-mm-dd HH:mm:ss") ;
-            NGAY_SUA = tientrinh.NGAY_SUA.ToString("yyyy-mm-dd HH:mm:ss");
-            NGAY_TAO = tientrinh.NGAY_TAO.ToString("yyyy-mm-dd HH:mm:ss");
+            NGAY_BDAU = tientrinh.NGAY_BDAU.ToString("yyyy-MM-dd HH:mm:ss");
+            NGAY_HEN = tientrinh.NGAY_HEN.ToString("yyyy-MM-dd HH:mm:ss");
+            NGAY_KTHUC = tientrinh.NGAY_KTHUC.HasValue ? tientrinh.NGAY_KTHUC.Value.ToString("yyyy-MM-dd HH:mm:ss") : DateTime.Today.ToString("yyyy-MM-dd HH:mm:ss") ;
+            NGAY_SUA = tientrinh.NGAY_SUA.ToString("yyyy-MM-dd HH:mm:ss");
+            NGAY_TAO = tientrinh.NGAY_TAO.ToString("yyyy-MM-dd HH:mm:ss");
             NGUOI_SUA = tientrinh.NGUOI_SUA ?? "admin";
             NGUOI_TAO = tientrinh.NGUOI_TAO ?? "admin";
             NGUYEN_NHAN = tientrinh.NGUYEN_NHAN ?? "";

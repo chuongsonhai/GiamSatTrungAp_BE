@@ -36,7 +36,7 @@ namespace EVN.Core.CMIS
             SO_TKHOAN = congvan.SoTaiKhoan ?? "";
 
             TEN_NGUOIYCAU = congvan.NguoiYeuCau;
-            MA_DVI_TNHAN = congvan.MaDViTNhan;
+            MA_DVI_TNHAN = "CSKH";
             TEN_KHANG = congvan.TenKhachHang;
             if (string.IsNullOrWhiteSpace(congvan.TenKhachHang))
                 TEN_KHANG = congvan.NguoiYeuCau;

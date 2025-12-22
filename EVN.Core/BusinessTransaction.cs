@@ -307,6 +307,8 @@ namespace EVN.Core
                 foreach (var ttrinh in tientrinhs)
                 {
                     if (ttrinh.MA_CVIEC == "TVB") break;
+                    if (ttrinh.MA_CVIEC == "TN")  
+                        continue;
                     var tientrinh = new DvTienTrinh();                                        
                     tientrinh.MA_DVIQLY = congvan.MaDViQLy;
                     tientrinh.MA_YCAU_KNAI = congvan.MaYeuCau;
@@ -320,14 +322,11 @@ namespace EVN.Core
                     tientrinh.MA_CVIEC = ttrinh.MA_CVIEC;
                     tientrinh.MA_CVIECTIEP = ttrinh.MA_CVIECTIEP;
 
-                    if (int.TryParse(congvan.MaDDoDDien, out int maDdo))
-                    {
-                        tientrinh.MA_DDO_DDIEN = (maDdo + 1).ToString();
-                    }
-                    else
-                    {
-                        tientrinh.MA_DDO_DDIEN = "1"; // hoặc xử lý theo yêu cầu
-                    }
+                    tientrinh.MA_DDO_DDIEN =
+                      int.TryParse(congvan.MaDDoDDien?.Trim(), out int maDdo)
+                          ? (maDdo + 1).ToString()
+                          : "1";
+
 
 
                     tientrinh.NDUNG_XLY = ttrinh.NDUNG_XLY;

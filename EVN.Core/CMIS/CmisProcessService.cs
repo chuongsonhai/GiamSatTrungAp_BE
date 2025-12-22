@@ -3,6 +3,7 @@ using FX.Core;
 using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +22,16 @@ namespace EVN.Core.CMIS
                 YeuCauRequest request = new YeuCauRequest();
                 request.DV_YEU_CAU = new DvYeuCau(congvan);
                 request.DV_TIEN_TRINH = new List<TienTrinh>() { new TienTrinh(tienTrinh) };
-                request.DV_TIEN_TNHAN = new DvTienTNhan(congvan);
+                request.DV_TIEN_TNHAN = new List<DvTienTNhan> { new DvTienTNhan(congvan) };
                 request.CD_KHANG_LIENHE = new List<KHangLienHe>() { new KHangLienHe(congvan) };
                 request.DV_HSO_GTO = new List<HsoGto>();
 
                 var ddoddien = new DDoDDien(congvan);
                 ddoddien.DV_TIEN_TRINH = new List<TienTrinh>() { new TienTrinh(tienTrinh) };
                 request.CD_DDO_DDIEN = new List<DDoDDien>() { ddoddien };
-                request.DV_TIEN_TNHAN.MA_BPHAN = tienTrinh.MA_BPHAN_NHAN;
+
+                request.DV_TIEN_TNHAN[0].MA_BPHAN = tienTrinh.MA_BPHAN_NHAN;
+
 
                 CMISAction action = new CMISAction();
                 string data = JsonConvert.SerializeObject(request);
@@ -40,7 +43,7 @@ namespace EVN.Core.CMIS
                 if (result == null) return false;
                 var response = JsonConvert.DeserializeObject<ApiResponse>(result);
                 //return response != null && response.MESSAGE == "OK" && response.TYPE == "OK";
-                return response.TYPE == "ERROR" || response.TYPE == "OK";
+                return response != null && response.TYPE == "OK";
             }
             catch (Exception ex)
             {
