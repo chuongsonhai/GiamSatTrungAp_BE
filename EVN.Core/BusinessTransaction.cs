@@ -165,15 +165,18 @@ namespace EVN.Core
 
                 var tientrinhs = tientrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == maYCauCu).OrderBy(p => p.STT).ToList();
                 var ttrinhtn = tientrinhs.FirstOrDefault(p => p.MA_CVIEC == "TN");
-                ttrinhtn.MA_YCAU_KNAI = congvan.MaYeuCau;
-                ttrinhtn.NGAY_TAO = DateTime.Now;
-                ttrinhtn.NGAY_SUA = DateTime.Now;
-
-                ICmisProcessService cmisProcess = new CmisProcessService();
-                var tiepnhan = cmisProcess.TiepNhanYeuCau(congvan, ttrinhtn);
-                log.Error($"Tiep nhan CMIS: {tiepnhan}");
-                if (!tiepnhan)
+                if (ttrinhtn == null)
+                {
+                    message = "Không tìm thấy bước TN";
                     return false;
+                }
+
+                int newMaDdo =
+                int.TryParse(ttrinhtn.MA_DDO_DDIEN?.Trim(), out int maDdo)
+                    ? maDdo + 1
+                    : 1;
+
+                string maDdoMoi = newMaDdo.ToString();
 
                 congvan = service.SyncData(congvan.MaYeuCau);
                 service.BeginTran();
@@ -301,55 +304,77 @@ namespace EVN.Core
                     bienbandn.TroNgai = bbdn.TroNgai;
                     bbdnsrv.CreateNew(bienbandn);
                 }
-
                 int stt = 1;
-                
+
                 foreach (var ttrinh in tientrinhs)
                 {
                     if (ttrinh.MA_CVIEC == "TVB") break;
-                    if (ttrinh.MA_CVIEC == "TN")  
-                        continue;
-                    var tientrinh = new DvTienTrinh();                                        
+
+                    var tientrinh = new DvTienTrinh();
                     tientrinh.MA_DVIQLY = congvan.MaDViQLy;
                     tientrinh.MA_YCAU_KNAI = congvan.MaYeuCau;
 
                     tientrinh.MA_BPHAN_GIAO = ttrinh.MA_BPHAN_GIAO;
                     tientrinh.MA_NVIEN_GIAO = ttrinh.MA_NVIEN_GIAO;
-
                     tientrinh.MA_BPHAN_NHAN = ttrinh.MA_BPHAN_NHAN;
                     tientrinh.MA_NVIEN_NHAN = ttrinh.MA_NVIEN_NHAN;
 
                     tientrinh.MA_CVIEC = ttrinh.MA_CVIEC;
                     tientrinh.MA_CVIECTIEP = ttrinh.MA_CVIECTIEP;
 
-                    tientrinh.MA_DDO_DDIEN =
-                      int.TryParse(congvan.MaDDoDDien?.Trim(), out int maDdo)
-                          ? (maDdo + 1).ToString()
-                          : "1";
-
-
+                    // dùng CHUNG MA_DDO_DDIEN đã tăng
+                    tientrinh.MA_DDO_DDIEN = maDdoMoi;
 
                     tientrinh.NDUNG_XLY = ttrinh.NDUNG_XLY;
-
                     tientrinh.NGAY_BDAU = ttrinh.NGAY_BDAU;
-
                     tientrinh.NGAY_KTHUC = ttrinh.NGAY_KTHUC;
-
                     tientrinh.NGAY_HEN = ttrinh.NGAY_HEN;
-                    tientrinh.SO_LAN = 1;
 
+                    tientrinh.SO_LAN = 1;
                     tientrinh.NGAY_TAO = DateTime.Now;
                     tientrinh.NGAY_SUA = DateTime.Now;
-
                     tientrinh.NGUOI_TAO = ttrinh.NGUOI_TAO;
                     tientrinh.NGUOI_SUA = ttrinh.NGUOI_SUA;
-                    tientrinh.STT = stt;
-                    if (tientrinh.MA_CVIEC == "TN")
-                        tientrinh.TRANG_THAI = 1;
+
+                    tientrinh.STT = stt++;
 
                     tientrinhsrv.CreateNew(tientrinh);
-                    stt++;
                 }
+
+                var tnSend = new DvTienTrinh
+                {
+                    MA_DVIQLY = congvan.MaDViQLy,
+                    MA_YCAU_KNAI = congvan.MaYeuCau,
+                    MA_CVIEC = "TN",
+                    MA_CVIECTIEP = ttrinhtn.MA_CVIECTIEP,
+                    MA_CNANG = ttrinhtn.MA_CNANG,
+
+                    MA_BPHAN_GIAO = ttrinhtn.MA_BPHAN_GIAO,
+                    MA_NVIEN_GIAO = ttrinhtn.MA_NVIEN_GIAO,
+                    MA_BPHAN_NHAN = ttrinhtn.MA_BPHAN_NHAN,
+                    MA_NVIEN_NHAN = ttrinhtn.MA_NVIEN_NHAN,
+
+                    MA_DDO_DDIEN = maDdoMoi,
+                    NDUNG_XLY = ttrinhtn.NDUNG_XLY,
+
+                    NGAY_BDAU = DateTime.Now,
+                    NGAY_HEN = ttrinhtn.NGAY_HEN,
+                    NGAY_KTHUC = ttrinhtn.NGAY_KTHUC,
+
+                    SO_LAN = 1,
+                    STT = 1,
+                    TRANG_THAI = 1,
+
+                    NGAY_TAO = DateTime.Now,
+                    NGAY_SUA = DateTime.Now,
+                    NGUOI_TAO = ttrinhtn.NGUOI_TAO,
+                    NGUOI_SUA = ttrinhtn.NGUOI_SUA
+                };
+
+                ICmisProcessService cmisProcess = new CmisProcessService();
+                var tiepnhan = cmisProcess.TiepNhanYeuCau(congvan, tnSend);
+                log.Error($"Tiep nhan CMIS: {tiepnhan}");
+
                 service.CommitTran();
                 IDeliverService deliver = new DeliverService();
                 deliver.PushTienTrinh(congvan.MaDViQLy, congvan.MaYeuCau);

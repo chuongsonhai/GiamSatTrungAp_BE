@@ -20,14 +20,14 @@ namespace EVN.Core.CMIS
             try
             {
                 YeuCauRequest request = new YeuCauRequest();
-                request.DV_YEU_CAU = new DvYeuCau(congvan);
-                request.DV_TIEN_TRINH = new List<TienTrinh>() { new TienTrinh(tienTrinh) };
+                request.DV_YEU_CAU = new DvYeuCau(congvan); 
+                request.DV_TIEN_TRINH = new List<TienTrinh>() { };
                 request.DV_TIEN_TNHAN = new List<DvTienTNhan> { new DvTienTNhan(congvan) };
                 request.CD_KHANG_LIENHE = new List<KHangLienHe>() { new KHangLienHe(congvan) };
                 request.DV_HSO_GTO = new List<HsoGto>();
 
                 var ddoddien = new DDoDDien(congvan);
-                ddoddien.DV_TIEN_TRINH = new List<TienTrinh>() { new TienTrinh(tienTrinh) };
+                ddoddien.DV_TIEN_TRINH = new List<TienTrinh>() { };
                 request.CD_DDO_DDIEN = new List<DDoDDien>() { ddoddien };
 
                 request.DV_TIEN_TNHAN[0].MA_BPHAN = tienTrinh.MA_BPHAN_NHAN;

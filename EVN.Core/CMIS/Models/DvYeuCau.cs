@@ -33,7 +33,7 @@ namespace EVN.Core.CMIS
         public string DUONG_PHO { get; set; } = string.Empty;
         public string NGAY_TNHAN { get; set; } = string.Empty;
         public string NOI_DUNG_YCAU { get; set; } = string.Empty;
-        public string NGAY_HTHANH { get; set; } = DateTime.Now.ToString("yyyy/mm/dd HH:mm:ss");
+        public string NGAY_HTHANH { get; set; } = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
         public string MA_TCHAT { get; set; } = "GD";
         public string MA_HTHUC { get; set; } = "GD";
         public string MA_LOAI_YCAU { get; set; } = "TBAC_D";
