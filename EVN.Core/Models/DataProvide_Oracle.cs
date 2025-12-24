@@ -568,21 +568,25 @@ namespace EVN.Core.Models
             }
         }
 
-        public bool UpdateCdDiemDoDien(string maYcau, string maDiemDoDien)
+        public DataTable getYcauCdDiemDoDien(string maYCau)
         {
+
             using (OracleConnection conn = new OracleConnection(conStr_CMIS3_UNGDUNG))
-            using (OracleCommand cmd = new OracleCommand())
             {
-                conn.Open();
-                cmd.Connection = conn;
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.CommandText = "UNGDUNG_TRUNGAP.INS_DATA_CMIS.UPDATE_MA_DIEMDO_DIEN";
+                DataSet ds = new DataSet();
+                OracleCommand cmd2 = new OracleCommand();
+                cmd2.Parameters.Clear();
+                cmd2.Connection = conn;
+                cmd2.CommandType = CommandType.StoredProcedure;
+                cmd2.CommandText = "UNGDUNG_TRUNGAP.GET_DATA_CMIS.GET_DS_CD_DDO_DDIEN";
+                cmd2.Parameters.Add("pMA_YCAU_KNAI", maYCau).Direction = ParameterDirection.Input;
 
-                cmd.Parameters.Add("pMA_YCAU_KNAI", OracleDbType.Varchar2).Value = maYcau;
-                cmd.Parameters.Add("pMA_DDO_DDIEN", OracleDbType.Varchar2).Value = maDiemDoDien;
-
-                cmd.ExecuteNonQuery();
-                return true;
+                cmd2.Parameters.Add(new OracleParameter("pcusor", OracleDbType.RefCursor)).Direction = ParameterDirection.Output;
+                OracleDataAdapter daTemp1 = new OracleDataAdapter(cmd2);
+                daTemp1.Fill(ds);
+                conn.Close();
+                conn.Dispose();
+                return ds.Tables[0];
             }
         }
 

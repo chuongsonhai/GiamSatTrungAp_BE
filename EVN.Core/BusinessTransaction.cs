@@ -176,18 +176,19 @@ namespace EVN.Core
                     return false;
                 }
 
-                int newMaDdo =
-                int.TryParse(ttrinhtn2.MA_DDO_DDIEN?.Trim(), out int maDdo)
-                    ? maDdo + 1
-                    : 1;
-
-                string maDdoMoi = newMaDdo.ToString();
-
                 congvan = service.SyncData(congvan.MaYeuCau);
                 service.BeginTran();
                 congvan.MaCViec = yeucau.MaCViec;
                 congvan.TrangThai = yeucau.TrangThai;
                 service.Save(congvan);
+
+                ICmisProcessService cmisProcess = new CmisProcessService();
+                var tiepnhan = cmisProcess.TiepNhanYeuCau(congvan, ttrinhtn2);
+                log.Error($"Tiep nhan CMIS: {tiepnhan}");
+
+                DataTable dt = cnn.getYcauCdDiemDoDien(congvan.MaYeuCau);
+
+                var maDdoMoi = dt.Rows[0]["MA_DDO_DDIEN"].ToString().Trim();
 
                 if (pcks != null)
                 {
@@ -345,43 +346,6 @@ namespace EVN.Core
 
                     tientrinhsrv.CreateNew(tientrinh);
                 }
-
-                var tnSend = new DvTienTrinh
-                {
-                    MA_DVIQLY = congvan.MaDViQLy,
-                    MA_YCAU_KNAI = congvan.MaYeuCau,
-                    MA_CVIEC = "TN",
-                    MA_CVIECTIEP = ttrinhtn.MA_CVIECTIEP,
-                    MA_CNANG = ttrinhtn.MA_CNANG,
-
-                    MA_BPHAN_GIAO = ttrinhtn.MA_BPHAN_GIAO,
-                    MA_NVIEN_GIAO = ttrinhtn.MA_NVIEN_GIAO,
-                    MA_BPHAN_NHAN = ttrinhtn.MA_BPHAN_NHAN,
-                    MA_NVIEN_NHAN = ttrinhtn.MA_NVIEN_NHAN,
-
-                    MA_DDO_DDIEN = maDdoMoi,
-                    NDUNG_XLY = ttrinhtn.NDUNG_XLY,
-
-                    NGAY_BDAU = DateTime.Now,
-                    NGAY_HEN = ttrinhtn.NGAY_HEN,
-                    NGAY_KTHUC = ttrinhtn.NGAY_KTHUC,
-
-                    SO_LAN = 1,
-                    STT = 1,
-                    TRANG_THAI = 1,
-
-                    NGAY_TAO = DateTime.Now,
-                    NGAY_SUA = DateTime.Now,
-                    NGUOI_TAO = ttrinhtn.NGUOI_TAO,
-                    NGUOI_SUA = ttrinhtn.NGUOI_SUA
-                };
-
-                ICmisProcessService cmisProcess = new CmisProcessService();
-                var tiepnhan = cmisProcess.TiepNhanYeuCau(congvan, tnSend);
-                log.Error($"Tiep nhan CMIS: {tiepnhan}");
-
-                cnn.UpdateCdDiemDoDien(congvan.MaYeuCau, maDdoMoi);
-
 
                 service.CommitTran();
                 IDeliverService deliver = new DeliverService();
