@@ -25,8 +25,8 @@ namespace EVN.Core.CMIS
             CONG_SUAT = "0";
             DTU_CTRINH = 0;
             SNGAY_YCAU = 1;
-            NGUOI_SUA = congvan.NguoiDuyet ?? "admin";
-            NGUOI_TAO = congvan.NguoiLap ?? "admin";
+            NGUOI_SUA = congvan.NguoiDuyet ?? "trungap";
+            NGUOI_TAO = congvan.NguoiLap ?? "trungap";
         }        
         public IList<TienTrinh> DV_TIEN_TRINH { get; set; }
     }

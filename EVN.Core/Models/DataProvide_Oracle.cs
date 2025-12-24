@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -566,6 +567,26 @@ namespace EVN.Core.Models
                 return ds.Tables[0];
             }
         }
+
+        public bool UpdateCdDiemDoDien(string maYcau, string maDiemDoDien)
+        {
+            using (OracleConnection conn = new OracleConnection(conStr_CMIS3_UNGDUNG))
+            using (OracleCommand cmd = new OracleCommand())
+            {
+                conn.Open();
+                cmd.Connection = conn;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandText = "UNGDUNG_TRUNGAP.INS_DATA_CMIS.UPDATE_MA_DIEMDO_DIEN";
+
+                cmd.Parameters.Add("pMA_YCAU_KNAI", OracleDbType.Varchar2).Value = maYcau;
+                cmd.Parameters.Add("pMA_DDO_DDIEN", OracleDbType.Varchar2).Value = maDiemDoDien;
+
+                cmd.ExecuteNonQuery();
+                return true;
+            }
+        }
+
+
 
         public DataTable Get_mayc_cmis(string maycau)
         {

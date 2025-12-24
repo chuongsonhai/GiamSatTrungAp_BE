@@ -10,7 +10,7 @@ namespace EVN.Core.CMIS
         {
             MA_DVIQLY = congvan.MaDViQLy;
             MA_YCAU_KNAI = congvan.MaYeuCau;
-            MA_KHANG = congvan.MaKHang ?? "1";
+            MA_KHANG = congvan.MaKHang;
             TEN_NGUOIYCAU = congvan.NguoiYeuCau ?? "1";
             DCHI_NGUOIYCAU = congvan.DChiNguoiYeuCau ?? "1";
             SO_NHA = congvan.SoNha ?? "1";            

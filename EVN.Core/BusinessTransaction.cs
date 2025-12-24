@@ -2,11 +2,14 @@
 using EVN.Core.CMIS.Models;
 using EVN.Core.Domain;
 using EVN.Core.IServices;
+using EVN.Core.Models;
 using FX.Core;
 using log4net;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace EVN.Core
@@ -14,6 +17,7 @@ namespace EVN.Core
     public class BusinessTransaction
     {
         private static ILog log = LogManager.GetLogger(typeof(BusinessTransaction));
+        DataProvide_Oracle cnn = new DataProvide_Oracle();
         private static BusinessTransaction _instance;
         public static BusinessTransaction Instance
         {
@@ -165,6 +169,7 @@ namespace EVN.Core
 
                 var tientrinhs = tientrinhsrv.Query.Where(p => p.MA_YCAU_KNAI == maYCauCu).OrderBy(p => p.STT).ToList();
                 var ttrinhtn = tientrinhs.FirstOrDefault(p => p.MA_CVIEC == "TN");
+                var ttrinhtn2 = tientrinhs.FirstOrDefault(p => p.MA_CVIEC == "PK");
                 if (ttrinhtn == null)
                 {
                     message = "Không tìm thấy bước TN";
@@ -172,7 +177,7 @@ namespace EVN.Core
                 }
 
                 int newMaDdo =
-                int.TryParse(ttrinhtn.MA_DDO_DDIEN?.Trim(), out int maDdo)
+                int.TryParse(ttrinhtn2.MA_DDO_DDIEN?.Trim(), out int maDdo)
                     ? maDdo + 1
                     : 1;
 
@@ -375,10 +380,15 @@ namespace EVN.Core
                 var tiepnhan = cmisProcess.TiepNhanYeuCau(congvan, tnSend);
                 log.Error($"Tiep nhan CMIS: {tiepnhan}");
 
+                cnn.UpdateCdDiemDoDien(congvan.MaYeuCau, maDdoMoi);
+
+
                 service.CommitTran();
                 IDeliverService deliver = new DeliverService();
                 deliver.PushTienTrinh(congvan.MaDViQLy, congvan.MaYeuCau);
+                message = "Nhân bản thành công mã yêu cầu mới  "+ congvan.MaYeuCau + "";
                 return true;
+
             }
             catch (Exception ex)
             {
