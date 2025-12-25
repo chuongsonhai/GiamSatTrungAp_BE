@@ -7,7 +7,6 @@ namespace EVN.Core.CMIS
     public interface ICmisProcessService
     {
         bool TiepNhanYeuCau(CongVanYeuCau congvan, DvTienTrinh tienTrinh);
-
         bool TiepNhanYeuCau2(CongVanYeuCau congvan, DvTienTrinh tienTrinh);
 
         bool ChuyenTiep(CongVanYeuCau congvan, string maDViTNhan);

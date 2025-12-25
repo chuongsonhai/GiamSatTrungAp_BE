@@ -80,7 +80,8 @@ namespace EVN.Core.CMIS
                 log.Error(result);
                 if (result == null) return false;
                 var response = JsonConvert.DeserializeObject<ApiResponse>(result);
-                return response.TYPE == "ERROR" || response.TYPE == "OK";
+                //return response != null && response.MESSAGE == "OK" && response.TYPE == "OK";
+                return response != null && response.TYPE == "OK";
             }
             catch (Exception ex)
             {
