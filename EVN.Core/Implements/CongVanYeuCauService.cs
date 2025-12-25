@@ -238,7 +238,7 @@ namespace EVN.Core.Implements
                 ICmisProcessService cmisProcess = new CmisProcessService();
                 log.ErrorFormat("Tiep nhan CMIS tienTrinh:{0}", JsonConvert.SerializeObject(tientrinh).ToString());
                 log.ErrorFormat("Tiep nhan CMIS congvan:{0}", JsonConvert.SerializeObject(congvan).ToString());
-                var tiepnhan = cmisProcess.TiepNhanYeuCau(congvan, tientrinh);
+                var tiepnhan = cmisProcess.TiepNhanYeuCau2(congvan, tientrinh);
                 log.Error($"Tiep nhan CMIS: {tiepnhan}");
                 if (!tiepnhan)
                     return false;

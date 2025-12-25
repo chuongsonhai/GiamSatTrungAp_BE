@@ -53,6 +53,43 @@ namespace EVN.Core.CMIS
 
         }
 
+        public bool TiepNhanYeuCau2(CongVanYeuCau congvan, DvTienTrinh tienTrinh)
+        {
+            try
+            {
+                YeuCauRequest request = new YeuCauRequest();
+                request.DV_YEU_CAU = new DvYeuCau(congvan);
+                request.DV_TIEN_TRINH = new List<TienTrinh>() { new TienTrinh(tienTrinh) };
+                request.DV_TIEN_TNHAN = new List<DvTienTNhan> { new DvTienTNhan(congvan) };
+                request.CD_KHANG_LIENHE = new List<KHangLienHe>() { new KHangLienHe(congvan) };
+                request.DV_HSO_GTO = new List<HsoGto>();
+
+                var ddoddien = new DDoDDien(congvan);
+                ddoddien.DV_TIEN_TRINH = new List<TienTrinh>() { new TienTrinh(tienTrinh) };
+                request.CD_DDO_DDIEN = new List<DDoDDien>() { ddoddien };
+
+                request.DV_TIEN_TNHAN[0].MA_BPHAN = tienTrinh.MA_BPHAN_NHAN;
+
+
+                CMISAction action = new CMISAction();
+                string data = JsonConvert.SerializeObject(request);
+                ApiService service = IoC.Resolve<ApiService>();
+
+                log.ErrorFormat("Tiep nhan CMIS data:{0}", data.ToString());
+                var result = service.PostData(action.themMoiTiepNhanYeuCau, data);
+                log.Error(result);
+                if (result == null) return false;
+                var response = JsonConvert.DeserializeObject<ApiResponse>(result);
+                return response.TYPE == "ERROR" || response.TYPE == "OK";
+            }
+            catch (Exception ex)
+            {
+                log.Error(ex);
+                return false;
+            }
+
+        }
+
         public bool ChuyenTiep(CongVanYeuCau congvan, string maDViTNhan)
         {
             try

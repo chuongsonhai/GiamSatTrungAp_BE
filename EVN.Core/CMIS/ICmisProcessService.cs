@@ -8,6 +8,8 @@ namespace EVN.Core.CMIS
     {
         bool TiepNhanYeuCau(CongVanYeuCau congvan, DvTienTrinh tienTrinh);
 
+        bool TiepNhanYeuCau2(CongVanYeuCau congvan, DvTienTrinh tienTrinh);
+
         bool ChuyenTiep(CongVanYeuCau congvan, string maDViTNhan);
 
         bool LapBBanTrTh(BienBanTT bienban, DvTienTrinh tienTrinh);
